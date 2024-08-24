@@ -33,9 +33,9 @@ function Login() {
   return (
     <section
       style={{
-        // backgroundImage: `url(${bg})`,
-        // backgroundAttachment: "fixed",
-        // backgroundSize: "cover",
+        backgroundImage: `url(${bg})`,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
         // overflow: 'hidden'
       }}
       className="min-h-screen flex p-6"
@@ -47,16 +47,16 @@ function Login() {
           </h1>
           <div className="flex gap-4 items-center">
             <p className="sm:text-[1.2em] text-[1em] font-semibold">
-              Create a new account
+              Already have an account
             </p>
             <Divider orientation="vertical" className="h-6 bg-black" />
             <p className="sm:text-[1.2em] text-[1em] font-semibold">
-              Have an account?{" "}
+              Create account?{" "}
               {/* <Link
                 to="/refree/refreelogin"
                 className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
               > */}
-                Login
+                Signup
               {/* </Link> */}
             </p>
           </div>
@@ -65,18 +65,7 @@ function Login() {
           className="flex flex-col gap-4 w-2/3"
         >
           <div className="flex gap-4">
-            <Input
-              {...register("name", {
-                required: { value: true },
-              })}
-              type="name"
-              label="Your name"
-              radius="full"
-              labelPlacement="outside"
-              classNames={{ label: "font-bold" }}
-              placeholder="Enter your full name"
-              errorMessage={errors.name && "Please enter your name"}
-            />
+            
 
             <Input
               {...register("username", {
@@ -94,32 +83,10 @@ function Login() {
             />
           </div>
 
-          <Input
-            {...register("companyname", {
-              required: { value: true },
-            })}
-            type="companyname"
-            label="Company Name"
-            placeholder="Your company name"
-            labelPlacement="outside"
-            radius="full"
-            classNames={{ label: "font-bold" }}
-            errorMessage={errors.companyname && "Please enter a company name"}
-          />
+          
 
-          <Input
-            {...register("post", {
-              required: { value: true },
-            })}
-            type="post"
-            label="Post in company"
-            placeholder="Enter your post"
-            labelPlacement="outside"
-            radius="full"
-            classNames={{ label: "font-bold" }}
-            errorMessage={errors.post && "Please enter a post"}
-          />
-
+          
+{/* 
           <Input
             {...register("email", {
               required: { value: true, message: "enter company email" },
@@ -135,7 +102,7 @@ function Login() {
             labelPlacement="outside"
             classNames={{ label: "font-bold" }}
             errorMessage={errors.email && "Please enter company email"}
-          />
+          /> */}
           <div className="flex gap-4">
             <Input
               {...register("password", {
