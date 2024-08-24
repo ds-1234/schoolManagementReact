@@ -1,5 +1,6 @@
 import React from 'react'
 import image from './assets/images/register.png'
+import {Link} from 'react-router-dom'
 
 function Registeration() {
   return (
@@ -106,7 +107,7 @@ function Registeration() {
             </button>
 
             <div className="flex justify-center text-sm mt-3">
-              <p>Already have an account? <a href="#" className="text-blue-500">Login</a></p>
+              <p>Already have an account? <Link to={'/login'} className='text-blue-500'>Login</Link></p>
             </div>
 
             <p className='text-center text-blue-400 text-md mt-4'>-OR-</p>
