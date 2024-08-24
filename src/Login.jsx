@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import girl from "./assets/refereesignupgirl.png";
+import girl from "./assets/girl.jpg";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, Divider, Input } from "@nextui-org/react";
 import { CutEyeIcon } from "./assets/Icons/CutEyeIcon";
 import { EyeIcon } from "./assets/Icons/EyeIcon";
-import bg from "./assets/referralSignupback.png";
+import bg from "./assets/LoginBack.png";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
+ 
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -21,29 +20,26 @@ function Login() {
   } = useForm();
 
   
-  const handleUserNameChange = (event) => {
-    setUserName(event.target.value);
-  };
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  
 
   return (
     <section
       style={{
         backgroundImage: `url(${bg})`,
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
-        // overflow: 'hidden'
+
+
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        width: '100vw',
+        height: '100vh'
+
       }}
-      className="min-h-screen flex p-6"
+      className="min-h-screen flex p-0 m-0"
     >
       <div className="flex flex-col justify-center items-center gap-12 lg:w-7/12 w-full">
         <div className="self-center flex flex-col gap-4">
           <h1 className="sm:text-[3em] text-[1.2em] font-bold">
-            <span className="bg-blue-400 rounded-md">Connecting</span> Talents
+            <span className="bg-blue-400 rounded-md">Connecting</span> Scholars
           </h1>
           <div className="flex gap-4 items-center">
             <p className="sm:text-[1.2em] text-[1em] font-semibold">
@@ -53,7 +49,7 @@ function Login() {
             <p className="sm:text-[1.2em] text-[1em] font-semibold">
               Create account?{" "}
               {/* <Link
-                to="/refree/refreelogin"
+                to="#"
                 className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
               > */}
                 Signup
@@ -76,9 +72,7 @@ function Login() {
               labelPlacement="outside"
               placeholder="Enter a username"
               classNames={{ label: "font-bold" }}
-              value={userName}
               radius="full"
-              onChange={handleUserNameChange}
               errorMessage={errors.username && "Please enter a username"}
             />
           </div>
@@ -86,23 +80,7 @@ function Login() {
           
 
           
-{/* 
-          <Input
-            {...register("email", {
-              required: { value: true, message: "enter company email" },
-              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z\.]+[a-zA-Z]+$/,
-              message: "Enter a valid email",
-            })}
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Enter your company email"
-            type="email"
-            radius="full"
-            label="Company Email verification"
-            labelPlacement="outside"
-            classNames={{ label: "font-bold" }}
-            errorMessage={errors.email && "Please enter company email"}
-          /> */}
+
           <div className="flex gap-4">
             <Input
               {...register("password", {
@@ -142,7 +120,7 @@ function Login() {
       </div>
       <div className="lg:flex hidden flex-col justify-center gap-20 items-center w-1/3">
         <div className="w-7/12 aspect-square rotate-45 bg-white rounded-[2em] overflow-hidden shadow-2xl">
-          <img className="-rotate-45 scale-150 mt-8 ml-2" src={girl} alt="" />
+          <img className="-rotate-45 scale-100 mb-2 ml-20" src={girl} alt="" />
         </div>
         <h1 className="sm:text-[2.5em] text-[1em] font-bold">
           <span className="bg-blue-400 rounded-md">Empowering</span> Careers
