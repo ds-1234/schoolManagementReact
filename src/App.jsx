@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { BrowserRouter as Router , Route , Routes } from 'react-router-dom'
 import Login from './Login'
-import Registeration from './Registeration'
+import Registration from './Registration'
 
 
 
@@ -11,9 +11,9 @@ function App() {
     <Router>
         <div className="h-screen">
           <Routes>
-            <Route path="/" element={<Registeration/>}/>
+            <Route path="/" element={<Registration/>}/>
             <Route path="/login" element = {<Login/>}/>
-            <Route path="/registeration" element={<Registeration/>}/>
+            <Route path="/registration" element={<Registration/>}/>
           </Routes>
         </div>
       </Router>
