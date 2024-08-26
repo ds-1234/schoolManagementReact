@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import girl from "./assets/girl.jpg";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Divider, Input } from "@nextui-org/react";
 import { CutEyeIcon } from "./assets/Icons/CutEyeIcon";
 import { EyeIcon } from "./assets/Icons/EyeIcon";
@@ -11,6 +11,8 @@ function Login() {
  
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const navigate = useNavigate() 
+
 
   const {
     register,
@@ -19,6 +21,17 @@ function Login() {
     getValues,
   } = useForm();
 
+  const Submitdata = (data) => {
+
+    const formData = getValues();
+    console.log(formData)
+    console.log(data,"data")
+    
+
+    
+    // navigate to DashBoard
+    navigate('/dashboard' , {state: data}) ;
+  };
   
 
   return (
@@ -58,6 +71,7 @@ function Login() {
           </div>
         </div>
         <form
+        onSubmit={handleSubmit(Submitdata)}
           className="flex flex-col gap-4 w-2/3"
         >
           <div className="flex gap-4">
@@ -75,6 +89,8 @@ function Login() {
               radius="full"
               errorMessage={errors.username && "Please enter a username"}
             />
+                          {errors.username && <span className="text-red-500 text-sm">{errors.username.message}</span>}
+
           </div>
 
           
@@ -103,6 +119,8 @@ function Login() {
               }
               type={isVisible ? "text" : "password"}
             />
+                                      {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+
 
 
           </div>
