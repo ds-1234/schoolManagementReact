@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import image from './assets/images/register.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Registration() {
   
@@ -10,9 +10,10 @@ function Registration() {
   const [firstName , setFirstName] = useState('')
   const [lastName  , setLastName] = useState('')
   const [email , setEmail] = useState('')
-  const[tel , setTel] = useState(0) 
+  const[tel , setTel] = useState(null) 
   const [password , setPassword] = useState('')
   const [role , setRole] = useState('')
+  const navigate = useNavigate() 
 
   // Handle form submission
   const onSubmit = (data) => {
@@ -23,10 +24,13 @@ function Registration() {
     setTel('');
     setPassword('');
     setRole('');  
+    
+    // navigate to DashBoard
+    navigate('/dashboard' , {state: data}) ;
   };
 
   return (
-    <div className='flex flex-col justify-center items-center px-10 bg-[rgba(136,169,240,1)] h-screen'>
+    <div className='flex flex-col justify-center items-center px-10 bg-[rgba(136,169,240,1)] py-5 md:h-screen'>
       <h1 className='font-semibold mb-4 text-2xl sm:text-3xl'>Time to sign up</h1>
       <p className='text-xl mb-4 text-center'>Send over your deets in the form below 🤘</p>
       <div className="bg-white rounded-lg shadow-lg w-full md:w-4/5 lg:w-3/5 flex flex-col md:flex-row sm:w-4/5">
