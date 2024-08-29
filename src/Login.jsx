@@ -6,6 +6,7 @@ import { Button, Divider, Input } from "@nextui-org/react";
 import { CutEyeIcon } from "./assets/Icons/CutEyeIcon";
 import { EyeIcon } from "./assets/Icons/EyeIcon";
 import bg from "./assets/LoginBack.png";
+import axios from "axios";
 
 function Login() {
  
@@ -13,6 +14,7 @@ function Login() {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const navigate = useNavigate() 
 
+  
 
   const {
     register,
@@ -27,10 +29,29 @@ function Login() {
     console.log(formData)
     console.log(data,"data")
     
+  axios({
+    method:"post",
+    url : `http://localhost:8080/user/login`,
+    data: {
+      userName : data.username,
+      password : data.password
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+    //  withCredentials: true,
 
+  }).then((res)=>{
+    console.log(res.data,'resdata')
+        // navigate to DashBoard
+        navigate('/dashboard' , {state: data}) ;
+
+  }).catch(err=>{
+     console.log(err,'error:')
+  })
     
     // navigate to DashBoard
-    navigate('/dashboard' , {state: data}) ;
+    // navigate('/dashboard' , {state: data}) ;
   };
   
 
