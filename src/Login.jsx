@@ -7,6 +7,8 @@ import { CutEyeIcon } from "./assets/Icons/CutEyeIcon";
 import { EyeIcon } from "./assets/Icons/EyeIcon";
 import bg from "./assets/LoginBack.png";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
  
@@ -28,6 +30,8 @@ function Login() {
     const formData = getValues();
     console.log(formData)
     console.log(data,"data")
+
+
     
   axios({
     method:"post",
@@ -43,11 +47,15 @@ function Login() {
 
   }).then((res)=>{
     console.log(res.data,'resdata')
+    toast.success("successful");
+
         // navigate to DashBoard
         navigate('/dashboard' , {state: data}) ;
 
   }).catch(err=>{
      console.log(err,'error:')
+     toast.error("Runtime error");
+
   })
     
     // navigate to DashBoard
@@ -100,7 +108,10 @@ function Login() {
 
             <Input
               {...register("userId", {
-                required: { value: true },
+                required: 'userId is required',
+                pattern: {
+                  message: 'please enter a valid userId',
+                }
               })}
               type="userId"
               label="User ID"
@@ -121,7 +132,7 @@ function Login() {
           <div className="flex gap-4">
             <Input
               {...register("password", {
-                required: { value: true },
+                required: 'password is required',
               })}
               label="Password"
               labelPlacement="outside"
@@ -155,6 +166,7 @@ function Login() {
           >
             Login
           </Button>
+
         </form>
       </div>
       <div className="lg:flex hidden flex-col justify-center gap-20 items-center w-1/3">

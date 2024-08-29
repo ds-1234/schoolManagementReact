@@ -4,6 +4,8 @@ import image from './assets/images/register.png';
 import { Link, useNavigate } from 'react-router-dom';
 import useRegister from './hooks/useRegister.jsx'
 
+
+
 function Registration() {
   
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -42,7 +44,7 @@ function Registration() {
                 className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('firstName', { required: 'First Name is required' })}
               />
-              {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span>}
+              {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span> }
             </div>
 
             <div className="flex flex-col pt-2">
