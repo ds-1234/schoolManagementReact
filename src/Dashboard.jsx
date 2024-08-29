@@ -7,7 +7,7 @@ function Dashboard() {
   return (
     <div className='bg-[rgba(136,169,240,1)] h-screen text-center pt-20'>
         {
-            data ? <h1 className='text-2xl text-semibold'>User Name : {data.firstName || data.username}</h1> 
+            data ? <h1 className='text-2xl text-semibold'>UserId : {  data.userId}</h1> 
             : 
             <h1 className='text-2xl text-semibold'>No Data is found</h1>
         }

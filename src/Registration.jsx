@@ -13,10 +13,10 @@ function Registration() {
   const onSubmit = async (data) => {
     const result = await registerUser(data);
 
-    if (result) {
-      console.log("User registered successfully:", result);
-      navigate('/dashboard', { state: data });
-    }
+    // if (result) {
+    //   console.log("User registered successfully:", result);
+    //   navigate('/dashboard', { state: data });
+    // }
   };
 
   return (

@@ -33,7 +33,7 @@ function Login() {
     method:"post",
     url : `http://localhost:8080/user/login`,
     data: {
-      userName : data.username,
+      userName : data.userId,
       password : data.password
     },
     headers: {
@@ -99,18 +99,18 @@ function Login() {
             
 
             <Input
-              {...register("username", {
+              {...register("userId", {
                 required: { value: true },
               })}
-              type="username"
-              label="User Name"
+              type="userId"
+              label="User ID"
               labelPlacement="outside"
-              placeholder="Enter a username"
+              placeholder="Enter a userId"
               classNames={{ label: "font-bold" }}
               radius="full"
-              errorMessage={errors.username && "Please enter a username"}
+              errorMessage={errors.userId && "Please enter a userId"}
             />
-                          {errors.username && <span className="text-red-500 text-sm">{errors.username.message}</span>}
+                          {errors.userId && <span className="text-red-500 text-sm">{errors.userId.message}</span>}
 
           </div>
 
