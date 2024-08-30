@@ -7,6 +7,7 @@ import SuccessCard from './SuccessCard'
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
 import School from './Dashboard/Admin_Dashboard/School'
 import Subject from './Dashboard/Admin_Dashboard/Subject'
+import AddSchool from './Dashboard/Admin_Dashboard/AddSchool'
 
 
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/SuccessCard" element={<SuccessCard/>}/>
             <Route path="/admin" element={<AdminDashboard/>}>
               <Route path='school' element={<School/>}/>
+              <Route path='AddSchool' element={<AddSchool/>}/>
               <Route path='subject' element={<Subject/>}/>
             </Route>
           </Routes>
