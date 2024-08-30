@@ -7,25 +7,25 @@ const AdminDashboard = () => {
   return (
     <div className="flex min-h-screen bg-[rgba(136,169,240,1)]">
       {/* Sidebar */}
-      <div className=" w-1/5 bg-gray-200 text-blue-500 flex flex-col">
-        <div className="p-6 text-3xl font-bold border-b border-gray-300">
+      <div className=" w-1/3 bg-gray-200 text-blue-500 flex flex-col sm:w-1/5">
+        <div className="p-4 text-xl font-semibold border-b border-gray-300 md:p-6 md:text-3xl">
           Admin Dashboard
         </div>
-        <nav className="flex-grow p-4">
+        <nav className="flex-grow p-4 md:p-6">
           <ul>
-            <li className="mb-4 text-xl font-semibold">
+            <li className="mb-4 text-lg font-medium md:text-xl">
               <NavLink 
                 to="/admin/school" 
-                className={({ isActive }) => isActive ? 'text-blue-500 font-semibold' : 'text-black hover:text-blue-300'}
+                className={({ isActive }) => isActive ? 'text-blue-500 font-medium ' : 'text-black hover:text-blue-300'}
               >
                  <FontAwesomeIcon icon={faSchool} className="mr-3" />
                 School
               </NavLink>
             </li>
-            <li className="mb-4 text-xl font-semibold">
+            <li className="mb-4 text-lg font-medium md:text-xl">
               <NavLink 
                 to="/admin/subject" 
-                className={({ isActive }) => isActive ? 'text-blue-500 font-semibold' : 'text-black hover:text-blue-300'}
+                className={({ isActive }) => isActive ? 'text-blue-500 font-medium ' : 'text-black hover:text-blue-300'}
               >
                 <FontAwesomeIcon icon={faBook} className="mr-3" />
                 Subject

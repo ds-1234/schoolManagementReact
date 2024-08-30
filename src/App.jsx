@@ -8,6 +8,7 @@ import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
 import School from './Dashboard/Admin_Dashboard/School'
 import Subject from './Dashboard/Admin_Dashboard/Subject'
 import AddSchool from './Dashboard/Admin_Dashboard/AddSchool'
+import AddSubject from './Dashboard/Admin_Dashboard/AddSubject'
 
 
 
@@ -26,6 +27,7 @@ function App() {
               <Route path='school' element={<School/>}/>
               <Route path='AddSchool' element={<AddSchool/>}/>
               <Route path='subject' element={<Subject/>}/>
+              <Route path='AddSubject' element={<AddSubject/>}/>
             </Route>
           </Routes>
         </div>
