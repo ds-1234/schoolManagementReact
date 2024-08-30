@@ -38,7 +38,6 @@ function AddSchool() {
         headers: {
           "Content-Type": "application/json",
         },
-        //  withCredentials: true,
     
       }).then((res)=>{
         console.log('response' , res.data)
@@ -51,7 +50,7 @@ function AddSchool() {
     
       }).catch(err=>{
          console.log(err,'error:')
-         toast.error("Runtime error");
+         toast.error("error to add school");
     
       })
         
