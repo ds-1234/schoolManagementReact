@@ -46,11 +46,26 @@ function Login() {
     //  withCredentials: true,
 
   }).then((res)=>{
-    console.log(res.data,'resdata')
+    console.log('role:' , res.data.data.role)
+    let role = res.data.data.role
     toast.success("successful");
-
-        // navigate to DashBoard
-        navigate('/dashboard' , {state: data}) ;
+  
+    switch (role) {
+      case 'student':
+        navigate('/studentDashboard' , {state: data}) ;
+        break;
+      case 'teacher':
+        navigate('/teacherdashboard' , {state: data}) ;
+        break;
+      case 'parents':
+        navigate('/parentsDashboard' , {state: data}) ;
+        break;
+      case 'Admin':
+        navigate('/admin' , {state: data}) ;
+        break;
+      default:
+        console.log('Unknown user type');
+    }
 
   }).catch(err=>{
      console.log(err,'error:')
