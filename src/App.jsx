@@ -4,6 +4,9 @@ import Login from './Login'
 import Registration from './Registration'
 import Dashboard from './Dashboard'
 import SuccessCard from './SuccessCard'
+import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
+import School from './Dashboard/Admin_Dashboard/School'
+import Subject from './Dashboard/Admin_Dashboard/Subject'
 
 
 
@@ -18,6 +21,10 @@ function App() {
             <Route path="/registration" element={<Registration/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/SuccessCard" element={<SuccessCard/>}/>
+            <Route path="/admin" element={<AdminDashboard/>}>
+              <Route path='school' element={<School/>}/>
+              <Route path='subject' element={<Subject/>}/>
+            </Route>
           </Routes>
         </div>
       </Router>
