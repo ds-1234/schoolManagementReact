@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import image from './assets/images/register.png';
 import { Link, useNavigate } from 'react-router-dom';
 import useRegister from './hooks/useRegister.jsx'
+import {ToastContainer} from 'react-toastify'
 
 
 
@@ -22,20 +23,20 @@ function Registration() {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center px-10 bg-[rgba(136,169,240,1)] py-5'>
-      <h1 className='font-semibold mb-4 text-2xl sm:text-3xl'>Time to sign up</h1>
-      <p className='text-xl mb-4 text-center'>Send over your deets in the form below 🤘</p>
-      <div className="bg-white rounded-lg shadow-lg w-full md:w-4/5 lg:w-3/5 flex flex-col md:flex-row sm:w-4/5">
+    <div className='flex flex-col justify-center items-center px-10 bg-[rgba(136,169,240,1)] py-4'>
+      <h1 className='font-semibold mb-2 text-2xl sm:text-3xl'>Time to sign up</h1>
+      <p className='text-xl mb-2 text-center'>Send over your deets in the form below 🤘</p>
+      <div className="bg-white rounded-lg shadow-lg w-full flex flex-col sm:w-4/5">
 
         {/* Image Section */}
-        <div className="w-full md:w-1/2 p-5 flex justify-center items-center">
-          <img src={image} alt="register" className='w-full h-auto max-w-xs md:max-w-full'/>
+        <div className="p-5 flex justify-center items-center">
+          <img src={image} alt="register" className='w-full h-auto max-w-xs'/>
         </div>
 
         {/* Form Section */}
-        <div className="w-full md:w-1/2 p-5">
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center">
-            <div className="flex flex-col pt-2">
+        <div className="w-full p-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col md:flex-wrap  justify-center md:flex-row">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="firstName" className="hidden">First Name</label>
               <input
                 type="text"
@@ -47,7 +48,7 @@ function Registration() {
               {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span> }
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2  px-1 md:w-1/2">
               <label htmlFor="lastName" className="hidden">Last Name</label>
               <input
                 type="text"
@@ -58,7 +59,7 @@ function Registration() {
               />
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="email" className="hidden">Email</label>
               <input
                 type="email"
@@ -76,7 +77,7 @@ function Registration() {
               {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="phone" className="hidden">Mobile Number</label>
               <input
                 type="phone"
@@ -94,7 +95,7 @@ function Registration() {
               {errors.tel && <span className="text-red-500 text-sm">{errors.tel.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="fatherName" className="hidden">Father's Name</label>
               <input
                 type="text"
@@ -106,7 +107,7 @@ function Registration() {
               {errors.fatherName && <span className="text-red-500 text-sm">{errors.fatherName.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="motherName" className="hidden">Mother's Name</label>
               <input
                 type="text"
@@ -118,7 +119,7 @@ function Registration() {
               {errors.motherName && <span className="text-red-500 text-sm">{errors.motherName.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="gender" className="hidden">Gender</label>
               <select
                 id="gender"
@@ -133,7 +134,7 @@ function Registration() {
               {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="dateOfBirth" className="hidden">Date of Birth</label>
               <input
                 type="date"
@@ -144,7 +145,7 @@ function Registration() {
               {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="houseNumber" className="hidden">House Number</label>
               <input
                 type="text"
@@ -156,7 +157,7 @@ function Registration() {
               {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="street" className="hidden">Street</label>
               <input
                 type="text"
@@ -168,7 +169,7 @@ function Registration() {
               {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="city" className="hidden">City</label>
               <input
                 type="text"
@@ -180,7 +181,7 @@ function Registration() {
               {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="state" className="hidden">State</label>
               <input
                 type="text"
@@ -192,19 +193,25 @@ function Registration() {
               {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="pinCode" className="hidden">Pincode</label>
               <input
                 type="text"
                 id="pinCode"
                 placeholder="Pincode"
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.pincode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('pinCode', { required: 'Pincode is required' })}
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('pinCode', { 
+                  required: 'Pincode is required'  , 
+                  pattern: {
+                    value: /^[0-9]/,
+                    message: 'Pincode must be digits',
+                  },
+                })}
               />
-              {errors.pincode && <span className="text-red-500 text-sm">{errors.pincode.message}</span>}
+              {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="country" className="hidden">Country</label>
               <input
                 type="text"
@@ -216,7 +223,7 @@ function Registration() {
               {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="password" className="hidden">Password</label>
               <input
                 type="password"
@@ -235,7 +242,7 @@ function Registration() {
               {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2">
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="role" className="font-semibold mb-2 hidden">Select Role</label>
               <select
                 id="role"
@@ -247,11 +254,12 @@ function Registration() {
                 <option value="Parent">Parent</option>
                 <option value="Teacher">Teacher</option>
                 <option value="Student">Student</option>
+                <option value="Guest">Guest</option>
               </select>
               {errors.role && <span className="text-red-500 text-sm">{errors.role.message}</span>}
             </div>
 
-            <div className="flex items-center mt-4">
+            <div className="flex items-center mt-4 ">
               <input
                 type="checkbox"
                 id="isActive"
@@ -276,6 +284,7 @@ function Registration() {
               <p>Already have an account? <Link to={'/login'} className='text-blue-500'>Login</Link></p>
             </div>
           </form>
+          <ToastContainer/>
         </div>
       </div>
     </div>
