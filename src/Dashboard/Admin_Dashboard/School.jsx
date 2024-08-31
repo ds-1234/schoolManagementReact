@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import './Table.css';
+import './CSS_Styles/Table.css';
 import { Link } from 'react-router-dom';
 
 function School() {

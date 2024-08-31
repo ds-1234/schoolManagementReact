@@ -55,7 +55,7 @@ function Login() {
         navigate('/studentDashboard' , {state: data}) ;
         break;
       case 'teacher':
-        navigate('/teacherdashboard' , {state: data}) ;
+        navigate('/teacherDashboard' , {state: data}) ;
         break;
       case 'parents':
         navigate('/parentsDashboard' , {state: data}) ;

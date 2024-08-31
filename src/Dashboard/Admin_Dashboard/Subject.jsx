@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import './Table.css';
+import './CSS_Styles/Table.css';
 import { Link } from 'react-router-dom';
 
 function Subject() {
@@ -45,6 +45,9 @@ function Subject() {
               <td>{item.id}</td>
               <td>{item.subject}</td>
               <td>{item.description}</td>
+                <button className='p-1 bg-blue-500 text-white rounded ml-2'>
+                  <Link to={`/admin/editSubject/${item.id}`}>Edit</Link>
+                </button>
             </tr>
           ))}
         </tbody>
