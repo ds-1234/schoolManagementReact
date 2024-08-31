@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import './CSS_Styles/Table.css';
+import './Table.css'
 import { Link } from 'react-router-dom';
 
 function Subject() {
@@ -31,12 +31,13 @@ function Subject() {
                     Add Subject
             </Link>
         </button>
-      <table className='mt-10'>
+      <table className='mt-20 text-black'>
         <thead>
           <tr>
             <th>Id</th>
             <th>Subject</th>
             <th>Description</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -45,9 +46,11 @@ function Subject() {
               <td>{item.id}</td>
               <td>{item.subject}</td>
               <td>{item.description}</td>
+              <td>
                 <button className='p-1 bg-blue-500 text-white rounded ml-2'>
                   <Link to={`/admin/editSubject/${item.id}`}>Edit</Link>
                 </button>
+              </td>
             </tr>
           ))}
         </tbody>
