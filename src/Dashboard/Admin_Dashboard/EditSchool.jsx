@@ -1,11 +1,13 @@
 import { Button, Input } from '@nextui-org/react';
 import axios from 'axios';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-function AddSchool() {
+function EditSchool() {
+    const { id } = useParams(); // Get the subject ID from the URL
+    const [school, setSchool] = useState({ name: '', houseNumber: '',street:'',city:'',state:'',pinCode:'',country:''});
     const navigate = useNavigate() 
 
     const {
@@ -15,17 +17,38 @@ function AddSchool() {
         getValues,
       } = useForm();
 
+
+      useEffect(() => {
+        axios({
+          method: "GET",
+          url: `http://localhost:8080/school/getSchool/${id}`, // API to get specific subject by ID
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            setSchool(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching School:", error);
+          });
+      }, [id]);
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setSchool({ ...school, [name]: value });
+      };
+
+
       const Submitschool = (data) => {
 
         const formData = getValues();
         console.log(formData)
         console.log(data,"data")
-    
-    
         
       axios({
         method:"post",
-        url : `http://localhost:8080/school/createSchool`,
+        // url : `http://localhost:8080/school/createSchool`,
         data: {
             name : data.name,
             houseNumber : data.houseNumber,
@@ -75,6 +98,10 @@ function AddSchool() {
                 }
               })}
               type="name"
+              value={school.name}
+            //   name='name'
+            onChange={handleChange}
+
               label="School name"
               labelPlacement="outside"
               placeholder="Enter a name"
@@ -96,6 +123,10 @@ function AddSchool() {
                 required: 'houseNumber is required',
               })}
               label="House Number"
+              value={school.houseNumber}
+            //   name='houseNumber'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -114,6 +145,10 @@ function AddSchool() {
                 required: 'street is required',
               })}
               label="Street"
+              value={school.street}
+            //   name='street'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -132,6 +167,10 @@ function AddSchool() {
                 required: 'City is required',
               })}
               label="City"
+              value={school.city}
+            //   name='city'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -150,6 +189,10 @@ function AddSchool() {
                 required: 'state is required',
               })}
               label="State"
+              value={school.state}
+            //   name='state'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -168,6 +211,10 @@ function AddSchool() {
                 required: 'pinCode is required',
               })}
               label="pinCode"
+              value={school.pinCode}
+            //   name='pinCode'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -186,6 +233,10 @@ function AddSchool() {
                 required: 'country is required',
               })}
               label="country"
+              value={school.country}
+            //   name='pinCode'
+            onChange={handleChange}
+
               labelPlacement="outside"
               radius="full"
               classNames={{ label: "font-bold" }}
@@ -214,4 +265,4 @@ function AddSchool() {
   )
 }
 
-export default AddSchool
+export default EditSchool

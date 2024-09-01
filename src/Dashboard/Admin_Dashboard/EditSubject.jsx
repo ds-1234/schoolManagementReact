@@ -33,7 +33,7 @@ function EditSubject() {
     e.preventDefault();
     axios({
       method: "PUT",
-    //   url: `http://localhost:8080/subject/createSubject/${id}`,
+      // url: `http://localhost:8080/subject/createSubject/${id}`,
       headers: {
         "Content-Type": "application/json",
       },

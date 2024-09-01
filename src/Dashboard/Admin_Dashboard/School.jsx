@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import './Table.css';
 import { Link } from 'react-router-dom';
+import edit from '../../assets/edit.png'
 
 function School() {
   const [data, setData] = useState([]);
@@ -25,18 +26,26 @@ function School() {
   }, []);
 
   return (
-    <div>
-      <table>
+    <div className='w-full'>
+              <button className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
+            <Link to="/admin/Addschool">
+                    Add School
+            </Link>
+        </button>
+        <div className='rounded-2xl	'>
+
+      <table className='mt-20 text-black w-4/5 mx-10 		'>
         <thead>
           <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>houseNumber</th>
-            <th>street</th>
-            <th>city</th>
-            <th>state</th>
-            <th>pinCode</th>
-            <th>country</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>House Number</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Pin Code</th>
+            <th>Country</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -50,16 +59,19 @@ function School() {
               <td>{item.state}</td>
               <td>{item.pinCode}</td>
               <td>{item.country}</td>
+              <td>
+                <button className='p-1 bg-blue-500 text-white rounded ml-2'>
+                  <Link to={`/admin/editSchool/${item.id}`}>
+                  <img src= {edit} className='h-4 w-6'/>
+                  </Link>
+
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Link
-                to="/admin/AddSchool"
-                className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-              >
-                Add School
-              </Link>
+          </div>
     </div>
   );
 };

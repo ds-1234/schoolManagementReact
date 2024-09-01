@@ -71,6 +71,14 @@ const Sidebar = () => {
               Subject
             </NavLink>
           </li>
+
+          {/* Books Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink to="/admin/books" className="flex items-center">
+              <FontAwesomeIcon icon={faBook} className="mr-3" />
+              Books
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </div>

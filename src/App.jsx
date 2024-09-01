@@ -13,6 +13,8 @@ import StudentDashboard from './Dashboard/StudentDashboard'
 import TeacherDashboard from './Dashboard/TeacherDashboard'
 import ParentsDashboard from './Dashboard/ParentsDashboard'
 import EditSubject from './Dashboard/Admin_Dashboard/EditSubject'
+import EditSchool from './Dashboard/Admin_Dashboard/EditSchool'
+import Book from './Dashboard/Admin_Dashboard/Book'
 
 
 
@@ -33,6 +35,8 @@ function App() {
               <Route path='subject' element={<Subject/>}/>
               <Route path='AddSubject' element={<AddSubject/>}/>
               <Route path='editSubject/:id' element={<EditSubject/>}/>
+              <Route path='editschool/:id' element={<EditSchool/>}/>
+              <Route path='books' element={<Book/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
