@@ -4,13 +4,26 @@ import './Table.css';
 import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png';
 import AddSchoolPopup from './AddSchoolPopup';
+import EditSchoolPopup from './EditSchoolPopup';
 
 function School() {
   const [data, setData] = useState([]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editSchoolId, setEditSchoolId] = useState(null);
 
-  const openPopup = () => setIsPopupOpen(true);
-  const closePopup = () => setIsPopupOpen(false);
+  const openAddPopup = () => setIsAddPopupOpen(true);
+  const closeAddPopup = () => setIsAddPopupOpen(false);
+
+  const openEditPopup = (id) => {
+    setEditSchoolId(id);
+    setIsEditPopupOpen(true);
+  };
+
+  const closeEditPopup = () => {
+    setEditSchoolId(null);
+    setIsEditPopupOpen(false);
+  };
 
   const fetchData = () => {
     axios({
@@ -36,7 +49,7 @@ function School() {
   return (
     <div>
       <button
-        onClick={openPopup}
+        onClick={openAddPopup}
         className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
         Add School
       </button>
@@ -68,10 +81,10 @@ function School() {
                 <td>{item.pinCode}</td>
                 <td>{item.country}</td>
                 <td>
-                  <button className='p-1 bg-blue-500 text-white rounded ml-2'>
-                    <Link to={`/admin/editSchool/${item.id}`}>
-                      <img src={edit} className='h-4 w-6' />
-                    </Link>
+                  <button
+                    onClick={() => openEditPopup(item.id)}
+                    className='p-1 bg-blue-500 text-white rounded ml-2'>
+                    <img src={edit} className='h-4 w-6' />
                   </button>
                 </td>
               </tr>
@@ -81,11 +94,18 @@ function School() {
       </div>
 
       <AddSchoolPopup 
-        isOpen={isPopupOpen} 
+        isOpen={isAddPopupOpen} 
         onClose={() => {
-          closePopup();
-          fetchData(); // Refresh data when popup closes
+          closeAddPopup();
+          fetchData(); // Refresh data when add popup closes
         }} 
+      />
+
+      <EditSchoolPopup
+        isOpen={isEditPopupOpen}
+        onClose={closeEditPopup}
+        schoolId={editSchoolId}
+        onSuccess={fetchData} // Refresh data after editing
       />
     </div>
   );
