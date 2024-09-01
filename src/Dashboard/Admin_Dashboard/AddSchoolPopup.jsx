@@ -1,10 +1,8 @@
-// src/components/AddSchoolPopup.jsx
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-// import toast from 'react-toastify'; 
 
 const AddSchoolPopup = ({ isOpen, onClose }) => {
   const {
