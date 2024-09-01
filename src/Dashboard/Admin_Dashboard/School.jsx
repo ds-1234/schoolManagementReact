@@ -3,9 +3,15 @@ import React, { useEffect, useState } from 'react'
 import './Table.css';
 import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png'
+import AddSchoolPopup from './AddSchoolPopup';
 
 function School() {
   const [data, setData] = useState([]);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => setIsPopupOpen(true);
+  const closePopup = () => setIsPopupOpen(false);
 
   useEffect(() => {
     axios({
@@ -27,11 +33,12 @@ function School() {
 
   return (
     <div className='w-full'>
-              <button className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-            <Link to="/admin/Addschool">
+              <button onClick={openPopup} className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
+            {/* <Link to="/admin/Addschool"> */}
                     Add School
-            </Link>
+            {/* </Link> */}
         </button>
+
         <div className='rounded-2xl	'>
 
       <table className='mt-20 text-black w-4/5 mx-10 		'>
@@ -72,6 +79,8 @@ function School() {
         </tbody>
       </table>
           </div>
+          <AddSchoolPopup isOpen={isPopupOpen} onClose={closePopup} />
+
     </div>
   );
 };
