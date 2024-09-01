@@ -7,14 +7,14 @@ import SuccessCard from './SuccessCard'
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
 import School from './Dashboard/Admin_Dashboard/School'
 import Subject from './Dashboard/Admin_Dashboard/Subject'
-import AddSchool from './Dashboard/Admin_Dashboard/AddSchool'
+// import AddSchool from './Dashboard/Admin_Dashboard/AddSchool'
 import AddSubject from './Dashboard/Admin_Dashboard/AddSubject'
 import StudentDashboard from './Dashboard/StudentDashboard'
 import TeacherDashboard from './Dashboard/TeacherDashboard'
 import ParentsDashboard from './Dashboard/ParentsDashboard'
 import EditSubject from './Dashboard/Admin_Dashboard/EditSubject'
-import EditSchool from './Dashboard/Admin_Dashboard/EditSchool'
-import Book from './Dashboard/Admin_Dashboard/Book'
+// import EditSchool from './Dashboard/Admin_Dashboard/EditSchool'
+import Book from './Dashboard/Admin_Dashboard/Books'
 
 
 
@@ -31,11 +31,11 @@ function App() {
             <Route path="/SuccessCard" element={<SuccessCard/>}/>
             <Route path="/admin" element={<AdminDashboard/>}>
               <Route path='school' element={<School/>}/>
-              <Route path='AddSchool' element={<AddSchool/>}/>
+              {/* <Route path='AddSchool' element={<AddSchool/>}/> */}
               <Route path='subject' element={<Subject/>}/>
               <Route path='AddSubject' element={<AddSubject/>}/>
               <Route path='editSubject/:id' element={<EditSubject/>}/>
-              <Route path='editschool/:id' element={<EditSchool/>}/>
+              {/* <Route path='editschool/:id' element={<EditSchool/>}/> */}
               <Route path='books' element={<Book/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
