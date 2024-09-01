@@ -35,13 +35,15 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
         .then((response) => {
           setSchool(response.data.data);
           // Set form values
-        //   reset(response.data.data);
+        //   reset(schoolData);
         })
         .catch((error) => {
           console.error('Error fetching School:', error);
         });
     }
   }, [schoolId, reset,isOpen]);
+
+
 
   const Submitschool = (data) => {
     axios({
