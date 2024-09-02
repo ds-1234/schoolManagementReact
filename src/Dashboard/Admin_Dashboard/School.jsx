@@ -5,9 +5,65 @@ import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png';
 import AddSchoolPopup from './AddSchoolPopup';
 import EditSchoolPopup from './EditSchoolPopup';
+import DataTable from 'react-data-table-component';
 
 function School() {
-  const [data, setData] = useState([]);
+
+const column = [
+  {
+    name: 'ID',
+    selector: row => row.id,
+    sortable: true,
+  },
+  {
+    name: 'Name',
+    selector: row => row.name,
+    sortable: true,
+  },
+  {
+    name: 'House Number',
+    selector: row => row.houseNumber,
+    sortable: true,
+  },
+  {
+    name: 'Street',
+    selector: row => row.street,
+    sortable: true,
+  },
+  {
+    name: 'City',
+    selector: row => row.city,
+    sortable: true,
+  },
+  {
+    name: 'State',
+    selector: row => row.state,
+    sortable: true,
+  },
+  {
+    name: 'Pin Code',
+    selector: row => row.pinCode,
+    sortable: true,
+  },
+  {
+    name: 'Country',
+    selector: row => row.country,
+    sortable: true,
+  },
+  {
+    name: 'Action',
+    cell: row => (
+      <button
+        onClick={() => openEditPopup(row.id)}
+        className='p-1 bg-blue-500 text-white rounded ml-2'>
+        <img src={edit} alt="Edit" className='h-4 w-6' />
+      </button>
+    ),
+  },
+]
+
+  const [school, setSchool] = useState([]);
+  const [filterSchool, setFilterSchool] = useState([]);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSchoolId, setEditSchoolId] = useState(null);
@@ -25,7 +81,7 @@ function School() {
     setIsEditPopupOpen(false);
   };
 
-  const fetchData = () => {
+  const fetchData = async() => {
     axios({
       method: 'GET',
       url: 'http://localhost:8080/school/getSchoolList',
@@ -34,8 +90,10 @@ function School() {
       },
     })
       .then((response) => {
-        console.log('Data from API:', response.data);
-        setData(response.data.data);
+        setSchool(response.data.data);
+        console.log('Data from API:', response.data.data);
+        console.log('Data from schooldata', school);
+        setFilterSchool(response.data.data)
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -46,6 +104,11 @@ function School() {
     fetchData();
   }, []);
 
+  const handleFilter = (event) => {
+     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
+     setSchool(newData);
+  }
+
   return (
     <div>
       <button
@@ -54,43 +117,17 @@ function School() {
         Add School
       </button>
 
-      <div className='rounded-2xl'>
-        <table className='mt-20 text-black w-4/5 mx-10'>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>House Number</th>
-              <th>Street</th>
-              <th>City</th>
-              <th>State</th>
-              <th>Pin Code</th>
-              <th>Country</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.houseNumber}</td>
-                <td>{item.street}</td>
-                <td>{item.city}</td>
-                <td>{item.state}</td>
-                <td>{item.pinCode}</td>
-                <td>{item.country}</td>
-                <td>
-                  <button
-                    onClick={() => openEditPopup(item.id)}
-                    className='p-1 bg-blue-500 text-white rounded ml-2'>
-                    <img src={edit} className='h-4 w-6' />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className='rounded-2xl mt-20 text-black w-4/5 mx-10'>
+        <div className='flex justify-end'>
+          <input type='text' placeholder='search...' onChange={handleFilter}></input>
+        </div>
+        <DataTable
+          columns={column}
+          data={school}
+          pagination
+        />
+
+
       </div>
 
       <AddSchoolPopup 
