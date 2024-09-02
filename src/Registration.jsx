@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import image from './assets/images/register.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import useRegister from './hooks/useRegister.jsx'
 import Layout from './Reusable_components/Layout.jsx';
 import Button from './Reusable_components/Button.jsx';
@@ -12,7 +12,7 @@ function Registration() {
   
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { registerUser, loading, error } = useRegister(); // Destructure values from the custom hook
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     const result = await registerUser(data);
