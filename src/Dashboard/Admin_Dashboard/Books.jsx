@@ -5,11 +5,72 @@ import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png';
 import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
-// import AddSchoolPopup from './AddSchoolPopup';
-// import EditSchoolPopup from './EditSchoolPopup';
+import DataTable from 'react-data-table-component';
+
 
 function Books() {
-  const [data, setData] = useState([]);
+
+  const column = [
+    {
+      name: 'ID',
+      selector: row => row.id,
+      sortable: true,
+    },
+    {
+      name: 'Name',
+      selector: row => row.name,
+      sortable: true,
+    },
+    {
+      name: 'Description',
+      selector: row => row.description,
+      sortable: true,
+    },
+    {
+      name: 'Author',
+      selector: row => row.author,
+      sortable: true,
+    },
+    {
+      name: 'Publishing Year',
+      selector: row => row.publishingYear,
+      sortable: true,
+    },
+    {
+      name: 'Book unique Id',
+      selector: row => row.bookUniqueId,
+      sortable: true,
+    },
+    {
+      name: 'Book ref Id',
+      selector: row => row.bookRefId,
+      sortable: true,
+    },
+    {
+      name: 'Alloted start date',
+      selector: row => row.allotedStratDate,
+      sortable: true,
+    },
+    {
+      name: 'Alloted End Date',
+      selector: row => row.allotedEndtDate,
+      sortable: true,
+    },
+    {
+      name: 'Action',
+      cell: row => (
+        <button
+          onClick={() => openEditPopup(row.id)}
+          className='p-1 bg-blue-500 text-white rounded ml-2'>
+          <img src={edit} alt="Edit" className='h-4 w-6' />
+        </button>
+      ),
+    },
+  ]
+
+  const [book, setBook] = useState([]);
+  const [filterSchool, setFilterSchool] = useState([]);
+
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(null);
@@ -37,7 +98,9 @@ function Books() {
     })
       .then((response) => {
         console.log('Data from API:', response.data);
-        setData(response.data.data);
+        setBook(response.data.data);
+        setFilterSchool(response.data.data)
+
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -48,6 +111,10 @@ function Books() {
     fetchData();
   }, []);
 
+  const handleFilter = (event) => {
+    const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
+    setBook(newData);
+ }
   return (
     <div>
       <button
@@ -56,45 +123,15 @@ function Books() {
         Add Book
       </button>
 
-      <div className='rounded-2xl'>
-        <table className='mt-20 text-black w-4/5 mx-10'>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Author</th>
-              <th>Publishing Year</th>
-              <th>Book unique Id</th>
-              <th>Book ref Id</th>
-              <th>Alloted atart date</th>
-              <th>Alloted End Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.description}</td>
-                <td>{item.author}</td>
-                <td>{item.publishingYear}</td>
-                <td>{item.bookUniqueId}</td>
-                <td>{item.bookRefId}</td>
-                <td>{item.allotedStratDate}</td>
-                <td>{item.allotedEndtDate}</td>
-                <td>
-                  <button
-                    onClick={() => openEditPopup(item.id)}
-                    className='p-1 bg-blue-500 text-white rounded ml-2'>
-                    <img src={edit} className='h-4 w-6' />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className='rounded-2xl mt-20 text-black w-4/5 mx-10 bg-gray-50'>
+        <div className='flex justify-end'>
+          <input type='text' placeholder='search...' onChange={handleFilter}></input>
+        </div>
+<DataTable
+          columns={column}
+          data={book}
+          pagination
+        />
       </div>
 
       <AddBooksPopup
