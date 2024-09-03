@@ -6,6 +6,7 @@ import AddSubject from './AddSubject';
 import EditSubject from './EditSubject';
 import edit from '../../assets/edit.png'
 import Table from '../../Reusable_components/Table';
+import deleteIcon from '../../assets/delete.png'
 
 function Subject() {
   const [data, setData] = useState([]);
@@ -72,12 +73,21 @@ const column = [
   {
     name: 'Action',
     cell: row => (
-      <button
+      <div className='flex gap-2'>
+        <button
         onClick={() => openEditPopup(row.id)}
         // className='p-1 bg-blue-500 text-white rounded ml-2'
       >
         <img src={edit} alt="Edit" className='h-8' />
       </button>
+
+      <button
+        // onClick={() => openEditPopup(row.id)}
+        // className='p-1 bg-blue-500 text-white rounded ml-2'
+      >
+        <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button>
+      </div>
     ),
   },
 ]
@@ -95,7 +105,7 @@ const handleFilter = (event) => {
       data={data}
       onAddClick={openAddPopup}
       handleFilter={handleFilter}
-      addButtonLabel={"Add Subject"}/>
+      />
 
       <AddSubject
         isOpen={isAddPopupOpen} 

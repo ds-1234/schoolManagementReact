@@ -1,8 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, Input } from '@nextui-org/react';
+import {Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Button from '../../Reusable_components/Button';
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
   const {
@@ -56,7 +57,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4 text-center">Add School</h2>
+        <h2 className="text-xl font-semibold mb-4 text-center text-[#042954]">Add School</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
           <div>
             <Input
@@ -123,7 +124,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
           </div>
 
 
-          <Button
+          {/* <Button
             type="submit"
             radius="full"
             variant="shadow"
@@ -131,7 +132,13 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             className="w-full mt-4"
           >
             Add Book
-          </Button>
+          </Button> */}
+
+          <Button 
+          // onClick={handleSubmit}
+          className='w-full text-center'
+          label={"Add Book"}/>
+
         </form>
       </div>
     </div>

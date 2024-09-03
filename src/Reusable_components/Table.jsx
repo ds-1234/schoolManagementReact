@@ -1,8 +1,9 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import './Table.css';
+import addIcon from '../assets/plus.png'
 
-const Table = ({ columns, data, handleFilter, onAddClick, addButtonLabel }) => {
+const Table = ({ columns, data, handleFilter, onAddClick}) => {
 
   // Custom styles for table with scrollbar based on data length
   const customTableStyles = {
@@ -38,8 +39,9 @@ const Table = ({ columns, data, handleFilter, onAddClick, addButtonLabel }) => {
     <div>
         <button
         onClick={onAddClick}
-        className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-        {addButtonLabel}
+        // className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'
+        >
+        <img src={addIcon} alt="Add" className='h-12 absolute top-5 right-10 '/>
       </button>
 
       <div className="relative bg-white shadow-md rounded-xl p-3 w-4/5 mx-auto mt-20">
