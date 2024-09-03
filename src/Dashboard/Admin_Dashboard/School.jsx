@@ -7,6 +7,7 @@ import AddSchoolPopup from './AddSchoolPopup';
 import EditSchoolPopup from './EditSchoolPopup';
 // import DataTable from 'react-data-table-component';
 import Table from '../../Reusable_components/Table';
+import deleteIcon from '../../assets/delete.png'
 
 function School() {
 
@@ -54,12 +55,21 @@ const column = [
   {
     name: 'Action',
     cell: row => (
-      <button
+      <div className='flex gap-2'>
+        <button
         onClick={() => openEditPopup(row.id)}
         // className='p-1 bg-blue-500 text-white rounded ml-2'
       >
-        <img src={edit} alt="Edit" className='h-10' />
+        <img src={edit} alt="Edit" className='h-8' />
       </button>
+
+      <button
+        // onClick={() => openEditPopup(row.id)}
+        // className='p-1 bg-blue-500 text-white rounded ml-2'
+      >
+        <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button>
+      </div>
     ),
   },
 ]
@@ -138,7 +148,7 @@ const column = [
          data={school}
          handleFilter={handleFilter}
          onAddClick={openAddPopup}
-         addButtonLabel={"Add School"}
+        //  addButtonLabel={"Add School"}
       />
       <AddSchoolPopup 
         isOpen={isAddPopupOpen} 

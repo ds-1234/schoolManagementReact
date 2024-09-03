@@ -7,6 +7,7 @@ import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
 // import DataTable from 'react-data-table-component';
 import Table from '../../Reusable_components/Table';
+import deleteIcon from '../../assets/delete.png'
 
 
 function Books() {
@@ -60,10 +61,21 @@ function Books() {
     {
       name: 'Action',
       cell: row => (
+        <div className='flex gap-2'>
         <button
-          onClick={() => openEditPopup(row.id)}>
-          <img src={edit} alt="Edit" className='h-10' />
-        </button>
+        onClick={() => openEditPopup(row.id)}
+        // className='p-1 bg-blue-500 text-white rounded ml-2'
+      >
+        <img src={edit} alt="Edit" className='h-8' />
+      </button>
+
+      <button
+        // onClick={() => openEditPopup(row.id)}
+        // className='p-1 bg-blue-500 text-white rounded ml-2'
+      >
+        <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button>
+      </div>
       ),
     },
   ]
@@ -139,7 +151,7 @@ function Books() {
       data={book}
       handleFilter={handleFilter}
       onAddClick={openAddPopup}
-      addButtonLabel={"Add Book"} />
+       />
 
       <AddBooksPopup
         isOpen={isAddPopupOpen} 
