@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import './Table.css';
-import { Link } from 'react-router-dom';
+// import './Table.css';
+// import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png';
 import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
-import DataTable from 'react-data-table-component';
+// import DataTable from 'react-data-table-component';
+import Table from '../../Reusable_components/Table';
 
 
 function Books() {
@@ -60,9 +61,8 @@ function Books() {
       name: 'Action',
       cell: row => (
         <button
-          onClick={() => openEditPopup(row.id)}
-          className='p-1 bg-blue-500 text-white rounded ml-2'>
-          <img src={edit} alt="Edit" className='h-4 w-6' />
+          onClick={() => openEditPopup(row.id)}>
+          <img src={edit} alt="Edit" className='h-10' />
         </button>
       ),
     },
@@ -116,8 +116,8 @@ function Books() {
     setBook(newData);
  }
   return (
-    <div>
-      <button
+    <div className='pl-0'>
+      {/* <button
         onClick={openAddPopup}
         className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
         Add Book
@@ -132,7 +132,14 @@ function Books() {
           data={book}
           pagination
         />
-      </div>
+      </div> */}
+
+      <Table
+      columns={column}
+      data={book}
+      handleFilter={handleFilter}
+      onAddClick={openAddPopup}
+      addButtonLabel={"Add Book"} />
 
       <AddBooksPopup
         isOpen={isAddPopupOpen} 
