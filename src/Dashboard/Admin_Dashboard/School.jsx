@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import './Table.css';
-import { Link } from 'react-router-dom';
+// import './Table.css';
+// import { Link } from 'react-router-dom';
 import edit from '../../assets/edit.png';
 import AddSchoolPopup from './AddSchoolPopup';
 import EditSchoolPopup from './EditSchoolPopup';
-import DataTable from 'react-data-table-component';
+// import DataTable from 'react-data-table-component';
+import Table from '../../Reusable_components/Table';
 
 function School() {
 
@@ -55,8 +56,9 @@ const column = [
     cell: row => (
       <button
         onClick={() => openEditPopup(row.id)}
-        className='p-1 bg-blue-500 text-white rounded ml-2'>
-        <img src={edit} alt="Edit" className='h-4 w-6' />
+        // className='p-1 bg-blue-500 text-white rounded ml-2'
+      >
+        <img src={edit} alt="Edit" className='h-10' />
       </button>
     ),
   },
@@ -110,26 +112,34 @@ const column = [
   }
 
   return (
-    <div>
-      <button
-        onClick={openAddPopup}
-        className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-        Add School
-      </button>
+    // <div>
+    //   <button
+    //     onClick={openAddPopup}
+    //     className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
+    //     Add School
+    //   </button>
 
-      <div className='rounded-2xl mt-20 text-black w-4/5 mx-10'>
-        <div className='flex justify-end'>
-          <input type='text' placeholder='search...' onChange={handleFilter}></input>
-        </div>
-        <DataTable
-          columns={column}
-          data={school}
-          pagination
-        />
+    //   <div className='rounded-2xl mt-20 text-black w-4/5 mx-10'>
+    //     <div className='flex justify-end'>
+    //       <input type='text' placeholder='search...' onChange={handleFilter}></input>
+    //     </div>
+    //     <DataTable
+    //       columns={column}
+    //       data={school}
+    //       pagination
+    //     />
 
 
-      </div>
-
+    //   </div>
+    
+    <div className='pl-0'>
+      <Table
+         columns={column}
+         data={school}
+         handleFilter={handleFilter}
+         onAddClick={openAddPopup}
+         addButtonLabel={"Add School"}
+      />
       <AddSchoolPopup 
         isOpen={isAddPopupOpen} 
         onClose={() => {
