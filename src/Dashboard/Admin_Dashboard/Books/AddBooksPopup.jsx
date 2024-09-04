@@ -1,47 +1,26 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import {Input } from '@nextui-org/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
+import {Input } from '@nextui-org/react';
+import axios from 'axios';
 import { toast } from 'react-toastify';
-import Button from '../../Reusable_components/Button';
+import Button from '../../../Reusable_components/Button';
 
-const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
-//   const [book, setBook] = useState({
-
-//   });
-
+const AddBooksPopup = ({ isOpen, onClose }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-    setValue,
+    getValues,
   } = useForm();
 
-  useEffect(() => {
-    if (bookId) {
-      axios({
-        method: 'GET',
-        url: `http://localhost:8080/book/getBook/${bookId}`,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          setSchool(response.data.data);
-          // Set form values
-        //   reset(response.data.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching Book:', error);
-        });
-    }
-  }, [bookId, reset,isOpen]);
-
   const SubmitBook = (data) => {
+    const formData = getValues();
+    console.log('Form Data:', formData);
+    console.log('Submitted Data:', data);
+
     axios({
-      method: 'post', 
-      url: `http://localhost:8080/book/getBook/${bookId}`,
+      method: 'post',
+      url: 'http://localhost:8080/book/createBook',
       data: {
         name: data.name,
         description: data.description,
@@ -57,13 +36,13 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     })
       .then((res) => {
         console.log('Response:', res.data);
-        toast.success('Book updated successfully!');
-        onSuccess(); // Call onSuccess to refresh data
-        onClose(); // Close the popup
+        toast.success('Book added successfully!');
+        onClose();
       })
       .catch((err) => {
-        console.error('Error:', err);
-        toast.error('Failed to update Book.');
+        console.log('Error:', err);
+        toast.error('Failed to add Book.');
+        onClose();
       });
   };
 
@@ -78,9 +57,9 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4 text-center text-[#042954]">Edit School</h2>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add School</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
-        <div>
+          <div>
             <Input
               {...register('name', {
                 required: 'Book name is required',
@@ -152,19 +131,18 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             color="primary"
             className="w-full mt-4"
           >
-            Update Book
+            Add Book
           </Button> */}
 
           <Button 
-          label={"Update Book"}
-          type='submit'
-          className='w-full text-center'
           // onClick={handleSubmit}
-          />
+          className='w-full text-center'
+          label={"Add Book"}/>
+
         </form>
       </div>
     </div>
   );
 };
 
-export default EditBookPopup;
+export default AddBooksPopup;

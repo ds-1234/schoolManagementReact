@@ -2,20 +2,20 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 // import './Table.css';
 // import { Link } from 'react-router-dom';
-import edit from '../../assets/edit.png';
+import edit from '../../../assets/edit.png';
 import AddSchoolPopup from './AddSchoolPopup';
 import EditSchoolPopup from './EditSchoolPopup';
 // import DataTable from 'react-data-table-component';
-import Table from '../../Reusable_components/Table';
-import deleteIcon from '../../assets/delete.png'
+import Table from '../../../Reusable_components/Table';
+import deleteIcon from '../../../assets/delete.png'
 
 function School() {
 
 const column = [
   {
-    name: 'ID',
-    selector: row => row.id,
-    sortable: true,
+    name: 'Sr.No',
+    selector: (row , idx) => idx+1,
+    sortable: false,
   },
   {
     name: 'Name',
@@ -143,6 +143,7 @@ const column = [
     //   </div>
     
     <div className='pl-0'>
+        <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Schools</h1>
       <Table
          columns={column}
          data={school}

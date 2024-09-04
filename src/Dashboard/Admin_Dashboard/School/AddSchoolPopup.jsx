@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Button from '../../Reusable_components/Button';
+import Button from '../../../Reusable_components/Button';
 
 const AddSchoolPopup = ({ isOpen, onClose }) => {
   const {
@@ -57,7 +57,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4 text-center text-[#042954]">Add School</h2>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add School</h2>
         <form onSubmit={handleSubmit(Submitschool)} className="space-y-4">
           <div>
             <Input

@@ -2,21 +2,21 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 // import './Table.css';
 // import { Link } from 'react-router-dom';
-import edit from '../../assets/edit.png';
+import edit from '../../../assets/edit.png';
 import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
 // import DataTable from 'react-data-table-component';
-import Table from '../../Reusable_components/Table';
-import deleteIcon from '../../assets/delete.png'
+import Table from '../../../Reusable_components/Table';
+import deleteIcon from '../../../assets/delete.png'
 
 
 function Books() {
 
   const column = [
     {
-      name: 'ID',
-      selector: row => row.id,
-      sortable: true,
+      name: 'Sr.No',
+      selector: (row,idx) => idx+1 ,
+      sortable: false,
     },
     {
       name: 'Name',
@@ -26,7 +26,7 @@ function Books() {
     {
       name: 'Description',
       selector: row => row.description,
-      sortable: true,
+      sortable: false,
     },
     {
       name: 'Author',
@@ -146,6 +146,7 @@ function Books() {
         />
       </div> */}
 
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Books</h1>
       <Table
       columns={column}
       data={book}

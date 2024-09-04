@@ -1,12 +1,10 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
-// import './Table.css'
-// import { Link } from 'react-router-dom';
 import AddSubject from './AddSubject';
 import EditSubject from './EditSubject';
-import edit from '../../assets/edit.png'
-import Table from '../../Reusable_components/Table';
-import deleteIcon from '../../assets/delete.png'
+import edit from '../../../assets/edit.png'
+import Table from '../../../Reusable_components/Table';
+import deleteIcon from '../../../assets/delete.png'
 
 function Subject() {
   const [data, setData] = useState([]);
@@ -56,9 +54,9 @@ function Subject() {
   
 const column = [
   {
-    name: 'ID',
-    selector: row => row.id,
-    sortable: true,
+    name: 'Sr.No',
+    selector: (row,idx) => idx+1,
+    sortable: false,
   },
   {
     name: 'Subject Name',
@@ -68,7 +66,7 @@ const column = [
   {
     name: 'Subject Description',
     selector: row => row.description,
-    sortable: true,
+    sortable: false,
   },
   {
     name: 'Action',
@@ -99,7 +97,7 @@ const handleFilter = (event) => {
 
   return (
     <div className='pl-0'>
-
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Subjects</h1>
       <Table 
       columns={column}
       data={data}

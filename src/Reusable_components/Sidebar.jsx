@@ -1,7 +1,7 @@
 import React , {useState} from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
 
@@ -56,6 +56,14 @@ const Sidebar = () => {
             )}
           </li>
 
+            {/* User Section */}
+            <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink to="/admin/user" className="flex items-center">
+              <FontAwesomeIcon icon={faUser} className="mr-3" />
+              User
+            </NavLink>
+          </li>
+
           {/* School Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink to="/admin/school" className="flex items-center">
@@ -75,7 +83,7 @@ const Sidebar = () => {
           {/* Books Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink to="/admin/books" className="flex items-center">
-              <FontAwesomeIcon icon={faBook} className="mr-3" />
+              <FontAwesomeIcon icon={faBookOpen} className="mr-3" />
               Books
             </NavLink>
           </li>

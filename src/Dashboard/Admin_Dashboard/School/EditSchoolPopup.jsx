@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {  Input } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import Button from '../../Reusable_components/Button';
+import Button from '../../../Reusable_components/Button';
 
 const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   const [school, setSchool] = useState({
@@ -86,7 +86,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4 text-center text-[#042954]">Edit School</h2>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit School</h2>
         <form onSubmit={handleSubmit(Submitschool)} className="space-y-4">
           <div>
             <Input
