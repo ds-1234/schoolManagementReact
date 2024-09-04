@@ -13,7 +13,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main content */}
-      <div className="w-full">
+      <div className="w-2/3">
         <Outlet />
       </div>
      </div>

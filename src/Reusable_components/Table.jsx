@@ -44,7 +44,7 @@ const Table = ({ columns, data, handleFilter, onAddClick}) => {
         <img src={addIcon} alt="Add" className='h-12 absolute top-5 right-10 '/>
       </button>
 
-      <div className="relative bg-white shadow-md rounded-xl p-3 w-4/5 mx-auto mt-20">
+      <div className="relative bg-white shadow-md rounded-xl p-3 w-4/5 mx-auto mt-10">
       <div className="rounded-lg  text-black">
         <div className="flex justify-start mb-4">
           <input
