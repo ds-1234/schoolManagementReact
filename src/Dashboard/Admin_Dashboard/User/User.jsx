@@ -10,17 +10,17 @@ function User() {
 
 const column = [
   {
-    name: 'User Sr.No',
+    name: 'SR.No',
     selector: (row , idx) => idx+1,
     sortable: false,
   }, 
   {
-    name: 'FirstName',
+    name: 'First Name',
     selector: row => row.firstName,
     sortable: true,
   },
   {
-    name: 'LastName',
+    name: 'Last Name',
     selector: row => row.lastName,
     sortable: false,
   },
@@ -37,36 +37,6 @@ const column = [
   {
     name: 'Gender',
     selector: row => row.gender,
-    sortable: true,
-  },
-  {
-    name: 'House Number',
-    selector: row => row.houseNumber,
-    sortable: true,
-  },
-  {
-    name: 'Street',
-    selector: row => row.street,
-    sortable: true,
-  },
-  {
-    name: 'City',
-    selector: row => row.city,
-    sortable: true,
-  },
-  {
-    name: 'State',
-    selector: row => row.state,
-    sortable: true,
-  },
-  {
-    name: 'Pin Code',
-    selector: row => row.pinCode,
-    sortable: true,
-  },
-  {
-    name: 'Country',
-    selector: row => row.country,
     sortable: true,
   },
   {
@@ -92,6 +62,9 @@ const column = [
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
+
+  const [selectedColumn, setSelectedColumn] = useState(''); 
+  const [searchValue, setSearchValue] = useState('');
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -129,18 +102,49 @@ const column = [
     fetchData();
   }, []);
 
-  const handleFilter = (event) => {
-     const newData = filterUser.filter(row=>row.firstName.toLowerCase().includes(event.target.value.toLowerCase()))
-     setUser(newData) 
-  }
+  useEffect(() => {
+    setUser(user);  
+    setFilterUser(user); 
+  }, []);
+
+  const searchOptions = [
+    { label: 'First Name', value: 'firstName' },
+    { label: 'Last Name', value: 'lastName' },
+    { label: 'Email', value: 'email' },
+    { label: 'Phone', value: 'phone' },
+    { label: 'Gender', value: 'gender' },
+  ];
+
+  // Handle Search Logic
+  const handleSearch = (event, type) => {
+    if (type === 'column') {
+      setSelectedColumn(event.target.value); // Set selected column
+    } else if (type === 'query') {
+      setSearchValue(event.target.value); // Set search query
+    } else if (type === 'button') {
+      // search filter when the search button is clicked
+      const filteredData = filterUser.filter((row) =>
+        row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setUser(filteredData); // Update data
+    }
+  };
+
+  // handle clear button logic
+  const handleClear = () => {
+    setUser(filterUser);  // Reset to original data
+  };
 
   return (
     <div className='pl-0'>
        <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Users</h1>
+
       <Table
          columns={column}
          data={user}
-         handleFilter={handleFilter}
+         searchOptions={searchOptions}
+         onSearch={handleSearch}
+         handleClear = {handleClear}
          onAddClick={openAddPopup}
       />
       <AddUser 

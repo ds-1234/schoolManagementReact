@@ -23,7 +23,7 @@ const column = [
     sortable: true,
   },
   {
-    name: 'House Number',
+    name: 'School Number',
     selector: row => row.houseNumber,
     sortable: true,
   },
@@ -80,6 +80,9 @@ const column = [
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSchoolId, setEditSchoolId] = useState(null);
 
+  const [selectedColumn, setSelectedColumn] = useState(''); 
+  const [searchValue, setSearchValue] = useState('');
+
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
@@ -116,40 +119,54 @@ const column = [
     fetchData();
   }, []);
 
-  const handleFilter = (event) => {
-     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
-     setSchool(newData);
-  }
+  useEffect(() => {
+    setSchool(school);  
+    setFilterSchool(school); 
+  }, []);
+
+  // const handleFilter = (event) => {
+  //    const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
+  //    setSchool(newData);
+  // }
+
+  const handleSearch = (event, type) => {
+    if (type === 'column') {
+      setSelectedColumn(event.target.value); // Set selected column
+    } else if (type === 'query') {
+      setSearchValue(event.target.value); // Set search query
+    } else if (type === 'button') {
+      // search filter when the search button is clicked
+      const filteredData = filterSchool.filter((row) =>
+        row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setSchool(filteredData); // Update data
+    }
+  };
+
+  const handleClear = () => {
+    setSchool(filterSchool);  // Reset to original data
+  };
+  
+  const searchOptions = [
+    { label: 'School Name', value: 'name' },
+    { label: 'School Number', value: 'houseNumber' },
+    { label: 'Street', value: 'street' },
+    { label: 'State', value: 'state' },
+    { label: 'City', value: 'city' },
+    { label: 'Pincode', value: 'pinCode' },
+    { label: 'Country', value: 'country' }
+  ];
 
   return (
-    // <div>
-    //   <button
-    //     onClick={openAddPopup}
-    //     className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-    //     Add School
-    //   </button>
-
-    //   <div className='rounded-2xl mt-20 text-black w-4/5 mx-10'>
-    //     <div className='flex justify-end'>
-    //       <input type='text' placeholder='search...' onChange={handleFilter}></input>
-    //     </div>
-    //     <DataTable
-    //       columns={column}
-    //       data={school}
-    //       pagination
-    //     />
-
-
-    //   </div>
-    
     <div className='pl-0'>
         <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Schools</h1>
       <Table
          columns={column}
          data={school}
-         handleFilter={handleFilter}
+         searchOptions={searchOptions}
+         onSearch={handleSearch}
+         handleClear={handleClear}
          onAddClick={openAddPopup}
-        //  addButtonLabel={"Add School"}
       />
       <AddSchoolPopup 
         isOpen={isAddPopupOpen} 

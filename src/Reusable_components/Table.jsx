@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import DataTable from 'react-data-table-component';
 import './Table.css';
 import addIcon from '../assets/plus.png'
+import Button from './Button';
 
-const Table = ({ columns, data, handleFilter, onAddClick}) => {
+const Table = ({ columns, data, searchOptions, onSearch , handleClear, onAddClick}) => {
+
+  const searchInputRef = useRef() 
+  const searchSelectRef = useRef() 
+
+  const clearFilters = () => {
+    searchInputRef.current.value = '',
+    searchSelectRef.current.value = ''
+    handleClear()
+  }
 
   // Custom styles for table with scrollbar based on data length
   const customTableStyles = {
@@ -37,22 +47,51 @@ const Table = ({ columns, data, handleFilter, onAddClick}) => {
 
   return (
     <div>
-        <button
-        onClick={onAddClick}
-        // className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'
-        >
+        <button onClick={onAddClick}>
         <img src={addIcon} alt="Add" className='h-12 absolute top-5 right-10 '/>
       </button>
 
-      <div className="relative bg-white shadow-md rounded-xl p-3 w-4/5 mx-auto mt-10">
-      <div className="rounded-lg  text-black">
-        <div className="flex justify-start mb-4">
-          <input
-            type="text"
-            placeholder="Search..."
-            onChange={handleFilter}
-            className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 w-64"
-          />
+      <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10 ml-20">
+      <div className="rounded-lg text-black">
+        <div>
+          {/* Search Section */}
+          <div className="flex justify-start mb-4 gap-4">
+            {/* Column Selection Dropdown */}
+            <select
+              onChange={(e) => onSearch(e, 'column')}
+              ref={searchSelectRef}
+              className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 w-64"
+            >
+              <option value="Search Column" className='hidden'>Select Column</option>
+              {searchOptions.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Search Input */}
+            <input
+              type="text"
+              placeholder="Search..."
+              onChange={(e) => onSearch(e, 'query')}
+              ref={searchInputRef}
+              className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 w-64"
+            />
+
+            {/* Search Button */}
+            <Button
+              onClick={() => onSearch(null, 'button')}
+              className='mt-0'
+              label="Search"
+            />
+
+            {/* Clear Button */}
+            <Button
+              onClick={clearFilters}
+              className='mt-0 bg-[#ffae01] hover:bg-[#042954]'
+              label="Clear"
+            />
         </div>
         <DataTable
           columns={columns}
@@ -64,6 +103,7 @@ const Table = ({ columns, data, handleFilter, onAddClick}) => {
       </div>
     </div>
     </div>
+  </div>
   );
 };
 

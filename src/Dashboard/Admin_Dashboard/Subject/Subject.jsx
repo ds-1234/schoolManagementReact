@@ -13,6 +13,9 @@ function Subject() {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSubjectId , setEditSubjectId] = useState(null)
 
+  const [selectedColumn, setSelectedColumn] = useState(''); 
+  const [searchValue, setSearchValue] = useState('');
+
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -50,11 +53,14 @@ function Subject() {
     fetchData() ;
   } , []);
 
-
+  useEffect(() => {
+    setData(data);  
+    setFilterData(data); 
+  }, []);
   
 const column = [
   {
-    name: 'Sr.No',
+    name: 'SR.No',
     selector: (row,idx) => idx+1,
     sortable: false,
   },
@@ -74,15 +80,11 @@ const column = [
       <div className='flex gap-2'>
         <button
         onClick={() => openEditPopup(row.id)}
-        // className='p-1 bg-blue-500 text-white rounded ml-2'
       >
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button
-        // onClick={() => openEditPopup(row.id)}
-        // className='p-1 bg-blue-500 text-white rounded ml-2'
-      >
+      <button>
         <img src={deleteIcon} alt="Delete" className='h-8' />
       </button>
       </div>
@@ -90,10 +92,34 @@ const column = [
   },
 ]
 
-const handleFilter = (event) => {
-  const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
-  setData(newData);
-}
+// const handleFilter = (event) => {
+//   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
+//   setData(newData);
+// }
+
+const handleSearch = (event, type) => {
+  if (type === 'column') {
+    setSelectedColumn(event.target.value); // Set selected column
+  } else if (type === 'query') {
+    setSearchValue(event.target.value); // Set search query
+  } else if (type === 'button') {
+    // search filter when the search button is clicked
+    const filteredData = filterData.filter((row) =>
+      row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setData(filteredData); // Update data
+  }
+};
+
+// handle clear button logic
+const handleClear = () => {
+  setData(filterData);  // Reset to original data
+};
+
+const searchOptions = [
+  { label: 'Subject Name', value: 'subject' },
+  { label: 'Subject Description', value: 'description' }
+];
 
   return (
     <div className='pl-0'>
@@ -101,8 +127,10 @@ const handleFilter = (event) => {
       <Table 
       columns={column}
       data={data}
+      searchOptions={searchOptions}
+      onSearch={handleSearch}
+      handleClear={handleClear}
       onAddClick={openAddPopup}
-      handleFilter={handleFilter}
       />
 
       <AddSubject

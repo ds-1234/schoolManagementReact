@@ -35,7 +35,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
         setUser(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching subject:", error);
+        console.error("Error fetching user:", error);
       });
   }, [userId , isOpen]);
 
