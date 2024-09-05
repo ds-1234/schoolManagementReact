@@ -57,7 +57,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add School</h2>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add Book</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
           <div>
             <Input
