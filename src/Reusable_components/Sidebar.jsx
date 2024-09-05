@@ -124,6 +124,19 @@ const Sidebar = () => {
               Books
             </NavLink>
           </li>
+
+          {/* Class Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/class"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faBookOpen} className="mr-3" />
+              Books
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </div>

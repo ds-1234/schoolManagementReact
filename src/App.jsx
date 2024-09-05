@@ -12,6 +12,7 @@ import TeacherDashboard from './Dashboard/TeacherDashboard'
 import ParentsDashboard from './Dashboard/ParentsDashboard'
 import Book from './Dashboard/Admin_Dashboard/Books/Books'
 import User from './Dashboard/Admin_Dashboard/User/User'
+import Class from './Dashboard/Admin_Dashboard/Class/Class'
 
 
 
@@ -31,6 +32,7 @@ function App() {
               <Route path='subject' element={<Subject/>}/>
               <Route path='books' element={<Book/>}/>
               <Route path='user' element={<User/>}/>
+              <Route path='class' element={<Class/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
