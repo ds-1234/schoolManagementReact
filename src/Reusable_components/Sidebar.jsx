@@ -134,7 +134,7 @@ const Sidebar = () => {
               }
             >
               <FontAwesomeIcon icon={faBookOpen} className="mr-3" />
-              Books
+              Class
             </NavLink>
           </li>
         </ul>
