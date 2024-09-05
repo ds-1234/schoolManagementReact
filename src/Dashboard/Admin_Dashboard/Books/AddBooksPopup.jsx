@@ -136,6 +136,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
 
           <Button 
           // onClick={handleSubmit}
+          type='submit'
           className='w-full text-center'
           label={"Add Book"}/>
 

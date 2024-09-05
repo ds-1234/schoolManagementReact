@@ -14,7 +14,7 @@ function Books() {
 
   const column = [
     {
-      name: 'Sr.No',
+      name: 'SR.No',
       selector: (row,idx) => idx+1 ,
       sortable: false,
     },
@@ -64,15 +64,11 @@ function Books() {
         <div className='flex gap-2'>
         <button
         onClick={() => openEditPopup(row.id)}
-        // className='p-1 bg-blue-500 text-white rounded ml-2'
       >
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button
-        // onClick={() => openEditPopup(row.id)}
-        // className='p-1 bg-blue-500 text-white rounded ml-2'
-      >
+      <button>
         <img src={deleteIcon} alt="Delete" className='h-8' />
       </button>
       </div>
@@ -81,11 +77,13 @@ function Books() {
   ]
 
   const [book, setBook] = useState([]);
-  const [filterSchool, setFilterSchool] = useState([]);
+  const [filterBook, setFilterBook] = useState([]);
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(null);
+  const [selectedColumn, setSelectedColumn] = useState(''); 
+  const [searchValue, setSearchValue] = useState('');
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -111,7 +109,7 @@ function Books() {
       .then((response) => {
         console.log('Data from API:', response.data);
         setBook(response.data.data);
-        setFilterSchool(response.data.data)
+        setFilterBook(response.data.data)
 
       })
       .catch((error) => {
@@ -123,34 +121,56 @@ function Books() {
     fetchData();
   }, []);
 
-  const handleFilter = (event) => {
-    const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
-    setBook(newData);
- }
+  useEffect(() => {
+    setBook(book);  
+    setFilterBook(book); 
+  }, []);
+
+//   const handleFilter = (event) => {
+//     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
+//     setBook(newData);
+//  }
+
+const handleSearch = (event, type) => {
+  if (type === 'column') {
+    setSelectedColumn(event.target.value); // Set selected column
+  } else if (type === 'query') {
+    setSearchValue(event.target.value); // Set search query
+  } else if (type === 'button') {
+    // search filter when the search button is clicked
+    const filteredData = filterBook.filter((row) =>
+      row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setBook(filteredData); // Update data
+  }
+};
+
+// handle clear button logic
+const handleClear = () => {
+  setBook(filterBook);  // Reset to original data
+};
+
+const searchOptions = [
+  { label: 'Book Name', value: 'name' },
+  { label: 'Book Description', value: 'description' },
+  { label: 'Author', value: 'author' },
+  { label: 'Publishing Year', value: 'publishingYear' },
+  { label: 'Book Unique Id', value: 'bookUniqueId' },
+  { label: 'Book Reference Id', value: 'bookRefId' },
+  { label: 'Alloted Start Date', value: 'allotedStratDate' },
+  { label: 'Alloted End Date', value: 'allotedEndtDate' },
+];
+
   return (
     <div className='pl-0'>
-      {/* <button
-        onClick={openAddPopup}
-        className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-        Add Book
-      </button>
-
-      <div className='rounded-2xl mt-20 text-black w-4/5 mx-10 bg-gray-50'>
-        <div className='flex justify-end'>
-          <input type='text' placeholder='search...' onChange={handleFilter}></input>
-        </div>
-<DataTable
-          columns={column}
-          data={book}
-          pagination
-        />
-      </div> */}
 
       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Books</h1>
       <Table
       columns={column}
       data={book}
-      handleFilter={handleFilter}
+      searchOptions={searchOptions}
+      onSearch={handleSearch}
+      handleClear={handleClear}
       onAddClick={openAddPopup}
        />
 
