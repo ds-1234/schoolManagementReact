@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faBookOpen, faPenRuler } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -133,7 +133,7 @@ const Sidebar = () => {
                 `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-              <FontAwesomeIcon icon={faBookOpen} className="mr-3" />
+              <FontAwesomeIcon icon={faPenRuler} className="mr-3" />
               Grade
             </NavLink>
           </li>

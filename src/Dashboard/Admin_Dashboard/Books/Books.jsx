@@ -26,7 +26,7 @@ function Books() {
     {
       name: 'Description',
       selector: row => row.description,
-      sortable: false,
+      sortable: true,
     },
     {
       name: 'Author',

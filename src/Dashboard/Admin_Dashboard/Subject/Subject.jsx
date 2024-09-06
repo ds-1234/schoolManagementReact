@@ -72,7 +72,7 @@ const column = [
   {
     name: 'Subject Description',
     selector: row => row.description,
-    sortable: false,
+    sortable: true,
   },
   {
     name: 'Action',

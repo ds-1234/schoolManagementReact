@@ -22,17 +22,17 @@ const column = [
   {
     name: 'Last Name',
     selector: row => row.lastName,
-    sortable: false,
+    sortable: true,
   },
   {
     name: 'Email',
     selector: row => row.email,
-    sortable: false,
+    sortable: true,
   },
   {
     name: 'Phone Number',
     selector: row => row.phone,
-    sortable: false,
+    sortable: true,
   },
   {
     name: 'Gender',
