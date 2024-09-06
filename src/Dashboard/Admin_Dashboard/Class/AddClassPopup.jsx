@@ -30,7 +30,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           .then((response)=>{
               console.log('response' , response.data)
               setSubjects(response.data.data);
-            toast.success("Successfully fetched subjects");
+            // toast.success("Successfully fetched subjects");
             onClose(); 
         })
         .catch(err=>{
@@ -133,7 +133,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
                         <option value="" disabled>Select a subject</option>
           {subjects.map(subject => (
             <option key={subject.id} value={subject.id}>
-              {subject.subject} - {subject.description}
+              {subject.subject} 
             </option>
           ))}
             </select>

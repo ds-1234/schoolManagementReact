@@ -125,7 +125,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          {/* Class Section */}
+          {/* Class Class */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/class"

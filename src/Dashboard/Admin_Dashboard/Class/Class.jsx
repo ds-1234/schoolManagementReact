@@ -8,7 +8,7 @@ function Class() {
     const [filterData , setFilterData] = useState([])
     const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
     // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-    // const [editSubjectId , setEditSubjectId] = useState(null)
+    // const [editClassId , setEdirClassId] = useState(null)
   
     const [selectedColumn, setSelectedColumn] = useState(''); 
     const [searchValue, setSearchValue] = useState('');
@@ -18,12 +18,12 @@ function Class() {
     const closeAddPopup = () => setIsAddPopupOpen(false);
   
     // const openEditPopup = (id) => {
-    //   setEditSubjectId(id);
+    //   ClassId(id);
     //   setIsEditPopupOpen(true);
     // };
   
     // const closeEditPopup = () => {
-    //   setEditSubjectId(null);
+    //   setClassId(null);
     //   setIsEditPopupOpen(false);
     // };
   
@@ -120,7 +120,7 @@ function Class() {
   
     return (
       <div className='pl-0'>
-        <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Subjects</h1>
+        <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Classes</h1>
         <Table 
         columns={column}
         data={data}
