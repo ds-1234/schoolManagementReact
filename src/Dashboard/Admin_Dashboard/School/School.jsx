@@ -13,7 +13,7 @@ function School() {
 
 const column = [
   {
-    name: 'Sr.No',
+    name: 'SR.No',
     selector: (row , idx) => idx+1,
     sortable: false,
   },
