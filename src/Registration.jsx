@@ -277,7 +277,7 @@ function Registration() {
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full mt-6"
               label={"Create Account"}
             />
 
