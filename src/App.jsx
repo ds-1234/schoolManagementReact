@@ -13,6 +13,10 @@ import ParentsDashboard from './Dashboard/ParentsDashboard'
 import Book from './Dashboard/Admin_Dashboard/Books/Books'
 import User from './Dashboard/Admin_Dashboard/User/User'
 import Class from './Dashboard/Admin_Dashboard/Class/Class'
+import AllStudents from './Dashboard/Admin_Dashboard/Students/AllStudents'
+import AdmissionForm from './Dashboard/Admin_Dashboard/Students/AdmissionForm'
+import StudentDetails from './Dashboard/Admin_Dashboard/Students/StudentDetails'
+import StudentPromotion from './Dashboard/Admin_Dashboard/Students/StudentPromotion'
 
 
 
@@ -33,6 +37,10 @@ function App() {
               <Route path='books' element={<Book/>}/>
               <Route path='user' element={<User/>}/>
               <Route path='class' element={<Class/>}/>
+              <Route path = 'allStudents' element={<AllStudents/>}/>
+              <Route path = 'admissionForm' element={<AdmissionForm/>}/>
+              <Route path = 'studentDetails' element={<StudentDetails/>}/>
+              <Route path = 'studentPromotion' element={<StudentPromotion/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>

@@ -122,7 +122,7 @@ const searchOptions = [
 ];
 
   return (
-    <div className='pl-0'>
+    <div className='pl-0 h-full mb-10'>
       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Subjects</h1>
       <Table 
       columns={column}
