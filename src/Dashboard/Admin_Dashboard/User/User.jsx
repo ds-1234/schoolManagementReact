@@ -116,7 +116,7 @@ const column = [
   ];
 
   // Handle Search Logic
-  const handleSearch = (event, type) => {
+  debugger ; const handleSearch = (event, type) => {
     if (type === 'column') {
       setSelectedColumn(event.target.value); // Set selected column
     } else if (type === 'query') {

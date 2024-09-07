@@ -97,7 +97,7 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
           label={"Update Subject"}
           type='submit'
           className='w-full text-center'
-          onClick={handleSubmit}/>
+          />
 
       </form>
       </div>

@@ -10,6 +10,7 @@ const AddUser = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm();
 
   const onSubmit = (data) => {
@@ -43,6 +44,7 @@ const AddUser = ({ isOpen, onClose }) => {
       .then((response)=>{
         console.log('response' , response.data)
         toast.success("Successfully Add User");
+        reset()
         onClose(); 
     })
     .catch(err=>{

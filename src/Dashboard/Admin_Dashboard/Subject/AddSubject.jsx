@@ -10,13 +10,14 @@ const AddSubject = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm();
 
   // const navigate = useNavigate()
 
   const onSubmit = (data) => {
     axios({
-        method:"post",
+        method:"POST",
         url : `http://localhost:8080/subject/createSubject`,
         data: {
             subject : data.subject ,
@@ -30,6 +31,7 @@ const AddSubject = ({ isOpen, onClose }) => {
       .then((response)=>{
         console.log('response' , response.data)
         toast.success("Successfully Add Subject");
+        reset()
         onClose(); 
     })
     .catch(err=>{
@@ -82,7 +84,7 @@ const AddSubject = ({ isOpen, onClose }) => {
 
         {/* Submit Button */}
         <Button 
-        onClick={handleSubmit}
+        type='submit'
         className='w-full text-center'
         label={"Add new Subject"}/>
       </form>

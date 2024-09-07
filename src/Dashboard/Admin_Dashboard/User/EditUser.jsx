@@ -220,7 +220,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
           label={"Update User"}
           type='submit'
           className='w-full text-center'
-          onClick={handleSubmit}/>
+          />
 
       </form>
       </div>
