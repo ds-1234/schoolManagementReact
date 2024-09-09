@@ -63,9 +63,6 @@ const column = [
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
 
-  const [selectedColumn, setSelectedColumn] = useState(''); 
-  const [searchValue, setSearchValue] = useState('');
-
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
@@ -116,18 +113,22 @@ const column = [
   ];
 
   // Handle Search Logic
-  debugger ; const handleSearch = (event, type) => {
-    if (type === 'column') {
-      setSelectedColumn(event.target.value); // Set selected column
-    } else if (type === 'query') {
-      setSearchValue(event.target.value); // Set search query
-    } else if (type === 'button') {
-      // search filter when the search button is clicked
-      const filteredData = filterUser.filter((row) =>
-        row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setUser(filteredData); // Update data
+  const handleSearch = (query, checkboxRefs) => {
+    if (!query) {
+      setUser(filterUser);
+      return;
     }
+  
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
+  
+    const filteredData = filterUser.filter((row) =>
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  
+    setUser(filteredData);
   };
 
   // handle clear button logic
