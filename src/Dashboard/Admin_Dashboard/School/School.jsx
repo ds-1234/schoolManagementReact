@@ -80,8 +80,6 @@ const column = [
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSchoolId, setEditSchoolId] = useState(null);
 
-  const [selectedColumn, setSelectedColumn] = useState(''); 
-  const [searchValue, setSearchValue] = useState('');
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -129,18 +127,23 @@ const column = [
   //    setSchool(newData);
   // }
 
-  const handleSearch = (event, type) => {
-    if (type === 'column') {
-      setSelectedColumn(event.target.value); // Set selected column
-    } else if (type === 'query') {
-      setSearchValue(event.target.value); // Set search query
-    } else if (type === 'button') {
-      // search filter when the search button is clicked
-      const filteredData = filterSchool.filter((row) =>
-        row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setSchool(filteredData); // Update data
+   // Handle Search Logic
+   const handleSearch = (query, checkboxRefs) => {
+    if (!query) {
+      setSchool(filterSchool);
+      return;
     }
+  
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
+  
+    const filteredData = filterSchool.filter((row) =>
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  
+    setSchool(filteredData);
   };
 
   const handleClear = () => {

@@ -82,8 +82,6 @@ function Books() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(null);
-  const [selectedColumn, setSelectedColumn] = useState(''); 
-  const [searchValue, setSearchValue] = useState('');
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -131,19 +129,24 @@ function Books() {
 //     setBook(newData);
 //  }
 
-const handleSearch = (event, type) => {
-  if (type === 'column') {
-    setSelectedColumn(event.target.value); // Set selected column
-  } else if (type === 'query') {
-    setSearchValue(event.target.value); // Set search query
-  } else if (type === 'button') {
-    // search filter when the search button is clicked
+  // Handle Search Logic
+  const handleSearch = (query, checkboxRefs) => {
+    if (!query) {
+      setBook(filterBook);
+      return;
+    }
+  
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
+  
     const filteredData = filterBook.filter((row) =>
-      row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
     );
-    setBook(filteredData); // Update data
-  }
-};
+  
+    setBook(filteredData);
+  };
 
 // handle clear button logic
 const handleClear = () => {
