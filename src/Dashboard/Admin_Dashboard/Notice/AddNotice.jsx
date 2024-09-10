@@ -22,15 +22,7 @@ function AddNotice() {
           <label className="block text-sm font-medium text-gray-700">Details *</label>
           <input {...register('details', { required: true })} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"/>
         </div>
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700">Posted By *</label>
-          <select {...register('gender', { required: true })} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1">
-            <option className="hidden">Please Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div> */}
+
                 <div>
           <label className="block text-sm font-medium text-gray-700">Posted By *</label>
           <input {...register('postedby', { required: true })} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"/>
