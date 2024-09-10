@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Input } from '@nextui-org/react';
+import {Input } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import Button from '../../../Reusable_components/Button';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
 //   const [book, setBook] = useState({
@@ -77,7 +78,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4 text-center">Edit School</h2>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit School</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
         <div>
             <Input
@@ -144,7 +145,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           </div>
 
 
-          <Button
+          {/* <Button
             type="submit"
             radius="full"
             variant="shadow"
@@ -152,7 +153,14 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             className="w-full mt-4"
           >
             Update Book
-          </Button>
+          </Button> */}
+
+          <Button 
+          label={"Update Book"}
+          type='submit'
+          className='w-full text-center'
+          // onClick={handleSubmit}
+          />
         </form>
       </div>
     </div>

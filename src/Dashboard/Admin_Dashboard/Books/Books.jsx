@@ -1,20 +1,22 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import './Table.css';
-import { Link } from 'react-router-dom';
-import edit from '../../assets/edit.png';
+// import './Table.css';
+// import { Link } from 'react-router-dom';
+import edit from '../../../assets/edit.png';
 import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
-import DataTable from 'react-data-table-component';
+// import DataTable from 'react-data-table-component';
+import Table from '../../../Reusable_components/Table';
+import deleteIcon from '../../../assets/delete.png'
 
 
 function Books() {
 
   const column = [
     {
-      name: 'ID',
-      selector: row => row.id,
-      sortable: true,
+      name: 'SR.No',
+      selector: (row,idx) => idx+1 ,
+      sortable: false,
     },
     {
       name: 'Name',
@@ -59,17 +61,23 @@ function Books() {
     {
       name: 'Action',
       cell: row => (
+        <div className='flex gap-2'>
         <button
-          onClick={() => openEditPopup(row.id)}
-          className='p-1 bg-blue-500 text-white rounded ml-2'>
-          <img src={edit} alt="Edit" className='h-4 w-6' />
-        </button>
+        onClick={() => openEditPopup(row.id)}
+      >
+        <img src={edit} alt="Edit" className='h-8' />
+      </button>
+
+      <button>
+        <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button>
+      </div>
       ),
     },
   ]
 
   const [book, setBook] = useState([]);
-  const [filterSchool, setFilterSchool] = useState([]);
+  const [filterBook, setFilterBook] = useState([]);
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
@@ -99,7 +107,7 @@ function Books() {
       .then((response) => {
         console.log('Data from API:', response.data);
         setBook(response.data.data);
-        setFilterSchool(response.data.data)
+        setFilterBook(response.data.data)
 
       })
       .catch((error) => {
@@ -111,28 +119,63 @@ function Books() {
     fetchData();
   }, []);
 
-  const handleFilter = (event) => {
-    const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
-    setBook(newData);
- }
-  return (
-    <div>
-      <button
-        onClick={openAddPopup}
-        className='absolute top-4 right-5 p-2 bg-green-600 text-white rounded-lg shadow-sm shadow-black hover:bg-green-500 hover:font-semibold'>
-        Add Book
-      </button>
+  useEffect(() => {
+    setBook(book);  
+    setFilterBook(book); 
+  }, []);
 
-      <div className='rounded-2xl mt-20 text-black w-4/5 mx-10 bg-gray-50'>
-        <div className='flex justify-end'>
-          <input type='text' placeholder='search...' onChange={handleFilter}></input>
-        </div>
-<DataTable
-          columns={column}
-          data={book}
-          pagination
-        />
-      </div>
+//   const handleFilter = (event) => {
+//     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
+//     setBook(newData);
+//  }
+
+  // Handle Search Logic
+  const handleSearch = (query, checkboxRefs) => {
+    if (!query) {
+      setBook(filterBook);
+      return;
+    }
+  
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
+  
+    const filteredData = filterBook.filter((row) =>
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  
+    setBook(filteredData);
+  };
+
+// handle clear button logic
+const handleClear = () => {
+  setBook(filterBook);  // Reset to original data
+};
+
+const searchOptions = [
+  { label: 'Book Name', value: 'name' },
+  { label: 'Book Description', value: 'description' },
+  { label: 'Author', value: 'author' },
+  { label: 'Publishing Year', value: 'publishingYear' },
+  { label: 'Book Unique Id', value: 'bookUniqueId' },
+  { label: 'Book Reference Id', value: 'bookRefId' },
+  { label: 'Alloted Start Date', value: 'allotedStratDate' },
+  { label: 'Alloted End Date', value: 'allotedEndtDate' },
+];
+
+  return (
+    <div className='pl-0 h-full mb-10'>
+
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Books</h1>
+      <Table
+      columns={column}
+      data={book}
+      searchOptions={searchOptions}
+      onSearch={handleSearch}
+      handleClear={handleClear}
+      onAddClick={openAddPopup}
+       />
 
       <AddBooksPopup
         isOpen={isAddPopupOpen} 

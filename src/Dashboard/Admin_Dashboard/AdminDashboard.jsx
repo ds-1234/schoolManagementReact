@@ -6,14 +6,14 @@ import Sidebar from '../../Reusable_components/Sidebar';
 const AdminDashboard = () => {
   return (
     <Layout>
-     <div className='flex'>
+     <div className='flex h-full'>
        {/* Sidebar */}
        <div className=" w-1/3 text-white flex flex-col sm:w-1/5 min-h-screen">
         <Sidebar/>
       </div>
 
       {/* Main content */}
-      <div className="w-full">
+      <div className="w-2/3">
         <Outlet />
       </div>
      </div>

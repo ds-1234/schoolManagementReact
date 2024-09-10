@@ -1,54 +1,86 @@
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
+  const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
+  const [isStdDropdown , setIsStdDropdown] = useState(false) ;
+  const [isTransDropdown , setIsTransDropdown] = useState(false) ;
+  const [isNoticeDropdown , setIsNoticeDropdown] = useState(false) ;
 
-    // State to manage the visibility of the dropdown
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // Function to toggle dropdown visibility
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDashBoardDropdown(!isDashboardDropdown);
+  };
+
+  const toggleStdDropdown = () => {
+    setIsStdDropdown(!isStdDropdown);
+  };
+
+  const toggleTransDropdown = () => {
+    setIsTransDropdown(!isTransDropdown);
+  };
+
+  const toggleNoticeDropdown = () => {
+    setIsNoticeDropdown(!isNoticeDropdown);
   };
 
   return (
-    <div className="min-h-screen bg-[#021933] text-white w-64">
+    <div className="h-full bg-[#051f3e] text-white w-64">
       <nav className="p-5">
         <ul>
           {/* Dashboard Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to="#" className="flex justify-between items-center">
-              <div className='flex gap-1 justify-center items-center'>
-                <FontAwesomeIcon icon={faHouse} className="mr-3" />
+            <NavLink to="#" className="flex justify-between items-center hover:bg-[#063256] p-2 hover:rounded-xl">
+              <div className="flex gap-1 justify-center items-center">
+                <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
                 Dashboard
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3 text-[#ffae01]" onClick={toggleDropdown} />
             </NavLink>
-            {isDropdownOpen && (
-                <ul className="text-sm font-normal pl-6 bg-[#051f3e] pb-5 mt-2">
-                <li className="pt-5">
-                  <NavLink to="/admin">
-                    <FontAwesomeIcon icon={faAngleRight} className="mr-3" />
+            {isDashboardDropdown && (
+              <ul className="text-sm font-normal  flex items-center justify-center gap-1 flex-col bg-[#021933] py-2">
+                <li >
+                  <NavLink
+                    to="/admin"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
                     Admin
                   </NavLink>
                 </li>
-                <li className="pt-5">
-                  <NavLink to="/studentDashboard">
-                    <FontAwesomeIcon icon={faAngleRight} className="mr-3" />
+                <li >
+                  <NavLink
+                    to="/studentDashboard"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16  ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}/>
                     Students
                   </NavLink>
                 </li>
-                <li className="pt-5">
-                  <NavLink to="/parentsDashboard">
-                    <FontAwesomeIcon icon={faAngleRight} className="mr-3" />
+                <li >
+                  <NavLink
+                    to="/parentsDashboard"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16  ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
                     Parents
                   </NavLink>
                 </li>
-                <li className="pt-5">
-                  <NavLink to="/teacherDashboard">
-                    <FontAwesomeIcon icon={faAngleRight} className="mr-3" />
+                <li>
+                  <NavLink
+                    to="/teacherDashboard"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
                     Teachers
                   </NavLink>
                 </li>
@@ -56,28 +88,217 @@ const Sidebar = () => {
             )}
           </li>
 
+          {/* User Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/user"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256]  hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
+              User
+            </NavLink>
+          </li>
+
           {/* School Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to="/admin/school" className="flex items-center">
-              <FontAwesomeIcon icon={faSchool} className="mr-3" />
+            <NavLink
+              to="/admin/school"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" />
               School
             </NavLink>
           </li>
 
           {/* Subject Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to="/admin/subject" className="flex items-center">
-              <FontAwesomeIcon icon={faBook} className="mr-3" />
+            <NavLink
+              to="/admin/subject"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faBook} className="mr-3 text-[#ffae01]" />
               Subject
             </NavLink>
           </li>
 
           {/* Books Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to="/admin/books" className="flex items-center">
-              <FontAwesomeIcon icon={faBook} className="mr-3" />
-              Books
+            <NavLink
+              to="/admin/books"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faBookAtlas} className="mr-3 text-[#ffae01]" />
+              Library
             </NavLink>
+          </li>
+
+          {/* Class Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/class"
+              className={({ isActive }) =>
+                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <FontAwesomeIcon icon={faPenRuler} className="mr-3 text-[#ffae01]" />
+              Grade
+            </NavLink>
+          </li>
+
+          {/* Student Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+            to={'/admin/allStudents'}
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                Students
+              </div>
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleStdDropdown} />
+            </NavLink>
+            {isStdDropdown && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/AllStudents"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    All Students
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/AdmissionForm"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Admission Form
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/studentDetails"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
+                    Student Details 
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/studentPromotion"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Student Promotion 
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Transport section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/transport"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faBus} className="mr-3 text-[#ffae01]" />
+                Transport
+              </div>
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleTransDropdown} />
+            </NavLink>
+            {isTransDropdown && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/transport"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    All Transports List
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/AddTransport"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Add New Transport
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Notice Board Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/notice"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                Notice
+              </div>
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleNoticeDropdown} />
+            </NavLink>
+            {isNoticeDropdown && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/notice"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Notice Board
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/AddNotice"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Add New Notice
+                  </NavLink>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </nav>
@@ -86,3 +307,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

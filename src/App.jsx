@@ -5,17 +5,22 @@ import Registration from './Registration'
 import Dashboard from './Dashboard'
 import SuccessCard from './SuccessCard'
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
-import School from './Dashboard/Admin_Dashboard/School'
-import Subject from './Dashboard/Admin_Dashboard/Subject'
-// import AddSchool from './Dashboard/Admin_Dashboard/AddSchool'
-import AddSubject from './Dashboard/Admin_Dashboard/AddSubject'
+import School from './Dashboard/Admin_Dashboard/School/School'
+import Subject from './Dashboard/Admin_Dashboard/Subject/Subject'
 import StudentDashboard from './Dashboard/StudentDashboard'
 import TeacherDashboard from './Dashboard/TeacherDashboard'
 import ParentsDashboard from './Dashboard/ParentsDashboard'
-import EditSubject from './Dashboard/Admin_Dashboard/EditSubject'
-// import EditSchool from './Dashboard/Admin_Dashboard/EditSchool'
-import Book from './Dashboard/Admin_Dashboard/Books'
-
+import Book from './Dashboard/Admin_Dashboard/Books/Books'
+import User from './Dashboard/Admin_Dashboard/User/User'
+import Class from './Dashboard/Admin_Dashboard/Class/Class'
+import AllStudents from './Dashboard/Admin_Dashboard/Students/AllStudents'
+import AdmissionForm from './Dashboard/Admin_Dashboard/Students/AdmissionForm'
+import StudentDetails from './Dashboard/Admin_Dashboard/Students/StudentDetails'
+import StudentPromotion from './Dashboard/Admin_Dashboard/Students/StudentPromotion'
+import Transport from './Dashboard/Admin_Dashboard/Transport/Transport'
+import Notice from './Dashboard/Admin_Dashboard/Notice/Notice'
+import AddTransport from './Dashboard/Admin_Dashboard/Transport/AddTransport'
+import AddNotice from './Dashboard/Admin_Dashboard/Notice/AddNotice'
 
 
 function App() {
@@ -31,12 +36,18 @@ function App() {
             <Route path="/SuccessCard" element={<SuccessCard/>}/>
             <Route path="/admin" element={<AdminDashboard/>}>
               <Route path='school' element={<School/>}/>
-              {/* <Route path='AddSchool' element={<AddSchool/>}/> */}
               <Route path='subject' element={<Subject/>}/>
-              <Route path='AddSubject' element={<AddSubject/>}/>
-              <Route path='editSubject/:id' element={<EditSubject/>}/>
-              {/* <Route path='editschool/:id' element={<EditSchool/>}/> */}
               <Route path='books' element={<Book/>}/>
+              <Route path='user' element={<User/>}/>
+              <Route path='class' element={<Class/>}/>
+              <Route path = 'allStudents' element={<AllStudents/>}/>
+              <Route path = 'admissionForm' element={<AdmissionForm/>}/>
+              <Route path = 'studentDetails' element={<StudentDetails/>}/>
+              <Route path = 'studentPromotion' element={<StudentPromotion/>}/>
+              <Route path = 'transport' element={<Transport/>}/>
+              <Route path='AddTransport' element={<AddTransport/>}/>
+              <Route path='notice' element={<Notice/>}/>
+              <Route path='AddNotice' element={<AddNotice/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
