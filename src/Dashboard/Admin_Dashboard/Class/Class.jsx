@@ -103,18 +103,22 @@ function Class() {
   //   setData(newData);
   // }
   
-  const handleSearch = (event, type) => {
-    if (type === 'column') {
-      setSelectedColumn(event.target.value); // Set selected column
-    } else if (type === 'query') {
-      setSearchValue(event.target.value); // Set search query
-    } else if (type === 'button') {
-      // search filter when the search button is clicked
-      const filteredData = filterData.filter((row) =>
-        row[selectedColumn]?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setData(filteredData); // Update data
+  const handleSearch = (query, checkboxRefs) => {
+    if (!query) {
+      setData(filterData);
+      return;
     }
+  
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
+  
+    const filteredData = filterData.filter((row) =>
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  
+    setData(filteredData);
   };
   
   // handle clear button logic
