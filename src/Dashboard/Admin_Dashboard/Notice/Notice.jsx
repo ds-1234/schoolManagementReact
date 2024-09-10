@@ -41,7 +41,7 @@ function AddNotice() {
 
               <Button 
               // onClick={() => reset()} 
-              label="Reset" 
+              label="Search" 
               className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
 
 </div>
