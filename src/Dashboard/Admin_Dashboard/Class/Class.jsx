@@ -77,7 +77,7 @@ function Class() {
     },
     {
       name: 'Subject',
-      selector: row => row.subject[0].subject,
+      selector: row => row.subject.subject,
       sortable: true,
     },
     {
