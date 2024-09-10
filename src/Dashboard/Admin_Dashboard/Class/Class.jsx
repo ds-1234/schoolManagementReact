@@ -2,13 +2,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Table from '../../../Reusable_components/Table';
 import AddClassPopup from './AddClassPopup';
+import deleteIcon from '../../../assets/delete.png'
+import edit from '../../../assets/edit.png'
+import EditClass from './EditClass';
+
 
 function Class() {
     const [data, setData] = useState([]);
     const [filterData , setFilterData] = useState([])
     const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-    // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-    // const [editClassId , setEdirClassId] = useState(null)
+    const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+    const [editGradeId , setEditGradeId] = useState(null)
   
     const [selectedColumn, setSelectedColumn] = useState(''); 
     const [searchValue, setSearchValue] = useState('');
@@ -17,15 +21,15 @@ function Class() {
     const openAddPopup = () => setIsAddPopupOpen(true);
     const closeAddPopup = () => setIsAddPopupOpen(false);
   
-    // const openEditPopup = (id) => {
-    //   ClassId(id);
-    //   setIsEditPopupOpen(true);
-    // };
+    const openEditPopup = (id) => {
+      setEditGradeId(id);
+      setIsEditPopupOpen(true);
+    };
   
-    // const closeEditPopup = () => {
-    //   setClassId(null);
-    //   setIsEditPopupOpen(false);
-    // };
+    const closeEditPopup = () => {
+      setEditGradeId(null);
+      setIsEditPopupOpen(false);
+    };
   
     const fetchData = () => {
       axios({
@@ -63,13 +67,18 @@ function Class() {
     },
     {
       name: 'Class Name',
-      selector: row => row.subject,
+      selector: row => row.name,
       sortable: true,
     },
     {
       name: 'Section',
-      selector: row => row.description,
-      sortable: false,
+      selector: row => row.section,
+      sortable: true,
+    },
+    {
+      name: 'Subject',
+      selector: row => row.subject[0].subject,
+      sortable: true,
     },
     {
       name: 'Action',
@@ -138,12 +147,12 @@ function Class() {
           }} 
           />
   
-        {/* <EditSubject
+        <EditClass
           isOpen={isEditPopupOpen}
           onClose={closeEditPopup}
-          subjectId={editSubjectId}
+          GradeId={editGradeId}
           onSuccess={fetchData} // Refresh data after editing
-        /> */}
+        />
       </div>
     );
 }

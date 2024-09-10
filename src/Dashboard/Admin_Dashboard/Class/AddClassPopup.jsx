@@ -11,12 +11,6 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         const fetchSubjects = async () => {
-        //   try {
-        //     const response = await axios.get('http://localhost:8080/subjects');
-        //     setSubjects(response.data); // Assuming the API returns an array of subjects
-        //   } catch (error) {
-        //     console.error('Error fetching subjects:', error);
-        //   }
         axios({
             method:"get",
             url : `http://localhost:8080/subject/getSubjectList`,
@@ -55,11 +49,11 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
       axios({
           method:"post",
-          url : `http://localhost:8080/subject/createSubject`,
+          url : `http://localhost:8080/class/createClass`,
           data: {
             name: data.name,
             section: data.section,
-            subject: selectedSubject
+            subject: [selectedSubject]
           },
           
           headers: {
