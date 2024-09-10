@@ -17,7 +17,10 @@ import AllStudents from './Dashboard/Admin_Dashboard/Students/AllStudents'
 import AdmissionForm from './Dashboard/Admin_Dashboard/Students/AdmissionForm'
 import StudentDetails from './Dashboard/Admin_Dashboard/Students/StudentDetails'
 import StudentPromotion from './Dashboard/Admin_Dashboard/Students/StudentPromotion'
-
+import Transport from './Dashboard/Admin_Dashboard/Transport/Transport'
+import Notice from './Dashboard/Admin_Dashboard/Notice/Notice'
+import AddTransport from './Dashboard/Admin_Dashboard/Transport/AddTransport'
+import AddNotice from './Dashboard/Admin_Dashboard/Notice/AddNotice'
 
 
 function App() {
@@ -41,6 +44,10 @@ function App() {
               <Route path = 'admissionForm' element={<AdmissionForm/>}/>
               <Route path = 'studentDetails' element={<StudentDetails/>}/>
               <Route path = 'studentPromotion' element={<StudentPromotion/>}/>
+              <Route path = 'transport' element={<Transport/>}/>
+              <Route path='AddTransport' element={<AddTransport/>}/>
+              <Route path='notice' element={<Notice/>}/>
+              <Route path='AddNotice' element={<AddNotice/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
