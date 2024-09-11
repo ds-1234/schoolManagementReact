@@ -1,12 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef , useState} from 'react';
 import DataTable from 'react-data-table-component';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick }) => {
   const searchInputRef = useRef(null);
   const checkboxRefs = useRef({});
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSearchClick = () => {
     const searchQuery = searchInputRef.current.value;
@@ -20,6 +21,11 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
       checkboxRefs.current[key].checked = false;
     });
     handleClear();
+    setIsDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
    // Custom styles for the table with bigger headers
@@ -67,16 +73,30 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
             {/* Search Section */}
             <div className="flex flex-wrap gap-4 mb-4 items-center">
               
-              {/* Multiple filters options */}
-              {searchOptions.map((option, index) => (
-                <label key={index} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    ref={(el) => (checkboxRefs.current[option.value] = el)}
-                  />
-                  {option.label}
-                </label>
-              ))}
+              {/* Filter Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  Select Filters
+                  <FontAwesomeIcon icon={faAngleDown} className='ml-3'/>
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute bg-white border rounded-lg shadow-lg p-4 mt-2 w-60 z-50">
+                    {searchOptions.map((option, index) => (
+                      <label key={index} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          ref={(el) => (checkboxRefs.current[option.value] = el)}
+                        />
+                        {option.label}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <input
                 type="text"
