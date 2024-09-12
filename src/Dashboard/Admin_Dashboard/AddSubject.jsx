@@ -2,22 +2,20 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
-import Button from '../../../Reusable_components/Button';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const AddSubject = ({ isOpen, onClose }) => {
+const AddSubject = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
   } = useForm();
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const onSubmit = (data) => {
     axios({
-        method:"POST",
+        method:"post",
         url : `http://localhost:8080/subject/createSubject`,
         data: {
             subject : data.subject ,
@@ -31,32 +29,23 @@ const AddSubject = ({ isOpen, onClose }) => {
       .then((response)=>{
         console.log('response' , response.data)
         toast.success("Successfully Add Subject");
-        reset()
-        onClose(); 
+        
+        navigate('/admin/subject' , {state: data}) ;   
     })
     .catch(err=>{
         console.log(err,'error:')
         toast.error("Error to add new Subject");
-        onClose();
+    
     })
   }
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
-        >
-          &times;
-        </button>
+    <div className="flex justify-center items-center mt-20">
       <form 
         onSubmit={handleSubmit(onSubmit)} 
-        className=""
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Subject</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Add New Subject</h2>
 
         {/* Subject Input */}
         <div className="mb-4">
@@ -83,13 +72,13 @@ const AddSubject = ({ isOpen, onClose }) => {
         </div>
 
         {/* Submit Button */}
-        <Button 
-        type='submit'
-        className='w-full text-center'
-        // label={"Add new Subject"}
-        />
+        <button 
+          type="submit" 
+          className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Add Subject
+        </button>
       </form>
-      </div>
       <ToastContainer/>
     </div>
   );

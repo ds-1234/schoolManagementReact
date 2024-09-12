@@ -217,7 +217,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
         </div>
 
           <Button 
-          label={"Update User"}
+          // label={"Update User"}
           type='submit'
           className='w-full text-center'
           />

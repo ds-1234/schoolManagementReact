@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../Reusable_components/Button';
+import { NavLink } from 'react-router-dom';
 
 function StudentPromotion() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -22,6 +23,8 @@ function StudentPromotion() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-6 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-10 my-20 ">
+            <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/allStudents'> Students </NavLink>/ <span className='text-[#ffae01] font-semibold'>Addmission Promotion</span> </p>
+
       <h2 className="text-2xl font-semibold text-black">Search Student Promotion</h2>
       <div className="grid grid-cols-4 gap-6">
         <div>

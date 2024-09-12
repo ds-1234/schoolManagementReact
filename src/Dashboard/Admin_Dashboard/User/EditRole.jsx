@@ -4,53 +4,52 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 
-function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
+function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
   
-  const [subject, setSubject] = useState({ subject: '', description: '' });
+  const [role, setRole] = useState({ role: '',  });
   // const navigate = useNavigate();
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/subject/getSubject/${subjectId}`, // API to get specific subject by ID
+      url: `http://localhost:8080/role/getRole/${roleId}`, // API to get specific subject by ID
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
-        setSubject(response.data.data);
+        setRole(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching subject:", error);
+        console.error("Error fetching role:", error);
       });
-  }, [subjectId , isOpen]);
+  }, [roleId , isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSubject({ ...subject, [name]: value });
+    setSubject({ ...role, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/subject/createSubject/${subjectId}`,
+      url: `http://localhost:8080/role/createRole/${roleId}`,
       headers: {
         "Content-Type": "application/json",
       },
       data: subject,
     })
       .then((response) => {
-        console.log("Subject updated:", response.data);
-        toast.success("Subject updated successfully!")
-        // navigate("/admin/subject"); 
+        console.log("Role updated:", response.data);
+        toast.success("Role updated successfully!")
 
         onSuccess() ;
         onClose() ;
       })
       .catch((error) => {
-        console.error("Error updating subject:", error);
-        toast.error('Failed to update subject.')
+        console.error("Error updating Role:", error);
+        toast.error('Failed to update Role.')
       });
   };
 
@@ -67,34 +66,23 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
         </button>
       
       <form onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Subject</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Role</h2>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Subject</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
           <input
             type="text"
-            name="subject"
-            value={subject.subject}
+            name="role"
+            value={role.name}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter subject name"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-          <textarea
-            name="description"
-            value={subject.description}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter subject description"
-            rows="4"
+            placeholder="Enter role"
             required
           />
         </div>
 
+
           <Button 
-          // label={"Update Subject"}
+          label={"Update Role"}
           type='submit'
           className='w-full text-center'
           />

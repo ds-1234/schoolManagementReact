@@ -185,7 +185,8 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
           // onClick={handleSubmit}
           type='submit'
           className='w-full text-center'
-          label={"Add School"}/>
+          // label={"Add School"}
+          />
         </form>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../Reusable_components/Button'
 import { Input } from '@nextui-org/react';
+import { NavLink } from 'react-router-dom';
 
 function AddNotice() {
   const { register, } = useForm();
@@ -14,6 +15,8 @@ function AddNotice() {
   return (
     <div  className="p-10 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-6 my-10">
             <h2 className="text-2xl font-semibold text-black">Notice Board</h2>
+            <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Notice Board</span> </p>
+
             <div className="grid grid-cols-3 gap-6">
             <div className="flex gap-4">
             

@@ -138,7 +138,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
           // onClick={handleSubmit}
           type='submit'
           className='w-full text-center'
-          label={"Add Book"}/>
+          // label={"Add Book"}
+          />
 
         </form>
       </div>

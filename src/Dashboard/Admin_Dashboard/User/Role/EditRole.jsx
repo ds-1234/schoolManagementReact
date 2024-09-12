@@ -82,7 +82,7 @@ function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
 
 
           <Button 
-          label={"Update Role"}
+          // label={"Update Role"}
           type='submit'
           className='w-full text-center'
           />

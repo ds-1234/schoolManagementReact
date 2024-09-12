@@ -1,18 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Button from '../../../Reusable_components/Button';
 
-function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
-  
+function EditSubject() {
+  const { id } = useParams(); // Get the subject ID from the URL
   const [subject, setSubject] = useState({ subject: '', description: '' });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/subject/getSubject/${subjectId}`, // API to get specific subject by ID
+      url: `http://localhost:8080/subject/getSubject/${id}`, // API to get specific subject by ID
       headers: {
         "Content-Type": "application/json",
       },
@@ -23,7 +22,7 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
       .catch((error) => {
         console.error("Error fetching subject:", error);
       });
-  }, [subjectId , isOpen]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +32,8 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios({
-      method: "post",
-      url: `http://localhost:8080/subject/createSubject/${subjectId}`,
+      method: "PUT",
+      // url: `http://localhost:8080/subject/createSubject/${id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,31 +42,18 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
       .then((response) => {
         console.log("Subject updated:", response.data);
         toast.success("Subject updated successfully!")
-        // navigate("/admin/subject"); 
-
-        onSuccess() ;
-        onClose() ;
+        navigate("/admin/subject"); // Navigate back to the subject list
       })
       .catch((error) => {
         console.error("Error updating subject:", error);
-        toast.error('Failed to update subject.')
       });
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
-        >
-          &times;
-        </button>
-      
+    <div className="flex justify-center items-center mt-20">
+    <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-center mb-6">Edit Subject</h2>
       <form onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Subject</h2>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">Subject</label>
           <input
@@ -92,13 +78,21 @@ function EditSubject({ isOpen, onClose, subjectId , onSuccess }) {
             required
           />
         </div>
-
-          <Button 
-          // label={"Update Subject"}
-          type='submit'
-          className='w-full text-center'
-          />
-
+        <div className="flex justify-between items-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Update Subject
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/admin/subject')}
+            className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
       </div>
     </div>

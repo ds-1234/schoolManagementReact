@@ -140,7 +140,8 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           type='submit'
 
           className='w-full text-center'
-          label={"Add new Class"}/>
+          // label={"Add new Class"}
+          />
         </form>
         </div>
         <ToastContainer/>

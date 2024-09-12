@@ -5,7 +5,7 @@ import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 // import { useNavigate } from 'react-router-dom';
 
-const AddSubject = ({ isOpen, onClose }) => {
+const AddRole = ({ isOpen, onClose }) => {
   const {
     register,
     handleSubmit,
@@ -18,10 +18,9 @@ const AddSubject = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
         method:"POST",
-        url : `http://localhost:8080/subject/createSubject`,
+        url : `http://localhost:8080/role/createRole`,
         data: {
-            subject : data.subject ,
-            description : data.description 
+            name : data.role ,
         },
         headers: {
           "Content-Type": "application/json",
@@ -30,13 +29,13 @@ const AddSubject = ({ isOpen, onClose }) => {
       })
       .then((response)=>{
         console.log('response' , response.data)
-        toast.success("Successfully Add Subject");
+        toast.success("Successfully Add role");
         reset()
         onClose(); 
     })
     .catch(err=>{
         console.log(err,'error:')
-        toast.error("Error to add new Subject");
+        toast.error("Error to add new role");
         onClose();
     })
   }
@@ -56,38 +55,26 @@ const AddSubject = ({ isOpen, onClose }) => {
         onSubmit={handleSubmit(onSubmit)} 
         className=""
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Subject</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Role</h2>
 
         {/* Subject Input */}
         <div className="mb-4">
-          <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
+          <label htmlFor="role" className="block text-gray-700 font-semibold mb-2">Role</label>
           <input
             type="text"
-            id="subject"
+            id="role"
             className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register('subject', { required: 'Subject name is required' })}
+            {...register('role', { required: 'role is required' })}
           />
-          {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
+          {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
         </div>
 
-        {/* Description Input */}
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
-          <textarea
-            id="description"
-            className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            rows="4"
-            {...register('description', { required: 'Description is required' })}
-          ></textarea>
-          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-        </div>
 
         {/* Submit Button */}
         <Button 
         type='submit'
         className='w-full text-center'
-        // label={"Add new Subject"}
-        />
+        label={"Add new Subject"}/>
       </form>
       </div>
       <ToastContainer/>
@@ -95,4 +82,4 @@ const AddSubject = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddSubject;
+export default AddRole;

@@ -140,7 +140,7 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
         </div>
 
           <Button 
-          label={"Update Transport"}
+          // label={"Update Transport"}
           type='submit'
           className='w-full text-center'
           />
