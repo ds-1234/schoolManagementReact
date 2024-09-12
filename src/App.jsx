@@ -26,6 +26,7 @@ import ExamSchedule from './Dashboard/Admin_Dashboard/Examinations/ExamSchedule'
 import ExamAttendance from './Dashboard/Admin_Dashboard/Examinations/ExamAttendance'
 import ExamResults from './Dashboard/Admin_Dashboard/Examinations/ExamResults'
 import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade'
+import Role from './Dashboard/Admin_Dashboard/User/Role'
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
               <Route path='subject' element={<Subject/>}/>
               <Route path='books' element={<Book/>}/>
               <Route path='user' element={<User/>}/>
+              <Route path='role' element={<Role/>}/>
               <Route path='class' element={<Class/>}/>
               <Route path = 'allStudents' element={<AllStudents/>}/>
               <Route path = 'admissionForm' element={<AdmissionForm/>}/>
