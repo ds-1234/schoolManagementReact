@@ -5,6 +5,7 @@ import AddClassPopup from './AddClassPopup';
 import deleteIcon from '../../../assets/delete.png'
 import edit from '../../../assets/edit.png'
 import EditClass from './EditClass';
+import { NavLink } from 'react-router-dom';
 
 
 function Class() {
@@ -134,6 +135,8 @@ function Class() {
     return (
       <div className='pl-0 h-full mb-10'>
         <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Classes</h1>
+        <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Class</span> </p>
+
         <Table 
         columns={column}
         data={data}

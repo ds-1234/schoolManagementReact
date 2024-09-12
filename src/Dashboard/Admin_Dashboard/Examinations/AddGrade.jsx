@@ -72,7 +72,7 @@ const AddExamType = ({ isOpen, onClose }) => {
         
         {/* Marks from */}
         <div className="mb-4">
-          <label htmlFor="marksfrom" className="block text-gray-700 font-semibold mb-2">Marks from(%)</label>
+          <label htmlFor="marksfrom" className="block text-gray-700 font-semibold mb-2">Marks From(%)</label>
           <input
             type="text"
             id="marksfrom"
@@ -124,7 +124,8 @@ const AddExamType = ({ isOpen, onClose }) => {
         <Button 
         type='submit'
         className='w-full text-center'
-        label={"Add new Exam Type"}/>
+        // label={"Submit"}
+        />
       </form>
       </div>
       <ToastContainer/>

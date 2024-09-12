@@ -311,7 +311,8 @@ const AddUser = ({ isOpen, onClose }) => {
         <Button 
         onClick={handleSubmit(onSubmit)}
         className='w-full text-center'
-        label={"Add new User"}/>
+        // label={"Add new User"}
+        />
       </form>
       </div>
       <ToastContainer/>

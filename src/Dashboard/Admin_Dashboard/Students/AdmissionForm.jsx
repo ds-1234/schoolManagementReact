@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../Reusable_components/Button'
+import { NavLink } from 'react-router-dom';
 
 function AdmissionForm() {
   const { register, handleSubmit, reset } = useForm();
@@ -11,7 +12,10 @@ function AdmissionForm() {
   };
 
   return (
+    <>
+
     <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-6 my-10">
+            <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/allStudents'> Students </NavLink>/ <span className='text-[#ffae01] font-semibold'>Addmission Form</span> </p>
       <h2 className="text-2xl font-semibold text-black">Add New Students</h2>
       <div className="grid grid-cols-4 gap-6">
         <div>
@@ -89,6 +93,7 @@ function AdmissionForm() {
           <Button onClick={() => reset()} label="Reset" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
+    </>
   );
 }
 

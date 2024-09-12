@@ -8,6 +8,7 @@ import EditBookPopup from './EditBookPopup';
 // import DataTable from 'react-data-table-component';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
+import { NavLink } from 'react-router-dom';
 
 
 function Books() {
@@ -168,6 +169,8 @@ const searchOptions = [
     <div className='pl-0 h-full mb-10'>
 
       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Books</h1>
+      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Books</span> </p>
+
       <Table
       columns={column}
       data={book}

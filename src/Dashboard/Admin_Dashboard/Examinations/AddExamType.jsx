@@ -72,11 +72,11 @@ const AddExamType = ({ isOpen, onClose }) => {
 
         {/* Exam Date Input */}
         <div className="flex flex-col px-1 w-1/2">
-              <label htmlFor="Dtae">Date of Birth *</label>
+              <label htmlFor="Dtae">Exam Date  *</label>
               <input
                 type="date"
                 id="date"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.date ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 mb-5 rounded-lg bg-gray-100 border ${errors.date ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('date', { required: 'Date is required' })}
               />
               {errors.date && <span className="text-red-500 text-sm">{errors.date.message}</span>}
@@ -86,7 +86,8 @@ const AddExamType = ({ isOpen, onClose }) => {
         <Button 
         type='submit'
         className='w-full text-center'
-        label={"Add new Exam Type"}/>
+        // label={"Add new Exam Type"}
+        />
       </form>
       </div>
       <ToastContainer/>

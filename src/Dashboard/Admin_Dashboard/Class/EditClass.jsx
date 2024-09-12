@@ -159,7 +159,8 @@ function EditClass({ isOpen, onClose, GradeId , onSuccess }) {
           type='submit'
 
           className='w-full text-center'
-          label={"Edit new Class"}/>
+        //   label={"Edit new Class"}
+          />
         </form>
       </div>
     </div>

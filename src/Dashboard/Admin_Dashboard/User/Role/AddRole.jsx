@@ -74,7 +74,8 @@ const AddRole = ({ isOpen, onClose }) => {
         <Button 
         type='submit'
         className='w-full text-center'
-        label={"Add new Subject"}/>
+        // label={"Add new Role"}
+        />
       </form>
       </div>
       <ToastContainer/>
