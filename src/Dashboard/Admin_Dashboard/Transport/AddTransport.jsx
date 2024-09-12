@@ -1,15 +1,42 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import Button from '../../../Reusable_components/Button'
+import axios from 'axios';
+import {toast , ToastContainer } from 'react-toastify';
 
 function AddTransport() {
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit,formState: { errors }, reset } = useForm();
 
   // Function to handle form submission
   const onSubmit = (data) => {
-    console.log(data);
-  };
+    axios({
+        method:"POST",
+        url : `http://localhost:8080/transport/createTransport`,
+        data: {
+            routeName : data.routeName ,
+            vehicleNumber : data.vehicleNumber ,
+            driverName : data.driverName , 
+            licenseNumber : data.licenseNumber ,
+            phone : data.phone , 
+            isActive : true
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+    
+      })
+      .then((response)=>{
+        console.log('response' , response.data)
+        toast.success("Successfully Add Transport!");
+        reset()
+    })
+    .catch(err=>{
+        console.log(err,'error:')
+        toast.error("Error to add new transport!");
+    })
+  }
+  
   return (
 
    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
@@ -23,9 +50,12 @@ function AddTransport() {
             <input
               type="text"
               id="routeName"
-              {...register("routeName" , {required : true})}
+              {...register("routeName" , {required : "Route Name is required"})}
               className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
+                {errors.routeName && (
+                  <p className="text-red-500 text-sm">{errors.routeName.message}</p>
+                )}
           </div>
 
           <div>
@@ -35,9 +65,12 @@ function AddTransport() {
             <input
               type="text"
               id="vehicleNumber"
-              {...register("vehicleNumber" , {required : true})}
+              {...register("vehicleNumber" , {required : "Vehicle Number is required"})}
               className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
+                {errors.vehicleNumber && (
+                  <p className="text-red-500 text-sm">{errors.vehicleNumber.message}</p>
+                )}
           </div>
 
           <div>
@@ -47,9 +80,12 @@ function AddTransport() {
             <input
               type="text"
               id="driverName"
-              {...register("driverName" , {required : true})}
+              {...register("driverName" , {required : "Driver Name is required"})}
               className="block w-full  border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
+                {errors.driverName && (
+                  <p className="text-red-500 text-sm">{errors.driverName.message}</p>
+                )}
           </div>
 
           <div>
@@ -59,9 +95,12 @@ function AddTransport() {
             <input
               type="text"
               id="licenseNumber"
-              {...register("licenseNumber" , {required : true})}
+              {...register("licenseNumber" , {required : "License Number is required"})}
               className="block w-full  border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
+            {errors.licenseNumber && (
+                  <p className="text-red-500 text-sm">{errors.licenseNumber.message}</p>
+                )}
           </div>
 
           <div>
@@ -71,9 +110,12 @@ function AddTransport() {
             <input
               type="text"
               id="phone"
-              {...register("phone" , {required : true})}
+              {...register("phone" , {required : "Phone Number is required"})}
               className="block w-full  border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone.message}</p>
+                )}
           </div>
         </div>
 
@@ -89,6 +131,7 @@ function AddTransport() {
             className="px-8 bg-[#ffae01] hover:bg-[#042954]"
             label="Reset"
           />
+          <ToastContainer/>
         </div>
       </form>
     </div>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
-import edit from '../../../assets/edit.png'
-import Table from '../../../Reusable_components/Table';
-import deleteIcon from '../../../assets/delete.png'
+import edit from '../../../../assets/edit.png'
+import Table from '../../../../Reusable_components/Table';
+import deleteIcon from '../../../../assets/delete.png'
 import AddRole from './AddRole';
 import EditRole from './EditRole';
 

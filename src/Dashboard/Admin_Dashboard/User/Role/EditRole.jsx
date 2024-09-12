@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Button from '../../../Reusable_components/Button';
+import Button from '../../../../Reusable_components/Button';
 
 function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
   

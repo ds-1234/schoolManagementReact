@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import edit from '../../../assets/edit.png';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
-import AddUser from '../User/AddUser';
-import EditUser from '../User/EditUser';
+import { useNavigate } from 'react-router-dom';
+import StatusButton from '../../../Reusable_components/StatusButton';
+import EditTransport from './EditTransport';
+
 
 function Transport() {
 
@@ -15,8 +17,8 @@ const column = [
     sortable: true,
   }, 
   {
-    name: 'Vechile No.',
-    selector: row => row.vechileNo,
+    name: 'Vehicle Number',
+    selector: row => row.vehicleNumber,
     sortable: true,
   },
   {
@@ -26,8 +28,15 @@ const column = [
   },
   {
     name: 'Driver License',
-    selector: row => row.license,
+    selector: row => row.licenseNumber,
     sortable: true,
+  },
+  {
+    name: 'Status' ,
+    selector: row => (
+      <StatusButton isActive={row.isActive}/>
+    ) ,
+    sortable: true 
   },
   {
     name: 'Phone Number',
@@ -52,83 +61,87 @@ const column = [
   },
 ]
 
-  // const [user, setUser] = useState([]);
-  // const [filterUser, setFilterUser] = useState([]);
-  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  // const [editUserId, setEditUserId] = useState(null);
+  const navigate = useNavigate() ;
+  const [transport, setTransport] = useState([]);
+  const [filterTransport, setFilterTransport] = useState([]);
+  const [editTransportId, setEditTransportId] = useState(null);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
-  // const openAddPopup = () => setIsAddPopupOpen(true);
-  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  // const openEditPopup = (id) => {
-  //   setEditUserId(id);
-  //   setIsEditPopupOpen(true);
-  // };
 
-  // const closeEditPopup = () => {
-  //   setEditUserId(null);
-  //   setIsEditPopupOpen(false);
-  // };
+  const fetchData = async() => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/transport/getTransportList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        setTransport(response.data.data);
+        console.log('Data from API:', response.data.data);
+        console.log('Data from transportData', transport);
+        setFilterTransport(response.data.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  };
 
-  // const fetchData = async() => {
-  //   axios({
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/user/getUserList',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => {
-  //       setUser(response.data.data);
-  //       console.log('Data from API:', response.data.data);
-  //       console.log('Data from userData', user);
-  //       setFilterUser(response.data.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //     });
-  // };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    setTransport(transport);  
+    setFilterTransport(transport); 
+  }, []);
 
-  // useEffect(() => {
-  //   setUser(user);  
-  //   setFilterUser(user); 
-  // }, []);
+  const openEditPopup = (id) => {
+    setEditTransportId(id);
+    setIsEditPopupOpen(true);
+  };
+
+  const closeEditPopup = () => {
+    setEditTransportId(null);
+    setIsEditPopupOpen(false);
+  };
 
   const searchOptions = [
     { label: 'Route Name', value: 'routeName' },
-    { label: 'Vechile No.', value: 'vechile' },
+    { label: 'Vechile No.', value: 'vehicleNumber' },
     { label: 'Driver Name', value: 'driverName' },
+    { label: 'License No.', value: 'licenseNumber' },
     { label: 'Phone Number', value: 'phone' },
   ];
 
    // Handle Search Logic
    const handleSearch = (query, checkboxRefs) => {
-    // if (!query) {
-    //   setUser(filterUser);
-    //   return;
-    // }
+    if (!query) {
+      setTransport(filterTransport);
+      return;
+    }
   
-    // const selectedFields = Object.keys(checkboxRefs)
-    //   .filter((key) => checkboxRefs[key].checked);
+    const selectedFields = Object.keys(checkboxRefs)
+      .filter((key) => checkboxRefs[key].checked);
   
-    // const filteredData = filterUser.filter((row) =>
-    //   selectedFields.some((field) =>
-    //     row[field]?.toLowerCase().includes(query.toLowerCase())
-    //   )
-    // );
+    const filteredData = filterTransport.filter((row) =>
+      selectedFields.some((field) =>
+        row[field]?.toLowerCase().includes(query.toLowerCase())
+      )
+    );
   
-    // setUser(filteredData);
+    setTransport(filteredData);
   };
 
   // handle clear button logic
   const handleClear = () => {
-    // setUser(filterUser);  // Reset to original data
+    setTransport(filterTransport);  // Reset to original data
   };
+
+  const handleAddClick = () => {
+    navigate('/admin/AddTransport')
+  }
 
   return (
     <div className='pl-0 h-full mb-10'>
@@ -136,26 +149,20 @@ const column = [
 
       <Table
          columns={column}
-         data={''}
+         data={transport}
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-         onAddClick={''}
-      />
-      {/* <AddUser 
-        isOpen={isAddPopupOpen} 
-        onClose={() => {
-          closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
-        }} 
+         onAddClick={handleAddClick}
       />
 
-      <EditUser
+      <EditTransport 
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        userId={editUserId}
-        onSuccess={fetchData} // Refresh data after editing
-      /> */}
+        transportId={editTransportId}
+        onSuccess={fetchData}
+      />
+      
     </div>
   );
 }
