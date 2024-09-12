@@ -300,6 +300,82 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
+
+
+          {/* Examinations Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/Examinations"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                Examinations
+              </div>
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleNoticeDropdown} />
+            </NavLink>
+            {isNoticeDropdown && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/Examinations"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Exam type
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/Examschedule"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Exam Schedule
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/Grade"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Grade
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/Examattendance"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Exam Attendance
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/Examresults"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Exam Results
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
         </ul>
       </nav>
     </div>
