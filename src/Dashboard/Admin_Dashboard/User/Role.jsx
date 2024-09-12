@@ -4,27 +4,28 @@ import edit from '../../../assets/edit.png'
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import AddRole from './AddRole';
+import EditRole from './EditRole';
 
 function Role() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editRoleId , setEditRoleId] = useState(null)
+  const [editRoleId , setEditRoleId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditRoleId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditRoleId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditRoleId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditRoleId(null);
+    setIsEditPopupOpen(false);
+  };
 
   const fetchData = () => {
     axios({
@@ -136,12 +137,12 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditSubject
+      <EditRole
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        subjectId={editSubjectId}
+        roleId={editRoleId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };
