@@ -21,6 +21,11 @@ import Transport from './Dashboard/Admin_Dashboard/Transport/Transport'
 import Notice from './Dashboard/Admin_Dashboard/Notice/Notice'
 import AddTransport from './Dashboard/Admin_Dashboard/Transport/AddTransport'
 import AddNotice from './Dashboard/Admin_Dashboard/Notice/AddNotice'
+import ExamType from './Dashboard/Admin_Dashboard/Examinations/ExamType'
+import ExamSchedule from './Dashboard/Admin_Dashboard/Examinations/ExamSchedule'
+import ExamAttendance from './Dashboard/Admin_Dashboard/Examinations/ExamAttendance'
+import ExamResults from './Dashboard/Admin_Dashboard/Examinations/ExamResults'
+import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade'
 
 
 function App() {
@@ -48,6 +53,11 @@ function App() {
               <Route path='AddTransport' element={<AddTransport/>}/>
               <Route path='notice' element={<Notice/>}/>
               <Route path='AddNotice' element={<AddNotice/>}/>
+              <Route path='Examinations' element={<ExamType/>}/>
+              <Route path='Examschedule' element={<ExamSchedule/>}/>
+              <Route path='ExamAttendance' element={<ExamAttendance/>}/>
+              <Route path='ExamResults' element={<ExamResults/>}/>
+              <Route path='Grade' element={<Grade/>}/>
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
