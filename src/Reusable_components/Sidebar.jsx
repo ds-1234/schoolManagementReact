@@ -265,41 +265,12 @@ const Sidebar = () => {
             <NavLink
               to="/admin/transport"
               className={({ isActive }) =>
-                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-              <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faBus} className="mr-3 text-[#ffae01]" />
                 Transport
-              </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleTransDropdown} />
             </NavLink>
-            {isTransDropdown && (
-              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                <li>
-                  <NavLink
-                    to="/admin/transport"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    All Transports List
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/admin/AddTransport"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    Add New Transport
-                  </NavLink>
-                </li>
-              </ul>
-            )}
           </li>
 
           {/* Notice Board Section */}
@@ -307,41 +278,13 @@ const Sidebar = () => {
             <NavLink
               to="/admin/notice"
               className={({ isActive }) =>
-                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-              <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Notice
-              </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleNoticeDropdown} />
+              
             </NavLink>
-            {isNoticeDropdown && (
-              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                <li>
-                  <NavLink
-                    to="/admin/notice"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    Notice Board
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/admin/AddNotice"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    Add New Notice
-                  </NavLink>
-                </li>
-              </ul>
-            )}
           </li>
 
 
