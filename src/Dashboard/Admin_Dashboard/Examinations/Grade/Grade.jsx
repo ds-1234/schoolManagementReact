@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
-import edit from '../../../assets/edit.png'
-import Table from '../../../Reusable_components/Table';
-import deleteIcon from '../../../assets/delete.png'
-import AddExamType from './AddExamType';
+import edit from '../../../../assets/edit.png'
+import Table from '../../../../Reusable_components/Table';
+import deleteIcon from '../../../../assets/delete.png'
+import AddGrade from './AddGrade';
 import { NavLink } from 'react-router-dom';
 
-function ExamType() {
+function Grade() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -62,14 +62,24 @@ const column = [
     sortable: false,
   },
   {
-    name: 'Exam Name',
-    selector: row => row.name,
+    name: 'Grade',
+    selector: row => row.grade,
     sortable: true,
   },
   {
-    name: 'Exam Date',
-    selector: row => row.date,
+    name: 'Percentage',
+    selector: row => row.percentage,
     sortable: true,
+  },
+  {
+    name: 'Grade Points',
+    selector: row => row.points,
+    sortable: true,
+  },
+  {
+    name: 'Status',
+    selector: row => row.status,
+    sortable: false,
   },
   {
     name: 'Action',
@@ -118,14 +128,16 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Exam Name', value: 'name' },
-  { label: 'Exam Date', value: 'Date' }
+  { label: 'Grade', value: 'name' },
+  { label: 'Percentage', value: 'percentage' },
+  { label: 'Grade Points', value: 'points' },
+  { label: 'Status', value: 'status' }
 ];
 
   return (
     <div className='pl-0 h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Exam Type</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Examination</span> </p>
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Grade</h1>
+      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/Examinations'> Examination </NavLink>/ <span className='text-[#ffae01] font-semibold'>Grade</span> </p>
 
       <Table 
       columns={column}
@@ -136,7 +148,7 @@ const searchOptions = [
       onAddClick={openAddPopup}
       />
 
-      <AddExamType
+      <AddGrade
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
@@ -155,4 +167,4 @@ const searchOptions = [
 };
 
 
-export default ExamType
+export default Grade

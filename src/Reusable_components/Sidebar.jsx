@@ -6,8 +6,8 @@ import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRule
 const Sidebar = () => {
   const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
   const [isStdDropdown , setIsStdDropdown] = useState(false) ;
-  const [isTransDropdown , setIsTransDropdown] = useState(false) ;
-  const [isNoticeDropdown , setIsNoticeDropdown] = useState(false) ;
+  const [isExamDropdown , setIsExamDropdown] = useState(false) ;
+  const [isUserDropdown , setIsUserDropdown] = useState(false) ;
 
   const toggleDropdown = () => {
     setIsDashBoardDropdown(!isDashboardDropdown);
@@ -17,13 +17,14 @@ const Sidebar = () => {
     setIsStdDropdown(!isStdDropdown);
   };
 
-  const toggleTransDropdown = () => {
-    setIsTransDropdown(!isTransDropdown);
+  const toggleExamDropdown = () => {
+    setIsExamDropdown(!isExamDropdown);
   };
 
-  const toggleNoticeDropdown = () => {
-    setIsNoticeDropdown(!isNoticeDropdown);
+  const toggleUserDropdown = () => {
+    setIsUserDropdown(!isUserDropdown);
   };
+
 
   return (
     <div className="h-full bg-[#051f3e] text-white w-64">
@@ -114,9 +115,9 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
                 User
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleNoticeDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleUserDropdown} />
             </NavLink>
-            {isNoticeDropdown && (
+            {isUserDropdown && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -300,9 +301,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Examinations
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleNoticeDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleExamDropdown} />
             </NavLink>
-            {isNoticeDropdown && (
+            {isExamDropdown && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink

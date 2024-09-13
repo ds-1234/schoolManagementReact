@@ -12,10 +12,11 @@ function AdmissionForm() {
   };
 
   return (
-    <>
+    <div className='pl-0 h-full mb-10'>
+       <h1 className='text-lg md:text-2xl pl-28 pt-8 font-semibold text-black'>Admission Form</h1>
+       <p className='pl-28 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
 
-    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-6 my-10">
-            <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/allStudents'> Students </NavLink>/ <span className='text-[#ffae01] font-semibold'>Addmission Form</span> </p>
+    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-6 my-5">
       <h2 className="text-2xl font-semibold text-black">Add New Students</h2>
       <div className="grid grid-cols-4 gap-6">
         <div>
@@ -93,7 +94,7 @@ function AdmissionForm() {
           <Button onClick={() => reset()} label="Reset" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
-    </>
+    </div>
   );
 }
 
