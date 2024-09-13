@@ -1,15 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
-//   const [book, setBook] = useState({
-
-//   });
-
   const {
     register,
     handleSubmit,
@@ -17,7 +14,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     reset,
     setValue,
   } = useForm();
-
+  const [defaultActive, setDefaultActive] = useState(true);
   useEffect(() => {
     if (bookId) {
       axios({
@@ -28,28 +25,29 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         },
       })
         .then((response) => {
-          setSchool(response.data.data);
+          const data = response.data.data;
           // Set form values
-        //   reset(response.data.data);
+          setDefaultActive(data.isActive ? true : false);
+          reset(data);
         })
         .catch((error) => {
           console.error('Error fetching Book:', error);
         });
     }
-  }, [bookId, reset,isOpen]);
+  }, [bookId, reset, isOpen]);
 
-  const SubmitBook = (data) => {
+  const submitBook = (data) => {
     axios({
-      method: 'post', 
-      url: `http://localhost:8080/book/getBook/${bookId}`,
+      method: 'POST', 
+      url: `http://localhost:8080/book/createBook/${bookId}`, // Correct URL for updating
       data: {
         name: data.name,
         description: data.description,
         author: data.author,
         publishingYear: data.publishingYear,
-        allotedStratDate: '',
-        allotedEndtDate: '',
-        isActive: '',
+        allotedStartDate: data.allotedStartDate, // Include all fields
+        allotedEndDate: data.allotedEndDate,
+        isActive: data.isActive ? 'true' : 'false', // Convert boolean to string
       },
       headers: {
         'Content-Type': 'application/json',
@@ -78,9 +76,9 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         >
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit School</h2>
-        <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
-        <div>
+        <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit Book</h2>
+        <form onSubmit={handleSubmit(submitBook)} className="space-y-4">
+          <div>
             <Input
               {...register('name', {
                 required: 'Book name is required',
@@ -104,8 +102,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
               label="Description"
               labelPlacement="outside"
               placeholder="Enter the Description"
-              aria-invalid={errors.houseNumber ? 'true' : 'false'}
-              color={errors.houseNumber ? 'error' : 'default'}
+              aria-invalid={errors.description ? 'true' : 'false'}
+              color={errors.description ? 'error' : 'default'}
             />
             {errors.description && (
               <span className="text-red-500 text-sm">{errors.description.message}</span>
@@ -115,9 +113,9 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           <div>
             <Input
               {...register('author', {
-                required: 'author is required',
+                required: 'Author is required',
               })}
-              label="author"
+              label="Author"
               labelPlacement="outside"
               placeholder="Enter the author"
               aria-invalid={errors.author ? 'true' : 'false'}
@@ -144,22 +142,43 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             )}
           </div>
 
+          <div>
+            <Input
+              {...register('allotedStartDate')}
+              label="Alloted Start Date"
+              labelPlacement="outside"
+              aria-invalid={errors.allotedStartDate ? 'true' : 'false'}
+              color={errors.allotedStartDate ? 'error' : 'default'}
+            />
+            {errors.allotedStartDate && (
+              <span className="text-red-500 text-sm">{errors.allotedStartDate.message}</span>
+            )}
+          </div>
 
-          {/* <Button
-            type="submit"
-            radius="full"
-            variant="shadow"
-            color="primary"
-            className="w-full mt-4"
-          >
-            Update Book
-          </Button> */}
+          <div>
+            <Input
+              {...register('allotedEndDate')}
+              label="Alloted End Date"
+              labelPlacement="outside"
+              aria-invalid={errors.allotedEndDate ? 'true' : 'false'}
+              color={errors.allotedEndDate ? 'error' : 'default'}
+            />
+            {errors.allotedEndDate && (
+              <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
+            )}
+          </div>
 
-          <Button 
-          // label={"Update Book"}
+      {/* Reusable Toggle Button */}
+      <ToggleButton
+        id="active"
+        label="Active"
+        register={register}
+        defaultChecked={defaultActive} // Default to true
+      />
+
+        <Button 
           type='submit'
           className='w-full text-center'
-          // onClick={handleSubmit}
           />
         </form>
       </div>
