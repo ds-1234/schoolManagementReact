@@ -78,8 +78,7 @@ function Class() {
     },
     {
       name: 'Subject',
-      selector: row => row.subject.subject,
-      sortable: true,
+      selector: row => row.subject.length > 0 ? row.subject[0].subject : 'N/A',      sortable: true,
     },
     {
       name: 'Action',
