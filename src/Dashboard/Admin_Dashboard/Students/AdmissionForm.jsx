@@ -90,7 +90,7 @@ function AdmissionForm() {
         </div>
       </div>
       <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8'/>
+          <Button type='submit' label="Submit" className='px-8'/>
           <Button onClick={() => reset()} label="Reset" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>

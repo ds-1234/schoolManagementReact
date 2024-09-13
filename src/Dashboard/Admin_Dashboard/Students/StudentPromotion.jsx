@@ -75,7 +75,7 @@ function StudentPromotion() {
       <div className="flex justify-start gap-4">
         <Button
           type="submit"
-         label={"Save"}
+         label={"Submit"}
         />
         <Button
           type="button"

@@ -137,7 +137,7 @@ const searchOptions = [
   return (
     <div className='pl-0 h-full mb-10'>
       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Grade</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/Examinations'> Examination </NavLink>/ <span className='text-[#ffae01] font-semibold'>Grade</span> </p>
+      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/Examinations'> Exam Type </NavLink>/ <span className='text-[#ffae01] font-semibold'>Grade</span> </p>
 
       <Table 
       columns={column}
