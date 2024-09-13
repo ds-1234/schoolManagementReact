@@ -1,11 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-// import './Table.css';
-// import { Link } from 'react-router-dom';
+
 import edit from '../../../assets/edit.png';
 import AddBooksPopup from './AddBooksPopup';
 import EditBookPopup from './EditBookPopup';
-// import DataTable from 'react-data-table-component';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
