@@ -9,6 +9,7 @@ import EditBookPopup from './EditBookPopup';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
+import StatusButton from '../../../Reusable_components/StatusButton';
 
 
 function Books() {
@@ -61,7 +62,9 @@ function Books() {
     },
     {
       name: 'Status',
-      selector:  row => row.isActive ? 'true' : 'false',
+      selector: row => (
+        <StatusButton isActive={row.isActive}/>
+      ),
       sortable: true,
     },
     {
