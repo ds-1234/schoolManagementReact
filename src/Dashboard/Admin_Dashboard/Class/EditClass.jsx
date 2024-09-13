@@ -128,9 +128,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
           <Button 
             type='submit'
             className='w-full text-center'
-          >
-            Update Class
-          </Button>
+          />
+
         </form>
       </div>
     </div>

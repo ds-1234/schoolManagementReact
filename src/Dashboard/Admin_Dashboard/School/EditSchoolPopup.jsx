@@ -1,57 +1,61 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Input } from '@nextui-org/react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 
 const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors }, 
-    reset 
-  } = useForm();
+  const [school, setSchool] = useState({
+    name: '',
+    houseNumber: '',
+    street: '',
+    city: '',
+    state: '',
+    pinCode: '',
+    country: ''
+  });
 
   useEffect(() => {
     if (schoolId) {
-      axios({
-        method: 'GET',
-        url: `http://localhost:8080/school/getSchool/${schoolId}`,
+      axios.get(`http://localhost:8080/school/getSchool/${schoolId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-        .then((response) => {
-          const schoolData = response.data.data;
-          // Set form values
-          reset(schoolData);
-        })
-        .catch((error) => {
-          console.error('Error fetching School:', error);
-          toast.error('Failed to fetch school data.');
-        });
+      .then((response) => {
+        setSchool(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching School:', error);
+        toast.error('Failed to fetch school data.');
+      });
     }
-  }, [schoolId, reset]);
+  }, [schoolId]);
 
-  const Submitschool = (data) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSchool({ ...school, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     axios({
       method: 'POST', 
       url: `http://localhost:8080/school/updateSchool/${schoolId}`,
-      data: data,
+      data: school,
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => {
-        toast.success('School updated successfully!');
-        onSuccess(); // Call onSuccess to refresh data
-        onClose(); // Close the popup
-      })
-      .catch((err) => {
-        console.error('Error:', err);
-        toast.error('Failed to update school.');
-      });
+    .then((res) => {
+      toast.success('School updated successfully!');
+      onSuccess(); // Call onSuccess to refresh data
+      onClose(); // Close the popup
+    })
+    .catch((err) => {
+      console.error('Error:', err);
+      toast.error('Failed to update school.');
+    });
   };
 
   if (!isOpen) return null;
@@ -66,82 +70,103 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
           &times;
         </button>
         <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit School</h2>
-        <form onSubmit={handleSubmit(Submitschool)} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Input
-              {...register('name', { required: 'School name is required' })}
+              type="text"
+              name="name"
+              value={school.name}
+              onChange={handleChange}
               label="School Name"
               placeholder="Enter the school name"
-              aria-invalid={errors.name ? 'true' : 'false'}
-              color={errors.name ? 'error' : 'default'}
+              aria-invalid={school.name ? 'false' : 'true'}
+              color={school.name ? 'default' : 'error'}
             />
-            {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
+            {!school.name && <span className="text-red-500 text-sm">School name is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('houseNumber', { required: 'House number is required' })}
+              type="text"
+              name="houseNumber"
+              value={school.houseNumber}
+              onChange={handleChange}
               label="House Number"
               placeholder="Enter the house number"
-              aria-invalid={errors.houseNumber ? 'true' : 'false'}
-              color={errors.houseNumber ? 'error' : 'default'}
+              aria-invalid={school.houseNumber ? 'false' : 'true'}
+              color={school.houseNumber ? 'default' : 'error'}
             />
-            {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
+            {!school.houseNumber && <span className="text-red-500 text-sm">House number is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('street', { required: 'Street is required' })}
+              type="text"
+              name="street"
+              value={school.street}
+              onChange={handleChange}
               label="Street"
               placeholder="Enter the street"
-              aria-invalid={errors.street ? 'true' : 'false'}
-              color={errors.street ? 'error' : 'default'}
+              aria-invalid={school.street ? 'false' : 'true'}
+              color={school.street ? 'default' : 'error'}
             />
-            {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
+            {!school.street && <span className="text-red-500 text-sm">Street is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('city', { required: 'City is required' })}
+              type="text"
+              name="city"
+              value={school.city}
+              onChange={handleChange}
               label="City"
               placeholder="Enter the city"
-              aria-invalid={errors.city ? 'true' : 'false'}
-              color={errors.city ? 'error' : 'default'}
+              aria-invalid={school.city ? 'false' : 'true'}
+              color={school.city ? 'default' : 'error'}
             />
-            {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
+            {!school.city && <span className="text-red-500 text-sm">City is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('state', { required: 'State is required' })}
+              type="text"
+              name="state"
+              value={school.state}
+              onChange={handleChange}
               label="State"
               placeholder="Enter the state"
-              aria-invalid={errors.state ? 'true' : 'false'}
-              color={errors.state ? 'error' : 'default'}
+              aria-invalid={school.state ? 'false' : 'true'}
+              color={school.state ? 'default' : 'error'}
             />
-            {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
+            {!school.state && <span className="text-red-500 text-sm">State is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('pinCode', { required: 'Pin code is required' })}
+              type="text"
+              name="pinCode"
+              value={school.pinCode}
+              onChange={handleChange}
               label="Pin Code"
               placeholder="Enter the pin code"
-              aria-invalid={errors.pinCode ? 'true' : 'false'}
-              color={errors.pinCode ? 'error' : 'default'}
+              aria-invalid={school.pinCode ? 'false' : 'true'}
+              color={school.pinCode ? 'default' : 'error'}
             />
-            {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
+            {!school.pinCode && <span className="text-red-500 text-sm">Pin code is required</span>}
           </div>
 
           <div>
             <Input
-              {...register('country', { required: 'Country is required' })}
+              type="text"
+              name="country"
+              value={school.country}
+              onChange={handleChange}
               label="Country"
               placeholder="Enter the country"
-              aria-invalid={errors.country ? 'true' : 'false'}
-              color={errors.country ? 'error' : 'default'}
+              aria-invalid={school.country ? 'false' : 'true'}
+              color={school.country ? 'default' : 'error'}
             />
-            {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
+            {!school.country && <span className="text-red-500 text-sm">Country is required</span>}
           </div>
 
           <Button 
