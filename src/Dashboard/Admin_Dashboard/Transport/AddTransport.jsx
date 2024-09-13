@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Button from '../../../Reusable_components/Button'
 import axios from 'axios';
 import {toast , ToastContainer } from 'react-toastify';
+import { NavLink } from 'react-router-dom';
 
 function AddTransport() {
 
@@ -38,6 +39,9 @@ function AddTransport() {
   }
   
   return (
+    <div className='pl-0 h-full'>
+       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Transport </h1>
+       <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/transport'> Transport </NavLink> /<span className='text-[#ffae01] font-semibold'>Add Transport</span> </p>
 
    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
       <h2 className="text-2xl font-semibold mb-6 text-black">Add New Transport</h2>
@@ -135,7 +139,7 @@ function AddTransport() {
         </div>
       </form>
     </div>
-
+</div>
   )
 }
 

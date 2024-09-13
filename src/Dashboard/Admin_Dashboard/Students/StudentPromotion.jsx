@@ -22,9 +22,11 @@ function StudentPromotion() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-6 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-10 my-20 ">
-            <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/allStudents'> Students </NavLink>/ <NavLink to = '/admin/admissionForm'> Admission </NavLink> / <span className='text-[#ffae01] font-semibold'> Promotion</span> </p>
+    <div className='pl-0 h-full mb-10'>
+       <h1 className='text-lg md:text-2xl pl-28 pt-8 font-semibold text-black'>Admission Form</h1>
+       <p className='pl-28 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'> Student Promotion</span> </p>
 
+    <form onSubmit={handleSubmit(onSubmit)} className="p-6 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-10 my-10">
       <h2 className="text-2xl font-semibold text-black">Search Student Promotion</h2>
       <div className="grid grid-cols-4 gap-6">
         <div>
@@ -83,6 +85,7 @@ function StudentPromotion() {
         />
       </div>
     </form>
+    </div>
   );
 }
 

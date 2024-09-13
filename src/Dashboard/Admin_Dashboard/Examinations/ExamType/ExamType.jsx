@@ -1,59 +1,59 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
-import edit from '../../../assets/edit.png'
-import Table from '../../../Reusable_components/Table';
-import deleteIcon from '../../../assets/delete.png'
-import AddRole from './AddRole';
-import EditRole from './EditRole';
+import edit from '../../../../assets/edit.png'
+import Table from '../../../../Reusable_components/Table';
+import deleteIcon from '../../../../assets/delete.png'
+import AddExamType from './AddExamType';
+import { NavLink } from 'react-router-dom';
 
-function Role() {
+function ExamType() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editRoleId , setEditRoleId] = useState(null)
+//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+//   const [editSubjectId , setEditSubjectId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  const openEditPopup = (id) => {
-    setEditRoleId(id);
-    setIsEditPopupOpen(true);
-  };
+//   const openEditPopup = (id) => {
+//     setEditSubjectId(id);
+//     setIsEditPopupOpen(true);
+//   };
 
-  const closeEditPopup = () => {
-    setEditRoleId(null);
-    setIsEditPopupOpen(false);
-  };
+//   const closeEditPopup = () => {
+//     setEditSubjectId(null);
+//     setIsEditPopupOpen(false);
+//   };
 
-  const fetchData = () => {
-    axios({
-      method: "GET",
-      url: `http://localhost:8080/role/getRoleList`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    })
-      .then((response) => {
-        console.log("Data from API:", response.data);
-        setData(response.data.data);
-        setFilterData(response.data.data) ;
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
+//   const fetchData = () => {
+//     axios({
+//       method: "GET",
+//       url: `http://localhost:8080/subject/getSubjectList`,
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       // withCredentials: true,
+//     })
+//       .then((response) => {
+//         console.log("Data from API:", response.data);
+//         setData(response.data.data);
+//         setFilterData(response.data.data) ;
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching data:", error);
+//       });
+//   };
 
-  useEffect(() => {
-    fetchData() ;
-  } , []);
+//   useEffect(() => {
+//     fetchData() ;
+//   } , []);
 
-  useEffect(() => {
-    setData(data);  
-    setFilterData(data); 
-  }, []);
+//   useEffect(() => {
+//     setData(data);  
+//     setFilterData(data); 
+//   }, []);
   
 const column = [
   {
@@ -62,8 +62,13 @@ const column = [
     sortable: false,
   },
   {
-    name: 'Role',
+    name: 'Exam Name',
     selector: row => row.name,
+    sortable: true,
+  },
+  {
+    name: 'Exam Date',
+    selector: row => row.date,
     sortable: true,
   },
   {
@@ -113,13 +118,15 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'role', value: 'role' },
-//   { label: 'Subject Description', value: 'description' }
+  { label: 'Exam Name', value: 'name' },
+  { label: 'Exam Date', value: 'Date' }
 ];
 
   return (
     <div className='pl-0 h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Role</h1>
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Exam Type</h1>
+      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Examination</span> </p>
+
       <Table 
       columns={column}
       data={data}
@@ -129,7 +136,7 @@ const searchOptions = [
       onAddClick={openAddPopup}
       />
 
-      <AddRole
+      <AddExamType
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
@@ -137,15 +144,15 @@ const searchOptions = [
         }} 
         />
 
-      <EditRole
+      {/* <EditSubject
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        roleId={editRoleId}
+        subjectId={editSubjectId}
         onSuccess={fetchData} // Refresh data after editing
-      />
+      /> */}
     </div>
   );
 };
 
 
-export default Role
+export default ExamType
