@@ -60,6 +60,11 @@ function Books() {
       sortable: true,
     },
     {
+      name: 'Status',
+      selector:  row => row.isActive ? 'true' : 'false',
+      sortable: true,
+    },
+    {
       name: 'Action',
       cell: row => (
         <div className='flex gap-2'>
@@ -163,6 +168,7 @@ const searchOptions = [
   { label: 'Book Reference Id', value: 'bookRefId' },
   { label: 'Alloted Start Date', value: 'allotedStratDate' },
   { label: 'Alloted End Date', value: 'allotedEndtDate' },
+  { label: 'isActive', value: 'isActive' },
 ];
 
   return (

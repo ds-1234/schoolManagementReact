@@ -1,27 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {  Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 
 const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
-  const [school, setSchool] = useState({
-    name: '',
-    houseNumber: '',
-    street: '',
-    city: '',
-    state: '',
-    pinCode: '',
-    country: ''
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors }, 
+    reset 
   } = useForm();
 
   useEffect(() => {
@@ -34,37 +23,27 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
         },
       })
         .then((response) => {
-          setSchool(response.data.data);
+          const schoolData = response.data.data;
           // Set form values
-        //   reset(schoolData);
+          reset(schoolData);
         })
         .catch((error) => {
           console.error('Error fetching School:', error);
+          toast.error('Failed to fetch school data.');
         });
     }
-  }, [schoolId, reset,isOpen]);
-
-
+  }, [schoolId, reset]);
 
   const Submitschool = (data) => {
     axios({
-      method: 'post', 
+      method: 'POST', 
       url: `http://localhost:8080/school/updateSchool/${schoolId}`,
-      data: {
-        name: data.name,
-        houseNumber: data.houseNumber,
-        street: data.street,
-        city: data.city,
-        state: data.state,
-        pinCode: data.pinCode,
-        country: data.country,
-      },
+      data: data,
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((res) => {
-        console.log('Response:', res.data);
         toast.success('School updated successfully!');
         onSuccess(); // Call onSuccess to refresh data
         onClose(); // Close the popup
@@ -165,21 +144,9 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
             {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
           </div>
 
-          {/* <Button
-            type="submit"
-            radius="full"
-            variant="shadow"
-            color="primary"
-            className="w-full mt-4"
-          >
-            Update School
-          </Button> */}
-
           <Button 
-          // label={"Update School"}
-          type='submit'
-          className='w-full text-center'
-          // onClick={handleSubmit}
+            type='submit'
+            className='w-full text-center'
           />
         </form>
       </div>
