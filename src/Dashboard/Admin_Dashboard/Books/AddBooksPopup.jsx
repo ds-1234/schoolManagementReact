@@ -4,6 +4,7 @@ import {Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
   const {
@@ -26,9 +27,9 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         description: data.description,
         author: data.author,
         publishingYear: data.publishingYear,
-        allotedStratDate: '',
-        allotedEndtDate: '',
-        isActive: '',
+        allotedStratDate: data.startdate,
+        allotedEndtDate: data.enddate,
+        isActive: data.active ? 'true' : 'false'
       },
       headers: {
         'Content-Type': 'application/json',
@@ -60,12 +61,13 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add Book</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
           <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Book Name
+            </label>
             <Input
               {...register('name', {
                 required: 'Book name is required',
               })}
-              label="Book Name"
-              labelPlacement="outside"
               placeholder="Enter the Book name"
               aria-invalid={errors.name ? 'true' : 'false'}
               color={errors.name ? 'error' : 'default'}
@@ -76,12 +78,13 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
           </div>
 
           <div>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+            </label>
             <Input
               {...register('description', {
                 required: 'Description is required',
               })}
-              label="Description"
-              labelPlacement="outside"
               placeholder="Enter the Description"
               aria-invalid={errors.houseNumber ? 'true' : 'false'}
               color={errors.houseNumber ? 'error' : 'default'}
@@ -92,12 +95,13 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
           </div>
 
           <div>
+              <label htmlFor="author" className="block text-sm font-medium text-gray-700">
+              Author
+            </label>
             <Input
               {...register('author', {
                 required: 'author is required',
               })}
-              label="author"
-              labelPlacement="outside"
               placeholder="Enter the author"
               aria-invalid={errors.author ? 'true' : 'false'}
               color={errors.author ? 'error' : 'default'}
@@ -107,38 +111,67 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
-          <div>
+<div>
+  <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+    Publishing Year
+  </label>
+  <input
+    {...register('publishingYear', { required: 'Publishing Year is required' })}
+    type="date"
+    id="publishingYear"
+    placeholder="Enter the Publishing Year"
+    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"
+  />
+  {errors.publishingYear && (
+    <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+  )}
+</div>
+
+            <div>
+              <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
+              Alloted Start Date
+            </label>
             <Input
-              {...register('publishingYear', {
-                required: 'Publishing Year is required',
+              {...register('startdate', {
+                required: 'startdate is required',
               })}
-              label="Publishing Year"
-              labelPlacement="outside"
-              placeholder="Enter the Publishing Year"
-              aria-invalid={errors.publishingYear ? 'true' : 'false'}
-              color={errors.publishingYear ? 'error' : 'default'}
+              placeholder="Enter the Alloted Start Date"
+              aria-invalid={errors.author ? 'true' : 'false'}
+              color={errors.author ? 'error' : 'default'}
             />
-            {errors.publishingYear && (
-              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            {errors.startdate && (
+              <span className="text-red-500 text-sm">{errors.startdate.message}</span>
             )}
           </div>
 
+            <div>
+              <label htmlFor="enddate" className="block text-sm font-medium text-gray-700">
+              Alloted End Date
+            </label>
+            <Input
+              {...register('enddate', {
+                required: 'enddate is required',
+              })}
+              placeholder="Enter the Alloted End Date"
+              aria-invalid={errors.author ? 'true' : 'false'}
+              color={errors.author ? 'error' : 'default'}
+            />
+            {errors.enddate && (
+              <span className="text-red-500 text-sm">{errors.enddate.message}</span>
+            )}
+          </div>
 
-          {/* <Button
-            type="submit"
-            radius="full"
-            variant="shadow"
-            color="primary"
-            className="w-full mt-4"
-          >
-            Add Book
-          </Button> */}
+      {/* Reusable Toggle Button */}
+      <ToggleButton
+        id="active"
+        label="Active"
+        register={register}
+        defaultChecked={true} // Default to true
+      />
 
           <Button 
-          // onClick={handleSubmit}
           type='submit'
           className='w-full text-center'
-          // label={"Add Book"}
           />
 
         </form>

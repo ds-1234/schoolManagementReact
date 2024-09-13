@@ -9,6 +9,7 @@ import EditBookPopup from './EditBookPopup';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
+import StatusButton from '../../../Reusable_components/StatusButton';
 
 
 function Books() {
@@ -57,6 +58,13 @@ function Books() {
     {
       name: 'Alloted End Date',
       selector: row => row.allotedEndtDate,
+      sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: row => (
+        <StatusButton isActive={row.isActive}/>
+      ),
       sortable: true,
     },
     {
@@ -163,6 +171,7 @@ const searchOptions = [
   { label: 'Book Reference Id', value: 'bookRefId' },
   { label: 'Alloted Start Date', value: 'allotedStratDate' },
   { label: 'Alloted End Date', value: 'allotedEndtDate' },
+  { label: 'isActive', value: 'isActive' },
 ];
 
   return (
