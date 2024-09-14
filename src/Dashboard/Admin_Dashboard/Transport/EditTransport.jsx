@@ -40,7 +40,7 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/transport/createTransport/${transportId}`,
+      url: `http://localhost:8080/transport/updateTransport`,
       headers: {
         "Content-Type": "application/json",
       },

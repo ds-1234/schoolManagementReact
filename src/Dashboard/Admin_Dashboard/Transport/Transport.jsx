@@ -12,6 +12,12 @@ function Transport() {
 
 const column = [
   {
+    name: 'Transport Id',
+    selector: row => row.transportId,
+    sortable: true,
+    width: '150px',
+  }, 
+  {
     name: 'Route Name',
     selector: row => row.routeName,
     sortable: true,
@@ -53,7 +59,7 @@ const column = [
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button>
+      <button onClick={deleteData}>
         <img src={deleteIcon} alt="Delete" className='h-8' />
       </button>
       </div>
@@ -67,7 +73,21 @@ const column = [
   const [editTransportId, setEditTransportId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
-
+  const deleteData = () => {
+    axios({
+      method: 'DELETE' , 
+      url: `http://localhost:8080/transport/deleteTransport}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      console.log("Delete transport");
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }
 
   const fetchData = async() => {
     axios({
@@ -144,9 +164,9 @@ const column = [
   }
 
   return (
-    <div className='pl-0 h-full mb-10'>
-       <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Transport Lists</h1>
-       <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Transport</span> </p>
+    <div className='h-full mb-10'>
+       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Transport Lists</h1>
+       <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Transport</span> </p>
 
 
       <Table

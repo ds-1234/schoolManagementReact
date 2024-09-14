@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
@@ -27,7 +27,7 @@ const Sidebar = () => {
 
 
   return (
-    <div className="h-full bg-[#051f3e] text-white w-64">
+    <div className="h-full bg-[#051f3e] text-white">
       <nav className="p-5">
         <ul>
           {/* Dashboard Section */}
@@ -362,6 +362,20 @@ const Sidebar = () => {
                 </li>
               </ul>
             )}
+          </li>
+
+          {/* Time Table Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/TimeTable"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faCalendarDay} className="mr-3 text-[#ffae01]" />
+                Time Table
+              
+            </NavLink>
           </li>
         </ul>
       </nav>

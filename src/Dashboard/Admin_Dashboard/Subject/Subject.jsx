@@ -56,39 +56,42 @@ function Subject() {
     setFilterData(data); 
   }, []);
   
-const column = [
-  {
-    name: 'SR.No',
-    selector: (row,idx) => idx+1,
-    sortable: false,
-  },
-  {
-    name: 'Subject Name',
-    selector: row => row.subject,
-    sortable: true,
-  },
-  {
-    name: 'Subject Description',
-    selector: row => row.description,
-    sortable: true,
-  },
-  {
-    name: 'Action',
-    cell: row => (
-      <div className='flex gap-2'>
-        <button
-        onClick={() => openEditPopup(row.id)}
-      >
-        <img src={edit} alt="Edit" className='h-8' />
-      </button>
-
-      <button>
-        <img src={deleteIcon} alt="Delete" className='h-8' />
-      </button>
-      </div>
-    ),
-  },
-]
+  const column = [
+    {
+      name: 'SR.No',
+      selector: (row, idx) => idx + 1,
+      sortable: false,
+      width: '300px', 
+    },
+    {
+      name: 'Subject Name',
+      selector: (row) => row.subject,
+      sortable: true,
+      wrap: true, 
+      width: '300px', 
+    },
+    {
+      name: 'Subject Description',
+      selector: (row) => row.description,
+      sortable: true,
+      wrap: true,
+      width: '300px', 
+    },
+    {
+      name: 'Action',
+      cell: (row) => (
+        <div className="flex gap-2">
+          <button onClick={() => openEditPopup(row.id)}>
+            <img src={edit} alt="Edit" className="h-8" />
+          </button>
+          <button>
+            <img src={deleteIcon} alt="Delete" className="h-8" />
+          </button>
+        </div>
+      ),
+      width: '300px', 
+    },
+  ];
 
 // const handleFilter = (event) => {
 //   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
@@ -124,9 +127,9 @@ const searchOptions = [
 ];
 
   return (
-    <div className='pl-0 h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Subjects</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Subject</span> </p>
+    <div className=' h-full mb-10'>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Subjects</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Subject</span> </p>
 
       <Table 
       columns={column}
