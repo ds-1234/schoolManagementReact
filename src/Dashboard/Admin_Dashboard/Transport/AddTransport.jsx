@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form";
 import Button from '../../../Reusable_components/Button'
 import axios from 'axios';
 import {toast , ToastContainer } from 'react-toastify';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 function AddTransport() {
 
   const { register, handleSubmit,formState: { errors }, reset } = useForm();
-
+  const navigate = useNavigate()
   // Function to handle form submission
   const onSubmit = (data) => {
     axios({
@@ -20,7 +21,7 @@ function AddTransport() {
             driverName : data.driverName , 
             licenseNumber : data.licenseNumber ,
             phone : data.phone , 
-            isActive : true
+            isActive : data.active
         },
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +31,8 @@ function AddTransport() {
       .then((response)=>{
         console.log('response' , response.data)
         toast.success("Successfully Add Transport!");
-        reset()
+        // reset()
+        navigate('/admin/transport')
     })
     .catch(err=>{
         console.log(err,'error:')
@@ -121,13 +123,21 @@ function AddTransport() {
                   <p className="text-red-500 text-sm">{errors.phone.message}</p>
                 )}
           </div>
+
+      {/* Reusable Toggle Button */}
+      <ToggleButton
+        id="active"
+        label="Active"
+        register={register}
+        defaultChecked={true} // Default to true
+      />
+
         </div>
 
         <div className="flex space-x-4">
           <Button
             type="submit"
             className="px-8"
-            label = "Save"
           />
           <Button
             type="button"
