@@ -57,29 +57,30 @@ function NoticeBoard() {
       
       <div className="p-6 max-w-4xl mx-auto bg-white space-y-2 my-10">
       
-      {/* Search Inputs */}
-      <div className="flex gap-4 mb-6">
-        <input
-          type="date"
-          placeholder="Search by Date..."
-          className="border p-2 rounded w-full"
-          value={searchDate}
-          onChange={(e) => setSearchDate(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Search by Title..."
-          className="border p-2 rounded w-full"
-          value={searchTitle}
-          onChange={(e) => setSearchTitle(e.target.value)}
-        />
-        <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
-      </div>
+ {/* Search Inputs */}
+<div className="flex gap-4 mb-6">
+  <input
+    type="date"
+    placeholder="Search by Date..."
+    className="border p-4 text-lg rounded w-full"  
+    value={searchDate}
+    onChange={(e) => setSearchDate(e.target.value)}
+  />
+  <input
+    type="text"
+    placeholder="Search by Title..."
+    className="border p-4 text-lg rounded w-full"  
+    value={searchTitle}
+    onChange={(e) => setSearchTitle(e.target.value)}
+  />
+  <button
+    className="bg-yellow-500 text-white px-6 py-4 text-lg rounded"  
+    onClick={handleSearch}
+  >
+    Search
+  </button>
+</div>
+
 
       {/* Notice List */}
       <div>
@@ -98,7 +99,7 @@ function NoticeBoard() {
               </div>
 
             {/* Notice Details */}
-            <h2 className="text-lg font-semibold mt-2">{notice.noticeTitle}</h2>
+            <h1 className="text-lg font-bold mt-2">{notice.noticeTitle}</h1>
             <p className="text-black">{notice.noticeDetails}</p>
 
             
