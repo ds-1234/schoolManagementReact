@@ -56,7 +56,7 @@ const TimeTable = () => {
 
               {/* Show Filter Form */}
               {isFilterOpen && (
-                <div className="absolute bg-gray-100 border rounded-lg shadow-lg p-4 mt-2 w-60 z-50">
+                <div className="absolute bg-gray-100 border rounded-lg shadow-lg p-4 mt-2 w-60 z-50 right-0">
                     <h2 className="mb-4 text-lg font-bold">Filter</h2>
 
                     {/* Class Select */}
