@@ -56,39 +56,42 @@ function Subject() {
     setFilterData(data); 
   }, []);
   
-const column = [
-  {
-    name: 'SR.No',
-    selector: (row,idx) => idx+1,
-    sortable: false,
-  },
-  {
-    name: 'Subject Name',
-    selector: row => row.subject,
-    sortable: true,
-  },
-  {
-    name: 'Subject Description',
-    selector: row => row.description,
-    sortable: true,
-  },
-  {
-    name: 'Action',
-    cell: row => (
-      <div className='flex gap-2'>
-        <button
-        onClick={() => openEditPopup(row.id)}
-      >
-        <img src={edit} alt="Edit" className='h-8' />
-      </button>
-
-      <button>
-        <img src={deleteIcon} alt="Delete" className='h-8' />
-      </button>
-      </div>
-    ),
-  },
-]
+  const column = [
+    {
+      name: 'SR.No',
+      selector: (row, idx) => idx + 1,
+      sortable: false,
+      width: '150px', 
+    },
+    {
+      name: 'Subject Name',
+      selector: (row) => row.subject,
+      sortable: true,
+      wrap: true, 
+      width: '250px', 
+    },
+    {
+      name: 'Subject Description',
+      selector: (row) => row.description,
+      sortable: true,
+      wrap: true,
+      width: '300px', 
+    },
+    {
+      name: 'Action',
+      cell: (row) => (
+        <div className="flex gap-2">
+          <button onClick={() => openEditPopup(row.id)}>
+            <img src={edit} alt="Edit" className="h-8" />
+          </button>
+          <button>
+            <img src={deleteIcon} alt="Delete" className="h-8" />
+          </button>
+        </div>
+      ),
+      width: '200px', 
+    },
+  ];
 
 // const handleFilter = (event) => {
 //   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
