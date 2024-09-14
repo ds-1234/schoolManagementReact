@@ -12,6 +12,12 @@ function Transport() {
 
 const column = [
   {
+    name: 'Transport Id',
+    selector: row => row.transportId,
+    sortable: true,
+    width: '150px',
+  }, 
+  {
     name: 'Route Name',
     selector: row => row.routeName,
     sortable: true,
@@ -53,7 +59,7 @@ const column = [
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button>
+      <button onClick={deleteData}>
         <img src={deleteIcon} alt="Delete" className='h-8' />
       </button>
       </div>
@@ -67,7 +73,21 @@ const column = [
   const [editTransportId, setEditTransportId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
-
+  const deleteData = () => {
+    axios({
+      method: 'DELETE' , 
+      url: `http://localhost:8080/transport/deleteTransport}`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      console.log("Delete transport");
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+  }
 
   const fetchData = async() => {
     axios({
