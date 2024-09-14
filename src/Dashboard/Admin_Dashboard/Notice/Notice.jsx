@@ -75,7 +75,7 @@ function NoticeBoard() {
         className="border p-4 text-lg rounded w-full"  
         // value={searchDate}
         onChange={(e) => setSearchDate(e.target.value)}
-     label = 'Select Date'/>
+     label = 'Search By Date...'/>
   </LocalizationProvider>
   <input
     type="text"
@@ -110,7 +110,8 @@ function NoticeBoard() {
               </div>
 
             {/* Notice Details */}
-            <h1 className="text-lg font-bold mt-2">{notice.noticeTitle}</h1>
+            {/* <h1 className="text-lg font-bold mt-2">{notice.noticeTitle}</h1> */}
+            <h1 className="text-3xl font-bold mt-2">{notice.noticeTitle}</h1>
             <p className="text-black">{notice.noticeDetails}</p>
 
             
