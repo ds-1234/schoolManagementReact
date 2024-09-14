@@ -38,16 +38,16 @@ function Books() {
       selector: row => row.publishingYear,
       sortable: true,
     },
-    {
-      name: 'Book unique Id',
-      selector: row => row.bookUniqueId,
-      sortable: true,
-    },
-    {
-      name: 'Book ref Id',
-      selector: row => row.bookRefId,
-      sortable: true,
-    },
+    // {
+    //   name: 'Book unique Id',
+    //   selector: row => row.bookUniqueId,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Book ref Id',
+    //   selector: row => row.bookRefId,
+    //   sortable: true,
+    // },
     {
       name: 'Alloted start date',
       selector: row => row.allotedStratDate,

@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
@@ -71,15 +73,25 @@ const AddExamType = ({ isOpen, onClose }) => {
         </div>
 
         {/* Exam Date Input */}
-        <div className="flex flex-col px-1 w-1/2">
-              <label htmlFor="Dtae">Exam Date  *</label>
+        <div className="flex flex-col mb-5 px-1 w-1/2 rounded-lg bg-gray-100">
+              {/* <label htmlFor="Dtae">Exam Date  *</label>
               <input
                 type="date"
                 id="date"
                 className={`py-1 px-3 mb-5 rounded-lg bg-gray-100 border ${errors.date ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('date', { required: 'Date is required' })}
               />
-              {errors.date && <span className="text-red-500 text-sm">{errors.date.message}</span>}
+              {errors.date && <span className="text-red-500 text-sm">{errors.date.message}</span>} */}
+                  <label htmlFor="Dtae" className="block text-gray-700 font-semibold mb-2">Exam Date  *</label>
+                <LocalizationProvider dateAdapter={AdapterDayjs} >
+    <DatePicker
+      //  className={`py-1 px-3 mb-5 rounded-lg bg-gray-100 border ${errors.date ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}   
+      label = 'Select Date'
+       {...register('date', { required: 'Date is required' })}
+       id="date"
+
+       />
+  </LocalizationProvider>
             </div>
 
         {/* Submit Button */}

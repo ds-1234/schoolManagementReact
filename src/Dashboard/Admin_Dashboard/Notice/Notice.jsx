@@ -3,6 +3,10 @@ import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
 
 function NoticeBoard() {
   const [notices, setNotices] = useState([]);
@@ -59,13 +63,20 @@ function NoticeBoard() {
       
  {/* Search Inputs */}
 <div className="flex gap-4 mb-6">
-  <input
+  {/* <input
     type="date"
     placeholder="Search by Date..."
     className="border p-4 text-lg rounded w-full"  
     value={searchDate}
     onChange={(e) => setSearchDate(e.target.value)}
-  />
+  /> */}
+  <LocalizationProvider dateAdapter={AdapterDayjs} >
+    <DatePicker
+        className="border p-4 text-lg rounded w-full"  
+        // value={searchDate}
+        onChange={(e) => setSearchDate(e.target.value)}
+     label = 'Select Date'/>
+  </LocalizationProvider>
   <input
     type="text"
     placeholder="Search by Title..."

@@ -1,9 +1,11 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
@@ -20,7 +22,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     register,
     handleSubmit,
     formState: { errors },
-
+    getValues,
+    setValue,
   } = useForm();
 
   useEffect(() => {
@@ -33,13 +36,21 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         },
       })
         .then((response) => {
-          setBook(response.data.data);
+          const data = response.data.data;
+          setBook(data);
+          setValue('name', data.name);
+          setValue('description', data.description);
+          setValue('author', data.author);
+          setValue('publishingYear', data.publishingYear);
+          setValue('allotedStartDate', data.allotedStartDate);
+          setValue('allotedEndDate', data.allotedEndDate);
+          setValue('isActive', data.isActive);
         })
         .catch((error) => {
           console.error('Error fetching Book:', error);
         });
     }
-  }, [bookId, isOpen]);
+  }, [bookId, isOpen, setValue]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,8 +60,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     }));
   };
 
-  const submitBook = (e) => {
-    e.preventDefault();
+  const submitBook = (data) => {
     axios({
       method: 'POST',
       url: `http://localhost:8080/book/createBook/${bookId}`,
@@ -86,81 +96,118 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           &times;
         </button>
         <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Edit Book</h2>
-        <form onSubmit={submitBook} className="space-y-4">
+        <form onSubmit={handleSubmit(submitBook)} className="space-y-4">
           <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Book Name
+            </label>
             <Input
-              name="name"
+              {...register('name', { required: 'Book name is required' })}
               value={book.name}
               onChange={handleChange}
-              label="Book Name"
-              labelPlacement="outside"
               placeholder="Enter the Book name"
-              aria-invalid={!!book.name && 'true'}
-              color={!!book.name ? 'default' : 'error'}
+              aria-invalid={errors.name ? 'true' : 'false'}
+              color={errors.name ? 'error' : 'default'}
             />
+            {errors.name && (
+              <span className="text-red-500 text-sm">{errors.name.message}</span>
+            )}
           </div>
 
           <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <Input
-              name="description"
+              {...register('description', { required: 'Description is required' })}
               value={book.description}
               onChange={handleChange}
-              label="Description"
-              labelPlacement="outside"
               placeholder="Enter the Description"
-              aria-invalid={!!book.description && 'true'}
-              color={!!book.description ? 'default' : 'error'}
+              aria-invalid={errors.description ? 'true' : 'false'}
+              color={errors.description ? 'error' : 'default'}
             />
+            {errors.description && (
+              <span className="text-red-500 text-sm">{errors.description.message}</span>
+            )}
           </div>
 
           <div>
+            <label htmlFor="author" className="block text-sm font-medium text-gray-700">
+              Author
+            </label>
             <Input
-              name="author"
+              {...register('author', { required: 'Author is required' })}
               value={book.author}
               onChange={handleChange}
-              label="Author"
-              labelPlacement="outside"
               placeholder="Enter the author"
-              aria-invalid={!!book.author && 'true'}
-              color={!!book.author ? 'default' : 'error'}
+              aria-invalid={errors.author ? 'true' : 'false'}
+              color={errors.author ? 'error' : 'default'}
             />
+            {errors.author && (
+              <span className="text-red-500 text-sm">{errors.author.message}</span>
+            )}
           </div>
 
-          <div>
-            <Input
-              name="publishingYear"
-              value={book.publishingYear}
-              onChange={handleChange}
-              label="Publishing Year"
-              labelPlacement="outside"
-              placeholder="Enter the Publishing Year"
-              aria-invalid={!!book.publishingYear && 'true'}
-              color={!!book.publishingYear ? 'default' : 'error'}
-            />
-          </div>
 
           <div>
+            <label htmlFor="allotedStartDate" className="block text-sm font-medium text-gray-700">
+              Alloted Start Date
+            </label>
             <Input
-              name="allotedStartDate"
+              {...register('allotedStartDate', { required: 'Alloted Start Date is required' })}
               value={book.allotedStartDate}
               onChange={handleChange}
-              label="Alloted Start Date"
-              labelPlacement="outside"
-              aria-invalid={!!book.allotedStartDate && 'true'}
-              color={!!book.allotedStartDate ? 'default' : 'error'}
+              placeholder="Enter the Alloted Start Date"
+              aria-invalid={errors.allotedStartDate ? 'true' : 'false'}
+              color={errors.allotedStartDate ? 'error' : 'default'}
             />
+            {errors.allotedStartDate && (
+              <span className="text-red-500 text-sm">{errors.allotedStartDate.message}</span>
+            )}
           </div>
 
           <div>
+            <label htmlFor="allotedEndDate" className="block text-sm font-medium text-gray-700">
+              Alloted End Date
+            </label>
             <Input
-              name="allotedEndDate"
+              {...register('allotedEndDate', { required: 'Alloted End Date is required' })}
               value={book.allotedEndDate}
               onChange={handleChange}
-              label="Alloted End Date"
-              labelPlacement="outside"
-              aria-invalid={!!book.allotedEndDate && 'true'}
-              color={!!book.allotedEndDate ? 'default' : 'error'}
+              placeholder="Enter the Alloted End Date"
+              aria-invalid={errors.allotedEndDate ? 'true' : 'false'}
+              color={errors.allotedEndDate ? 'error' : 'default'}
             />
+            {errors.allotedEndDate && (
+              <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
+            )}
+          </div>
+          <div>
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+              Publishing Year
+            </label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Select Date"
+                {...register('publishingYear', { required: 'Publishing Year is required' })}
+                // value={book.publishingYear}
+                onChange={(date) => handleChange({ target: { name: 'publishingYear', value: date } })}
+                sx={{
+                  width: '100%',
+                  '.MuiInputBase-input': { padding: '8px' },
+                  '.MuiOutlinedInput-root': { border: 'none' },
+                  '.MuiFormLabel-root': {
+                    fontSize: '0.875rem',
+                    transform: 'translateY(8px)',
+                    marginBottom: '5px',
+                    marginLeft: '5px',
+                  },
+                }}
+              />
+            </LocalizationProvider>
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
           </div>
 
           <div>
@@ -174,10 +221,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             />
           </div>
 
-          <Button
-            type='submit'
-            className='w-full text-center'
-          />
+          <Button type="submit" className="w-full text-center" />
         </form>
       </div>
     </div>

@@ -5,6 +5,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
   const {
@@ -111,7 +113,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
-<div>
+{/* <div>
   <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
     Publishing Year
   </label>
@@ -125,7 +127,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
   {errors.publishingYear && (
     <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
   )}
-</div>
+</div> */}
+
 
             <div>
               <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
@@ -160,6 +163,19 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
               <span className="text-red-500 text-sm">{errors.enddate.message}</span>
             )}
           </div>
+          
+              <div       className="mt-1 block w-full sm:text-base bg-[#f3f4f6] " >
+                  <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+                     Publishing Year
+                  </label>  
+                   <LocalizationProvider dateAdapter={AdapterDayjs} >
+                   <DatePicker
+                    label = 'Select Date'
+                    {...register('publishingYear', { required: 'Publishing Year is required' })}
+                    sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
+                  />
+             </LocalizationProvider>
+                   </div>
 
       {/* Reusable Toggle Button */}
       <ToggleButton
