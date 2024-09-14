@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import ToggleButton from '../../../../Reusable_components/ToggleButton';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
@@ -108,23 +109,31 @@ const AddExamType = ({ isOpen, onClose }) => {
 
         {/* Status */}
         <div className="mb-4">
-          <label htmlFor="Status" className="block text-gray-700 font-semibold mb-2">Status</label>
-          <input
-            type="text"
-            id="Status"
-            className={`w-full px-3 py-2 border ${errors.Status ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register('Status', { required: 'gradepoints is required' })}
-          />
-          {errors.Status && <p className="text-red-500 text-sm mt-1">{errors.Status.message}</p>}
+      {/* Reusable Toggle Button */}
+      <ToggleButton
+        id="active"
+        label="Active"
+        register={register}
+        defaultChecked={true} // Default to true
+      />
         </div>
 
-
+        {/* Description Input */}
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
+          <textarea
+            id="description"
+            className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            rows="4"
+            {...register('description', { required: 'Description is required' })}
+          ></textarea>
+          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+        </div>
 
         {/* Submit Button */}
         <Button 
         type='submit'
         className='w-full text-center'
-        // label={"Submit"}
         />
       </form>
       </div>
