@@ -12,8 +12,8 @@ const AdminDashboard = () => {
         <Sidebar/>
       </div>
 
-      {/* Main content */}
-      <div className="w-2/3">
+      {/* Main content */} 
+      <div className="w-full mr-10">
         <Outlet />
       </div>
      </div>

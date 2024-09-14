@@ -74,7 +74,7 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
   return (
     <div>
       {timetable ? (
-        <div className='flex flex-nowrap justify-evenly gap-2'>
+        <div className='flex flex-nowrap justify-evenly gap-4'>
           {daysOfWeek.map((day) => (
             <div key={day} >
               <h3 className='text-base font-semibold text-[#202C4B] mb-4 '>{day}</h3>
@@ -87,7 +87,7 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
                       </div>
                       <p className='text-gray-800 font-medium'>Subject: {slot.subject}</p>
                       <div className='flex items-center space-x-3'>
-                        <img src={slot.teacherImage} alt={slot.teacher} className='w-10 h-10 rounded-full' />
+                        {/* <img src={slot.teacherImage} alt={slot.teacher} className='w-10 h-10 rounded-full' /> */}
                         <p className='text-gray-700 font-medium'>{slot.teacher}</p>
                       </div>
                     </div>

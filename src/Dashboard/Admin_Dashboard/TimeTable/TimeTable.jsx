@@ -34,11 +34,11 @@ const TimeTable = () => {
   };
 
   return (
-    <div className='flex flex-col justify-start h-full w-full'>
+    <div className='flex flex-col justify-start '>
         <h1 className='text-lg md:text-3xl  font-semibold text-black mt-5'>Time Table</h1>
-        <p className='mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
+        <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
 
-    <div className="p-4 mt-10  bg-white h-auto w-full rounded-lg">
+    <div className=" bg-white rounded-lg p-4 mt-10">
        <div className=' flex justify-between items-center mb-2'>
             <h1 className='text-lg md:text-xl font-semibold text-[#202C4B] mb-2'>Time Table</h1>
 

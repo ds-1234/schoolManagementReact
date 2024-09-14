@@ -61,14 +61,14 @@ function Subject() {
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-      width: '150px', 
+      width: '300px', 
     },
     {
       name: 'Subject Name',
       selector: (row) => row.subject,
       sortable: true,
       wrap: true, 
-      width: '250px', 
+      width: '300px', 
     },
     {
       name: 'Subject Description',
@@ -89,7 +89,7 @@ function Subject() {
           </button>
         </div>
       ),
-      width: '200px', 
+      width: '300px', 
     },
   ];
 
@@ -127,9 +127,9 @@ const searchOptions = [
 ];
 
   return (
-    <div className='pl-0 h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>All Subjects</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Subject</span> </p>
+    <div className=' h-full mb-10'>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Subjects</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Subject</span> </p>
 
       <Table 
       columns={column}
