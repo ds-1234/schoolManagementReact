@@ -67,7 +67,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
         </button>
       </div>
 
-      <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10 ml-20">
+      <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10 ">
         <div className="rounded-lg text-black">
           <div>
             {/* Search Section */}
