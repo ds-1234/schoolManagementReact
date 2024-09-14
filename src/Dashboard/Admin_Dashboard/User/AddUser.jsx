@@ -4,6 +4,8 @@ import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import {Link} from 'react-router-dom'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const AddUser = ({ isOpen, onClose }) => {
   const {
@@ -170,7 +172,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            {/* <div className="flex flex-col px-1 w-1/2">
               <label htmlFor="dateOfBirth">Date of Birth *</label>
               <input
                 type="date"
@@ -179,7 +181,22 @@ const AddUser = ({ isOpen, onClose }) => {
                 {...register('dateOfBirth', { required: 'Date of Birth is required' })}
               />
               {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-            </div>
+            </div> */}
+
+
+          <div      className="flex flex-col px-1 w-1/2" >
+             <label htmlFor="dateOfBirth">Date of Birth *</label>
+  
+                   <LocalizationProvider dateAdapter={AdapterDayjs} >
+                   <DatePicker
+                    label = 'Select Date'
+                    {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+                    sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
+                  />
+             </LocalizationProvider>
+             {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+
+                   </div>
 
             <div className="flex flex-col  px-1 w-1/2">
               <label htmlFor="houseNumber">House Number *</label>

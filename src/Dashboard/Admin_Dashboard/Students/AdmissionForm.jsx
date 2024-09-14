@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../Reusable_components/Button'
 import { NavLink } from 'react-router-dom';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function AdmissionForm() {
   const { register, handleSubmit, reset } = useForm();
@@ -36,9 +38,19 @@ function AdmissionForm() {
             <option>Other</option>
           </select>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Date Of Birth *</label>
-          <input {...register('dob', { required: true })} type="date" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"/>
+        <div       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] "
+        >
+          <label className="block text-sm font-medium text-gray-700 ">Date Of Birth *</label>
+   <LocalizationProvider dateAdapter={AdapterDayjs} >
+    <DatePicker
+      label = 'Select Date'
+       {...register('date', { required: 'Date is required' })}
+       sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '1rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
+
+       id="date"
+
+       />
+  </LocalizationProvider>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Roll</label>
