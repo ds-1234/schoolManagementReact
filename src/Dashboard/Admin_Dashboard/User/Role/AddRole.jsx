@@ -60,12 +60,16 @@ const AddRole = ({ isOpen, onClose }) => {
         {/* Subject Input */}
         <div className="mb-4">
           <label htmlFor="role" className="block text-gray-700 font-semibold mb-2">Role</label>
-          <input
-            type="text"
+          <select
             id="role"
             className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
             {...register('role', { required: 'role is required' })}
-          />
+          >
+            <option>Admin</option>
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Parent</option>
+          </select>
           {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
         </div>
 
