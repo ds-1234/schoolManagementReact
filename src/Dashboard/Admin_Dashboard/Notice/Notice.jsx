@@ -110,7 +110,9 @@ function NoticeBoard() {
               </div>
 
             {/* Notice Details */}
-            <h1 className="text-lg font-bold mt-2">{notice.noticeTitle}</h1>
+            {/* <h1 className="text-lg font-bold mt-2">{notice.noticeTitle}</h1> */}
+            <h1 className="text-3xl font-bold mt-2">{notice.noticeTitle}</h1>
+
             <p className="text-black">{notice.noticeDetails}</p>
 
             
