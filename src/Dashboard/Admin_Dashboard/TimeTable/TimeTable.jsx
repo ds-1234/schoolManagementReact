@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import TimetableGrid from './TimetableGrid';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faFilter , faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddTimeTable from './AddTimeTable';
 
 const TimeTable = () => {
   const [view, setView] = useState('home'); // home, class, section, timetable
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedSection, setSelectedSection] = useState(null);
-  const [isFilterOpen , setIsFilterOpen] = useState(false) 
+  const [isFilterOpen , setIsFilterOpen] = useState(false)
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  
+  const openAddPopup = () => setIsAddPopupOpen(true);
+  const closeAddPopup = () => setIsAddPopupOpen(false);
+
 
   // Sample data for classes and sections
   const classes = ['Class 1', 'Class 2', 'Class 3'];
@@ -33,10 +39,33 @@ const TimeTable = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+  const handleAddClick = () => {
+    openAddPopup()
+  }
+
   return (
-    <div className='flex flex-col justify-start '>
+    <div className='flex flex-col justify-start mr-0'>
         <h1 className='text-lg md:text-3xl  font-semibold text-black mt-5'>Time Table</h1>
         <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
+
+      {/* Add Button on right side of page */}
+      <div className='group'>
+        <button
+          onClick={handleAddClick}
+          className="flex items-center bg-green-500 text-white rounded-full transition-all duration-300 h-12 px-2 text-2xl w-12 absolute top-5 right-10 group-hover:w-24 group-hover:px-4  group-hover:text-xl"
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          <span className="ml-2 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Add 
+          </span>
+        </button>
+      </div>
+
+      <AddTimeTable 
+      isOpen={isAddPopupOpen} 
+      onClose={closeAddPopup} 
+      />
+
 
     <div className=" bg-white rounded-lg p-4 mt-10">
        <div className=' flex justify-between items-center mb-2'>
@@ -97,7 +126,7 @@ const TimeTable = () => {
        <hr className='mb-2'/>
 
       {view === 'home' && (
-        <div>
+        <div className='flex items-center justify-center'>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:shadow-md hover:shadow-blue-200 hover:font-semibold "
             onClick={() => setView('class')}
