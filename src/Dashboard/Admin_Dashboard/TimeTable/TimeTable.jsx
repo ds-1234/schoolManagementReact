@@ -4,6 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter , faPlus } from '@fortawesome/free-solid-svg-icons';
 import AddTimeTable from './AddTimeTable';
+import studentTT from '../../../assets/studying.png'
+import teacherTT from '../../../assets/time.png'
+import classroom from '../../../assets/class.png'
 
 const TimeTable = () => {
   const [view, setView] = useState('home'); // home, class, section, timetable
@@ -46,7 +49,7 @@ const TimeTable = () => {
   return (
     <div className='flex flex-col justify-start mr-0'>
         <h1 className='text-lg md:text-3xl  font-semibold text-black mt-5'>Time Table</h1>
-        <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
+        <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ {view != 'home' && (<NavLink  onClick={() => setView('home')}> Home / </NavLink> )} <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
 
       {/* Add Button on right side of page */}
       <div className='group'>
@@ -67,12 +70,91 @@ const TimeTable = () => {
       />
 
 
-    <div className=" bg-white rounded-lg p-4 mt-10">
-       <div className=' flex justify-between items-center mb-2'>
-            <h1 className='text-lg md:text-xl font-semibold text-[#202C4B] mb-2'>Time Table</h1>
 
-             {/* Filter button */}
-            {view == 'timetable' && (
+      {view === 'home' && (
+        <div className='flex items-center justify-center mt-24 gap-5'>
+
+          {/* Class Time Table Tile */}
+          <div 
+          className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
+          onClick={() => setView('class')}>
+            <img
+              src={studentTT}
+              alt="Class Time Table"
+              className="w-full object-cover px-4 py-4"
+            />
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-semibold">Class Time Table</h3>
+            </div>
+          </div>
+
+          {/* Teacher Time Table Tile */}
+          <div 
+          className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
+          onClick={() => setView('teacher')}>
+            <img
+              src={teacherTT}
+              alt="Teacher Time Table"
+              className="w-full py-4 px-4 object-cover"
+            />
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-semibold">Teacher Time Table</h3>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {view === 'class' && (
+        <div className='mt-10 '>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Classes</h2>
+          <div className="flex justify-center items-center gap-5 mx-20">
+            {classes.map((className, index) => (
+              <div
+                key={index}
+                className="bg-white shadow-lg rounded-lg p-6 text-lg font-semibold  hover:bg-gray-400 hover:shadow-xl hover:text-white transition-transform transform hover:scale-105 cursor-pointer w-60 flex flex-col justify-center items-center "
+                onClick={() => handleClassClick(className)} 
+              >
+                <img
+                  src={classroom}
+                  alt="Class"
+                  className="w-28 h-28 px-4 py-4"
+                />
+                {className}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {view === 'section' && (
+        <div className='mt-10'>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Sections</h2>
+          <div className="flex justify-center items-center gap-5 mx-20">
+            {sections[selectedClass].map((section, index) => (
+              <div
+                key={index}
+                className="bg-white shadow-lg rounded-lg p-6 text-lg font-semibold hover:bg-gray-400 hover:shadow-xl hover:text-white transition-transform transform hover:scale-105 cursor-pointer w-60 flex flex-col justify-center items-center"
+                onClick={() => handleSectionClick(section)}
+              >
+                <img
+                  src={classroom} 
+                  alt="Section"
+                  className="w-28 h-28 px-4 py-4"
+                />
+                {section}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {view === 'timetable' && (
+        <div>
+          <div className=' flex justify-between items-center m-4'>
+            <h2 className="text-lg mb-4 text-black font-semibold mt-2">
+              Time Table for {selectedClass} - {selectedSection}
+            </h2>
+            {/* Filter button */}
               <div className='relative'>
               <button
                 className="bg-gray-200 px-4 py-2 rounded hover:shadow-md hover:shadow-gray-300 flex gap-2 items-center"
@@ -119,69 +201,10 @@ const TimeTable = () => {
                 </div>
               )}
             </div>
-            )}
           </div>
-      
-
-       <hr className='mb-2'/>
-
-      {view === 'home' && (
-        <div className='flex items-center justify-center'>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:shadow-md hover:shadow-blue-200 hover:font-semibold "
-            onClick={() => setView('class')}
-          >
-            Class Time Table
-          </button>
-          <button className="bg-green-500 text-white px-4 py-2 ml-2 rounded hover:shadow-md hover:shadow-green-200 hover:font-semibold ">
-            Teacher Time Table
-          </button>
-        </div>
-      )}
-
-      {view === 'class' && (
-        <div>
-            <h2 className="text-lg mb-4 text-black font-semibold mt-2">Classes</h2>
-        <div className="grid grid-cols-3 gap-6 text-black ">
-          {classes.map((className) => (
-            <div
-              key={className}
-              className="p-4 bg-red-100 rounded-lg cursor-pointer text-center shadow-md shadow-gray-100 "
-              onClick={() => handleClassClick(className)}
-            >
-              {className}
-            </div>
-          ))}
-        </div>
-        </div>
-      )}
-
-      {view === 'section' && (
-        <div>
-            <h2 className="text-lg mb-4 text-black font-semibold mt-2">Sections</h2>
-        <div className="grid grid-cols-3 gap-6 text-black ">
-          {sections[selectedClass].map((section) => (
-            <div
-              key={section}
-              className="p-4 bg-red-100 rounded-lg cursor-pointer text-center shadow-md shadow-gray-100 "
-              onClick={() => handleSectionClick(section)}
-            >
-              {section}
-            </div>
-          ))}
-        </div>
-        </div>
-      )}
-
-      {view === 'timetable' && (
-        <div>
-          <h2 className="text-lg mb-4 text-black font-semibold mt-2">
-            Time Table for {selectedClass} - {selectedSection}
-          </h2>
           <TimetableGrid selectedClass={selectedClass} selectedSection={selectedSection}/>
         </div>
       )}
-    </div>
     </div>
   );
 };

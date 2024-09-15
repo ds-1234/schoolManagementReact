@@ -21,9 +21,37 @@ const AddTimeTable = ({ isOpen, onClose }) => {
   });
 
   const [activeDay, setActiveDay] = useState('Monday');
-  const { fields, append, remove } = useFieldArray({
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Using useFieldArray for each day separately
+  const { fields: mondayFields, append: mondayAppend, remove: mondayRemove } = useFieldArray({
     control,
-    name: `days.${activeDay}`
+    name: 'days.Monday',
+  });
+
+  const { fields: tuesdayFields, append: tuesdayAppend, remove: tuesdayRemove } = useFieldArray({
+    control,
+    name: 'days.Tuesday',
+  });
+
+  const { fields: wednesdayFields, append: wednesdayAppend, remove: wednesdayRemove } = useFieldArray({
+    control,
+    name: 'days.Wednesday',
+  });
+
+  const { fields: thursdayFields, append: thursdayAppend, remove: thursdayRemove } = useFieldArray({
+    control,
+    name: 'days.Thursday',
+  });
+
+  const { fields: fridayFields, append: fridayAppend, remove: fridayRemove } = useFieldArray({
+    control,
+    name: 'days.Friday',
+  });
+
+  const { fields: saturdayFields, append: saturdayAppend, remove: saturdayRemove } = useFieldArray({
+    control,
+    name: 'days.Saturday',
   });
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -51,12 +79,42 @@ const AddTimeTable = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const handleDayChange = (day) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveDay(day);
+      setIsTransitioning(false);
+    }, 300); 
+  };
+
+   // Helper function to handle adding/removing rows based on active day
+   const getFieldsAndHandlers = () => {
+    switch (activeDay) {
+      case 'Monday':
+        return { fields: mondayFields, append: mondayAppend, remove: mondayRemove };
+      case 'Tuesday':
+        return { fields: tuesdayFields, append: tuesdayAppend, remove: tuesdayRemove };
+      case 'Wednesday':
+        return { fields: wednesdayFields, append: wednesdayAppend, remove: wednesdayRemove };
+      case 'Thursday':
+        return { fields: thursdayFields, append: thursdayAppend, remove: thursdayRemove };
+      case 'Friday':
+        return { fields: fridayFields, append: fridayAppend, remove: fridayRemove };
+      case 'Saturday':
+        return { fields: saturdayFields, append: saturdayAppend, remove: saturdayRemove };
+      default:
+        return { fields: [], append: () => {}, remove: () => {} };
+    }
+  };
+
+  const { fields, append, remove } = getFieldsAndHandlers();
+
   const addNewRow = () => {
     append({ subject: '', teacher: '', timeFrom: '', timeTo: '' });
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50 transition-all duration-300 ease-in-out">
       <div className="bg-white p-4 rounded-xl w-full max-w-4xl relative shadow-lg animate-fadeIn">
         {/* Close Button */}
         <button
@@ -69,14 +127,14 @@ const AddTimeTable = ({ isOpen, onClose }) => {
         <h2 className="text-2xl font-bold mb-6 text-[#042954] ">Add Time Table</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-3 gap-6 mb-4 text-gray-700">
+          <div className=" flex  gap-6 mb-6 text-gray-700">
             <div>
               <label className="block text-sm font-semibold mb-1">Class</label>
               <select
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 " 
+                className="w-full px-5 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 " 
                 {...register('class')}
               >
-                <option value="">Select class</option>
+                <option value="">Select Class</option>
                 <option value="class1">Class 1</option>
                 <option value="class2">Class 2</option>
               </select>
@@ -84,43 +142,13 @@ const AddTimeTable = ({ isOpen, onClose }) => {
             <div>
               <label className="block text-sm font-semibold mb-1 text-gray-700">Section</label>
               <select
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 " 
+                className="w-full px-5 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 " 
                 {...register('section')}
               >
-                <option value="">Select </option>
+                <option value="">Select Section</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
               </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold mb-1">Subject Group</label>
-              <input
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                {...register('subjectGroup')}
-                placeholder=""
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Period Start Time</label>
-              <select
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                {...register('startTime')}
-              >
-                <option value="">Select Start Time</option>
-                <option value="08:00 AM">08:00 AM</option>
-                <option value="09:00 AM">09:00 AM</option>
-                {/* Add other times as needed */}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Duration (min)</label>
-              <input
-                type="number"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                {...register('duration')}
-                placeholder="Enter Duration"
-              />
             </div>
           </div>
 
@@ -136,7 +164,7 @@ const AddTimeTable = ({ isOpen, onClose }) => {
                 type="button"
                 className={` px-4 relative transition-all duration-500 ease-in-out 
                   ${activeDay === day ? 'border-b-2 border-blue-900 text-black' : 'bg-gray-200 text-gray-700'}`}
-                onClick={() => setActiveDay(day)}
+                onClick={() => handleDayChange(day)}
               >
                 {day}
               </button>
@@ -145,6 +173,11 @@ const AddTimeTable = ({ isOpen, onClose }) => {
             </ul>
             </div>
             <div className='border-t border-gray-200 pt-1'></div>
+            <div
+              className={`transition-opacity duration-300 ${
+                isTransitioning ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
             {fields.map((field, index) => (
               <div key={field.id} className="grid grid-cols-5 gap-4 mb-4">
                 <div>
@@ -203,6 +236,7 @@ const AddTimeTable = ({ isOpen, onClose }) => {
             >
               + Add New
             </button>
+          </div>
           </div>
 
           <div className="mt-8 flex justify-center gap-2">

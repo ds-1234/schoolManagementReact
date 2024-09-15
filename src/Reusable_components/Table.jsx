@@ -2,7 +2,7 @@ import React, { useRef , useState} from 'react';
 import DataTable from 'react-data-table-component';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick }) => {
   const searchInputRef = useRef(null);
@@ -77,10 +77,11 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 flex justify-evenly items-center gap-2"
                 >
-                  Select Filters
-                  <FontAwesomeIcon icon={faAngleDown} className='ml-3'/>
+                <FontAwesomeIcon icon = {faFilter} />
+                  Filter
+                  <FontAwesomeIcon icon={faAngleDown}/>
                 </button>
                 
                 {isDropdownOpen && (
