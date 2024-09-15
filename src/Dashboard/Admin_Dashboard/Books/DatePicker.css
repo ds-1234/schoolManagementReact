@@ -1,0 +1,25 @@
+/* DatePicker.css */
+.date-picker-container {
+    margin-top: 0.5rem; /* Adjust spacing if needed */
+  }
+  
+  .date-picker-label {
+    display: block;
+    font-size: 0.875rem; /* Same font size as other labels */
+    color: #4a5568; /* Match text color with other labels */
+    margin-bottom: 0.5rem; /* Match margin-bottom with other labels */
+  }
+  
+  .date-picker-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem; /* Match padding with other inputs */
+    border: 1px solid #d1d5db; /* Match border color with other inputs */
+    border-radius: 0.375rem; /* Match border-radius with other inputs */
+    background-color: #f3f4f6; /* Match background color with other inputs */
+  }
+  
+  .date-picker-input:focus {
+    border-color: #3b82f6; /* Match focus border color with other inputs */
+    outline: none; /* Remove default outline */
+  }
+  

@@ -1,22 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import './DatePicker.css'; // Adjust the path as necessary
+
+
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
+  const [value, setValue] = useState(true);
+  const [publishingYear, setPublishingYear] = useState(null); // State for DatePicker
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue: setFormValue, // react-hook-form's setValue to manually set form field values
   } = useForm();
 
   const SubmitBook = (data) => {
+    const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
+
     const formData = getValues();
     console.log('Form Data:', formData);
     console.log('Submitted Data:', data);
@@ -28,10 +38,10 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         name: data.name,
         description: data.description,
         author: data.author,
-        publishingYear: data.publishingYear,
+        publishingYear: formattedPublishingYear,
         allotedStratDate: data.startdate,
         allotedEndtDate: data.enddate,
-        isActive: data.active ? 'true' : 'false'
+        isActive: value.toString(),
       },
       headers: {
         'Content-Type': 'application/json',
@@ -40,6 +50,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
       .then((res) => {
         console.log('Response:', res.data);
         toast.success('Book added successfully!');
+        setValue(false)
         onClose();
       })
       .catch((err) => {
@@ -62,134 +73,127 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         </button>
         <h2 className="text-xl font-bold mb-4 text-center text-[#042954]">Add Book</h2>
         <form onSubmit={handleSubmit(SubmitBook)} className="space-y-4">
+          {/* Book Name */}
           <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          Book Name
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Book Name
             </label>
             <Input
-              {...register('name', {
-                required: 'Book name is required',
-              })}
+              {...register('name', { required: 'Book name is required' })}
               placeholder="Enter the Book name"
               aria-invalid={errors.name ? 'true' : 'false'}
               color={errors.name ? 'error' : 'default'}
             />
-            {errors.name && (
-              <span className="text-red-500 text-sm">{errors.name.message}</span>
-            )}
+            {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
           </div>
 
+          {/* Description */}
           <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
             </label>
             <Input
-              {...register('description', {
-                required: 'Description is required',
-              })}
+              {...register('description', { required: 'Description is required' })}
               placeholder="Enter the Description"
-              aria-invalid={errors.houseNumber ? 'true' : 'false'}
-              color={errors.houseNumber ? 'error' : 'default'}
+              aria-invalid={errors.description ? 'true' : 'false'}
+              color={errors.description ? 'error' : 'default'}
             />
             {errors.description && (
               <span className="text-red-500 text-sm">{errors.description.message}</span>
             )}
           </div>
 
+          {/* Author */}
           <div>
-              <label htmlFor="author" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="author" className="block text-sm font-medium text-gray-700">
               Author
             </label>
             <Input
-              {...register('author', {
-                required: 'author is required',
-              })}
-              placeholder="Enter the author"
+              {...register('author', { required: 'Author is required' })}
+              placeholder="Enter the Author"
               aria-invalid={errors.author ? 'true' : 'false'}
               color={errors.author ? 'error' : 'default'}
             />
-            {errors.author && (
-              <span className="text-red-500 text-sm">{errors.author.message}</span>
-            )}
+            {errors.author && <span className="text-red-500 text-sm">{errors.author.message}</span>}
           </div>
 
-{/* <div>
-  <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
-    Publishing Year
-  </label>
-  <input
-    {...register('publishingYear', { required: 'Publishing Year is required' })}
-    type="date"
-    id="publishingYear"
-    placeholder="Enter the Publishing Year"
-    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"
-  />
-  {errors.publishingYear && (
-    <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
-  )}
-</div> */}
-
-
-            <div>
-              <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
+          {/* Alloted Start Date */}
+          <div>
+            <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
               Alloted Start Date
             </label>
             <Input
-              {...register('startdate', {
-                required: 'startdate is required',
-              })}
+              {...register('startdate', { required: 'Start date is required' })}
               placeholder="Enter the Alloted Start Date"
-              aria-invalid={errors.author ? 'true' : 'false'}
-              color={errors.author ? 'error' : 'default'}
+              aria-invalid={errors.startdate ? 'true' : 'false'}
+              color={errors.startdate ? 'error' : 'default'}
             />
             {errors.startdate && (
               <span className="text-red-500 text-sm">{errors.startdate.message}</span>
             )}
           </div>
 
-            <div>
-              <label htmlFor="enddate" className="block text-sm font-medium text-gray-700">
+          {/* Alloted End Date */}
+          <div>
+            <label htmlFor="enddate" className="block text-sm font-medium text-gray-700">
               Alloted End Date
             </label>
             <Input
-              {...register('enddate', {
-                required: 'enddate is required',
-              })}
+              {...register('enddate', { required: 'End date is required' })}
               placeholder="Enter the Alloted End Date"
-              aria-invalid={errors.author ? 'true' : 'false'}
-              color={errors.author ? 'error' : 'default'}
+              aria-invalid={errors.enddate ? 'true' : 'false'}
+              color={errors.enddate ? 'error' : 'default'}
             />
             {errors.enddate && (
               <span className="text-red-500 text-sm">{errors.enddate.message}</span>
             )}
           </div>
-          
-              <div       className="mt-1 block w-full sm:text-base bg-[#f3f4f6] " >
-                  <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
-                     Publishing Year
-                  </label>  
-                   <LocalizationProvider dateAdapter={AdapterDayjs} >
-                   <DatePicker
-                    label = 'Select Date'
-                    {...register('publishingYear', { required: 'Publishing Year is required' })}
-                    sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
-                  />
-             </LocalizationProvider>
-                   </div>
 
-      {/* Reusable Toggle Button */}
-      <ToggleButton
-        id="active"
-        label="Active"
-        register={register}
-        defaultChecked={true} // Default to true
-      />
+          {/* Publishing Year DatePicker */}
+          <div className="mt-1 block w-full sm:text-base bg-[#f3f4f6]">
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+              Publishing Year
+            </label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={publishingYear}
+                onChange={(newValue) => setPublishingYear(newValue)} // Update state on date change
+                sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <div className="relative">
+                    <input
+                      ref={inputRef}
+                      {...inputProps}
+                      className="w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                    {InputProps?.endAdornment}
+                  </div>
+                )}
+              />
+            </LocalizationProvider>
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
+          </div>
 
-          <Button 
-          type='submit'
-          className='w-full text-center'
-          />
+          {/* Active Toggle Button */}
+          <div>
+            {/* <label htmlFor="active" className="block text-sm font-medium text-gray-700">
+              Active
+            </label> */}
+            <div className="mt-2">
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                label="Active"
+                register={register}
+              />
+            </div>
+          </div>
 
+          {/* Submit Button */}
+          <Button type="submit" className="w-full text-center" />
         </form>
       </div>
     </div>
