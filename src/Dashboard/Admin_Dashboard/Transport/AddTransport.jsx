@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import Button from '../../../Reusable_components/Button'
 import axios from 'axios';
@@ -10,6 +10,8 @@ function AddTransport() {
 
   const { register, handleSubmit,formState: { errors }, reset } = useForm();
   const navigate = useNavigate()
+  const [value, setValue] = useState(true);
+
   // Function to handle form submission
   const onSubmit = (data) => {
     axios({
@@ -21,7 +23,7 @@ function AddTransport() {
             driverName : data.driverName , 
             licenseNumber : data.licenseNumber ,
             phone : data.phone , 
-            isActive : data.active
+            isActive : value.toString()
         },
         headers: {
           "Content-Type": "application/json",
@@ -48,8 +50,8 @@ function AddTransport() {
    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
       <h2 className="text-2xl font-semibold mb-6 text-black">Add New Transport</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-3 gap-6">
-          <div>
+      <div className="grid grid-cols-3 gap-6">
+      <div>
             <label className="block text-sm font-medium mb-2 text-black" htmlFor="routeName">
               Route Name *
             </label>
@@ -124,13 +126,18 @@ function AddTransport() {
                 )}
           </div>
 
-      {/* Reusable Toggle Button */}
-      <ToggleButton
-        id="active"
-        label="Active"
-        register={register}
-        defaultChecked={true} // Default to true
-      />
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
         </div>
 

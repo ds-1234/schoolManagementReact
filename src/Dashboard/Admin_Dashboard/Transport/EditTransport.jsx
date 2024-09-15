@@ -2,9 +2,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast , ToastContainer} from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
+import { useForm } from 'react-hook-form';
 
 function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
-  
+  const [value, setValue] = useState(true);
+  const { register,formState: { errors }, reset } = useForm();
+
   const [transport, setTransport] = useState({ 
     routeName: '', 
     vehicleNumber: '' , 
@@ -126,7 +130,7 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
+          {/* <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
           <select
             name="isActive"
             value={transport.isActive}
@@ -136,7 +140,20 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
           >
             <option>Active</option>
             <option>Inactive</option>
-        </select>
+        </select> */}
+
+
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            
         </div>
 
           <Button 

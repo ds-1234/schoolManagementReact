@@ -1,0 +1,81 @@
+/* sidebar.css */
+
+html, body {
+    margin: 0;
+    height: 100%;
+  }
+  
+  .sidebar {
+    height: 100vh;
+    width: 16rem; /* Adjust width as needed */
+    background-color: #051f3e;
+    color: white;
+    overflow-y: auto; /* Make sure the sidebar is scrollable */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav-item {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Align items and space them out */
+    padding: 0.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    background-color: #063256;
+    border-radius: 0.5rem;
+  }
+  
+  .icon {
+    margin-right: 0.75rem;
+    color: #ffae01;
+  }
+  
+  .dropdown {
+    background-color: #021933;
+    padding-top: 0.5rem;
+  }
+  
+  .dropdown-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .dropdown-link:hover {
+    background-color: #063256;
+    border-radius: 0.5rem;
+  }
+  
+  /* Additional styles for positioning dropdown icon correctly */
+  .nav-item .nav-link .icon:last-child {
+    margin-left: auto; /* Push the dropdown icon to the right */
+  }
+  
+  .nav-item .dropdown {
+    padding-top: 0.5rem; /* Add some space above dropdown */
+  }
+  
+  /* Ensure dropdown items are aligned correctly */
+  .dropdown-link {
+    padding-left: 2rem; /* Adjust padding for dropdown items */
+  }
+  
+  .dropdown-link .icon {
+    margin-right: 0.5rem; /* Space between icon and text in dropdown */
+  }
+  
