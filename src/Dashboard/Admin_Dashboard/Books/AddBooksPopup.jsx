@@ -158,7 +158,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
               <DatePicker
                 value={publishingYear}
                 onChange={(newValue) => setPublishingYear(newValue)} // Update state on date change
-                sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
+                sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
                 renderInput={({ inputRef, inputProps, InputProps }) => (
                   <div className="relative">
                     <input
@@ -181,12 +181,15 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             {/* <label htmlFor="active" className="block text-sm font-medium text-gray-700">
               Active
             </label> */}
-            <div className="mt-2">
+           <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
               <ToggleButton
                 isOn={value}
                 handleToggle={() => setValue(!value)}
                 id="active"
-                label="Active"
+                // label="Active"
                 register={register}
               />
             </div>

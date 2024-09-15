@@ -9,6 +9,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
+  const [active, setActive] = useState(true);
+
   const [book, setBook] = useState({
     name: '',
     description: '',
@@ -16,7 +18,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     publishingYear: '',
     allotedStartDate: '',
     allotedEndDate: '',
-    isActive: true
+    // isActive: ''
   });
   const {
     register,
@@ -44,7 +46,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           setValue('publishingYear', data.publishingYear);
           setValue('allotedStartDate', data.allotedStartDate);
           setValue('allotedEndDate', data.allotedEndDate);
-          setValue('isActive', data.isActive);
+          // setValue('isActive', data.isActive);
         })
         .catch((error) => {
           console.error('Error fetching Book:', error);
@@ -210,16 +212,18 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             )}
           </div>
 
-          <div>
-            <ToggleButton
-              id="isActive"
-              label="Active"
-              name="isActive"
-              register={register}
-              checked={book.isActive}
-              onChange={handleChange}
-            />
-          </div>
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
+              <ToggleButton
+                isOn={active}
+                handleToggle={() => setActive(!active)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
           <Button type="submit" className="w-full text-center" />
         </form>

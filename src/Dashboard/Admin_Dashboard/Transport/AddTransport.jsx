@@ -126,15 +126,18 @@ function AddTransport() {
                 )}
           </div>
 
-    <div className="mb-2">
-        <ToggleButton
-          isOn={value}
-          handleToggle={() => setValue(!value)}
-          id="active"
-          label="Active"
-          register={register}
-        />
-      </div>
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
         </div>
 
