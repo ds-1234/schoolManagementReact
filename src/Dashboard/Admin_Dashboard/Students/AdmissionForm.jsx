@@ -15,7 +15,7 @@ function AdmissionForm() {
   };
 
   return (
-    <div className='pl-0 h-full mb-10'>
+    <div className='pl-0 h-full mr-10 mb-10'>
        <h1 className='text-lg md:text-2xl pl-28 pt-8 font-semibold text-black'>Admission Form</h1>
        <p className='pl-28 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
 
