@@ -4,6 +4,7 @@ import Button from '../../../Reusable_components/Button'
 import { NavLink } from 'react-router-dom';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Input } from '@nextui-org/react';
 
 function AdmissionForm() {
   const { register, handleSubmit, reset } = useForm();
@@ -38,7 +39,7 @@ function AdmissionForm() {
             <option>Other</option>
           </select>
         </div>
-        <div       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] "
+        {/* <div       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] "
         >
           <label className="block text-sm font-medium text-gray-700 ">Date Of Birth *</label>
    <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -51,9 +52,37 @@ function AdmissionForm() {
 
        />
   </LocalizationProvider>
-        </div>
+        </div> */}
+
+
+         <div>
+            <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+            Date Of Birth *
+            </label>
+            <Input
+            // type='text'
+              {...register('date', { required: 'Date Of Birth is required' })}
+              placeholder="Select Date" 
+              onFocus={(e) => {
+                e.target.type = 'date'; 
+                e.target.placeholder = ''; 
+                console.log('focused')
+              }}
+              // onBlur={(e) => {       
+              //     e.target.type = 'text'; 
+              //     e.target.placeholder = 'Select Date'; 
+              //     console.log('blur')
+              // }}
+             
+            />
+      
+          </div>
+
+
+
+
         <div>
-          <label className="block text-sm font-medium text-gray-700">Roll</label>
+          <label className="block text-sm font-medium text-gray-700">Roll No. *</label>
           <input {...register('roll')} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"/>
         </div>
         <div>

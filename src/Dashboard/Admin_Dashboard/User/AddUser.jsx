@@ -4,10 +4,18 @@ import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import {Link} from 'react-router-dom'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from 'rsuite';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const AddUser = ({ isOpen, onClose }) => {
+
+  const datepickerStyle = {  
+    marginBottom: "0px",  
+    marginTop: "0px" ,
+    // paddingTop: '5px'
+}; 
+
   const {
     register,
     handleSubmit,
@@ -195,19 +203,45 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
             </div>
 
-            {/* <div className="flex flex-col px-1 w-1/2">
-              <label htmlFor="dateOfBirth">Date of Birth *</label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-              />
-              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-            </div> */}
+            <div className="flex flex-col px-1 w-1/2">
+      <label htmlFor="dateOfBirth">Date of Birth *</label>
+      <input
+        type="text"
+        id="dateOfBirth"
+        placeholder="Select Date" // Placeholder text
+        onFocus={(e) => {
+          e.target.type = 'date'; // Switch to date input on focus
+          e.target.placeholder = ''; // Clear placeholder
+          console.log('focused')
+        }}
+        onBlur={(e) => {
+          // Adding a small delay to ensure the blur action completes before changing type
+ 
+            e.target.type = 'text'; // Switch back to text input on blur
+            e.target.placeholder = 'Select Date'; // Restore placeholder
+            console.log('blur')
+        }}
+        className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+        {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+      />
+      {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+    </div>
 
 
-          <div      className="flex flex-col px-1 w-1/2" >
+
+          {/* <div className="flex flex-col px-1 w-1/2">
+          <label htmlFor="dateOfBirth">Date of Birth *</label>
+
+                    <DatePicker  
+                    block style={datepickerStyle}
+                     placeholder="Select Date" 
+                     id="dateOfBirth"
+                     size= 'lg'
+                     className={` rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                     {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+                     />
+           </div> */}
+          {/* <div      className="flex flex-col px-1 w-1/2" >
              <label htmlFor="dateOfBirth">Date of Birth *</label>
   
                    <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -219,7 +253,7 @@ const AddUser = ({ isOpen, onClose }) => {
              </LocalizationProvider>
              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
 
-                   </div>
+                   </div> */}
 
             <div className="flex flex-col  px-1 w-1/2">
               <label htmlFor="houseNumber">House Number *</label>

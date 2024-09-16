@@ -99,7 +99,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
       onSubmit={handleSubmit}
       className='flex flex-wrap py-1'>
         <div className="flex flex-col px-1 w-1/2 mb-1 ">
-          <label className="block text-gray-700 text-sm font-bold mb-1">FirstName</label>
+          <label className="block text-gray-700 text-sm font-bold mb-1">First Name</label>
           <input
             type="text"
             name="firstName"
@@ -111,7 +111,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
           />
         </div>
         <div className="flex flex-col px-1 w-1/2 mb-1">
-          <label className="block text-gray-700 text-sm font-bold mb-1">LastName</label>
+          <label className="block text-gray-700 text-sm font-bold mb-1">Last Name</label>
           <input
             type="text"
             name="lastName"
@@ -195,7 +195,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
           />
         </div>
         <div className="flex flex-col px-1 w-1/2 mb-1">
-          <label className="block text-gray-700 text-sm font-bold mb-1">Pincode</label>
+          <label className="block text-gray-700 text-sm font-bold mb-1">Pin Code</label>
           <input
             type="text"
             name="pinCode"

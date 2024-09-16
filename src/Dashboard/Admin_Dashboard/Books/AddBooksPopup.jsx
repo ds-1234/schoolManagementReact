@@ -5,10 +5,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import './DatePicker.css'; // Adjust the path as necessary
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import dayjs from 'dayjs';
 
 
 
@@ -48,7 +47,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
   
   const SubmitBook = (data) => {
-    const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
+    // const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
 
     const formData = getValues();
     console.log('Form Data:', formData);
@@ -61,7 +60,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         name: data.name,
         description: data.description,
         author: data.author,
-        publishingYear: formattedPublishingYear,
+        publishingYear: data.publishingYear,
         allotedStratDate: data.startdate,
         allotedEndtDate: data.enddate,
         isActive: value.toString(),
@@ -172,8 +171,39 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
+
+          <div>
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+            Publishing Year
+            </label>
+            <Input
+              {...register('publishingYear', { required: 'Publishing Year is required' })}
+              placeholder="Select Date" 
+              onFocus={(e) => {
+                e.target.type = 'date'; 
+                e.target.placeholder = ''; 
+                console.log('focused')
+              }}
+              // onBlur={(e) => {       
+              //     e.target.type = 'text'; 
+              //     e.target.placeholder = 'Select Date'; 
+              //     console.log('blur')
+              // }}
+                    aria-invalid={errors.publishingYear ? 'true' : 'false'}
+              color={errors.publishingYear ? 'error' : 'default'}
+            />
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
+          </div>
+
+
+
+
+
+
           {/* Publishing Year DatePicker */}
-          <div className="mt-1 block w-full sm:text-base bg-[#f3f4f6]">
+          {/* <div className="mt-1 block w-full sm:text-base bg-[#f3f4f6]">
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
               Publishing Year
             </label>
@@ -197,7 +227,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             {errors.publishingYear && (
               <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
             )}
-          </div>
+          </div> */}
 
           {/* Active Toggle Button */}
           <div>

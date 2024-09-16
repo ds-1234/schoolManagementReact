@@ -4,8 +4,8 @@ import { Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
@@ -199,7 +199,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
               <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
             )}
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
               Publishing Year
             </label>
@@ -225,7 +225,33 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.publishingYear && (
               <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
             )}
+          </div> */}
+
+<div>
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+            Publishing Year
+            </label>
+            <Input
+              {...register('publishingYear', { required: 'Publishing Year is required' })}
+              placeholder="Select Date" 
+              onFocus={(e) => {
+                e.target.type = 'date'; 
+                e.target.placeholder = ''; 
+                console.log('focused')
+              }}
+              // onBlur={(e) => {       
+              //     e.target.type = 'text'; 
+              //     e.target.placeholder = 'Select Date'; 
+              //     console.log('blur')
+              // }}
+                    aria-invalid={errors.publishingYear ? 'true' : 'false'}
+              color={errors.publishingYear ? 'error' : 'default'}
+            />
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
           </div>
+
 
           <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">

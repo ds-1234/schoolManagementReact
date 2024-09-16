@@ -12,9 +12,9 @@ function AddNotice() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-24 bg-white rounded-xl shadow-md space-y-6 my-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
       <h2 className="text-2xl font-semibold text-black">Create A Notice</h2>
-      <p className=' '>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Notices</span> </p>
+      <p className=' '>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span> </p>
       <div className="grid grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">Title *</label>
@@ -31,7 +31,19 @@ function AddNotice() {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Date *</label>
-          <input {...register('date', { required: true })} type="date" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"/>
+          <input {...register('date', { required: true })}  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"
+              placeholder="Select Date"
+              onFocus={(e) => {
+                e.target.type = 'date'; 
+                e.target.placeholder = ''; 
+                console.log('focused')
+              }}
+            //   onBlur={(e) => {       
+            //     e.target.type = 'text'; 
+            //     e.target.placeholder = 'Select Date'; 
+            //     console.log('blur')
+            // }}
+          />
         </div>
         
       </div>
