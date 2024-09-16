@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
@@ -13,6 +13,7 @@ const AddExamType = ({ isOpen, onClose }) => {
     formState: { errors },
     reset
   } = useForm();
+  const [value, setValue] = useState(true);
 
   // const navigate = useNavigate()
 
@@ -41,6 +42,29 @@ const AddExamType = ({ isOpen, onClose }) => {
 //         onClose();
 //     })
 //   }
+
+useEffect(() => {
+  // Disable scrolling on background when the popup is open
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+
+  // Add event listener for ESC key press
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+    document.removeEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'auto'; // Clean up scrolling style
+  };
+}, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -107,16 +131,18 @@ const AddExamType = ({ isOpen, onClose }) => {
           {errors.gradepoints && <p className="text-red-500 text-sm mt-1">{errors.gradepoints.message}</p>}
         </div>
 
-        {/* Status */}
         <div className="mb-4">
-      {/* Reusable Toggle Button */}
-      <ToggleButton
-        id="active"
-        label="Active"
-        register={register}
-        defaultChecked={true} // Default to true
-      />
-        </div>
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status 
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
         {/* Description Input */}
         <div className="mb-4">

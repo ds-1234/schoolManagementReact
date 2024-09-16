@@ -4,8 +4,8 @@ import { Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
@@ -53,6 +53,21 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         });
     }
   }, [bookId, isOpen, setValue]);
+
+  useEffect(() => {
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -184,7 +199,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
               <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
             )}
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
               Publishing Year
             </label>
@@ -210,7 +225,40 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.publishingYear && (
               <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
             )}
+          </div> */}
+
+<div>
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+            Publishing Year
+            </label>
+            <input
+                           {...register('publishingYear', { required: 'Publishing Year is required' })}
+                           className={`w-full mt-3 py-2 border rounded-xl focus:outline-none bg-gray-100`}
+             
+                           placeholder="Select Date" 
+                           onFocus={(e) => {
+                             e.target.type = 'date'; 
+                             e.target.placeholder = ''; 
+                             console.log('focused')
+                           }}
+                           onBlur={(e) => {
+                             const value = e.target.value;
+                             e.target.type = 'text'; // Switch back to text input on blur
+                             e.target.placeholder = 'Search by Date...'; // Restore placeholder
+                       
+                             // Reformat the date to dd/mm/yyyy if a date is selected
+                             if (value) {
+                               e.target.value = formatDateToDDMMYYYY(value);
+                             }
+                           }}
+                    aria-invalid={errors.publishingYear ? 'true' : 'false'}
+              color={errors.publishingYear ? 'error' : 'default'}
+            />
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
           </div>
+
 
           <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">

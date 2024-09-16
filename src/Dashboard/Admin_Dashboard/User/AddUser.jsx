@@ -1,19 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import {Link} from 'react-router-dom'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from 'rsuite';
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const AddUser = ({ isOpen, onClose }) => {
+
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  const datepickerStyle = {  
+    marginBottom: "0px",  
+    marginTop: "0px" ,
+    // paddingTop: '5px'
+}; 
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
   } = useForm();
+
+  useEffect(() => {
+    // Disable scrolling on background when the popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto'; // Clean up scrolling style
+    };
+  }, [isOpen, onClose]);
 
   const onSubmit = (data) => {
     axios({
@@ -172,19 +209,47 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
             </div>
 
-            {/* <div className="flex flex-col px-1 w-1/2">
-              <label htmlFor="dateOfBirth">Date of Birth *</label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-              />
-              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-            </div> */}
+            <div className="flex flex-col px-1 w-1/2">
+      <label htmlFor="dateOfBirth">Date of Birth *</label>
+      <input
+        type="text"
+        id="dateOfBirth"
+        placeholder="Select Date" 
+        onFocus={(e) => {
+          e.target.type = 'date';
+          e.target.placeholder = ''; 
+          console.log('focused')
+        }}
+        onBlur={(e) => {
+          const value = e.target.value;
+          e.target.type = 'text'; 
+          e.target.placeholder = 'Select Date'; 
+    
+          if (value) {
+            e.target.value = formatDateToDDMMYYYY(value);
+          }
+        }}
+        className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+        {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+      />
+      {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+    </div>
 
 
-          <div      className="flex flex-col px-1 w-1/2" >
+
+          {/* <div className="flex flex-col px-1 w-1/2">
+          <label htmlFor="dateOfBirth">Date of Birth *</label>
+
+                    <DatePicker  
+                    block style={datepickerStyle}
+                     placeholder="Select Date" 
+                     id="dateOfBirth"
+                     size= 'lg'
+                     className={` rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                     {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+                     />
+           </div> */}
+          {/* <div      className="flex flex-col px-1 w-1/2" >
              <label htmlFor="dateOfBirth">Date of Birth *</label>
   
                    <LocalizationProvider dateAdapter={AdapterDayjs} >
@@ -196,7 +261,7 @@ const AddUser = ({ isOpen, onClose }) => {
              </LocalizationProvider>
              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
 
-                   </div>
+                   </div> */}
 
             <div className="flex flex-col  px-1 w-1/2">
               <label htmlFor="houseNumber">House Number *</label>

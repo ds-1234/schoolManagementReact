@@ -19,6 +19,7 @@ const TimeTable = () => {
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
 
+  
   // Sample data for classes and sections
   const classes = ['Class 1', 'Class 2', 'Class 3'];
   const sections = {

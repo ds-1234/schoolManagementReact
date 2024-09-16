@@ -8,6 +8,21 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/subject/getSubjectList`);

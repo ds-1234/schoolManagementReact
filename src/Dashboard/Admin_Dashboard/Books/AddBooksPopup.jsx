@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import './DatePicker.css'; // Adjust the path as necessary
+// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import dayjs from 'dayjs';
 
 
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
+
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const [value, setValue] = useState(true);
   const [publishingYear, setPublishingYear] = useState(null); // State for DatePicker
 
@@ -24,8 +30,31 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
     setValue: setFormValue, // react-hook-form's setValue to manually set form field values
   } = useForm();
 
+  useEffect(() => {
+    // Disable scrolling on background when the popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto'; // Clean up scrolling style
+    };
+  }, [isOpen, onClose]);
+  
   const SubmitBook = (data) => {
-    const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
+    // const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
 
     const formData = getValues();
     console.log('Form Data:', formData);
@@ -38,7 +67,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         name: data.name,
         description: data.description,
         author: data.author,
-        publishingYear: formattedPublishingYear,
+        publishingYear: data.publishingYear,
         allotedStratDate: data.startdate,
         allotedEndtDate: data.enddate,
         isActive: value.toString(),
@@ -149,8 +178,46 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
+
+          <div>
+            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
+            Publishing Year
+            </label>
+            <input
+              {...register('publishingYear', { required: 'Publishing Year is required' })}
+              className={`w-full mt-3 py-2 border rounded-xl focus:outline-none bg-gray-100`}
+
+              placeholder="Select Date" 
+              onFocus={(e) => {
+                e.target.type = 'date'; 
+                e.target.placeholder = ''; 
+                console.log('focused')
+              }}
+              onBlur={(e) => {
+                const value = e.target.value;
+                e.target.type = 'text'; // Switch back to text input on blur
+                e.target.placeholder = 'Search by Date...'; // Restore placeholder
+          
+                // Reformat the date to dd/mm/yyyy if a date is selected
+                if (value) {
+                  e.target.value = formatDateToDDMMYYYY(value);
+                }
+              }}
+                    aria-invalid={errors.publishingYear ? 'true' : 'false'}
+              color={errors.publishingYear ? 'error' : 'default'}
+            />
+            {errors.publishingYear && (
+              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
+            )}
+          </div>
+
+
+
+
+
+
           {/* Publishing Year DatePicker */}
-          <div className="mt-1 block w-full sm:text-base bg-[#f3f4f6]">
+          {/* <div className="mt-1 block w-full sm:text-base bg-[#f3f4f6]">
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
               Publishing Year
             </label>
@@ -174,7 +241,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             {errors.publishingYear && (
               <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
             )}
-          </div>
+          </div> */}
 
           {/* Active Toggle Button */}
           <div>
@@ -183,7 +250,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             </label> */}
            <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status *
+                Status 
               </label>
               <ToggleButton
                 isOn={value}
