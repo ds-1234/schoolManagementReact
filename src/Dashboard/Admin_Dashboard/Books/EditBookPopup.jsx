@@ -54,6 +54,21 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     }
   }, [bookId, isOpen, setValue]);
 
+  useEffect(() => {
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBook(prevBook => ({

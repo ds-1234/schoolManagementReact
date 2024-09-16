@@ -77,6 +77,18 @@ const column = [
     setIsEditPopupOpen(false);
   };
 
+  useEffect(() => {
+    if (isAddPopupOpen || isEditPopupOpen) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen, isEditPopupOpen]);
+
   const fetchData = async() => {
     axios({
       method: 'GET',

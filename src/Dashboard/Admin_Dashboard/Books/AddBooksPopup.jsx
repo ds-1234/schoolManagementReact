@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@nextui-org/react';
 import axios from 'axios';
@@ -24,6 +24,29 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
     setValue: setFormValue, // react-hook-form's setValue to manually set form field values
   } = useForm();
 
+  useEffect(() => {
+    // Disable scrolling on background when the popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto'; // Clean up scrolling style
+    };
+  }, [isOpen, onClose]);
+  
   const SubmitBook = (data) => {
     const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
 
@@ -183,7 +206,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             </label> */}
            <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status *
+                Status 
               </label>
               <ToggleButton
                 isOn={value}

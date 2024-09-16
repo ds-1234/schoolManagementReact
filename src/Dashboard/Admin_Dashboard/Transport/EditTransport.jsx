@@ -18,6 +18,20 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
     isActive:'' 
 });
 
+useEffect(() => {
+  // Add event listener for ESC key press
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+    document.removeEventListener('keydown', handleKeyDown);
+  };
+}, [onClose]);
 
   useEffect(() => {
     axios({

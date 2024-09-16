@@ -89,6 +89,18 @@ const column = [
   },
 ]
 
+useEffect(() => {
+  if (isAddPopupOpen ) {
+    document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+  } else {
+    document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+  }
+
+  return () => {
+    document.body.style.overflow = 'auto';  // Cleanup on unmount
+  };
+}, [isAddPopupOpen]);
+
 // const handleFilter = (event) => {
 //   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
 //   setData(newData);

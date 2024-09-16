@@ -16,6 +16,21 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   });
 
   useEffect(() => {
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
     if (schoolId) {
       axios.get(`http://localhost:8080/school/getSchool/${schoolId}`, {
         headers: {
