@@ -5,55 +5,57 @@ import Table from '../../../../Reusable_components/Table';
 import deleteIcon from '../../../../assets/delete.png'
 import AddGrade from './AddGrade';
 import { NavLink } from 'react-router-dom';
+import StatusButton from '../../../../Reusable_components/StatusButton';
+import EditGrade from './EditGrade';
 
 function Grade() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editSubjectId , setEditSubjectId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editGradeId , setEditGradeId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditSubjectId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditGradeId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditSubjectId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditGradeId(null);
+    setIsEditPopupOpen(false);
+  };
 
-//   const fetchData = () => {
-//     axios({
-//       method: "GET",
-//       url: `http://localhost:8080/subject/getSubjectList`,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       // withCredentials: true,
-//     })
-//       .then((response) => {
-//         console.log("Data from API:", response.data);
-//         setData(response.data.data);
-//         setFilterData(response.data.data) ;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-//   };
+  const fetchData = () => {
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/gradePoints/getGradePointsList`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        setData(response.data.data);
+        setFilterData(response.data.data) ;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
-//   useEffect(() => {
-//     fetchData() ;
-//   } , []);
+  useEffect(() => {
+    fetchData() ;
+  } , []);
 
-//   useEffect(() => {
-//     setData(data);  
-//     setFilterData(data); 
-//   }, []);
+  useEffect(() => {
+    setData(data);  
+    setFilterData(data); 
+  }, []);
   
 
 useEffect(() => {
@@ -82,18 +84,20 @@ const column = [
   },
   {
     name: 'Percentage',
-    selector: row => row.percentage,
+    selector: row => (row.percentageFrom + ' - ' +  row.percentageUpto),
     sortable: true,
   },
   {
     name: 'Grade Points',
-    selector: row => row.points,
+    selector: row => row.gradePoints,
     sortable: true,
   },
   {
     name: 'Status',
-    selector: row => row.status,
-    sortable: false,
+    selector: row => (
+      <StatusButton isActive={row.isActive}/>
+    ),
+    sortable: true,
   },
   {
     name: 'Action',
@@ -142,10 +146,10 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Grade', value: 'name' },
-  { label: 'Percentage', value: 'percentage' },
-  { label: 'Grade Points', value: 'points' },
-  { label: 'Status', value: 'status' }
+  { label: 'Grade', value: 'grade' },
+  { label: 'Percentage', value: 'percentageFrom' },
+  { label: 'Grade Points', value: 'gradePoints' },
+  { label: 'Status', value: 'isActive' }
 ];
 
   return (
@@ -166,16 +170,17 @@ const searchOptions = [
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
+          fetchData(); 
+          // Refresh data when add popup closes
         }} 
         />
 
-      {/* <EditSubject
+      <EditGrade
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        subjectId={editSubjectId}
+        gradeId={editGradeId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };

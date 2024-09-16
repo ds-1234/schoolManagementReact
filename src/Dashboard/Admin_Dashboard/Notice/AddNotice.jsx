@@ -20,7 +20,7 @@ function AddNotice() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
-      <h2 className="text-2xl font-semibold text-black">Create A Notice</h2>
+      <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
       <p className=' '>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span> </p>
       <div className="grid grid-cols-2 gap-6">
         <div>
