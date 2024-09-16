@@ -9,6 +9,12 @@ import { Input } from '@nextui-org/react';
 function AdmissionForm() {
   const { register, handleSubmit, reset } = useForm();
 
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   // Handle form submission
   const onSubmit = (data) => {
     console.log(data); 
@@ -68,11 +74,16 @@ function AdmissionForm() {
                 e.target.placeholder = ''; 
                 console.log('focused')
               }}
-              // onBlur={(e) => {       
-              //     e.target.type = 'text'; 
-              //     e.target.placeholder = 'Select Date'; 
-              //     console.log('blur')
-              // }}
+              onBlur={(e) => {
+                const value = e.target.value;
+                e.target.type = 'text'; // Switch back to text input on blur
+                e.target.placeholder = 'Select Date'; // Restore placeholder
+          
+                // Reformat the date to dd/mm/yyyy if a date is selected
+                if (value) {
+                  e.target.value = formatDateToDDMMYYYY(value);
+                }
+              }}
              
             />
       
