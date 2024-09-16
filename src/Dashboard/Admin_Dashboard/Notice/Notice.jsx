@@ -9,6 +9,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 
 function NoticeBoard() {
+
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const [notices, setNotices] = useState([]);
   const [searchDate, setSearchDate] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
@@ -71,22 +78,21 @@ function NoticeBoard() {
       e.target.placeholder = ''; 
       console.log('focused')
     }}
-  //   onBlur={(e) => {       
-  //     e.target.type = 'text'; 
-  //     e.target.placeholder = 'Select Date'; 
-  //     console.log('blur')
-  // }}
+    onBlur={(e) => {
+      const value = e.target.value;
+      e.target.type = 'text'; // Switch back to text input on blur
+      e.target.placeholder = 'Search by Date...'; // Restore placeholder
+
+      // Reformat the date to dd/mm/yyyy if a date is selected
+      if (value) {
+        e.target.value = formatDateToDDMMYYYY(value);
+      }
+    }}
     className="border p-4 text-lg rounded w-full"  
     value={searchDate}
     onChange={(e) => setSearchDate(e.target.value)}
   />
-  {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
-    <DatePicker
-        className="border p-4 text-lg rounded w-full"  
-        // value={searchDate}
-        onChange={(e) => setSearchDate(e.target.value)}
-     label = 'Search By Date...'/>
-  </LocalizationProvider> */}
+
   <input
     type="text"
     placeholder="Search by Title..."
@@ -111,7 +117,7 @@ function NoticeBoard() {
             <div className="flex flex-col justify-start gap-4">
               
               {/* Date pill */}
-            <div className="bg-green-500 text-white px-3 py-2 rounded-full text-lg w-1/4">
+            <div className="bg-green-500 text-white px-3 py-2 rounded-full text-md w-1/4">
                 {new Date(notice.noticeDate).toLocaleDateString('en-US', {
                   day: 'numeric',
                   month: 'long',

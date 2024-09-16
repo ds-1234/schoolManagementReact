@@ -4,6 +4,13 @@ import Button from '../../../Reusable_components/Button'
 import { NavLink } from 'react-router-dom';
 
 function AddNotice() {
+
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const { register, handleSubmit, reset } = useForm();
 
   // Handle form submission
@@ -38,11 +45,16 @@ function AddNotice() {
                 e.target.placeholder = ''; 
                 console.log('focused')
               }}
-            //   onBlur={(e) => {       
-            //     e.target.type = 'text'; 
-            //     e.target.placeholder = 'Select Date'; 
-            //     console.log('blur')
-            // }}
+              onBlur={(e) => {
+                const value = e.target.value;
+                e.target.type = 'text'; // Switch back to text input on blur
+                e.target.placeholder = 'Select Date'; // Restore placeholder
+          
+                // Reformat the date to dd/mm/yyyy if a date is selected
+                if (value) {
+                  e.target.value = formatDateToDDMMYYYY(value);
+                }
+              }}
           />
         </div>
         

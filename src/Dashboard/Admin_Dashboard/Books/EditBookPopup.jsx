@@ -231,19 +231,26 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
             Publishing Year
             </label>
-            <Input
-              {...register('publishingYear', { required: 'Publishing Year is required' })}
-              placeholder="Select Date" 
-              onFocus={(e) => {
-                e.target.type = 'date'; 
-                e.target.placeholder = ''; 
-                console.log('focused')
-              }}
-              // onBlur={(e) => {       
-              //     e.target.type = 'text'; 
-              //     e.target.placeholder = 'Select Date'; 
-              //     console.log('blur')
-              // }}
+            <input
+                           {...register('publishingYear', { required: 'Publishing Year is required' })}
+                           className={`w-full mt-3 py-2 border rounded-xl focus:outline-none bg-gray-100`}
+             
+                           placeholder="Select Date" 
+                           onFocus={(e) => {
+                             e.target.type = 'date'; 
+                             e.target.placeholder = ''; 
+                             console.log('focused')
+                           }}
+                           onBlur={(e) => {
+                             const value = e.target.value;
+                             e.target.type = 'text'; // Switch back to text input on blur
+                             e.target.placeholder = 'Search by Date...'; // Restore placeholder
+                       
+                             // Reformat the date to dd/mm/yyyy if a date is selected
+                             if (value) {
+                               e.target.value = formatDateToDDMMYYYY(value);
+                             }
+                           }}
                     aria-invalid={errors.publishingYear ? 'true' : 'false'}
               color={errors.publishingYear ? 'error' : 'default'}
             />

@@ -10,6 +10,12 @@ import { DatePicker } from 'rsuite';
 
 const AddUser = ({ isOpen, onClose }) => {
 
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const datepickerStyle = {  
     marginBottom: "0px",  
     marginTop: "0px" ,
@@ -208,18 +214,20 @@ const AddUser = ({ isOpen, onClose }) => {
       <input
         type="text"
         id="dateOfBirth"
-        placeholder="Select Date" // Placeholder text
+        placeholder="Select Date" 
         onFocus={(e) => {
-          e.target.type = 'date'; // Switch to date input on focus
-          e.target.placeholder = ''; // Clear placeholder
+          e.target.type = 'date';
+          e.target.placeholder = ''; 
           console.log('focused')
         }}
         onBlur={(e) => {
-          // Adding a small delay to ensure the blur action completes before changing type
- 
-            e.target.type = 'text'; // Switch back to text input on blur
-            e.target.placeholder = 'Select Date'; // Restore placeholder
-            console.log('blur')
+          const value = e.target.value;
+          e.target.type = 'text'; 
+          e.target.placeholder = 'Select Date'; 
+    
+          if (value) {
+            e.target.value = formatDateToDDMMYYYY(value);
+          }
         }}
         className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
         {...register('dateOfBirth', { required: 'Date of Birth is required' })}
