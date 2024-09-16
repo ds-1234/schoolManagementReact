@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useEffect, useState} from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -19,6 +19,29 @@ const AddTimeTable = ({ isOpen, onClose }) => {
         }
     }
   });
+
+  useEffect(() => {
+    // Disable scrolling on background when the popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto'; // Clean up scrolling style
+    };
+  }, [isOpen, onClose]);
 
   const [activeDay, setActiveDay] = useState('Monday');
   const [isTransitioning, setIsTransitioning] = useState(false);

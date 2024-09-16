@@ -73,6 +73,18 @@ const column = [
   const [editTransportId, setEditTransportId] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
+  useEffect(() => {
+    if (  isEditPopupOpen) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [ isEditPopupOpen]);
+
   const deleteData = () => {
     axios({
       method: 'DELETE' , 

@@ -55,6 +55,20 @@ function Grade() {
 //     setFilterData(data); 
 //   }, []);
   
+
+useEffect(() => {
+  if (isAddPopupOpen ) {
+    document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+  } else {
+    document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+  }
+
+  return () => {
+    document.body.style.overflow = 'auto';  // Cleanup on unmount
+  };
+}, [isAddPopupOpen]);
+
+
 const column = [
   {
     name: 'SR.No',

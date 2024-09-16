@@ -14,6 +14,17 @@ function Subject() {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSubjectId , setEditSubjectId] = useState(null)
 
+  useEffect(() => {
+    if (isAddPopupOpen || isEditPopupOpen) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen, isEditPopupOpen]);
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -27,6 +38,7 @@ function Subject() {
     setEditSubjectId(null);
     setIsEditPopupOpen(false);
   };
+
 
   const fetchData = () => {
     axios({
@@ -150,7 +162,10 @@ const searchOptions = [
 
       <EditSubject
         isOpen={isEditPopupOpen}
-        onClose={closeEditPopup}
+        onClose={() => {
+          closeEditPopup();  // Only close the Edit popup here
+          fetchData();       // Fetch data after the Edit popup is closed
+        }}
         subjectId={editSubjectId}
         onSuccess={fetchData} // Refresh data after editing
       />
