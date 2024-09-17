@@ -28,6 +28,8 @@ import ExamResults from './Dashboard/Admin_Dashboard/Examinations/ExamResults/Ex
 import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade/Grade'
 import Role from './Dashboard/Admin_Dashboard/User/Role/Role'
 import TimeTable from './Dashboard/Admin_Dashboard/TimeTable/TimeTable'
+import ClassSelect from './Dashboard/Admin_Dashboard/TimeTable/ClassSelect'
+import SectionSelect from './Dashboard/Admin_Dashboard/TimeTable/SectionSelect'
 import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser'
 
 
@@ -64,6 +66,8 @@ function App() {
               <Route path='ExamResults' element={<ExamResults/>}/>
               <Route path='Grade' element={<Grade/>}/>
               <Route path='TimeTable' element={<TimeTable/>} />
+              <Route path='timetable/class' element={<ClassSelect/>} />
+              <Route path='timetable/class/section' element={<SectionSelect/>} />
             </Route>
             <Route path='/studentDashboard' element={<StudentDashboard/>}/>
             <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
