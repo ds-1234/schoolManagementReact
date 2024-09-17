@@ -77,7 +77,7 @@ const AddTimeTable = ({ isOpen, onClose }) => {
     name: 'days.Saturday',
   });
 
-  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' , 'Saturday'];
 
   const onSubmit = (data) => {
     axios({
@@ -112,19 +112,29 @@ const AddTimeTable = ({ isOpen, onClose }) => {
 
    // Helper function to handle adding/removing rows based on active day
    const getFieldsAndHandlers = () => {
+    const preventRemoveDefault = (removeFunc, fields) => (index) => {
+      // Prevent removing the last row (default row)
+      if (fields.length > 1) {
+        removeFunc(index);
+      } else {
+        alert('You cannot remove the default row.');
+      }
+    };
+
+    
     switch (activeDay) {
       case 'Monday':
-        return { fields: mondayFields, append: mondayAppend, remove: mondayRemove };
+        return { fields: mondayFields, append: mondayAppend, remove: preventRemoveDefault(mondayRemove , mondayFields) };
       case 'Tuesday':
-        return { fields: tuesdayFields, append: tuesdayAppend, remove: tuesdayRemove };
+        return { fields: tuesdayFields, append: tuesdayAppend, remove: preventRemoveDefault(tuesdayRemove , tuesdayFields) };
       case 'Wednesday':
-        return { fields: wednesdayFields, append: wednesdayAppend, remove: wednesdayRemove };
+        return { fields: wednesdayFields, append: wednesdayAppend, remove: preventRemoveDefault(wednesdayRemove , wednesdayFields) };
       case 'Thursday':
-        return { fields: thursdayFields, append: thursdayAppend, remove: thursdayRemove };
+        return { fields: thursdayFields, append: thursdayAppend, remove: preventRemoveDefault(thursdayRemove , thursdayFields) };
       case 'Friday':
-        return { fields: fridayFields, append: fridayAppend, remove: fridayRemove };
+        return { fields: fridayFields, append: fridayAppend, remove: preventRemoveDefault(fridayRemove , fridayFields) };
       case 'Saturday':
-        return { fields: saturdayFields, append: saturdayAppend, remove: saturdayRemove };
+        return { fields: saturdayFields, append: saturdayAppend, remove: preventRemoveDefault(saturdayRemove , saturdayFields) };
       default:
         return { fields: [], append: () => {}, remove: () => {} };
     }

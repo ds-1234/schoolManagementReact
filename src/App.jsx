@@ -28,6 +28,7 @@ import ExamResults from './Dashboard/Admin_Dashboard/Examinations/ExamResults/Ex
 import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade/Grade'
 import Role from './Dashboard/Admin_Dashboard/User/Role/Role'
 import TimeTable from './Dashboard/Admin_Dashboard/TimeTable/TimeTable'
+import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser'
 
 
 function App() {
@@ -45,7 +46,8 @@ function App() {
               <Route path='school' element={<School/>}/>
               <Route path='subject' element={<Subject/>}/>
               <Route path='books' element={<Book/>}/>
-              <Route path='user' element={<User/>}/>
+              <Route path='activeUser' element={<User/>}/>
+              <Route path = 'pendingUser' element={<PendingUser/>}/>
               <Route path='role' element={<Role/>}/>
               <Route path='class' element={<Class/>}/>
               <Route path = 'allStudents' element={<AllStudents/>}/>
