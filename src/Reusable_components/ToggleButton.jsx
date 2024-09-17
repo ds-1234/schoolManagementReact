@@ -1,31 +1,29 @@
 // ToggleButton.js
 import React from 'react';
-import './Switch.css';
+// import './Switch.css';
 
 const ToggleButton = ({ id, label, isOn, handleToggle, register, ...rest }) => {
   return (
     <div className="flex items-center">
-      <label htmlFor={id} className="mr-3 text-sm font-medium text-gray-700">
-        {label}
-      </label>
-      <div className="relative">
+      <label htmlFor={id} className="relative cursor-pointer">
         <input
-          id={id} // Use the id prop here
-          defaultChecked={isOn}
-          {...register(id)} // Use the register method from react-hook-form
-          onChange={handleToggle}
-          className="react-switch-checkbox"
           type="checkbox"
-          {...rest}
+          id={id}
+          checked={isOn}
+          onChange={handleToggle}
+          className="sr-only"
         />
-        <label
-          style={{ background: isOn ? '#06D6A0' : 'grey' }}
-          className="react-switch-label"
-          htmlFor={id} // Use the id prop for label association
-        >
-          <span className={`react-switch-button`} />
-        </label>
-      </div>
+        <div
+          className={`block w-14 h-8 rounded-full transition-colors duration-300 ${
+            isOn ? 'bg-green-500' : 'bg-gray-300'
+          }`}
+        ></div>
+        <div
+          className={`dot absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 transform ${
+            isOn ? 'translate-x-6' : ''
+          }`}
+        ></div>
+      </label>
     </div>
   );
 };

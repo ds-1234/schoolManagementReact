@@ -5,59 +5,83 @@ import Table from '../../../../Reusable_components/Table';
 import deleteIcon from '../../../../assets/delete.png'
 import AddGrade from './AddGrade';
 import { NavLink } from 'react-router-dom';
+import StatusButton from '../../../../Reusable_components/StatusButton';
+import EditGrade from './EditGrade';
 
 function Grade() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editSubjectId , setEditSubjectId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editGradeId , setEditGradeId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditSubjectId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditGradeId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditSubjectId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditGradeId(null);
+    setIsEditPopupOpen(false);
+  };
 
-//   const fetchData = () => {
-//     axios({
-//       method: "GET",
-//       url: `http://localhost:8080/subject/getSubjectList`,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       // withCredentials: true,
-//     })
-//       .then((response) => {
-//         console.log("Data from API:", response.data);
-//         setData(response.data.data);
-//         setFilterData(response.data.data) ;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-//   };
+const onDelete = (id) => {
+  axios({
+    method: "DELETE",
+    url: `http://localhost:8080/gradePoints/deleteGradePoints/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // withCredentials: true,
+  })
+    .then((response) => {
+      console.log("Data from API:", response.data);
+      fetchData() ;
 
-//   useEffect(() => {
-//     fetchData() ;
-//   } , []);
 
-//   useEffect(() => {
-//     setData(data);  
-//     setFilterData(data); 
-//   }, []);
+    })
+    .catch((error) => {
+      console.error("Error Deleting data:", error);
+      fetchData() ;
+
+    });
+}
+
+  const fetchData = () => {
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/gradePoints/getGradePointsList`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        setData(response.data.data);
+        setFilterData(response.data.data) ;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData() ;
+  } , []);
+
+  useEffect(() => {
+    setData(data);  
+    setFilterData(data); 
+  }, []);
   
 
 useEffect(() => {
-  if (isAddPopupOpen ) {
+  if (isAddPopupOpen || isEditPopupOpen ) {
     document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
   } else {
     document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
@@ -66,7 +90,7 @@ useEffect(() => {
   return () => {
     document.body.style.overflow = 'auto';  // Cleanup on unmount
   };
-}, [isAddPopupOpen]);
+}, [isAddPopupOpen , isEditPopupOpen]);
 
 
 const column = [
@@ -82,18 +106,20 @@ const column = [
   },
   {
     name: 'Percentage',
-    selector: row => row.percentage,
+    selector: row => (row.percentageFrom + ' - ' +  row.percentageUpto),
     sortable: true,
   },
   {
     name: 'Grade Points',
-    selector: row => row.points,
+    selector: row => row.gradePoints,
     sortable: true,
   },
   {
     name: 'Status',
-    selector: row => row.status,
-    sortable: false,
+    selector: row => (
+      <StatusButton isActive={row.isActive}/>
+    ),
+    sortable: true,
   },
   {
     name: 'Action',
@@ -105,8 +131,13 @@ const column = [
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button>
+      {/* <button>
         <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button> */}
+              <button
+        onClick={() => onDelete(row.id)}
+      >
+        <img src={deleteIcon} alt="Edit" className='h-8' />
       </button>
       </div>
     ),
@@ -142,10 +173,10 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Grade', value: 'name' },
-  { label: 'Percentage', value: 'percentage' },
-  { label: 'Grade Points', value: 'points' },
-  { label: 'Status', value: 'status' }
+  { label: 'Grade', value: 'grade' },
+  { label: 'Percentage', value: 'percentageFrom' },
+  { label: 'Grade Points', value: 'gradePoints' },
+  { label: 'Status', value: 'isActive' }
 ];
 
   return (
@@ -166,16 +197,17 @@ const searchOptions = [
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
+          fetchData(); 
+          // Refresh data when add popup closes
         }} 
         />
 
-      {/* <EditSubject
+      <EditGrade
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        subjectId={editSubjectId}
+        gradeId={editGradeId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };

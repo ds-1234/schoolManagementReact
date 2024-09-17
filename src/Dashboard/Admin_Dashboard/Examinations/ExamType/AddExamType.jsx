@@ -8,11 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
-  const formatDateToDDMMYYYY = (dateString) => {
-    if (!dateString) return '';
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-  };
+
 
   const {
     register,
@@ -46,31 +42,31 @@ const AddExamType = ({ isOpen, onClose }) => {
 
   // const navigate = useNavigate()
 
-//   const onSubmit = (data) => {
-//     axios({
-//         method:"POST",
-//         url : `http://localhost:8080/subject/createSubject`,
-//         data: {
-//             subject : data.subject ,
-//             description : data.description 
-//         },
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
+  const onSubmit = (data) => {
+    axios({
+        method:"POST",
+        url : `http://localhost:8080/examType/createExamType`,
+        data: {
+          examTypeName : data.ExamName ,
+          examTypeDescription : data.description 
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
     
-//       })
-//       .then((response)=>{
-//         console.log('response' , response.data)
-//         toast.success("Successfully Add Subject");
-//         reset()
-//         onClose(); 
-//     })
-//     .catch(err=>{
-//         console.log(err,'error:')
-//         toast.error("Error to add new Subject");
-//         onClose();
-//     })
-//   }
+      })
+      .then((response)=>{
+        console.log('response' , response.data)
+        toast.success("Successfully Add Exam Type");
+        reset()
+        onClose(); 
+    })
+    .catch(err=>{
+        console.log(err,'error:')
+        toast.error("Error to add new Exam Type");
+        onClose();
+    })
+  }
 
   if (!isOpen) return null;
 
@@ -84,60 +80,34 @@ const AddExamType = ({ isOpen, onClose }) => {
           &times;
         </button>
       <form 
-        // onSubmit={handleSubmit(onSubmit)} 
+        onSubmit={handleSubmit(onSubmit)} 
         className=""
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add Exam Type</h2>
 
         {/* Exam Name Input */}
         <div className="mb-4">
-          <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Exam Name *</label>
+          <label htmlFor="ExamName" className="block text-gray-700 font-semibold mb-2">Exam Name *</label>
           <input
             type="text"
-            id="subject"
-            className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register('subject', { required: 'Subject name is required' })}
+            id="ExamName"
+            className={`w-full px-3 py-2 border ${errors.ExamName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register('ExamName', { required: 'Exam name is required' })}
           />
-          {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
+          {errors.ExamName && <p className="text-red-500 text-sm mt-1">{errors.ExamName.message}</p>}
         </div>
 
-        {/* Exam Date Input */}
-        <div className="mb-4">
-              <label htmlFor="date" className="block text-gray-700 font-semibold mb-2">Exam Date  *</label>
-              <input
-                // type="date"
-                id="date"
-                className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                {...register('date', { required: 'Date is required' })}
-                placeholder="Select Date"
-                onFocus={(e) => {
-                  e.target.type = 'date'; 
-                  e.target.placeholder = ''; 
-                  console.log('focused')
-                }}
-                onBlur={(e) => {
-                  const value = e.target.value;
-                  e.target.type = 'text'; // Switch back to text input on blur
-                  e.target.placeholder = 'Select Date'; // Restore placeholder
-            
-                  // Reformat the date to dd/mm/yyyy if a date is selected
-                  if (value) {
-                    e.target.value = formatDateToDDMMYYYY(value);
-                  }
-                }}
-              />
-              {errors.date && <span className="text-red-500 text-sm">{errors.date.message}</span>}
-                  {/* <label htmlFor="Dtae" className="block text-gray-700 font-semibold mb-2">Exam Date  *</label> */}
-                {/* <LocalizationProvider dateAdapter={AdapterDayjs} >
-    <DatePicker
-      //  className={`py-1 px-3 mb-5 rounded-lg bg-gray-100 border ${errors.date ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}   
-      label = 'Select Date'
-       {...register('date', { required: 'Date is required' })}
-       id="date"
-
-       />
-  </LocalizationProvider> */}
-            </div>
+        {/* Description Input */}
+        <div className="mb-2">
+          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
+          <textarea
+            id="description"
+            className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            rows="4"
+            {...register('description', { required: 'Description is required' })}
+          ></textarea>
+          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+        </div>
 
         {/* Submit Button */}
         <Button 
