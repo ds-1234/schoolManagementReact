@@ -5,27 +5,28 @@ import Table from '../../../../Reusable_components/Table';
 import deleteIcon from '../../../../assets/delete.png'
 import AddExamType from './AddExamType';
 import { NavLink } from 'react-router-dom';
+import EditExamType from './EditExamType';
 
 function ExamType() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editSubjectId , setEditSubjectId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editExamId , setEditExamId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditSubjectId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditExamId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditSubjectId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditExamId(null);
+    setIsEditPopupOpen(false);
+  };
 
 const onDelete = (id) => {
   axios({
@@ -119,7 +120,7 @@ const column = [
 ]
 
 useEffect(() => {
-  if (isAddPopupOpen ) {
+  if (isAddPopupOpen || isEditPopupOpen) {
     document.body.style.overflow = 'hidden';  
   } else {
     document.body.style.overflow = 'auto';  
@@ -128,7 +129,7 @@ useEffect(() => {
   return () => {
     document.body.style.overflow = 'auto';  
   };
-}, [isAddPopupOpen]);
+}, [isAddPopupOpen , isEditPopupOpen]);
 
 // const handleFilter = (event) => {
 //   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
@@ -185,12 +186,12 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditSubject
+      <EditExamType
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        subjectId={editSubjectId}
+        examtypeId={editExamId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };
