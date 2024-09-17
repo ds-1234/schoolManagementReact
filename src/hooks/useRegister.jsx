@@ -14,20 +14,7 @@ const useRegister = () => {
   const registerUser =  (userData) => {
     setLoading(true);
     setError(null);
-    
-
-    // try {
-    //   const response = await axios.post('http://localhost:8080/user/createUser', userData , {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-    //   setLoading(false);
-    //   return response.data;
-    // } catch (error ) {
-    //   setError(error.response.data.message || 'Something went wrong');
-    //   setLoading(false);
-    // }
+  
     axios({
       method:"post",
       url : `http://localhost:8080/user/createUser`,

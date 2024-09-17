@@ -31,6 +31,7 @@ import TimeTable from './Dashboard/Admin_Dashboard/TimeTable/TimeTable'
 import ClassSelect from './Dashboard/Admin_Dashboard/TimeTable/ClassSelect'
 import SectionSelect from './Dashboard/Admin_Dashboard/TimeTable/SectionSelect'
 import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser'
+import AddUser from './Dashboard/Admin_Dashboard/User/AddUser'
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
               <Route path='books' element={<Book/>}/>
               <Route path='activeUser' element={<User/>}/>
               <Route path = 'pendingUser' element={<PendingUser/>}/>
+              <Route path = 'addUser' element = {<AddUser/>}/>
               <Route path='role' element={<Role/>}/>
               <Route path='class' element={<Class/>}/>
               <Route path = 'allStudents' element={<AllStudents/>}/>

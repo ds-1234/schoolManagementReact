@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import edit from '../../../assets/edit.png';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
-import AddUser from './AddUser';
+// import AddUser from './AddUser';
 import EditUser from './EditUser';
-import { NavLink } from 'react-router-dom';
+import { NavLink , useNavigate} from 'react-router-dom';
 
 function User() {
 
@@ -60,12 +60,13 @@ const column = [
 
   const [user, setUser] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
+  const navigate = useNavigate()
 
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+  // const openAddPopup = () => setIsAddPopupOpen(true);
+  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
   const openEditPopup = (id) => {
     setEditUserId(id);
@@ -78,7 +79,7 @@ const column = [
   };
 
   useEffect(() => {
-    if (isAddPopupOpen || isEditPopupOpen) {
+    if (isEditPopupOpen) {
       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
     } else {
       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
@@ -87,7 +88,7 @@ const column = [
     return () => {
       document.body.style.overflow = 'auto';  // Cleanup on unmount
     };
-  }, [isAddPopupOpen, isEditPopupOpen]);
+  }, [ isEditPopupOpen]);
 
   const fetchData = async() => {
     axios({
@@ -150,6 +151,10 @@ const column = [
     setUser(filterUser);  // Reset to original data
   };
 
+  const handleClick = () => {
+    navigate('/admin/addUser');
+  }
+
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Active Users</h1>
@@ -160,15 +165,15 @@ const column = [
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-         onAddClick={openAddPopup}
+         onAddClick={handleClick}
       />
-      <AddUser 
+      {/* <AddUser 
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
           fetchData(); // Refresh data when add popup closes
         }} 
-      />
+      /> */}
 
       <EditUser
         isOpen={isEditPopupOpen}
