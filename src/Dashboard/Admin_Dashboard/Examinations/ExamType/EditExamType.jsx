@@ -58,7 +58,7 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
         'Content-Type': 'application/json',
       },
       data: {
-        id: `${gradeId}`,
+        id: `${examtypeId}`,
         examTypeName: data.ExamName,
         examTypeDescription: data.description,
 
