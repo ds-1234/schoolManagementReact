@@ -27,33 +27,55 @@ function ExamType() {
 //     setIsEditPopupOpen(false);
 //   };
 
-//   const fetchData = () => {
-//     axios({
-//       method: "GET",
-//       url: `http://localhost:8080/subject/getSubjectList`,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       // withCredentials: true,
-//     })
-//       .then((response) => {
-//         console.log("Data from API:", response.data);
-//         setData(response.data.data);
-//         setFilterData(response.data.data) ;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-//   };
+const onDelete = (id) => {
+  axios({
+    method: "DELETE",
+    url: `http://localhost:8080/examType/deleteExamType/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // withCredentials: true,
+  })
+    .then((response) => {
+      console.log("Data from API:", response.data);
+      fetchData() ;
 
-//   useEffect(() => {
-//     fetchData() ;
-//   } , []);
 
-//   useEffect(() => {
-//     setData(data);  
-//     setFilterData(data); 
-//   }, []);
+    })
+    .catch((error) => {
+      console.error("Error Deleting data:", error);
+      fetchData() ;
+
+    });
+}
+
+  const fetchData = () => {
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/examType/getExamTypeList`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        setData(response.data.data);
+        setFilterData(response.data.data) ;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData() ;
+  } , []);
+
+  useEffect(() => {
+    setData(data);  
+    setFilterData(data); 
+  }, []);
   
 const column = [
   {
@@ -62,13 +84,18 @@ const column = [
     sortable: false,
   },
   {
-    name: 'Exam Name',
-    selector: row => row.name,
+    name: 'Exam Type ID',
+    selector: row => row.examTypeId,
     sortable: true,
   },
   {
-    name: 'Exam Date',
-    selector: row => row.date,
+    name: 'Exam Type Name',
+    selector: row => row.examTypeName,
+    sortable: true,
+  },
+  {
+    name: 'Exam Type Description',
+    selector: row => row.examTypeDescription,
     sortable: true,
   },
   {
@@ -81,8 +108,10 @@ const column = [
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button>
-        <img src={deleteIcon} alt="Delete" className='h-8' />
+      <button
+        onClick={() => onDelete(row.id)}
+      >
+        <img src={deleteIcon} alt="Edit" className='h-8' />
       </button>
       </div>
     ),
@@ -91,13 +120,13 @@ const column = [
 
 useEffect(() => {
   if (isAddPopupOpen ) {
-    document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    document.body.style.overflow = 'hidden';  
   } else {
-    document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    document.body.style.overflow = 'auto';  
   }
 
   return () => {
-    document.body.style.overflow = 'auto';  // Cleanup on unmount
+    document.body.style.overflow = 'auto';  
   };
 }, [isAddPopupOpen]);
 
