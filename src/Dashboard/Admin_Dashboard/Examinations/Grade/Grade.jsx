@@ -29,6 +29,28 @@ function Grade() {
     setIsEditPopupOpen(false);
   };
 
+const onDelete = (id) => {
+  axios({
+    method: "DELETE",
+    url: `http://localhost:8080/gradePoints/deleteGradePoints/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // withCredentials: true,
+  })
+    .then((response) => {
+      console.log("Data from API:", response.data);
+      fetchData() ;
+
+
+    })
+    .catch((error) => {
+      console.error("Error Deleting data:", error);
+      fetchData() ;
+
+    });
+}
+
   const fetchData = () => {
     axios({
       method: "GET",
@@ -59,7 +81,7 @@ function Grade() {
   
 
 useEffect(() => {
-  if (isAddPopupOpen ) {
+  if (isAddPopupOpen || isEditPopupOpen ) {
     document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
   } else {
     document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
@@ -68,7 +90,7 @@ useEffect(() => {
   return () => {
     document.body.style.overflow = 'auto';  // Cleanup on unmount
   };
-}, [isAddPopupOpen]);
+}, [isAddPopupOpen , isEditPopupOpen]);
 
 
 const column = [
@@ -109,8 +131,13 @@ const column = [
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
-      <button>
+      {/* <button>
         <img src={deleteIcon} alt="Delete" className='h-8' />
+      </button> */}
+              <button
+        onClick={() => onDelete(row.id)}
+      >
+        <img src={deleteIcon} alt="Edit" className='h-8' />
       </button>
       </div>
     ),

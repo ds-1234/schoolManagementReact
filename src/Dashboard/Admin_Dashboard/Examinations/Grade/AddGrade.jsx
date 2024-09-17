@@ -40,11 +40,12 @@ const AddExamType = ({ isOpen, onClose }) => {
         toast.success("Successfully Add Grade");
         reset()
         onClose(); 
-        data.active = true ;
+        setValue(true)
     })
     .catch(err=>{
         console.log(err,'error:')
         toast.error("Error to add new Grade");
+        setValue(true)
         onClose();
     })
   }
@@ -53,6 +54,8 @@ useEffect(() => {
   // Disable scrolling on background when the popup is open
   if (isOpen) {
     document.body.style.overflow = 'hidden';
+    setValue(true)
+
   } else {
     document.body.style.overflow = 'auto';
   }
@@ -149,7 +152,7 @@ useEffect(() => {
           {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
         </div>
 
-        <div className="">
+        <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
                 Status 
               </label>
