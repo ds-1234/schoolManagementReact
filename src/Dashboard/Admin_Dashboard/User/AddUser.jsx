@@ -3,24 +3,15 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
-import {Link} from 'react-router-dom'
-import { DatePicker } from 'rsuite';
-// import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { NavLink } from 'react-router-dom';
 
-const AddUser = ({ isOpen, onClose }) => {
+const AddUser = () => {
 
   const formatDateToDDMMYYYY = (dateString) => {
     if (!dateString) return '';
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
-  };
-
-  const datepickerStyle = {  
-    marginBottom: "0px",  
-    marginTop: "0px" ,
-    // paddingTop: '5px'
-}; 
+  }; 
 
   const {
     register,
@@ -29,52 +20,42 @@ const AddUser = ({ isOpen, onClose }) => {
     reset
   } = useForm();
 
-  useEffect(() => {
-    // Disable scrolling on background when the popup is open
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+  // useEffect(() => {
+  //   // Disable scrolling on background when the popup is open
+  //   if (isOpen) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
 
-    // Add event listener for ESC key press
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
+  //   // Add event listener for ESC key press
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === 'Escape') {
+  //       onClose();
+  //     }
+  //   };
 
-    document.addEventListener('keydown', handleKeyDown);
+  //   document.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'auto'; // Clean up scrolling style
-    };
-  }, [isOpen, onClose]);
+  //   return () => {
+  //     document.removeEventListener('keydown', handleKeyDown);
+  //     document.body.style.overflow = 'auto'; // Clean up scrolling style
+  //   };
+  // }, [isOpen, onClose]);
 
   const onSubmit = (data) => {
+    const userData = {
+      ...data , 
+      role: {
+        id: 1 ,
+        name: "Guest" ,
+      },
+      isActive : "false" 
+    }
     axios({
         method:"post",
         url : `http://localhost:8080/user/createUser`,
-        data: {
-            firstName : "" ,
-            lastName : "" , 
-            fatherName: "",
-            motherName: "",
-            gender: "",
-            dateOfBirth:"",
-            role: "",
-            email: "",
-            phone: "",
-            password: "",
-            houseNumber: "",
-            street: "",
-            city: "",
-            state: "",
-            pinCode: "",
-            country: "",
-            isActive: ""
-        },
+        data: userData ,
         headers: {
           "Content-Type": "application/json",
         },
@@ -84,33 +65,35 @@ const AddUser = ({ isOpen, onClose }) => {
         console.log('response' , response.data)
         toast.success("Successfully Add User");
         reset()
-        onClose(); 
+        // onClose(); 
     })
     .catch(err=>{
         console.log(err,'error:')
         toast.error("Error to add new User");
-        onClose();
+        // onClose();
     })
   }
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
-        <button
+    <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
+       <div className="bg-white rounded-lg w-full">
+        {/* <button
           onClick={onClose}
           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
         >
           &times;
-        </button>
-        <h2 className="text-2xl font-bold text-center text-[#042954] mb-2">Add New User</h2>
+        </button> */}
+        <h2 className="text-2xl font-bold text-[#042954]  ">Add New User</h2>
+        <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add User</span> </p>
       <form  
-        className="flex flex-wrap mt-1"
+        className="grid grid-cols-4 mt-10 gap-6"
+        onSubmit={handleSubmit(onSubmit)}
       >
 
         {/* Input Fields */}
-        <div className="flex flex-col px-1 w-1/2">
+        <div className="flex flex-col px-1">
               <label htmlFor="firstName">First Name *</label>
               <input
                 type="text"
@@ -122,7 +105,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span> }
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="lastName">Last Name *</label>
               <input
                 type="text"
@@ -134,7 +117,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.lastName && <span className="text-red-500 text-sm">{errors.lastName.message}</span> }
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="email">Email *</label>
               <input
                 type="email"
@@ -151,8 +134,26 @@ const AddUser = ({ isOpen, onClose }) => {
               />
               {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
             </div>
+            <div className="flex flex-col  px-1 ">
+              <label htmlFor="password">Password *</label>
+              <input
+                type="password"
+                id="password"
+                placeholder=""
+                autoComplete='new-password'
+                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Password must be at least 6 characters',
+                  },
+                })}
+              />
+              {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+            </div>
 
-            <div className="flex flex-col  px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="phone">Mobile Number *</label>
               <input
                 type="phone"
@@ -170,7 +171,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="fatherName">Father's Name *</label>
               <input
                 type="text"
@@ -182,7 +183,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.fatherName && <span className="text-red-500 text-sm">{errors.fatherName.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1">
               <label htmlFor="motherName">Mother's Name *</label>
               <input
                 type="text"
@@ -194,7 +195,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.motherName && <span className="text-red-500 text-sm">{errors.motherName.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="gender">Gender * </label>
               <select
                 id="gender"
@@ -209,7 +210,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
       <label htmlFor="dateOfBirth">Date of Birth *</label>
       <input
         type="text"
@@ -235,35 +236,7 @@ const AddUser = ({ isOpen, onClose }) => {
       {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
     </div>
 
-
-
-          {/* <div className="flex flex-col px-1 w-1/2">
-          <label htmlFor="dateOfBirth">Date of Birth *</label>
-
-                    <DatePicker  
-                    block style={datepickerStyle}
-                     placeholder="Select Date" 
-                     id="dateOfBirth"
-                     size= 'lg'
-                     className={` rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                     {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-                     />
-           </div> */}
-          {/* <div      className="flex flex-col px-1 w-1/2" >
-             <label htmlFor="dateOfBirth">Date of Birth *</label>
-  
-                   <LocalizationProvider dateAdapter={AdapterDayjs} >
-                   <DatePicker
-                    label = 'Select Date'
-                    {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-                    sx={{ width: '100%', '.MuiInputBase-input': { padding: '8px' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiOutlinedInput-root': { border: 'none' },'.MuiFormLabel-root': { fontSize: '0.875rem',transform: 'translateY(8px)',marginBottom: '5px',marginLeft:'5px' } }}
-                  />
-             </LocalizationProvider>
-             {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-
-                   </div> */}
-
-            <div className="flex flex-col  px-1 w-1/2">
+            <div className="flex flex-col  px-1">
               <label htmlFor="houseNumber">House Number *</label>
               <input
                 type="text"
@@ -275,7 +248,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="street">Street *</label>
               <input
                 type="text"
@@ -287,7 +260,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="city">City *</label>
               <input
                 type="text"
@@ -299,7 +272,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1">
               <label htmlFor="state">State *</label>
               <input
                 type="text"
@@ -310,7 +283,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1 ">
               <label htmlFor="pinCode">Pincode *</label>
               <input
                 type="text"
@@ -328,7 +301,7 @@ const AddUser = ({ isOpen, onClose }) => {
               {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
             </div>
 
-            <div className="flex flex-col px-1 w-1/2">
+            <div className="flex flex-col px-1">
               <label htmlFor="country">Country *</label>
               <input
                 type="text"
@@ -339,63 +312,11 @@ const AddUser = ({ isOpen, onClose }) => {
               />
               {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
             </div>
-
-            <div className="flex flex-col  px-1 w-1/2">
-              <label htmlFor="password">Password *</label>
-              <input
-                type="password"
-                id="password"
-                placeholder=""
-                autoComplete='new-password'
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-              />
-              {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
-            </div>
-
-            <div className="flex flex-col px-1 w-1/2">
-              <label htmlFor="role" >Role *</label>
-              <select
-                id="role"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.role ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('role', { required: 'Role is required' })}
-              >
-                <option value="" className='hidden'>Role</option>
-                <option value="Admin">Admin</option>
-                <option value="Parent">Parent</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Student">Student</option>
-                <option value="Guest">Guest</option>
-              </select>
-              {errors.role && <span className="text-red-500 text-sm">{errors.role.message}</span>}
-            </div>
-
-            <div className="flex items-center pt-1">
-              <input
-                type="checkbox"
-                id="isActive"
-                className={`mr-2 leading-tight ${errors.isActive ? 'border-red-500' : ''}`}
-                {...register('isActive', { required: 'You must agree to the terms and policy' })}
-              />
-              <label htmlFor="isActive" className="text-sm text-black">
-                I agree to the <Link to="#" className="text-blue-700 hover:underline">terms and policy</Link>
-              </label>
-              {errors.isActive && <span className="text-red-500 text-sm">{errors.isActive.message}</span>}
-            </div>
-            
-        {/* Submit Button */}
-        <Button 
-        onClick={handleSubmit(onSubmit)}
-        className='w-full text-center'
-        // label={"Add new User"}
-        />
       </form>
+
+      {/* Submit Button */}
+      <Button 
+        type='submit' className=' p-0 text-center mt-10 '/>
       </div>
       <ToastContainer/>
     </div>
