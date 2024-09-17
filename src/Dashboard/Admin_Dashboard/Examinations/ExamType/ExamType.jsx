@@ -11,19 +11,19 @@ function ExamType() {
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
 //   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editSubjectId , setEditSubjectId] = useState(null)
+//   const [editExamId , setEditExamId] = useState(null)
 
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
 //   const openEditPopup = (id) => {
-//     setEditSubjectId(id);
+//     setEditExamId(id);
 //     setIsEditPopupOpen(true);
 //   };
 
 //   const closeEditPopup = () => {
-//     setEditSubjectId(null);
+//     setEditExamId(null);
 //     setIsEditPopupOpen(false);
 //   };
 
@@ -188,7 +188,7 @@ const searchOptions = [
       {/* <EditSubject
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        subjectId={editSubjectId}
+        examtypeId={editExamId}
         onSuccess={fetchData} // Refresh data after editing
       /> */}
     </div>

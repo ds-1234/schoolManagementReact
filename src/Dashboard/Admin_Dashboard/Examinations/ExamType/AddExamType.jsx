@@ -87,7 +87,7 @@ const AddExamType = ({ isOpen, onClose }) => {
 
         {/* Exam Name Input */}
         <div className="mb-4">
-          <label htmlFor="ExamName" className="block text-gray-700 font-semibold mb-2">Exam Name *</label>
+          <label htmlFor="ExamName" className="block text-gray-700 font-semibold mb-2">Exam Type *</label>
           <input
             type="text"
             id="ExamName"
