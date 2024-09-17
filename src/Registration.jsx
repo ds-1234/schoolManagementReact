@@ -15,12 +15,20 @@ function Registration() {
   // const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    const result = await registerUser(data);
+    const result =  registerUser({
+      ...data , 
+      role: {
+        id : 1 ,
+        name : "Guest"
+      },
+      isActive: "false" 
+    });
+  };
 
-    // if (result) {
-    //   console.log("User registered successfully:", result);
-    //   navigate('/dashboard', { state: data });
-    // }
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -36,10 +44,10 @@ function Registration() {
         </div>
 
         {/* Form Section */}
-        <div className="w-full p-4">
+        <div className="w-full p-4 ">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col md:flex-wrap  justify-center md:flex-row">
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="firstName">First Name *</label>
+              <label htmlFor="firstName">First Name <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="text"
                 id="firstName"
@@ -51,7 +59,7 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2  px-1 md:w-1/2">
-              <label htmlFor="lastName">Last Name *</label>
+              <label htmlFor="lastName">Last Name <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="text"
                 id="lastName"
@@ -63,7 +71,7 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="email">Email *</label>
+              <label htmlFor="email">Email <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="email"
                 id="email"
@@ -81,152 +89,7 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="phone">Mobile Number *</label>
-              <input
-                type="phone"
-                id="phone"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('phone', {
-                  required: 'Phone number is required',
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: 'Phone number must be 10 digits',
-                  },
-                })}
-              />
-              {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="fatherName">Father's Name *</label>
-              <input
-                type="text"
-                id="fatherName"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.fatherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('fatherName', { required: 'Father\'s Name is required' })}
-              />
-              {errors.fatherName && <span className="text-red-500 text-sm">{errors.fatherName.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="motherName">Mother's Name *</label>
-              <input
-                type="text"
-                id="motherName"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.motherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('motherName', { required: 'Mother\'s Name is required' })}
-              />
-              {errors.motherName && <span className="text-red-500 text-sm">{errors.motherName.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="gender">Gender * </label>
-              <select
-                id="gender"
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('gender', { required: 'Gender is required' })}
-              >
-                <option value="" className='hidden'>Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="dateOfBirth">Date of Birth *</label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-              />
-              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="houseNumber">House Number *</label>
-              <input
-                type="text"
-                id="houseNumber"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.houseNumber ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('houseNumber', { required: 'House Number is required' })}
-              />
-              {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="street">Street *</label>
-              <input
-                type="text"
-                id="street"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.street ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('street', { required: 'Street is required' })}
-              />
-              {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="city">City *</label>
-              <input
-                type="text"
-                id="city"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('city', { required: 'City is required' })}
-              />
-              {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="state">State *</label>
-              <input
-                type="text"
-                id="state"
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('state', { required: 'State is required' })}
-              />
-              {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="pinCode">Pincode *</label>
-              <input
-                type="text"
-                id="pinCode"
-                placeholder=''
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('pinCode', { 
-                  required: 'Pincode is required'  , 
-                  pattern: {
-                    value: /^[0-9]/,
-                    message: 'Pincode must be digits',
-                  },
-                })}
-              />
-              {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="country">Country *</label>
-              <input
-                type="text"
-                id="country"
-                placeholder=""
-                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('country', { required: 'Country is required' })}
-              />
-              {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
-            </div>
-
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
-              <label htmlFor="password">Password *</label>
+              <label htmlFor="password">Password <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="password"
                 id="password"
@@ -245,6 +108,168 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="phone">Mobile Number <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="phone"
+                id="phone"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('phone', {
+                  required: 'Phone number is required',
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: 'Phone number must be 10 digits',
+                  },
+                })}
+              />
+              {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="fatherName">Father's Name <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="fatherName"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.fatherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('fatherName', { required: 'Father\'s Name is required' })}
+              />
+              {errors.fatherName && <span className="text-red-500 text-sm">{errors.fatherName.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="motherName">Mother's Name <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="motherName"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.motherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('motherName', { required: 'Mother\'s Name is required' })}
+              />
+              {errors.motherName && <span className="text-red-500 text-sm">{errors.motherName.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="gender">Gender <span className='text-red-700 font-bold'>*</span> </label>
+              <select
+                id="gender"
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('gender', { required: 'Gender is required' })}
+              >
+                <option value="" className='hidden'>Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="dateOfBirth">Date of Birth <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="dateOfBirth"
+                placeholder="Select Date" 
+                onFocus={(e) => {
+                  e.target.type = 'date';
+                  e.target.placeholder = ''; 
+                  console.log('focused')
+                }}
+                onBlur={(e) => {
+                  const value = e.target.value;
+                  e.target.type = 'text'; 
+                  e.target.placeholder = 'Select Date'; 
+            
+                  if (value) {
+                    e.target.value = formatDateToDDMMYYYY(value);
+                  }
+                }}
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('dateOfBirth', { required: 'Date of Birth is required' })}
+              />
+              {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="houseNumber">House Number <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="houseNumber"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.houseNumber ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('houseNumber', { required: 'House Number is required' })}
+              />
+              {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="street">Street <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="street"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.street ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('street', { required: 'Street is required' })}
+              />
+              {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="city">City <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="city"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('city', { required: 'City is required' })}
+              />
+              {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="state">State <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="state"
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('state', { required: 'State is required' })}
+              />
+              {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="pinCode">Pincode <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="pinCode"
+                placeholder=''
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('pinCode', { 
+                  required: 'Pincode is required'  , 
+                  pattern: {
+                    value: /^[0-9]/,
+                    message: 'Pincode must be digits',
+                  },
+                })}
+              />
+              {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
+            </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+              <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
+              <input
+                type="text"
+                id="country"
+                placeholder=""
+                className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                {...register('country', { required: 'Country is required' })}
+              />
+              {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
+            </div>
+
+           
+
+            {/* <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="role" >Role *</label>
               <select
                 id="role"
@@ -259,9 +284,9 @@ function Registration() {
                 <option value="Guest">Guest</option>
               </select>
               {errors.role && <span className="text-red-500 text-sm">{errors.role.message}</span>}
-            </div>
+            </div> */}
 
-            <div className="flex items-center mt-4 ">
+            {/* <div className="flex items-center mt-4 ">
               <input
                 type="checkbox"
                 id="isActive"
@@ -272,8 +297,7 @@ function Registration() {
                 I agree to the <Link to="#" className="text-blue-700 hover:underline">terms and policy</Link>
               </label>
               {errors.isActive && <span className="text-red-500 text-sm">{errors.isActive.message}</span>}
-            </div>
-            
+            </div> */}
 
             <Button
               type="submit"
