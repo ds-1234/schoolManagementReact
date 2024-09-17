@@ -65,9 +65,10 @@ function AdmissionForm() {
             <label htmlFor="date" className="block text-sm font-medium text-gray-700">
             Date Of Birth *
             </label>
-            <Input
+            <input
             // type='text'
               {...register('date', { required: 'Date Of Birth is required' })}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1"
               placeholder="Select Date" 
               onFocus={(e) => {
                 e.target.type = 'date'; 

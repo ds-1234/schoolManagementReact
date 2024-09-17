@@ -7,7 +7,7 @@ import AddUser from './AddUser';
 import EditUser from './EditUser';
 import { NavLink } from 'react-router-dom';
 
-function User() {
+function PendingUser() {
 
 const column = [
   {
@@ -98,11 +98,11 @@ const column = [
       },
     })
       .then((response) => {
-        const activeUsers = response.data.data.filter(user => user.isActive === true) 
-        setUser(activeUsers);
+        const pendingUsers = response.data.data.filter(user => (user.isActive === false))
+        setUser(pendingUsers);
         console.log('Data from API:', response.data.data);
-        console.log('Data from active userData', activeUsers);
-        setFilterUser(activeUsers)
+        console.log('Data from pending userData', pendingUsers);
+        setFilterUser(pendingUsers)
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -152,8 +152,8 @@ const column = [
 
   return (
     <div className='pl-0 h-full mb-10'>
-       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Active Users</h1>
-       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Active_Users</span> </p>
+       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Pending Users</h1>
+       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<span className='text-[#ffae01] font-semibold'>Pending_Users</span> </p>
       <Table
          columns={column}
          data={user}
@@ -180,4 +180,4 @@ const column = [
   );
 }
 
-export default User;
+export default PendingUser;
