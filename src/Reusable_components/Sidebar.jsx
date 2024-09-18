@@ -211,7 +211,7 @@ const Sidebar = () => {
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/allStudents'}
+            to={'/admin/AdmissionForm'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -224,7 +224,7 @@ const Sidebar = () => {
             </NavLink>
             {isStdDropdown && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                <li>
+                {/* <li>
                   <NavLink
                     to="/admin/AllStudents"
                     className={({ isActive }) =>
@@ -234,7 +234,7 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faAngleRight} />
                     All Students
                   </NavLink>
-                </li>
+                </li> */}
                 <li>
                   <NavLink
                     to="/admin/AdmissionForm"
