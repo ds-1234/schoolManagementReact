@@ -39,6 +39,14 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
   }, [gradeId, isOpen, reset]);
 
   useEffect(() => {
+      // Disable scrolling on background when the popup is open
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+    setValue(true)
+
+  } else {
+    document.body.style.overflow = 'auto';
+  }
     // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -51,7 +59,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose,isOpen]);
 
   const onSubmit = (data, e) => {
     e.preventDefault();

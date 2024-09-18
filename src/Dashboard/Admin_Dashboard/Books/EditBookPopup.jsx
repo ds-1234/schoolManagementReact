@@ -9,6 +9,11 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
   const [active, setActive] = useState(true);
 
   const [book, setBook] = useState({
@@ -16,8 +21,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     description: '',
     author: '',
     publishingYear: '',
-    allotedStartDate: '',
-    allotedEndDate: '',
+    // allotedStartDate: '',
+    // allotedEndDate: '',
     // isActive: ''
   });
   const {
@@ -39,22 +44,36 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
       })
         .then((response) => {
           const data = response.data.data;
+          setBook({
+            ...data,
+            publishingYear: formatDateToDDMMYYYY(data.publishingYear), // Format date to dd-mm-yyyy
+          });
           setBook(data);
           setValue('name', data.name);
           setValue('description', data.description);
           setValue('author', data.author);
-          setValue('publishingYear', data.publishingYear);
-          setValue('allotedStartDate', data.allotedStartDate);
-          setValue('allotedEndDate', data.allotedEndDate);
+          setValue('publishingYear', formatDateToDDMMYYYY(data.publishingYear)); // Set formatted date
+          // setValue('allotedStartDate', data.allotedStartDate);
+          // setValue('allotedEndDate', data.allotedEndDate);
           // setValue('isActive', data.isActive);
+          setActive(true)
         })
         .catch((error) => {
           console.error('Error fetching Book:', error);
+          setActive(true)
+
         });
     }
   }, [bookId, isOpen, setValue]);
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      setActive(true)
+  
+    } else {
+      document.body.style.overflow = 'auto';
+    }
     // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -67,7 +86,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose,isOpen]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -76,6 +95,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
       [name]: type === 'checkbox' ? checked : value
     }));
   };
+
+
 
   const submitBook = (data) => {
     axios({
@@ -94,10 +115,12 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         toast.success('Book updated successfully!');
         onSuccess(); // Call onSuccess to refresh data
         onClose(); // Close the popup
+        setValue(true)
       })
       .catch((err) => {
         console.error('Error:', err);
         toast.error('Failed to update Book.');
+        setValue(true)
       });
   };
 
@@ -166,7 +189,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           </div>
 
 
-          <div>
+          {/* <div>
             <label htmlFor="allotedStartDate" className="block text-sm font-medium text-gray-700">
               Alloted Start Date
             </label>
@@ -181,8 +204,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.allotedStartDate && (
               <span className="text-red-500 text-sm">{errors.allotedStartDate.message}</span>
             )}
-          </div>
-
+          </div> */}
+{/* 
           <div>
             <label htmlFor="allotedEndDate" className="block text-sm font-medium text-gray-700">
               Alloted End Date
@@ -198,34 +221,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.allotedEndDate && (
               <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
             )}
-          </div>
-          {/* <div>
-            <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
-              Publishing Year
-            </label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Select Date"
-                {...register('publishingYear', { required: 'Publishing Year is required' })}
-                // value={book.publishingYear}
-                onChange={(date) => handleChange({ target: { name: 'publishingYear', value: date } })}
-                sx={{
-                  width: '100%',
-                  '.MuiInputBase-input': { padding: '8px' },
-                  '.MuiOutlinedInput-root': { border: 'none' },
-                  '.MuiFormLabel-root': {
-                    fontSize: '0.875rem',
-                    transform: 'translateY(8px)',
-                    marginBottom: '5px',
-                    marginLeft: '5px',
-                  },
-                }}
-              />
-            </LocalizationProvider>
-            {errors.publishingYear && (
-              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
-            )}
           </div> */}
+
 
 <div>
             <label htmlFor="publishingYear" className="block text-sm font-medium text-gray-700">
@@ -234,7 +231,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             <input
                            {...register('publishingYear', { required: 'Publishing Year is required' })}
                            className={`w-full mt-3 py-2 border rounded-xl focus:outline-none bg-gray-100`}
-             
+                           defaultValuevalue={book.publishingYear ? formatDateToDDMMYYYY(book.publishingYear) : ''} // Format on load
+
                            placeholder="Select Date" 
                            onFocus={(e) => {
                              e.target.type = 'date'; 
@@ -248,8 +246,10 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
                        
                              // Reformat the date to dd/mm/yyyy if a date is selected
                              if (value) {
-                               e.target.value = formatDateToDDMMYYYY(value);
-                             }
+                              const formattedDate = formatDateToDDMMYYYY(value); // Format date on blur
+                              e.target.value = formattedDate;
+                              handleChangeDate(e); // Update state with formatted date
+                            }
                            }}
                     aria-invalid={errors.publishingYear ? 'true' : 'false'}
               color={errors.publishingYear ? 'error' : 'default'}
