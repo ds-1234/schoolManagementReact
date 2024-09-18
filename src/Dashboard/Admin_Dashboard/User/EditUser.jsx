@@ -231,13 +231,13 @@ function EditUser() {
           />
         </div>
 
-          <Button 
+      </form>
+
+        <Button 
           // label={"Update User"}
           type='submit'
-          className='w-full text-center'
+          className='text-center mt-5 '
           />
-
-      </form>
       </div>
       <ToastContainer/>
     </div>
