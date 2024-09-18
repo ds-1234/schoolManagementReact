@@ -2,9 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
+import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-function EditUser({ isOpen, onClose, userId , onSuccess }) {
+function EditUser() {
   
+  const location = useLocation();
+  const { userId } = location.state || {};
+
   const [user, setUser] = useState({ 
     firstName : "" ,
     lastName : "" , 
@@ -21,6 +27,7 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
     pinCode: "",
     country: ""
    });
+   const [value, setValue] = useState(true);
 
   useEffect(() => {
     axios({
@@ -33,26 +40,12 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
       .then((response) => {
         console.log(response.data)
         setUser(response.data.data);
+        setValue(response.data.data.isActive)
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
       });
-  }, [userId , isOpen]);
-
-  useEffect(() => {
-    // Add event listener for ESC key press
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,18 +56,17 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/user/getUser/${userId}`,
+      url: `http://localhost:8080/user/updateUser`,
       headers: {
         "Content-Type": "application/json",
       },
-      data: user,
+      data: {...user , isActive: value ? 'true' : 'false' },
     })
       .then((response) => {
         console.log("User updated:", response.data);
         toast.success("User updated successfully!")
-
-        onSuccess() ;
-        onClose() ;
+        // onSuccess() ;
+        // onClose() ;
       })
       .catch((error) => {
         console.error("Error updating user:", error);
@@ -82,19 +74,15 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
       });
   };
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
-        >
-          &times;
-        </button>
+    <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
+
+        <h2 className="text-2xl font-bold text-[#042954]  ">Edit User</h2>
+        <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Edit User</span> </p>
       
-        <h2 className="text-2xl font-bold text-center mb-4 text-[#042954]">Edit User</h2>
+      <div className="bg-white rounded-lg w-full">
       <form 
       onSubmit={handleSubmit}
       className='flex flex-wrap py-1'>
@@ -228,6 +216,18 @@ function EditUser({ isOpen, onClose, userId , onSuccess }) {
             className="w-full px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             placeholder="Enter country name"
             required
+          />
+        </div>
+
+        <div className="mb-2">
+          <label className="mb-2" htmlFor="active">
+            Status 
+          </label>
+          <ToggleButton
+            isOn={value}
+            handleToggle={() => setValue(!value)}
+            id="active"
+            register={user}
           />
         </div>
 

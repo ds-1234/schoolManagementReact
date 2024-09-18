@@ -16,6 +16,7 @@ const AddUser = () => {
     return `${day}/${month}/${year}`;
   }; 
   const [value, setValue] = useState(true);
+  const [isParent, setIsParent] = useState('');
 
   const {
     register,
@@ -32,6 +33,7 @@ const AddUser = () => {
         name: "Guest" ,
       },
       isActive: data.active = value ? 'true' : 'false', 
+      isParent: isParent === 'Yes' ? true : false,
     }
     axios({
         method:"post",
@@ -47,6 +49,7 @@ const AddUser = () => {
         toast.success("Successfully Add User");
         reset()
         setValue(true)
+        setIsParent('');
     })
     .catch(err=>{
         console.log(err,'error:')
@@ -54,6 +57,11 @@ const AddUser = () => {
         setValue(true)
     })
   }
+
+  const handleIsParentChange = (e) => {
+    setIsParent(e.target.value); 
+  };
+
 
   return (
     <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
@@ -551,6 +559,40 @@ const AddUser = () => {
           </div>
         </form>
       </div>
+      
+      {/* Checkbox for parent */}
+       <div className="flex flex-col px-1">
+          <label htmlFor="isParent">Are you a Parent?</label>
+          <div className="flex items-center space-x-4 mt-2">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="isParent"
+                value="Yes"
+                checked={isParent === 'Yes'}
+                onChange={handleIsParentChange}
+                className="form-radio h-4 w-4 text-indigo-600"
+              />
+              <span className="ml-2">Yes</span>
+            </label>
+
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="isParent"
+                value="No"
+                checked={isParent === 'No'}
+                onChange={handleIsParentChange}
+                className="form-radio h-4 w-4 text-indigo-600"
+              />
+              <span className="ml-2">No</span>
+            </label>
+          </div>
+          {errors.isParent && (
+            <span className="text-red-500 text-sm">{errors.isParent.message}</span>
+          )}
+        </div>
+
         {/* Submit Button */}
         <Button type='submit' className=' p-0 text-center mt-10 '/>
       <ToastContainer/>
