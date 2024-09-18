@@ -34,6 +34,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
     // Disable scrolling on background when the popup is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setValue(true)
+
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -68,8 +70,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         description: data.description,
         author: data.author,
         publishingYear: data.publishingYear,
-        allotedStratDate: data.startdate,
-        allotedEndtDate: data.enddate,
+        allotedStratDate: '',
+        allotedEndtDate: '',
         isActive: value.toString(),
       },
       headers: {
@@ -79,13 +81,15 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
       .then((res) => {
         console.log('Response:', res.data);
         toast.success('Book added successfully!');
-        setValue(false)
+        setValue(true)
         onClose();
       })
       .catch((err) => {
         console.log('Error:', err);
         toast.error('Failed to add Book.');
         onClose();
+        setValue(true)
+
       });
   };
 
@@ -147,7 +151,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
           </div>
 
           {/* Alloted Start Date */}
-          <div>
+          {/* <div>
             <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
               Alloted Start Date
             </label>
@@ -160,10 +164,10 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             {errors.startdate && (
               <span className="text-red-500 text-sm">{errors.startdate.message}</span>
             )}
-          </div>
+          </div> */}
 
           {/* Alloted End Date */}
-          <div>
+          {/* <div>
             <label htmlFor="enddate" className="block text-sm font-medium text-gray-700">
               Alloted End Date
             </label>
@@ -176,7 +180,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
             {errors.enddate && (
               <span className="text-red-500 text-sm">{errors.enddate.message}</span>
             )}
-          </div>
+          </div> */}
 
 
           <div>

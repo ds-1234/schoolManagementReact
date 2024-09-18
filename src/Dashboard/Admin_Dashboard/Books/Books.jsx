@@ -47,16 +47,16 @@ function Books() {
     //   selector: row => row.bookRefId,
     //   sortable: true,
     // },
-    {
-      name: 'Alloted start date',
-      selector: row => row.allotedStratDate,
-      sortable: true,
-    },
-    {
-      name: 'Alloted End Date',
-      selector: row => row.allotedEndtDate,
-      sortable: true,
-    },
+    // {
+    //   name: 'Alloted start date',
+    //   selector: row => row.allotedStratDate,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Alloted End Date',
+    //   selector: row => row.allotedEndtDate,
+    //   sortable: true,
+    // },
     {
       name: 'Status',
       selector: row => (
@@ -186,7 +186,7 @@ const searchOptions = [
   return (
     <div className=' h-full mb-10 mr-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Books</h1>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Books</h1>
       <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Books</span> </p>
 
       <Table
