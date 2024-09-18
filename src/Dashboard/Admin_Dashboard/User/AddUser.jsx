@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState} from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
@@ -6,6 +6,7 @@ import Button from '../../../Reusable_components/Button';
 import { NavLink } from 'react-router-dom';
 // import { Input } from '@nextui-org/react';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+
 
 const AddUser = () => {
 
@@ -286,7 +287,7 @@ const AddUser = () => {
               </div>
 
               <div className="mb-2">
-                <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                <label className="mb-2" htmlFor="active">
                   Status 
                 </label>
                 <ToggleButton
