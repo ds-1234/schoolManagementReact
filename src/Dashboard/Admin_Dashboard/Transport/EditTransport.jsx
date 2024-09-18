@@ -19,6 +19,13 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
 });
 
 useEffect(() => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+    setValue(true)
+
+  } else {
+    document.body.style.overflow = 'auto';
+  }
   // Add event listener for ESC key press
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
@@ -43,9 +50,12 @@ useEffect(() => {
     })
       .then((response) => {
         setTransport(response.data.data);
+        setValue(true)
       })
       .catch((error) => {
         console.error("Error fetching transport:", error);
+        setValue(true)
+
       });
   }, [transportId , isOpen]);
 

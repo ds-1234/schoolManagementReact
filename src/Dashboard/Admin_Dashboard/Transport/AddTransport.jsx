@@ -35,13 +35,17 @@ function AddTransport() {
         toast.success("Successfully Add Transport!");
         // reset()
         navigate('/admin/transport')
+        setValue(true)
     })
     .catch(err=>{
         console.log(err,'error:')
         toast.error("Error to add new transport!");
+        setValue(true)
     })
   }
   
+  
+
   return (
     <div className='pl-0 h-full'>
        <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Transport </h1>

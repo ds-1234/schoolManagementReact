@@ -89,7 +89,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="School Name"
               labelPlacement="outside"
-              placeholder="Enter the school name"
+              placeholder="Enter the School Name"
               aria-invalid={errors.name ? 'true' : 'false'}
               color={errors.name ? 'error' : 'default'}
             />
@@ -103,9 +103,9 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               {...register('houseNumber', {
                 required: 'House number is required',
               })}
-              label="House Number"
+              label="School Number"
               labelPlacement="outside"
-              placeholder="Enter the house number"
+              placeholder="Enter the School Number"
               aria-invalid={errors.houseNumber ? 'true' : 'false'}
               color={errors.houseNumber ? 'error' : 'default'}
             />
@@ -121,7 +121,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="Street"
               labelPlacement="outside"
-              placeholder="Enter the street"
+              placeholder="Enter the Street"
               aria-invalid={errors.street ? 'true' : 'false'}
               color={errors.street ? 'error' : 'default'}
             />
@@ -137,7 +137,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="City"
               labelPlacement="outside"
-              placeholder="Enter the city"
+              placeholder="Enter the City"
               aria-invalid={errors.city ? 'true' : 'false'}
               color={errors.city ? 'error' : 'default'}
             />
@@ -153,7 +153,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="State"
               labelPlacement="outside"
-              placeholder="Enter the state"
+              placeholder="Enter the State"
               aria-invalid={errors.state ? 'true' : 'false'}
               color={errors.state ? 'error' : 'default'}
             />
@@ -169,7 +169,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="Pin Code"
               labelPlacement="outside"
-              placeholder="Enter the pin code"
+              placeholder="Enter the Pin Code"
               aria-invalid={errors.pinCode ? 'true' : 'false'}
               color={errors.pinCode ? 'error' : 'default'}
             />
@@ -185,7 +185,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
               })}
               label="Country"
               labelPlacement="outside"
-              placeholder="Enter the country"
+              placeholder="Enter the Country"
               aria-invalid={errors.country ? 'true' : 'false'}
               color={errors.country ? 'error' : 'default'}
             />

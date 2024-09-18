@@ -16,6 +16,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   });
 
   useEffect(() => {
+    
     // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -106,8 +107,8 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               name="houseNumber"
               value={school.houseNumber}
               onChange={handleChange}
-              label="House Number"
-              placeholder="Enter the house number"
+              label="School Number"
+              placeholder="Enter the School Number"
               aria-invalid={school.houseNumber ? 'false' : 'true'}
               color={school.houseNumber ? 'default' : 'error'}
             />
@@ -135,7 +136,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               value={school.city}
               onChange={handleChange}
               label="City"
-              placeholder="Enter the city"
+              placeholder="Enter the City"
               aria-invalid={school.city ? 'false' : 'true'}
               color={school.city ? 'default' : 'error'}
             />
@@ -149,7 +150,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               value={school.state}
               onChange={handleChange}
               label="State"
-              placeholder="Enter the state"
+              placeholder="Enter the State"
               aria-invalid={school.state ? 'false' : 'true'}
               color={school.state ? 'default' : 'error'}
             />
@@ -163,7 +164,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               value={school.pinCode}
               onChange={handleChange}
               label="Pin Code"
-              placeholder="Enter the pin code"
+              placeholder="Enter the Pin Code"
               aria-invalid={school.pinCode ? 'false' : 'true'}
               color={school.pinCode ? 'default' : 'error'}
             />
@@ -177,7 +178,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               value={school.country}
               onChange={handleChange}
               label="Country"
-              placeholder="Enter the country"
+              placeholder="Enter the Country"
               aria-invalid={school.country ? 'false' : 'true'}
               color={school.country ? 'default' : 'error'}
             />
