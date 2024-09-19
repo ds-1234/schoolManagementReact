@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
@@ -17,6 +17,9 @@ const AddUser = () => {
   }; 
   const [value, setValue] = useState(true);
   const [isParent, setIsParent] = useState('');
+  const [classes , setClasses] = useState([]) ;
+  const [books , setBooks] = useState([]) ;
+  const [schools , setSchools] = useState([]) ;
 
   const {
     register,
@@ -25,15 +28,79 @@ const AddUser = () => {
     reset
   } = useForm();
 
+  useEffect(() => {
+      const fetchClasses = async() =>{
+        axios({
+          method:"GET" , 
+          url:'http://localhost:8080/class/getClassList' , 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setClasses(res.data.data) ;
+        })
+        .catch(err => {
+          console.log(err , 'error:');
+        })
+      }
+
+      const fetchBooks = async() =>{
+        axios({
+          method:"GET" , 
+          url:'http://localhost:8080/book/getBookList' , 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setBooks(res.data.data) ;
+        })
+        .catch(err => {
+          console.log(err , 'error:');
+        })
+      }
+
+      const fetchSchools = async() =>{
+        axios({
+          method:"GET" , 
+          url:'http://localhost:8080/school/getSchoolList' , 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setSchools(res.data.data) ;
+        })
+        .catch(err => {
+          console.log(err , 'error:');
+        })
+      }
+
+      fetchClasses() ;
+      fetchBooks() ;
+      fetchSchools() ;
+  } , []);
+
   const onSubmit = (data) => {
+    const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
+    const selectedBooks = books.find(book => book.id === parseInt(data.book));
+    const selectedSchools = schools.find(school => school.id === parseInt(data.school));
+
     const userData = {
       ...data , 
       role: {
         id: 1 ,
         name: "Guest" ,
       },
+      className : selectedClasses , 
+      book: [selectedBooks] , 
+      school : selectedSchools ,
       isActive: data.active = value ? 'true' : 'false', 
-      isParent: isParent === 'Yes' ? true : false,
+      isParent: isParent === 'Yes' ? ["2"] : ["3"],
     }
     axios({
         method:"post",
@@ -45,9 +112,9 @@ const AddUser = () => {
     
       })
       .then((response)=>{
+        reset()
         console.log('response' , response.data)
         toast.success("Successfully Add User");
-        reset()
         setValue(true)
         setIsParent('');
     })
@@ -55,6 +122,7 @@ const AddUser = () => {
         console.log(err,'error:')
         toast.error("Error to add new User");
         setValue(true)
+        reset()
     })
   }
 
@@ -71,7 +139,7 @@ const AddUser = () => {
       
       <div className="bg-white rounded-lg w-full">
         <h2 className="text-xl font-semibold text-black  mt-10">Basic Details</h2>
-        <form  className="grid grid-cols-4 mt-5 gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <form  className="grid grid-cols-4 mt-5 gap-6">
 
           {/* Input Fields */}
           <div className="flex flex-col px-1">
@@ -215,7 +283,7 @@ const AddUser = () => {
           {...register('dateOfBirth', { required: 'Date of Birth is required' })}
         />
         {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
-      </div>
+              </div>
 
               <div className="flex flex-col  px-1">
                 <label htmlFor="houseNumber">House Number *</label>
@@ -305,259 +373,66 @@ const AddUser = () => {
                   register={register}
                 />
             </div>
-        </form>
+
+            </form>
 
         <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
-        <form  className="grid grid-cols-4 mt-5 gap-6" onSubmit={handleSubmit(onSubmit)}>
-
-          {/* Input Fields */}
-              <div className="flex flex-col px-1">
-                <label htmlFor="name">Full Name *</label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder=""
-                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                  {...register('name', { required: 'Name is required' })}
-                />
-                {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span> }
-              </div>
-
-              <div className="flex flex-col px-1 ">
-                <label htmlFor="section">Section *</label>
-                <input
-                  type="number"
-                  id="section"
-                  placeholder=""
-                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.section ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                  {...register('section', {
-                    required: 'Section is required',
-                  })}
-                />
-                {errors.section && <span className="text-red-500 text-sm">{errors.section.message}</span>}
-              </div>
-
-
-              <div className="flex flex-col  px-1">
-                <label htmlFor="subject">Subject Name *</label>
-                <input
-                  type="text"
-                  id="subject"
-                  placeholder=""
-                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                  {...register('subject', { required: 'Subject is required' })}
-                />
-                {errors.subject && <span className="text-red-500 text-sm">{errors.subject.message}</span>}
-              </div>
-
-              <div className="flex flex-col  px-1">
-                <label htmlFor="description">Subject Description *</label>
-                <textarea
-                  type="text"
-                  id="description"
-                  rows={1}
-                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.description ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                  {...register('description', { required: 'Subject Description is required' })}
-                />
-                {errors.description && <span className="text-red-500 text-sm">{errors.description.message}</span>}
-              </div>
-        </form>
+        {/* Class Input */}
+        <div className="mt-4">
+            <select
+              id="className"
+              className={`w-1/2 px-3 py-2 border ${errors.classname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              rows="4"
+              {...register('className', { required: 'Class Field is required' })}
+            >
+                <option value="" className='hidden'>Select a Class</option>
+              {classes.map(cls => (
+                <option key={cls.id} value={cls.id}>
+                  {cls.name}
+                </option>
+              ))}
+            </select>
+            {errors.cls && <p className="text-red-500 text-sm mt-1">{errors.cls.message}</p>}
+          </div>
 
 
         <h2 className="text-xl font-semibold text-black mt-10 ">Books Details</h2>
-        <form onSubmit={handleSubmit(onSubmit)}  className="grid grid-cols-4 mt-5 gap-6">
-          {/* Book Name */}
-          <div className="flex flex-col px-1">
-            <label htmlFor="name">
-              Book Name
-            </label>
-            <input
-              type='text'
-              {...register('name', { required: 'Book name is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
+        {/* Book Input */}
+        <div className="mt-4">
+            <select
+              id="book"
+              className={`w-1/2 px-3 py-2 border ${errors.book ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              rows="4"
+              {...register('book', { required: 'Book details is required' })}
+            >
+                <option value="" className='hidden'>Select a Book</option>
+              {books.map(book => (
+                <option key={book.id} value={book.id}>
+                  {book.name}
+                </option>
+              ))}
+            </select>
+            {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
           </div>
-
-          {/* Description */}
-          <div className="flex flex-col px-1">
-            <label htmlFor="description">
-              Description
-            </label>
-            <textarea
-              {...register('description', { required: 'Description is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.description ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-              rows={1}
-            />
-            {errors.description && (
-              <span className="text-red-500 text-sm">{errors.description.message}</span>
-            )}
-          </div>
-
-          {/* Author */}
-          <div className="flex flex-col px-1">
-            <label htmlFor="author">
-              Author
-            </label>
-            <input
-              type='text'
-              {...register('author', { required: 'Author is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.author ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.author && <span className="text-red-500 text-sm">{errors.author.message}</span>}
-          </div>
-
-          {/* Alloted Start Date */}
-          <div className="flex flex-col px-1">
-            <label htmlFor="startdate">
-              Alloted Start Date
-            </label>
-            <input
-              type='text'
-              {...register('startdate', { required: 'Start date is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.startdate ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.startdate && (
-              <span className="text-red-500 text-sm">{errors.startdate.message}</span>
-            )}
-          </div>
-
-          {/* Alloted End Date */}
-          <div className="flex flex-col px-1">
-            <label htmlFor="enddate" >
-              Alloted End Date
-            </label>
-            <input
-            type='text'
-              {...register('enddate', { required: 'End date is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.enddate? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.enddate && (
-              <span className="text-red-500 text-sm">{errors.enddate.message}</span>
-            )}
-          </div>
-
-
-          <div className="flex flex-col px-1">
-            <label htmlFor="publishingYear" >
-            Publishing Year
-            </label>
-            <input
-              {...register('publishingYear', { required: 'Publishing Year is required' })}
-              placeholder="Select Date" 
-              onFocus={(e) => {
-                e.target.type = 'date'; 
-                e.target.placeholder = ''; 
-                console.log('focused')
-              }}
-              onBlur={(e) => {
-                const value = e.target.value;
-                e.target.type = 'text'; // Switch back to text input on blur
-                e.target.placeholder = 'Search by Date...'; // Restore placeholder
-          
-                // Reformat the date to dd/mm/yyyy if a date is selected
-                if (value) {
-                  e.target.value = formatDateToDDMMYYYY(value);
-                }
-              }}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.publishingYear ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.publishingYear && (
-              <span className="text-red-500 text-sm">{errors.publishingYear.message}</span>
-            )}
-          </div>
-        </form>
 
         <h2 className="text-xl font-semibold text-black mt-10 ">School Details</h2>
-        <form onSubmit={handleSubmit(onSubmit)}  className="grid grid-cols-4 mt-5 gap-6" >
-        <div className='flex flex-col px-1'>
-            <label htmlFor="name">
-              School Name
-            </label>
-            <input
-              type='text'
-              {...register('name', { required: 'School name is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.name && (
-              <span className="text-red-500 text-sm">{errors.name.message}</span>
-            )}
+        {/* School Input */}
+        <div className="mt-4">
+            <select
+              id="school"
+              className={`w-1/2 px-3 py-2 border ${errors.school ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              rows="4"
+              {...register('school', { required: 'School details is required' })}
+            >
+                <option value="" className='hidden'>Select a Class</option>
+              {schools.map(school => (
+                <option key={school.id} value={school.id}>
+                  {school.name}
+                </option>
+              ))}
+            </select>
+            {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school.message}</p>}
           </div>
-
-          <div className='flex flex-col px-1'>
-            <label htmlFor="houseNumber">
-              School Number
-            </label>
-            <input
-              type='text'
-              {...register('houseNumber', { required: 'School Number is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.houseNumber ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.houseNumber && (
-              <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>
-            )}
-          </div>
-
-          <div className='flex flex-col px-1'>
-            <label htmlFor='street'>Street</label>
-            <input
-              type='text'
-              {...register('street', { required: 'street is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.street ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.street && (
-              <span className="text-red-500 text-sm">{errors.street.message}</span>
-            )}
-          </div>
-
-          <div className='flex flex-col px-1'>
-            <label htmlFor='city'>City</label>
-            <input
-              type='text'
-              {...register('city', { required: 'City is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.city && (
-              <span className="text-red-500 text-sm">{errors.city.message}</span>
-            )}
-          </div>
-
-          <div className='flex flex-col px-1'>
-            <label htmlFor='state'>State</label>
-            <input
-              type='text'
-              {...register('state', { required: 'state is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.state && (
-              <span className="text-red-500 text-sm">{errors.state.message}</span>
-            )}
-          </div>
-
-          <div className='flex flex-col px-1'>
-            <label htmlFor='pinCode'>Pin code</label>
-            <input
-              type='text'
-              {...register('pinCode', { required: 'Pin Code is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.pinCode && (
-              <span className="text-red-500 text-sm">{errors.pinCode.message}</span>
-            )}
-          </div>
-
-         <div className='flex flex-col px-1'>
-            <label htmlFor='country'>Country</label>
-            <input
-              type='text'
-              {...register('country', { required: 'country is required' })}
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            />
-            {errors.country && (
-              <span className="text-red-500 text-sm">{errors.country.message}</span>
-            )}
-          </div>
-        </form>
       </div>
       
       {/* Checkbox for parent */}
@@ -592,9 +467,10 @@ const AddUser = () => {
             <span className="text-red-500 text-sm">{errors.isParent.message}</span>
           )}
         </div>
+        
 
         {/* Submit Button */}
-        <Button type='submit' className=' p-0 text-center mt-10 '/>
+        <Button type='submit' className=' p-0 text-center mt-10' onClick={handleSubmit(onSubmit)}/>
       <ToastContainer/>
     </div>
   );
