@@ -80,7 +80,7 @@ function EditUser() {
     <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
 
         <h2 className="text-2xl font-bold text-[#042954]  ">Edit User</h2>
-        <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Edit User</span> </p>
+        <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
       
       <div className="bg-white rounded-lg w-full">
       <form 

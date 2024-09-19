@@ -52,7 +52,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
         })
         .catch(err=>{
             console.log(err,'error:')
-            toast.error("Error to fetched subject");
+            // toast.error("Error to fetched subject");
             onClose();
         })
 
