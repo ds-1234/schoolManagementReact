@@ -68,11 +68,11 @@ useEffect(() => {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/transport/updateTransport`,
+      url: `http://localhost:8080/transport/createTransport`,
       headers: {
         "Content-Type": "application/json",
       },
-      data: transport,
+      data: { id : '${transportId}' , ...transport , isActive:value},
     })
       .then((response) => {
         console.log("Transport updated:", response.data);

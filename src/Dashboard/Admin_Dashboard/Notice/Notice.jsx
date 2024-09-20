@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Button from '../../../Reusable_components/Button';
 
 
 
@@ -100,12 +101,13 @@ function NoticeBoard() {
     value={searchTitle}
     onChange={(e) => setSearchTitle(e.target.value)}
   />
-  <button
-    className="bg-yellow-500 text-white px-6 py-4 text-lg rounded"  
+  <Button
+  label = 'Search'
+    className="bg-yellow-500 text-white px-6 py-4 text-lg "  
     onClick={handleSearch}
   >
     Search
-  </button>
+  </Button>
 </div>
 
 

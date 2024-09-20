@@ -57,8 +57,8 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
     e.preventDefault();
     axios({
       method: 'POST', 
-      url: `http://localhost:8080/school/updateSchool/${schoolId}`,
-      data: school,
+      url: `http://localhost:8080/school/createSchool`,
+      data: {id : '${schoolId}', ...school},
       headers: {
         'Content-Type': 'application/json',
       },

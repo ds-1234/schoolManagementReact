@@ -46,11 +46,11 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/subject/createSubject/${subjectId}`,
+      url: `http://localhost:8080/subject/createSubject`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data: subject,
+      data:{id : '${subjectId}', ...subject},
     })
       .then((response) => {
         console.log('Subject updated:', response.data);

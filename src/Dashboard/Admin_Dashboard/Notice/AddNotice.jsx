@@ -1,7 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../Reusable_components/Button'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function AddNotice() {
 
@@ -12,10 +14,40 @@ function AddNotice() {
   };
 
   const { register, handleSubmit, reset } = useForm();
+  const navigate = useNavigate() 
+
 
   // Handle form submission
   const onSubmit = (data) => {
     console.log(data); 
+    console.log('Submitted Data:', data);
+
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/notice/createNotice',
+      data: {
+        noticeTitle: data.title,
+        noticeDetails: data.details,
+        postedBy: data.postedby,
+        noticeDate: data.date,
+
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        console.log('Response:', res.data);
+        toast.success('School added successfully!');
+        navigate('/admin/notice' ) ;
+
+        // onClose();
+      })
+      .catch((err) => {
+        console.log('Error:', err);
+        toast.error('Failed to add school.');
+        // onClose();
+      });
   };
 
   return (
