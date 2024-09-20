@@ -424,7 +424,7 @@ const AddUser = () => {
               rows="4"
               {...register('school', { required: 'School details is required' })}
             >
-                <option value="" className='hidden'>Select a Class</option>
+                <option value="" className='hidden'>Select a School</option>
               {schools.map(school => (
                 <option key={school.id} value={school.id}>
                   {school.name}
