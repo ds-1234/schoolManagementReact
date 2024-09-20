@@ -53,8 +53,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           setValue('description', data.description);
           setValue('author', data.author);
           setValue('publishingYear', formatDateToDDMMYYYY(data.publishingYear)); // Set formatted date
-          // setValue('allotedStartDate', data.allotedStartDate);
-          // setValue('allotedEndDate', data.allotedEndDate);
+          setValue('allotedStartDate', data.allotedStartDate);
+          setValue('allotedEndDate', data.allotedEndDate);
           // setValue('isActive', data.isActive);
           setActive(true)
         })
@@ -190,7 +190,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           </div>
 
 
-          {/* <div>
+          <div>
             <label htmlFor="allotedStartDate" className="block text-sm font-medium text-gray-700">
               Alloted Start Date
             </label>
@@ -205,8 +205,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.allotedStartDate && (
               <span className="text-red-500 text-sm">{errors.allotedStartDate.message}</span>
             )}
-          </div> */}
-{/* 
+          </div>
+
           <div>
             <label htmlFor="allotedEndDate" className="block text-sm font-medium text-gray-700">
               Alloted End Date
@@ -222,7 +222,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
             {errors.allotedEndDate && (
               <span className="text-red-500 text-sm">{errors.allotedEndDate.message}</span>
             )}
-          </div> */}
+          </div>
 
 
 <div>
