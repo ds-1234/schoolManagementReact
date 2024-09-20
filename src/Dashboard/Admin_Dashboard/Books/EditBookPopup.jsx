@@ -101,10 +101,11 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
   const submitBook = (data) => {
     axios({
       method: 'POST',
-      url: `http://localhost:8080/book/createBook/${bookId}`,
+      url: `http://localhost:8080/book/createBook`,
       data: {
+        id: "${bookId}",
         ...book,
-        isActive: book.isActive ? 'true' : 'false', // Convert boolean to string
+        isActive: active ? 'true' : 'false', // Convert boolean to string
       },
       headers: {
         'Content-Type': 'application/json',
