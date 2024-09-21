@@ -7,8 +7,7 @@ import { CutEyeIcon } from "./assets/Icons/CutEyeIcon";
 import { EyeIcon } from "./assets/Icons/EyeIcon";
 import bg from "./assets/LoginBack.png";
 import axios from "axios";
-import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer , toast } from "react-toastify";
 
 function Login() {
  
@@ -46,26 +45,31 @@ function Login() {
     //  withCredentials: true,
 
   }).then((res)=>{
-    console.log('role:' , res.data.data.role)
-    let role = res.data.data.role
-    toast.success("successful");
+    // console.log('role:' , res.data.data.role)
+    // let role = res.data.data.role
+    toast.success("Successfull Login");
   
-    switch (role) {
-      case 'student':
-        navigate('/studentDashboard' , {state: data}) ;
-        break;
-      case 'teacher':
-        navigate('/teacherDashboard' , {state: data}) ;
-        break;
-      case 'parents':
-        navigate('/parentsDashboard' , {state: data}) ;
-        break;
-      case 'Admin':
-        navigate('/admin' , {state: data}) ;
-        break;
-      default:
-        console.log('Unknown user type');
-    }
+    // switch (role) {
+    //   case 'Student':
+    //     navigate('/studentDashboard' , {state: data}) ;
+    //     break;
+    //   case 'Teacher':
+    //     navigate('/teacherDashboard' , {state: data}) ;
+    //     break;
+    //   case 'Parent':
+    //     navigate('/parentsDashboard' , {state: data}) ;
+    //     break;
+    //   case 'Admin':
+    //     navigate('/admin' , {state: data}) ;
+    //     break;
+    //   case 'Guest':
+    //     navigate('/admin' , {state: data}) ;
+    //     break;
+    //   default:
+    //     console.log('Unknown user type');
+    // }
+
+    navigate('/admin' , {state: data})
 
   }).catch(err=>{
      console.log(err,'error:')
@@ -192,7 +196,9 @@ function Login() {
           <span className="bg-blue-400 rounded-md">Empowering</span> Careers
         </h1>
       </div>
+      <ToastContainer/>
     </section>
+
   );
 }
 

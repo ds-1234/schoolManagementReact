@@ -173,6 +173,7 @@ useEffect(() => {
               <ToggleButton
                 isOn={value}
                 handleToggle={() => setValue(!value)}
+                onChange={handleChange}
                 id="active"
                 // label="Active"
                 register={register}
@@ -183,6 +184,7 @@ useEffect(() => {
           <Button 
           // label={"Update Transport"}
           type='submit'
+          onClick={handleSubmit}
           className='w-full text-center'
           />
 

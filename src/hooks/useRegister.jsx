@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ const useRegister = () => {
       let data = res.data.data;
 
       // Show popup with userId
-        toast.success(`Registered User Successfully ! User ID: ${data.userId}`);
+        // toast.success(`Registered User Successfully ! User ID: ${data.userId}`);
 
 
           // navigate to DashBoard

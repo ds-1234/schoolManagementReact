@@ -65,18 +65,71 @@ const AddClassPopup = ({ isOpen, onClose }) => {
         subject: subject.subject,
         description: subject.description // Assuming description is available
       };
-    });
 
-    try {
-      await axios.post('http://localhost:8080/class/createClass', {
-        name: data.name,
-        section: data.section,
-        subject: subjectDetails
-      });
-      toast.success("Successfully added class");
-      onClose();
-    } catch (error) {
-      toast.error("Error adding new class");
+    }, [isOpen, onClose]);
+
+    useEffect(() => {
+        const fetchSubjects = async () => {
+        axios({
+            method:"get",
+            url : `http://localhost:8080/subject/getSubjectList`,
+            // data: formData,
+            
+            headers: {
+              "Content-Type": "application/json",
+            },
+        
+          })
+          .then((response)=>{
+              console.log('response' , response.data)
+              setSubjects(response.data.data);
+            // toast.success("Successfully fetched subjects");
+            onClose(); 
+        })
+        .catch(err=>{
+            console.log(err,'error:')
+            // toast.error("Error to fetched subject");
+            onClose();
+        })
+
+        };
+    
+        fetchSubjects();
+      }, []);
+  
+  
+    const onSubmit = async (data) => {
+        const selectedSubject = subjects.find(subject => subject.id === parseInt(data.subject));
+        // const formData = {
+        //   name: data.name,
+        //   section: data.section,
+        //   subject: selectedSubject // Sending the selected subject object
+        // };
+
+      axios({
+          method:"post",
+          url : `http://localhost:8080/class/createClass`,
+          data: {
+            name: data.name,
+            section: data.section,
+            subject: [selectedSubject]
+          },
+          
+          headers: {
+            "Content-Type": "application/json",
+          },
+      
+        })
+        .then((response)=>{
+          console.log('response' , response.data)
+          toast.success("Successfully Add class");
+          onClose(); 
+      })
+      .catch(err=>{
+          console.log(err,'error:')
+          toast.error("Error to add new class");
+          onClose();
+      })
     }
   };
 

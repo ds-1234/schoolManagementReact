@@ -4,7 +4,7 @@ import edit from '../../../assets/edit.png';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 // import AddUser from './AddUser';
-import EditUser from './EditUser';
+// import EditUser from './EditUser';
 import { NavLink , useNavigate} from 'react-router-dom';
 
 function User() {
@@ -45,7 +45,7 @@ const column = [
     cell: row => (
       <div className='flex gap-2'>
         <button
-        onClick={() => openEditPopup(row.id)}
+        onClick={() => (handleEditClick(row.id))}
       >
         <img src={edit} alt="Edit" className='h-8' />
       </button>
@@ -60,35 +60,7 @@ const column = [
 
   const [user, setUser] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
-  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editUserId, setEditUserId] = useState(null);
   const navigate = useNavigate()
-
-  // const openAddPopup = () => setIsAddPopupOpen(true);
-  // const closeAddPopup = () => setIsAddPopupOpen(false);
-
-  const openEditPopup = (id) => {
-    setEditUserId(id);
-    setIsEditPopupOpen(true);
-  };
-
-  const closeEditPopup = () => {
-    setEditUserId(null);
-    setIsEditPopupOpen(false);
-  };
-
-  useEffect(() => {
-    if (isEditPopupOpen) {
-      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-    } else {
-      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';  // Cleanup on unmount
-    };
-  }, [ isEditPopupOpen]);
 
   const fetchData = async() => {
     axios({
@@ -155,6 +127,15 @@ const column = [
     navigate('/admin/addUser');
   }
 
+  const handleEditClick = (userId) => {
+    console.log('Editing user with ID:', userId);
+    navigate('/admin/editUser', {
+      state: {
+        userId :  userId
+      }
+    }) ;
+  }
+
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Active Users</h1>
@@ -166,20 +147,6 @@ const column = [
          onSearch={handleSearch}
          handleClear = {handleClear}
          onAddClick={handleClick}
-      />
-      {/* <AddUser 
-        isOpen={isAddPopupOpen} 
-        onClose={() => {
-          closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
-        }} 
-      /> */}
-
-      <EditUser
-        isOpen={isEditPopupOpen}
-        onClose={closeEditPopup}
-        userId={editUserId}
-        onSuccess={fetchData} // Refresh data after editing
       />
     </div>
   );

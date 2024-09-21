@@ -4,8 +4,10 @@ import Button from '../../../Reusable_components/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import DatePicker from '../../../Reusable_components/DatePicker';
 
 function AddNotice() {
+
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const [minDate, setMinDate] = useState('');
@@ -50,11 +52,10 @@ function AddNotice() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto bg-white rounded-xl shadow-md space-y-6 my-10">
-      <h2 className="text-2xl font-semibold text-black">Add Notice</h2>
-      <p className=''>
-        Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/<NavLink to='/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span>
-      </p>
+
+    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
+      <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
+      <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span> </p>
       <div className="grid grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">Title *</label>
@@ -77,6 +78,7 @@ function AddNotice() {
             min={minDate} 
             defaultValue={defaultDate} 
             placeholder="Select Date"
+
           />
         </div>
       </div>
