@@ -10,7 +10,7 @@ const Tile = ({ title, details, date, postedBy,index }) => {
       <div className="bg-white shadow-lg p-6 rounded-lg transition-all duration-300 transform group-hover:translate-x-2 group-hover:scale-105">
         <div className="flex flex-col gap-4">
           {/* Date pill */}
-          <div className={`${datePillColors[index % datePillColors.length]} text-white px-3 py-1 rounded-full text-sm inline-block w-max`}>
+          <div className={`${datePillColors[index % datePillColors.length]} text-white px-3 py-2 rounded-full text-base inline-block w-max`}>
             {new Date(date).toLocaleDateString('en-US', {
               day: 'numeric',
               month: 'long',

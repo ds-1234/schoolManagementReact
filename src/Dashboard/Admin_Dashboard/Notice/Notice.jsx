@@ -3,8 +3,6 @@ import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '../../../Reusable_components/Button';
 import Tile from './Tile';
 
@@ -17,7 +15,6 @@ function NoticeBoard() {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
   };
-  const datePillColors = ['bg-green-500', 'bg-blue-500', 'bg-yellow-500', 'bg-red-500', 'bg-purple-500'];
 
 
   const [notices, setNotices] = useState([]);
@@ -73,7 +70,7 @@ function NoticeBoard() {
       <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">
       
  {/* Search Inputs */}
-<div className="flex gap-4 mb-6">
+<div className="flex gap-4 mb-6 ">
   <input
     // type="date"
     placeholder="Search by Date..."
@@ -92,7 +89,7 @@ function NoticeBoard() {
         e.target.value = formatDateToDDMMYYYY(value);
       }
     }}
-    className="border p-4 text-lg rounded w-full"  
+    className="border p-4 text-lg rounded-xl w-full"  
     value={searchDate}
     onChange={(e) => setSearchDate(e.target.value)}
   />
@@ -100,7 +97,7 @@ function NoticeBoard() {
   <input
     type="text"
     placeholder="Search by Title..."
-    className="border p-4 text-lg rounded w-full"  
+    className="border p-4 text-lg rounded-xl w-full"  
     value={searchTitle}
     onChange={(e) => setSearchTitle(e.target.value)}
   />
