@@ -6,15 +6,11 @@ import Button from '../../../Reusable_components/Button';
 import { NavLink } from 'react-router-dom';
 // import { Input } from '@nextui-org/react';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import DatePicker from '../../../Reusable_components/DatePicker';
 
 
 const AddUser = () => {
 
-  const formatDateToDDMMYYYY = (dateString) => {
-    if (!dateString) return '';
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-  }; 
   const [value, setValue] = useState(true);
   const [isParent, setIsParent] = useState('');
   const [classes , setClasses] = useState([]) ;
@@ -300,28 +296,13 @@ const AddUser = () => {
               </div>
 
               <div className="flex flex-col px-1 ">
-        <label htmlFor="dateOfBirth">Date of Birth *</label>
-        <input
-          type="text"
-          id="dateOfBirth"
-          placeholder="Select Date" 
-          onFocus={(e) => {
-            e.target.type = 'date';
-            e.target.placeholder = ''; 
-            console.log('focused')
-          }}
-          onBlur={(e) => {
-            const value = e.target.value;
-            e.target.type = 'text'; 
-            e.target.placeholder = 'Select Date'; 
-      
-            if (value) {
-              e.target.value = formatDateToDDMMYYYY(value);
-            }
-          }}
-          className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-          {...register('dateOfBirth', { required: 'Date of Birth is required' })}
-        />
+                <DatePicker 
+                name={'dateOfBirth'}
+                label={"Date of Birth"}
+                register={register}
+                required={true}
+                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                />
         {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
               </div>
 
