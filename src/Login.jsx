@@ -8,7 +8,6 @@ import { EyeIcon } from "./assets/Icons/EyeIcon";
 import bg from "./assets/LoginBack.png";
 import axios from "axios";
 import { toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
  
