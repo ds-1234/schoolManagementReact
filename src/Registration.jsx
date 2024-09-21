@@ -120,6 +120,21 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
+                <label htmlFor="gender">Gender * </label>
+                <select
+                  id="gender"
+                  className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                  {...register('gender', { required: 'Gender is required' })}
+                >
+                  <option value="" className='hidden'>Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
+              </div>
+
+            <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="fatherName">Father's Name <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="text"
