@@ -117,13 +117,13 @@ function EditUser() {
         const userData = response.data.data;
         reset(userData);
         setToggleValue(userData.isActive);
-        setUserRole(userData.role.id) ;
+        setUserRole(userData.role) ;
         setUserClass(userData.class); 
         setUserBook(userData.book); 
         setUserSchool(userData.school); 
 
         // Set default values in the form
-        setValue('role' , userData.role.name);
+        setValue('role' , userData.role);
         setValue('className', userData.class);
         setValue('book', userData.book);
         setValue('school', userData.school);
@@ -357,7 +357,7 @@ function EditUser() {
           </div>
         </form>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">Role Details</h2>
+        <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
         {/* Role Input */}
         <div className="mt-4">
             <select
@@ -368,7 +368,7 @@ function EditUser() {
             >
                 <option value="" hidden>Select a Role</option>
               {roles.map(role => (
-                <option key={role.id} value={role.id} selected={role.id === userRole}>
+                <option key={role.id} value={role.id} selected={role.id === userRole.id}>
                   {role.name}
                 </option>
               ))}
@@ -376,7 +376,6 @@ function EditUser() {
             {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
           </div>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
         {/* Class Input */}
         <div className="mt-4">
             <select
@@ -396,7 +395,6 @@ function EditUser() {
           </div>
 
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">Books Details</h2>
         {/* Book Input */}
         <div className="mt-4">
             <select
@@ -415,7 +413,6 @@ function EditUser() {
             {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
           </div>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">School Details</h2>
         {/* School Input */}
         <div className="mt-4">
             <select

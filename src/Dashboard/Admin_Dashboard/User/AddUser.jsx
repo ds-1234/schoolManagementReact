@@ -20,6 +20,8 @@ const AddUser = () => {
   const [classes , setClasses] = useState([]) ;
   const [books , setBooks] = useState([]) ;
   const [schools , setSchools] = useState([]) ;
+  const [users , setUsers] = useState([]) ;
+  const [roles , setRoles] = useState([]) ;
 
   const {
     register,
@@ -29,6 +31,39 @@ const AddUser = () => {
   } = useForm();
 
   useEffect(() => {
+    const fetchRoles = async() =>{
+      axios({
+        method:"GET" , 
+        url:'http://localhost:8080/role/getRoleList' , 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setRoles(res.data.data) ;
+      })
+      .catch(err => {
+        console.log(err , 'error:');
+      })
+    }
+
+    const fetchUsers = async() =>{
+      axios({
+        method:"GET" , 
+        url:'http://localhost:8080/user/getUserList' , 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setUsers(res.data.data) ;
+      })
+      .catch(err => {
+        console.log(err , 'error:');
+      })
+    }
       const fetchClasses = async() =>{
         axios({
           method:"GET" , 
@@ -80,27 +115,32 @@ const AddUser = () => {
         })
       }
 
+      fetchUsers();
+      fetchRoles() ;
       fetchClasses() ;
       fetchBooks() ;
       fetchSchools() ;
   } , []);
+  
 
   const onSubmit = (data) => {
     const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
     const selectedBooks = books.find(book => book.id === parseInt(data.book));
     const selectedSchools = schools.find(school => school.id === parseInt(data.school));
+    const selectedRoles = roles.find(role => role.id === parseInt(data.role));
+    const selectedChilds = users.find(user => user.id === parseInt(data.isParent));
 
     const userData = {
       ...data , 
       role: {
-        id: 1 ,
-        name: "Guest" ,
+        id: selectedRoles.id ,
+        name: selectedRoles.name,
       },
       className : selectedClasses , 
       book: [selectedBooks] , 
       school : selectedSchools ,
       isActive: data.active = value ? 'true' : 'false', 
-      isParent: isParent === 'Yes' ? ["2"] : ["3"],
+      isParent: [selectedChilds.id]
     }
     axios({
         method:"post",
@@ -126,9 +166,9 @@ const AddUser = () => {
     })
   }
 
-  const handleIsParentChange = (e) => {
-    setIsParent(e.target.value); 
-  };
+  // const handleIsParentChange = (e) => {
+  //   setIsParent(e.target.value); 
+  // };
 
 
   return (
@@ -377,6 +417,23 @@ const AddUser = () => {
             </form>
 
         <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
+        {/* Add Role */}
+        <div className="mt-4">
+            <select
+              id="role"
+              className={`w-1/2 px-3 py-2 border ${errors.roles ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              rows="4"
+              {...register('role', { required: 'Role Field is required' })}
+            >
+                <option value="" hidden>Select a Role</option>
+              {roles.map(role => (
+                <option key={role.id} value={role.id}>
+                  {role.name}
+                </option>
+              ))}
+            </select>
+            {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
+          </div>
         {/* Class Input */}
         <div className="mt-4">
             <select
@@ -395,8 +452,6 @@ const AddUser = () => {
             {errors.cls && <p className="text-red-500 text-sm mt-1">{errors.cls.message}</p>}
           </div>
 
-
-        <h2 className="text-xl font-semibold text-black mt-10 ">Books Details</h2>
         {/* Book Input */}
         <div className="mt-4">
             <select
@@ -415,7 +470,6 @@ const AddUser = () => {
             {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
           </div>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">School Details</h2>
         {/* School Input */}
         <div className="mt-4">
             <select
@@ -436,7 +490,7 @@ const AddUser = () => {
       </div>
       
       {/* Checkbox for parent */}
-       <div className="flex flex-col px-1">
+       {/* <div className="flex flex-col px-1">
           <label htmlFor="isParent">Are you a Parent?</label>
           <div className="flex items-center space-x-4 mt-2">
             <label className="inline-flex items-center">
@@ -466,7 +520,25 @@ const AddUser = () => {
           {errors.isParent && (
             <span className="text-red-500 text-sm">{errors.isParent.message}</span>
           )}
-        </div>
+        </div> */}
+
+        {/* Child Input */}
+        <div className="mt-4">
+            <select
+              id="isParent"
+              className={`w-1/2 px-3 py-2 border ${errors.isParent ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              rows="4"
+              {...register('isParent', { required: 'Child details is required' })}
+            >
+                <option value="" className='hidden'>Select Child</option>
+              {users.map(user => (
+                <option key={user.id} value={user.id}>
+                  {user.firstName} - {user.userName}
+                </option>
+              ))}
+            </select>
+            {errors.isParent && <p className="text-red-500 text-sm mt-1">{errors.isParent.message}</p>}
+          </div>
         
 
         {/* Submit Button */}
