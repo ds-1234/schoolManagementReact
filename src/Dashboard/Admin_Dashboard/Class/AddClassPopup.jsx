@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import Button from "../../../Reusable_components/Button";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import down from "./arrow drop down.png";
+// import down from "./arrow drop down.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const AddClassPopup = ({ isOpen, onClose }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -161,17 +163,19 @@ const AddClassPopup = ({ isOpen, onClose }) => {
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <span>{selectedSubjects.length === 0 ? 'Select subjects' : selectedSubjects.map(id => subjects.find(sub => sub.id === id)?.subject).join(', ')}</span>
-              <img 
+              <p>{selectedSubjects.length === 0 ? 'Select subjects' : selectedSubjects.map(id => subjects.find(sub => sub.id === id)?.subject).join(', ')}</p>
+              {/* <img 
                 src={dropdownOpen ? {down} : '/images/dropdown-arrow.png'} 
                 alt="Dropdown Arrow"
                 className="w-4 h-4 ml-2"
-              />
+              /> */}
+              <FontAwesomeIcon icon={faAngleDown} />
+              
             </div>
             {dropdownOpen && (
-              <div className="absolute bg-white border rounded-lg mt-1">
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
                 {subjects.map(subject => (
-                  <label key={subject.id} className="block px-4 py-2 hover:bg-gray-100">
+                  <label key={subject.id} className=" px-4 py-2 hover:bg-gray-100">
                     <input
                       type="checkbox"
                       checked={selectedSubjects.includes(subject.id)}
