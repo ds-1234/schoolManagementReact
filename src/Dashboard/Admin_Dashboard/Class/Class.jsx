@@ -88,10 +88,10 @@ function Class() {
       selector: row => row.section,
       sortable: true,
     },
-    {
-      name: 'Subject',
-      selector: row => row.subject.length > 0 ? row.subject[0].subject : 'N/A',      sortable: true,
-    },
+    // {
+    //   name: 'Subject',
+    //   selector: row => row.subject.length > 0 ? row.subject[0].subject : 'N/A',      sortable: true,
+    // },
     {
       name: 'Action',
       cell: row => (
