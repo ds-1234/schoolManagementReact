@@ -3,9 +3,8 @@ import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '../../../Reusable_components/Button';
+import Tile from './Tile';
 
 
 
@@ -16,6 +15,7 @@ function NoticeBoard() {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
   };
+
 
   const [notices, setNotices] = useState([]);
   const [searchDate, setSearchDate] = useState('');
@@ -67,10 +67,10 @@ function NoticeBoard() {
         </button>
       </div>
       
-      <div className="p-6 max-w-4xl mx-auto bg-white space-y-2 my-10">
+      <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">
       
  {/* Search Inputs */}
-<div className="flex gap-4 mb-6">
+<div className="flex gap-4 mb-6 ">
   <input
     // type="date"
     placeholder="Search by Date..."
@@ -89,7 +89,7 @@ function NoticeBoard() {
         e.target.value = formatDateToDDMMYYYY(value);
       }
     }}
-    className="border p-4 text-lg rounded w-full"  
+    className="border p-4 text-lg rounded-xl w-full"  
     value={searchDate}
     onChange={(e) => setSearchDate(e.target.value)}
   />
@@ -97,7 +97,7 @@ function NoticeBoard() {
   <input
     type="text"
     placeholder="Search by Title..."
-    className="border p-4 text-lg rounded w-full"  
+    className="border p-4 text-lg rounded-xl w-full"  
     value={searchTitle}
     onChange={(e) => setSearchTitle(e.target.value)}
   />
@@ -112,34 +112,18 @@ function NoticeBoard() {
 
 
       {/* Notice List */}
-      <div>
-        {notices.map((notice) => (
-          <div key={notice.id} className="border-b pb-6 mb-4">
-            {/* Notice Header */}
-            <div className="flex flex-col justify-start gap-4">
-              
-              {/* Date pill */}
-            <div className="bg-green-500 text-white px-3 py-2 rounded-full text-md w-1/4">
-                {new Date(notice.noticeDate).toLocaleDateString('en-US', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })}
-              </div>
-
-            {/* Notice Details */}
-            <h1 className="text-3xl font-bold mt-2">{notice.noticeTitle}</h1>
-            <p className="text-black">{notice.noticeDetails}</p>
-
-            
-              {/* Posted By and Time */}
-              <span className="text-gray-500 text-sm">
-                {notice.postedBy} / {new Date().toLocaleTimeString()}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <div className='grid gap-6'>
+          {notices.map((notice,index) => (
+            <Tile
+              key={notice.id}
+              title={notice.noticeTitle}
+              details={notice.noticeDetails}
+              date={notice.noticeDate}
+              postedBy={notice.postedBy}
+              index={index}
+            />
+          ))}
+        </div>
     </div>
   </div>
     );
