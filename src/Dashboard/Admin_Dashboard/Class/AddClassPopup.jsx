@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import Button from "../../../Reusable_components/Button";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-// import down from "./arrow drop down.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,10 +13,10 @@ const AddClassPopup = ({ isOpen, onClose }) => {
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      fetchSubjects();
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -29,25 +28,20 @@ const AddClassPopup = ({ isOpen, onClose }) => {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
 
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/subject/getSubjectList');
-        setSubjects(response.data.data);
-      } catch (error) {
-        toast.error("Error fetching subjects");
-      }
-    };
-    
-    fetchSubjects();
-  }, []);
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/subject/getSubjectList');
+      setSubjects(response.data.data);
+    } catch (error) {
+      toast.error("Error fetching subjects");
+    }
+  };
 
   const handleCheckboxChange = (subjectId) => {
     setSelectedSubjects((prevSelected) => {
@@ -67,71 +61,24 @@ const AddClassPopup = ({ isOpen, onClose }) => {
         subject: subject.subject,
         description: subject.description // Assuming description is available
       };
+    });
 
-    }, [isOpen, onClose]);
+    try {
+      await axios.post('http://localhost:8080/class/createClass', {
+        name: data.name,
+        section: data.section,
+        subject: subjectDetails
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    useEffect(() => {
-        const fetchSubjects = async () => {
-        axios({
-            method:"get",
-            url : `http://localhost:8080/subject/getSubjectList`,
-            // data: formData,
-            
-            headers: {
-              "Content-Type": "application/json",
-            },
-        
-          })
-          .then((response)=>{
-              console.log('response' , response.data)
-              setSubjects(response.data.data);
-            // toast.success("Successfully fetched subjects");
-            onClose(); 
-        })
-        .catch(err=>{
-            console.log(err,'error:')
-            // toast.error("Error to fetched subject");
-            onClose();
-        })
-
-        };
-    
-        fetchSubjects();
-      }, []);
-  
-  
-    const onSubmit = async (data) => {
-        const selectedSubject = subjects.find(subject => subject.id === parseInt(data.subject));
-        // const formData = {
-        //   name: data.name,
-        //   section: data.section,
-        //   subject: selectedSubject // Sending the selected subject object
-        // };
-
-      axios({
-          method:"post",
-          url : `http://localhost:8080/class/createClass`,
-          data: {
-            name: data.name,
-            section: data.section,
-            subject: [selectedSubject]
-          },
-          
-          headers: {
-            "Content-Type": "application/json",
-          },
-      
-        })
-        .then((response)=>{
-          console.log('response' , response.data)
-          toast.success("Successfully Add class");
-          onClose(); 
-      })
-      .catch(err=>{
-          console.log(err,'error:')
-          toast.error("Error to add new class");
-          onClose();
-      })
+      toast.success("Successfully added class");
+      onClose();
+    } catch (error) {
+      toast.error("Error adding new class");
+      console.error(error);
     }
   };
 
@@ -156,30 +103,25 @@ const AddClassPopup = ({ isOpen, onClose }) => {
             {errors.section && <p className="text-red-500 text-sm mt-1">{errors.section.message}</p>}
           </div>
 
-                   {/* Subject Input */}
-                   <div className="mb-4 relative">
+          {/* Subject Input */}
+          <div className="mb-4 relative">
             <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
             <div 
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <p>{selectedSubjects.length === 0 ? 'Select subjects' : selectedSubjects.map(id => subjects.find(sub => sub.id === id)?.subject).join(', ')}</p>
-              {/* <img 
-                src={dropdownOpen ? {down} : '/images/dropdown-arrow.png'} 
-                alt="Dropdown Arrow"
-                className="w-4 h-4 ml-2"
-              /> */}
               <FontAwesomeIcon icon={faAngleDown} />
-              
             </div>
             {dropdownOpen && (
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
                 {subjects.map(subject => (
-                  <label key={subject.id} className=" px-4 py-2 hover:bg-gray-100">
+                  <label key={subject.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
                     <input
                       type="checkbox"
                       checked={selectedSubjects.includes(subject.id)}
                       onChange={() => handleCheckboxChange(subject.id)}
+                      className="mr-2"
                     />
                     {subject.subject}
                   </label>
@@ -188,8 +130,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
-
-          <Button type='submit' className='w-full text-center' />
+          <Button type='submit' className='w-full text-center' label="Add Class" />
         </form>
       </div>
       <ToastContainer />
