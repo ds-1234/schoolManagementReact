@@ -42,6 +42,11 @@ function Expenses() {
       sortable: true,
     },
     {
+      name: 'Payment Method',
+      selector: row => row.payment_mode,
+      sortable: true,
+    },
+    {
       name: 'Action',
       cell: row => (
         <div className='flex gap-2'>
@@ -154,6 +159,7 @@ const searchOptions = [
   { label: 'Category', value: 'category' },
   { label: 'Date', value: 'date' },
   { label: 'Amount', value: 'amount' },
+  { label: 'Payment Method', value: 'payment method' },
 ];
 
   return (
