@@ -2,13 +2,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
-  const [grade, setGrade] = useState({ name: '', section: '', subject: '' });
+  const [grade, setGrade] = useState({ name: '', section: '', subject: [] });
   const [subjects, setSubjects] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -23,26 +26,25 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   }, [onClose]);
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/subject/getSubjectList`);
+    axios.get('http://localhost:8080/subject/getSubjectList')
+      .then((response) => {
         setSubjects(response.data.data);
-      } catch (error) {
-        toast.error("Error fetching subjects");
-      }
-    };
-
-    fetchSubjects();
+      })
+      .catch((error) => {
+        toast.error('Error fetching subjects');
+      });
   }, []);
 
   useEffect(() => {
     if (GradeId) {
       axios.get(`http://localhost:8080/class/getClass/${GradeId}`)
-        .then(response => {
-          setGrade(response.data.data);
+        .then((response) => {
+          const classData = response.data.data;
+          setGrade(classData);
+          setSelectedSubjects(classData.subject.map(sub => sub.id)); // Pre-check subjects from API
         })
-        .catch(error => {
-          console.error("Error fetching Class:", error);
+        .catch((error) => {
+          console.error('Error fetching class:', error);
         });
     }
   }, [GradeId, isOpen]);
@@ -52,25 +54,47 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
     setGrade({ ...grade, [name]: value });
   };
 
+  const handleCheckboxChange = (id) => {
+    if (selectedSubjects.includes(id)) {
+      setSelectedSubjects(selectedSubjects.filter(subjectId => subjectId !== id));
+    } else {
+      setSelectedSubjects([...selectedSubjects, id]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Construct the subject array in the required format
+    const selectedSubjectObjects = selectedSubjects.map(id => {
+      const subjectData = subjects.find(sub => sub.id === id);
+      return {
+        id: subjectData.id,
+        subject: subjectData.subject,
+        description: subjectData.description
+      };
+    });
+
     axios({
-      method: "PUT", // Use PUT method for updating resources
-      url: `http://localhost:8080/class/updateClass/${GradeId}`, // Changed URL to reflect update
+      method: 'post',
+      url: `http://localhost:8080/class/updateClass`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      data: grade,
+      data: {
+        id: `{$GradeId}`,
+        ...grade,
+        subject: selectedSubjectObjects, // Pass selected subjects in the required format
+      },
     })
       .then((response) => {
-        console.log("Class updated:", response.data);
-        toast.success("Class updated successfully!");
+        toast.success('Class updated successfully!');
         onSuccess();
         onClose();
       })
       .catch((error) => {
-        console.error("Error updating Class:", error);
-        toast.error('Failed to update Class.');
+        toast.error('Failed to update class.');
+        console.error('Error updating class:', error);
       });
   };
 
@@ -120,31 +144,37 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
           </div>
 
           {/* Subject Input */}
-          <div className="mb-4">
-            <label htmlFor="subject" className="block text-gray-700 text-sm font-bold mb-2">Subject</label>
-            <select
-              id="subject"
-              name="subject"
-              value={grade.subject}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
+          <div className="mb-4 relative">
+            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
+            <div
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <option value="" disabled>Select a subject</option>
-              {subjects.map(subject => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.subject}
-                </option>
-              ))}
-            </select>
+              <p>{selectedSubjects.length === 0 ? 'Select subjects' : selectedSubjects.map(id => subjects.find(sub => sub.id === id)?.subject).join(', ')}</p>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </div>
+            {dropdownOpen && (
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
+                {subjects.map(subject => (
+                  <label key={subject.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedSubjects.includes(subject.id)}
+                      onChange={() => handleCheckboxChange(subject.id)}
+                      className="mr-2"
+                    />
+                    {subject.subject}
+                  </label>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
-          <Button 
-            type='submit'
-            className='w-full text-center'
+          <Button
+            type="submit"
+            className="w-full text-center"
           />
-
         </form>
       </div>
     </div>
