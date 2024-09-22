@@ -40,6 +40,25 @@ function ExpenseCategory() {
 //     setIsEditPopupOpen(false);
 //   };
 
+const handleDelete = (id)=>{
+    axios({
+        method: "post",
+        url: `http://localhost:8080/expenseCat/deleteExpenseCat/${id}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // withCredentials: true,
+      })
+        .then((response) => {
+          console.log("Data from Delete API:", response.data);
+          fetchData()
+        })
+        .catch((error) => {
+          console.error("Error to Delete data:", error);
+          fetchData()
+        });
+}
+
 
   const fetchData = () => {
     axios({
@@ -106,7 +125,9 @@ function ExpenseCategory() {
           >
             <img src={edit} alt="Edit" className="h-8" />
           </button>
-          <button>
+          <button
+          onClick={()=>handleDelete(row.id)}
+          >
             <img src={deleteIcon} alt="Delete" className="h-8" />
           </button>
         </div>

@@ -47,7 +47,7 @@ const AddExpenseCategory = ({ isOpen, onClose }) => {
       url: 'http://localhost:8080/expenseCat/saveExpenseCat',
       data: {
         expenseCategoryName: data.category,
-        description: data.description,
+        expenseCategoryDescription: data.description,
         isActive:value
       },
       headers: {
