@@ -39,8 +39,10 @@ function LandingPage() {
       },
     })
       .then((res) => {
-        console.log('role:', res.data.data.role);
+        console.log('role:', res.data.data.role.name);
         let role = res.data.data.role;
+        sessionStorage.setItem('username', res.data.data.userId);
+        sessionStorage.setItem('role', res.data.data.role.name);
         toast.success('Successfully Logged In');
 
         switch (role.name) {
