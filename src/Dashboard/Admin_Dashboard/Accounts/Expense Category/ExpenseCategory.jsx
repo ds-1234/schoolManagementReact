@@ -6,6 +6,7 @@ import deleteIcon from '../../../../assets/delete.png'
 import Table from '../../../../Reusable_components/Table';
 import { NavLink } from 'react-router-dom';
 import AddExpenseCategory from './AddExpenseCategory';
+import StatusButton from '../../../../Reusable_components/StatusButton';
 
 function ExpenseCategory() {
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ function ExpenseCategory() {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/subject/getSubjectList`,
+      url: `http://localhost:8080/expenseCat/getExpenseCatList`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -77,18 +78,25 @@ function ExpenseCategory() {
     },
     {
       name: 'Category',
-      selector: (row) => row.category,
+      selector: (row) => row.expenseCategoryName,
       sortable: true,
       wrap: true, 
       width: '300px', 
     },
     {
       name: 'Description',
-      selector: (row) => row.description,
+      selector: (row) => row.expenseCategoryDescription,
       sortable: true,
       wrap: true,
       width: '300px', 
     },
+    {
+        name: 'Status',
+        selector: row => (
+          <StatusButton isActive={row.isActive}/>
+        ),
+        sortable: true,
+      },
     {
       name: 'Action',
       cell: (row) => (
