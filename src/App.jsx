@@ -2,14 +2,13 @@ import { React } from 'react'
 import { BrowserRouter as Router , Route , Routes } from 'react-router-dom'
 import Login from './Login'
 import Registration from './Registration'
-import Dashboard from './Dashboard'
 import SuccessCard from './SuccessCard'
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard'
 import School from './Dashboard/Admin_Dashboard/School/School'
 import Subject from './Dashboard/Admin_Dashboard/Subject/Subject'
-import StudentDashboard from './Dashboard/StudentDashboard'
-import TeacherDashboard from './Dashboard/TeacherDashboard'
-import ParentsDashboard from './Dashboard/ParentsDashboard'
+import StudentDashboard from './Dashboard/Student_Dashboard/StudentDashboard'
+import TeacherDashboard from './Dashboard/Teacher_Dashboard/TeacherDashboard'
+import ParentsDashboard from './Dashboard/Parent_Dashboard/ParentsDashboard'
 import Book from './Dashboard/Admin_Dashboard/Books/Books'
 import User from './Dashboard/Admin_Dashboard/User/User'
 import Class from './Dashboard/Admin_Dashboard/Class/Class'
@@ -33,6 +32,11 @@ import SectionSelect from './Dashboard/Admin_Dashboard/TimeTable/SectionSelect'
 import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser'
 import AddUser from './Dashboard/Admin_Dashboard/User/AddUser'
 import EditUser from './Dashboard/Admin_Dashboard/User/EditUser'
+import LandingPage from './LandingPage'
+import Admin from './Dashboard/Admin_Dashboard/Admin'
+import Parent from './Dashboard/Parent_Dashboard/Parent'
+import Student from './Dashboard/Student_Dashboard/Student'
+import Teacher from './Dashboard/Teacher_Dashboard/Teacher'
 
 
 function App() {
@@ -41,12 +45,15 @@ function App() {
     <Router>
         <div className="h-screen">
           <Routes>
-            <Route path="/" element={<Registration/>}/>
-            <Route path="/login" element = {<Login/>}/>
+            <Route path="/" element={<LandingPage/>}/>
+            <Route path="/login" element = {<LandingPage/>}/>
             <Route path="/registration" element={<Registration/>}/>
-            <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/SuccessCard" element={<SuccessCard/>}/>
             <Route path="/admin" element={<AdminDashboard/>}>
+              {/* Default route */}
+              <Route index element={<Admin />} />
+
+              {/* Child Routes */}
               <Route path='school' element={<School/>}/>
               <Route path='subject' element={<Subject/>}/>
               <Route path='books' element={<Book/>}/>
@@ -73,9 +80,18 @@ function App() {
               <Route path='timetable/class' element={<ClassSelect/>} />
               <Route path='timetable/class/section' element={<SectionSelect/>} />
             </Route>
-            <Route path='/studentDashboard' element={<StudentDashboard/>}/>
-            <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
-            <Route path='/parentsDashboard' element={<ParentsDashboard/>}/>
+            <Route path='/studentDashboard' element={<StudentDashboard/>}>
+                 {/* Default route */}
+                 <Route index element = {<Student/>} />
+            </Route>
+            <Route path='/teacherDashboard' element={<TeacherDashboard/>}>
+                 {/* Default route */}
+                 <Route index element={<Teacher/>} />
+            </Route>
+            <Route path='/parentsDashboard' element={<ParentsDashboard/>}>
+                 {/* Default route */}
+                <Route index element={<Parent/>} />
+            </Route>
           </Routes>
         </div>
       </Router>

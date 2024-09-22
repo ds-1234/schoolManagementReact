@@ -14,6 +14,7 @@ const AdminDashboard = () => {
 
       {/* Main content */} 
       <div className="w-full mr-10">
+      
         <Outlet />
       </div>
      </div>
