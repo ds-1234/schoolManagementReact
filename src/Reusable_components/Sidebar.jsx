@@ -4,15 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
-  const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
+  // const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
   const [isStdDropdown , setIsStdDropdown] = useState(false) ;
   const [isExamDropdown , setIsExamDropdown] = useState(false) ;
   const [isUserDropdown , setIsUserDropdown] = useState(false) ;
   const [isConfOpen , setIsConfOpen] = useState(true) ;
+  const userRole = sessionStorage.getItem('role') 
 
-  const toggleDropdown = () => {
-    setIsDashBoardDropdown(!isDashboardDropdown);
-  };
+  // const toggleDropdown = () => {
+  //   setIsDashBoardDropdown(!isDashboardDropdown);
+  // };
 
   const toggleStdDropdown = () => {
     setIsStdDropdown(!isStdDropdown);
@@ -30,12 +31,27 @@ const Sidebar = () => {
     setIsConfOpen(!isConfOpen) ;
   }
 
+  const getDashboardPath = () => {
+    switch (userRole) {
+      case 'Student':
+        return '/studentDashboard';
+      case 'Teacher':
+        return '/teacherDashboard';
+      case 'Parent':
+        return '/parentsDashboard';
+      case 'Admin':
+        return '/admin';
+      case 'Guest':
+        return '/admin';
+    }
+  };
+ 
   return (
     <div>
       <nav className="p-5">
         <ul>
           {/* Dashboard Section */}
-          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+          {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink to="#" className="flex justify-between items-center hover:bg-[#063256] p-2 hover:rounded-xl">
               <div className="flex gap-1 justify-center items-center">
                 <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
@@ -91,7 +107,16 @@ const Sidebar = () => {
                 </li>
               </ul>
             )}
-          </li>
+          </li> */}
+
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink to={`${getDashboardPath()}`} className="flex justify-between items-center hover:bg-[#063256] p-2 hover:rounded-xl">
+              <div className="flex gap-1 justify-center items-center">
+                <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
+                  Dashboard
+              </div>
+            </NavLink>
+            </li>
 
            {/* User Section */}
            <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">

@@ -116,7 +116,7 @@ const column = [
           // Check if role name matches the query
           return row.role?.name?.toLowerCase().includes(query.toLowerCase());
         }else{
-        row[field]?.toLowerCase().includes(query.toLowerCase())
+        return row[field]?.toLowerCase().includes(query.toLowerCase())
         }
       }
       )

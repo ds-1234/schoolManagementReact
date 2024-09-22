@@ -71,9 +71,6 @@ function LandingPage() {
       });
   };
 
-  const handleClick = () => {
-      navigate('/registration')
-  }
 
   return (
     <Layout>

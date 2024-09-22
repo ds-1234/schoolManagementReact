@@ -397,7 +397,7 @@ const AddUser = () => {
 
             </form>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
+        <h2 className="text-xl font-semibold text-black mt-10 ">Role Details</h2>
         {/* Add Role */}
         <div className="mt-4">
             <select
@@ -416,7 +416,7 @@ const AddUser = () => {
             {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
           </div>
         {/* Class Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="className"
               className={`w-1/2 px-3 py-2 border ${errors.classname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -431,10 +431,10 @@ const AddUser = () => {
               ))}
             </select>
             {errors.cls && <p className="text-red-500 text-sm mt-1">{errors.cls.message}</p>}
-          </div>
+          </div> */}
 
         {/* Book Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="book"
               className={`w-1/2 px-3 py-2 border ${errors.book ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -449,10 +449,10 @@ const AddUser = () => {
               ))}
             </select>
             {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
-          </div>
+          </div> */}
 
         {/* School Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="school"
               className={`w-1/2 px-3 py-2 border ${errors.school ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -468,7 +468,7 @@ const AddUser = () => {
             </select>
             {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school.message}</p>}
           </div>
-      </div>
+      </div> */}
       
       {/* Checkbox for parent */}
        {/* <div className="flex flex-col px-1">
@@ -504,7 +504,7 @@ const AddUser = () => {
         </div> */}
 
         {/* Child Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="isParent"
               className={`w-1/2 px-3 py-2 border ${errors.isParent ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -519,12 +519,13 @@ const AddUser = () => {
               ))}
             </select>
             {errors.isParent && <p className="text-red-500 text-sm mt-1">{errors.isParent.message}</p>}
-          </div>
+          </div> */}
         
 
         {/* Submit Button */}
         <Button type='submit' className=' p-0 text-center mt-10' onClick={handleSubmit(onSubmit)}/>
       <ToastContainer/>
+    </div>
     </div>
   );
 };
