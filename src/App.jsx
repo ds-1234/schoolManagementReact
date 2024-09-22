@@ -38,6 +38,12 @@ import Parent from './Dashboard/Parent_Dashboard/Parent';
 import Student from './Dashboard/Student_Dashboard/Student';
 import Teacher from './Dashboard/Teacher_Dashboard/Teacher';
 import ProtectedRoute from './ProtectedRoute';  // Import the ProtectedRoute component
+import Expenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/Expenses';
+import ExpenseCategory from './Dashboard/Admin_Dashboard/Accounts/Expense Category/ExpenseCategory';
+import Income from './Dashboard/Admin_Dashboard/Accounts/Income/Income';
+import Invoices from './Dashboard/Admin_Dashboard/Accounts/Invoices/Invoices';
+import InvoiceView from './Dashboard/Admin_Dashboard/Accounts/Invoice View/InvoiceView';
+import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Transactions';
 
 function App() {
   return (
@@ -84,6 +90,15 @@ function App() {
             <Route path="timeTable" element={<TimeTable />} />
             <Route path="timetable/class" element={<ClassSelect />} />
             <Route path="timetable/class/section" element={<SectionSelect />} />
+            <Route path="Expenses" element={<Expenses />} />
+            <Route path="ExpenseCategory" element={<ExpenseCategory />} />
+            <Route path="income" element={<Income />} />
+            <Route path="Invoices" element={<Invoices />} />
+            <Route path="Invoiceview" element={<InvoiceView />} />
+            <Route path="Transactions" element={<Transactions />} />
+
+
+            
           </Route>
 
           {/* Student Dashboard Routes */}
