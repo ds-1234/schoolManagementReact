@@ -4,7 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 
 function EditUser() {
   const location = useLocation();
@@ -14,19 +14,16 @@ function EditUser() {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue
   } = useForm();
 
 
   const [toggleValue, setToggleValue] = useState(true);
   const [roles , setRoles] = useState([]) ;
-  const [classes , setClasses] = useState([]) ;
-  const [books , setBooks] = useState([]) ;
-  const [schools , setSchools] = useState([]) ;
-  const [userClass, setUserClass] = useState('');
-  const [userBook, setUserBook] = useState('');
-  const [userSchool, setUserSchool] = useState('');
-  const [userRole, setUserRole] = useState('');
+  // const [classes , setClasses] = useState([]) ;
+  // const [books , setBooks] = useState([]) ;
+  // const [schools , setSchools] = useState([]) ;
+  const [userRole, setUserRole] = useState(null);
+  const [val , setValue] = useState('');
 
 
   useEffect(() => {
@@ -47,61 +44,61 @@ function EditUser() {
       })
     }
 
-    const fetchClasses = async() =>{
-      axios({
-        method:"GET" , 
-        url:'http://localhost:8080/class/getClassList' , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setClasses(res.data.data) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
+    // const fetchClasses = async() =>{
+    //   axios({
+    //     method:"GET" , 
+    //     url:'http://localhost:8080/class/getClassList' , 
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setClasses(res.data.data) ;
+    //   })
+    //   .catch(err => {
+    //     console.log(err , 'error:');
+    //   })
+    // }
 
-    const fetchBooks = async() =>{
-      axios({
-        method:"GET" , 
-        url:'http://localhost:8080/book/getBookList' , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setBooks(res.data.data) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
+    // const fetchBooks = async() =>{
+    //   axios({
+    //     method:"GET" , 
+    //     url:'http://localhost:8080/book/getBookList' , 
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setBooks(res.data.data) ;
+    //   })
+    //   .catch(err => {
+    //     console.log(err , 'error:');
+    //   })
+    // }
 
-    const fetchSchools = async() =>{
-      axios({
-        method:"GET" , 
-        url:'http://localhost:8080/school/getSchoolList' , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setSchools(res.data.data) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
+    // const fetchSchools = async() =>{
+    //   axios({
+    //     method:"GET" , 
+    //     url:'http://localhost:8080/school/getSchoolList' , 
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setSchools(res.data.data) ;
+    //   })
+    //   .catch(err => {
+    //     console.log(err , 'error:');
+    //   })
+    // }
 
     fetchRoles() ;
-    fetchClasses() ;
-    fetchBooks() ;
-    fetchSchools() ;
+    // fetchClasses() ;
+    // fetchBooks() ;
+    // fetchSchools() ;
 } , []);
 
 
@@ -115,28 +112,22 @@ function EditUser() {
     })
       .then((response) => {
         const userData = response.data.data;
+        console.log(userData);
         reset(userData);
         setToggleValue(userData.isActive);
-        setUserRole(userData.role) ;
-        setUserClass(userData.class); 
-        setUserBook(userData.book); 
-        setUserSchool(userData.school); 
-
-        // Set default values in the form
-        setValue('role' , userData.role);
-        setValue('className', userData.class);
-        setValue('book', userData.book);
-        setValue('school', userData.school);
+        setUserRole(userData.role); 
+        console.log(userData.role);
+        setValue(userData.role.id);
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
       });
-  }, [userId, reset , setValue]);
+  }, [userId, reset]);
 
   const onSubmit = (data) => {
-    const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
-    const selectedBooks = books.find(book => book.id === parseInt(data.book));
-    const selectedSchools = schools.find(school => school.id === parseInt(data.school));
+    // const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
+    // const selectedBooks = books.find(book => book.id === parseInt(data.book));
+    // const selectedSchools = schools.find(school => school.id === parseInt(data.school));
     axios({
       method: "post",
       url: `http://localhost:8080/user/updateUser`,
@@ -145,10 +136,11 @@ function EditUser() {
       },
       data: { 
         ...data,
-        className : selectedClasses , 
-        book: [selectedBooks] , 
-        school : selectedSchools ,
-         isActive: toggleValue ? 'true' : 'false' },
+        // className : null, 
+        // book: [] , 
+        // school : null ,
+        role :  {id: userRole.id} ,
+        isActive: toggleValue ? 'true' : 'false' },
     })
     .then((response) => {
         toast.success("User updated successfully!");
@@ -159,6 +151,13 @@ function EditUser() {
       });
   };
 
+  const handleRoleChange = (e) => {
+    const selectedRoleId = e.target.value;
+    const selectedRole = roles.find(role => role.id === parseInt(selectedRoleId));
+    setValue(selectedRoleId);
+    setUserRole(selectedRole);
+  };
+
   return (
     <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
       <h2 className="text-2xl font-bold text-[#042954]">Edit User</h2>
@@ -166,7 +165,7 @@ function EditUser() {
       
       <div className="bg-white rounded-lg w-full">
         <h2 className="text-xl font-semibold text-black  mt-10">Basic Details</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-4 mt-5 gap-6'>
+        <form  className='grid grid-cols-4 mt-5 gap-6'>
         <div className="flex flex-col px-1">
           <label htmlFor="firstName">First Name *</label>
           <input
@@ -357,18 +356,19 @@ function EditUser() {
           </div>
         </form>
 
-        <h2 className="text-xl font-semibold text-black mt-10 ">Class Details</h2>
+        <h2 className="text-xl font-semibold text-black mt-10 ">Role Details</h2>
         {/* Role Input */}
         <div className="mt-4">
             <select
               id="role"
               className={`w-1/2 px-3 py-2 border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
               {...register('role', { required: 'Role Field is required' })}
+              value={val}
+              onChange={handleRoleChange}
             >
-                <option value="" hidden>Select a Role</option>
+              <option value="" hidden>Select a Role</option>
               {roles.map(role => (
-                <option key={role.id} value={role.id} selected={role.id === userRole.id}>
+                <option key={role.id} value={role.id}>
                   {role.name}
                 </option>
               ))}
@@ -376,7 +376,8 @@ function EditUser() {
             {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
           </div>
 
-        {/* Class Input */}
+
+        {/* Class Input
         <div className="mt-4">
             <select
               id="className"
@@ -396,7 +397,7 @@ function EditUser() {
 
 
         {/* Book Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="book"
               className={`w-1/2 px-3 py-2 border ${errors.book ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -411,10 +412,10 @@ function EditUser() {
               ))}
             </select>
             {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
-          </div>
+          </div> */}
 
         {/* School Input */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
             <select
               id="school"
               className={`w-1/2 px-3 py-2 border ${errors.school ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -429,9 +430,9 @@ function EditUser() {
               ))}
             </select>
             {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school.message}</p>}
-          </div>
+          </div> */}
 
-        <Button type='submit' className='p-0 text-center mt-10' />
+        <Button  className='p-0 text-center mt-10' onClick={handleSubmit(onSubmit)} />
       </div>
       <ToastContainer />
     </div>

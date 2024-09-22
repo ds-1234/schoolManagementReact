@@ -45,7 +45,7 @@ function App() {
       <div className="h-screen">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LandingPage />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/successCard" element={<SuccessCard />} />
 
