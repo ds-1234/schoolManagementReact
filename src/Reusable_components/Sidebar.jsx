@@ -8,7 +8,7 @@ const Sidebar = () => {
   const [isStdDropdown , setIsStdDropdown] = useState(false) ;
   const [isExamDropdown , setIsExamDropdown] = useState(false) ;
   const [isUserDropdown , setIsUserDropdown] = useState(false) ;
-  const [isConfOpen , setIsConfOpen] = useState(true) ;
+  const [isConfOpen , setIsConfOpen] = useState(false) ;
   const userRole = sessionStorage.getItem('role') 
 
   // const toggleDropdown = () => {
@@ -47,7 +47,7 @@ const Sidebar = () => {
   };
  
   return (
-    <div>
+    <div className='bg-[#051f3e]'>
       <nav className="p-5">
         <ul>
           {/* Dashboard Section */}
@@ -110,7 +110,9 @@ const Sidebar = () => {
           </li> */}
 
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to={`${getDashboardPath()}`} className="flex justify-between items-center hover:bg-[#063256] p-2 hover:rounded-xl">
+            <NavLink to={`${getDashboardPath()}`} className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 hover:rounded-xl ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`}
+              >
               <div className="flex gap-1 justify-center items-center">
                 <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
                   Dashboard
