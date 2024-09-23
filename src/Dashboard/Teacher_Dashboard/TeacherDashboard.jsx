@@ -2,6 +2,7 @@ import React from 'react';
 import {Outlet } from 'react-router-dom';
 import Layout from '../../Reusable_components/Layout';
 import Sidebar from '../../Reusable_components/Sidebar';
+import Logout from '../../Reusable_components/Logout';
 
 function TeacherDashboard() {
   return (
@@ -14,6 +15,7 @@ function TeacherDashboard() {
 
      {/* Main content */}
      <div className='w-full mr-10'>
+      <Logout/>
        <Outlet />
      </div>
     </div>

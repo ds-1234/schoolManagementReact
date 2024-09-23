@@ -58,7 +58,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
       <div className='group'>
         <button
           onClick={onAddClick}
-          className="flex items-center bg-green-500 text-white rounded-full transition-all duration-300 h-12 px-2 text-2xl w-12 absolute top-5 right-10 group-hover:w-28 group-hover:px-4 group-hover:text-xl"
+          className="flex items-center bg-green-500 text-white rounded-full transition-all duration-300 h-12 px-2 text-2xl w-12 absolute top-20 right-10 group-hover:w-28 group-hover:px-4 group-hover:text-xl"
         >
           <FontAwesomeIcon icon={faPlus} />
           <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">

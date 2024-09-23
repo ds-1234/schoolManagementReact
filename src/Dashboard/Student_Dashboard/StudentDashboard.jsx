@@ -2,6 +2,7 @@ import React from 'react';
 import {Outlet } from 'react-router-dom';
 import Layout from '../../Reusable_components/Layout';
 import Sidebar from '../../Reusable_components/Sidebar';
+import HeaderBar from '../../Reusable_components/HeaderBar';
 
 function StudentDashboard() {
   return (
@@ -14,6 +15,7 @@ function StudentDashboard() {
 
      {/* Main content */}
      <div className='w-full mr-10'>
+      <HeaderBar/>
        <Outlet />
      </div>
     </div>
