@@ -5,6 +5,7 @@ import deleteIcon from '../../../../assets/delete.png'
 // import Table from '../../../Reusable_components/Table';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
+import StatusButton from '../../../../Reusable_components/StatusButton';
 // import StatusButton from '../../../Reusable_components/StatusButton';
 
 
@@ -44,6 +45,13 @@ const navigate =useNavigate()
     {
       name: 'Payment Method',
       selector: row => row.payment_mode,
+      sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: row => (
+        <StatusButton isActive={row.isActive}/>
+      ),
       sortable: true,
     },
     {

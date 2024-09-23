@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import {toast, ToastContainer } from 'react-toastify';
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,7 +16,6 @@ function AddExpenses() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Function to fetch expense categories
   const fetchExpenseCat = async () => {
     try {
       const response = await axios.get('http://localhost:8080/expenseCat/getExpenseCatList');
@@ -36,44 +35,48 @@ function AddExpenses() {
   };
 
   const onSubmit = (data) => {
-    axios({
-      method: "POST",
-      url: `http://localhost:8080/expenses/createExpenses`,
-      data: {
-        name: data.expenseName,
-        expenseType: {
-          id: '',
-          expenseCategoryId: selectedCategory,
-          expenseCategoryName: selectedCategory,
-          expenseCategoryDescription: '',
-          isActive: ''
-        },
-        amount: data.amount,
-        paymentMode: data.paymentmethod,
-        date: data.date,
-        email: data.email,
-        isActive: value
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      toast.success("Successfully added expense!");
-      navigate('/admin/Expenses');
-      setValue(true);
-    })
-    .catch(err => {
-      toast.error("Error adding new expense!");
-      setValue(true);
-    });
-  };
+    const selectedExpenseCategory = expenseCat.find(cat => cat.expenseCategoryName === selectedCategory);
 
-  
+    if (selectedExpenseCategory) {
+      axios({
+        method: "POST",
+        url: `http://localhost:8080/expenses/createExpenses`,
+        data: {
+          name: data.expenseName,
+          expenseType: {
+            id: selectedExpenseCategory.id,
+            expenseCategoryId: selectedExpenseCategory.expenseCategoryId,
+            expenseCategoryName: selectedExpenseCategory.expenseCategoryName,
+            expenseCategoryDescription: selectedExpenseCategory.expenseCategoryDescription ,
+            isActive: selectedExpenseCategory.isActive
+          },
+          amount: data.amount,
+          paymentMode: data.paymentmethod,
+          date: data.date,
+          email: data.email,
+          isActive: value
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        toast.success("Successfully added expense!");
+        navigate('/admin/Expenses');
+        setValue(true);
+      })
+      .catch(err => {
+        toast.error("Error adding new expense!");
+        setValue(true);
+      });
+    } else {
+      toast.error("Please select a valid expense category.");
+    }
+  };
 
   return (
     <div className='pl-0 h-full'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Expenses </h1>
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Expenses</h1>
       <p className='pl-20 mt-2'>Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/ <NavLink to='/admin/transport'> Expenses </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Expense</span></p>
 
       <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
@@ -96,60 +99,58 @@ function AddExpenses() {
               )}
             </div>
 
-{/* Expense Category Dropdown */}
-<div className="relative">
-  <label htmlFor="category" className="block text-sm font-medium mb-2 text-black">Category *</label>
-  <div
-    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
-    onClick={() => setDropdownOpen(!dropdownOpen)}
-  >
-    <p>{selectedCategory || 'Select a category'}</p>
-    <FontAwesomeIcon icon={faAngleDown} />
-  </div>
-  {dropdownOpen && (
-    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-      {expenseCat.map((category) => (
-        <div
-          key={category.id}
-          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-          onClick={() => handleSelectCategory(category)}
-        >
-          {category.expenseCategoryName}
-        </div>
-      ))}
-    </div>
-  )}
-</div>
+            {/* Expense Category Dropdown */}
+            <div className="relative">
+              <label htmlFor="category" className="block text-sm font-medium mb-2 text-black">Category *</label>
+              <div
+                className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <p>{selectedCategory || 'Select a category'}</p>
+                <FontAwesomeIcon icon={faAngleDown} />
+              </div>
+              {dropdownOpen && (
+                <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+                  {expenseCat.map((category) => (
+                    <div
+                      key={category.id}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleSelectCategory(category)}
+                    >
+                      {category.expenseCategoryName}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
+            {/* Date */}
+            <div>
+              <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date *</label>
+              <input
+                {...register('date', { required: 'Date is required' })}
+                className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
+                placeholder="Select Date"
+                onFocus={(e) => {
+                  e.target.type = 'date';
+                  e.target.placeholder = '';
+                }}
+                onBlur={(e) => {
+                  const value = e.target.value;
+                  e.target.type = 'text';
+                  e.target.placeholder = 'Select Date';
 
-<div>
-  <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date *</label>
-  <input
-    {...register('date', { required: 'Date is required' })}
-    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
-    placeholder="Select Date"
-    onFocus={(e) => {
-      e.target.type = 'date';
-      e.target.placeholder = '';
-    }}
-    onBlur={(e) => {
-      const value = e.target.value;
-      e.target.type = 'text';
-      e.target.placeholder = 'Select Date';
-
-      // Reformat the date to dd/mm/yyyy if a date is selected
-      if (value) {
-        const [year, month, day] = value.split('-');
-        e.target.value = `${day}/${month}/${year}`;
-      }
-    }}
-    aria-invalid={errors.date ? 'true' : 'false'}
-  />
-  {errors.date && (
-    <p className="text-red-500 text-sm">{errors.date.message}</p>
-  )}
-</div>
-
+                  if (value) {
+                    const [year, month, day] = value.split('-');
+                    e.target.value = `${day}/${month}/${year}`;
+                  }
+                }}
+                aria-invalid={errors.date ? 'true' : 'false'}
+              />
+              {errors.date && (
+                <p className="text-red-500 text-sm">{errors.date.message}</p>
+              )}
+            </div>
 
             {/* Amount */}
             <div>
@@ -202,19 +203,6 @@ function AddExpenses() {
                 id="active"
               />
             </div>
-
-            {/* Description */}
-            {/* <div className="col-span-3">
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="description">Description *</label>
-              <textarea
-                id="description"
-                {...register("description", { required: "Description is required" })}
-                className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
-              />
-              {errors.description && (
-                <p className="text-red-500 text-sm">{errors.description.message}</p>
-              )}
-            </div> */}
           </div>
 
           {/* Buttons */}
