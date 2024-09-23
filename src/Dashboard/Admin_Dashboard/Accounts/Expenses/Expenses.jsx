@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import edit from '../../../../assets/edit.png'
 import deleteIcon from '../../../../assets/delete.png'
 // import Table from '../../../Reusable_components/Table';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 // import StatusButton from '../../../Reusable_components/StatusButton';
 
 
 function Expenses() {
-
+const navigate =useNavigate()
   const column = [
     {
       name: 'SR.No',
@@ -153,6 +153,10 @@ const handleClear = () => {
   setExpense(filterexpense);  // Reset to original data
 };
 
+const handleAddClick = () => {
+  navigate('/admin/addexpenses')
+}
+
 const searchOptions = [
   { label: 'Expense Name', value: 'name' },
   { label: 'Description', value: 'description' },
@@ -174,8 +178,8 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-    //   onAddClick={openAddPopup}
-       />
+      onAddClick={handleAddClick}
+      />
 
       {/* <AddBooksPopup
         isOpen={isAddPopupOpen} 
