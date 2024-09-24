@@ -42,7 +42,7 @@ const Sidebar = () => {
       case 'Admin':
         return '/admin';
       case 'Guest':
-        return '/admin';
+        return '/guestDashboard';
     }
   };
  

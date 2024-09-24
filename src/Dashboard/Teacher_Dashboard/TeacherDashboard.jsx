@@ -1,8 +1,8 @@
 import React from 'react';
 import {Outlet } from 'react-router-dom';
 import Layout from '../../Reusable_components/Layout';
-import Sidebar from '../../Reusable_components/Sidebar';
 import Logout from '../../Reusable_components/Logout';
+import TchSidebar from '../../Reusable_components/Sidebars/TchSidebar';
 
 function TeacherDashboard() {
   return (
@@ -10,7 +10,7 @@ function TeacherDashboard() {
     <div className='flex gap-10'>
       {/* Sidebar */}
       <div className=" w-1/3 text-white flex flex-col sm:w-1/5 ">
-       <Sidebar/>
+       <TchSidebar/>
      </div>
 
      {/* Main content */}
