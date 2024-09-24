@@ -85,7 +85,7 @@ function AddExpenses() {
           <div className="grid grid-cols-3 gap-6">
             {/* Expense Name */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="expenseName">
+              <label className="flex text-sm font-medium mb-2 text-black" htmlFor="expenseName">
                 Expense Name *
               </label>
               <input

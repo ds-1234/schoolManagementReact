@@ -47,6 +47,7 @@ import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Tran
 import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpenses';
 import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
 import Guest from './Dashboard/Guest_DashBoard/Guest';
+import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
 
 function App() {
   return (
