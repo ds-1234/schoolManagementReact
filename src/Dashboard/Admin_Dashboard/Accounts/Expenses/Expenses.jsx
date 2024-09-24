@@ -167,11 +167,11 @@ const handleAddClick = () => {
 
 const searchOptions = [
   { label: 'Expense Name', value: 'name' },
-  { label: 'Description', value: 'description' },
-  { label: 'Category', value: 'category' },
+  { label: 'Description', value: 'expenseType.expenseCategoryDescription' },
+  { label: 'Category', value: 'expenseCategoryName' },
   { label: 'Date', value: 'date' },
   { label: 'Amount', value: 'amount' },
-  { label: 'Payment Method', value: 'payment method' },
+  { label: 'Payment Method', value: 'payment_mode' },
 ];
 
   return (

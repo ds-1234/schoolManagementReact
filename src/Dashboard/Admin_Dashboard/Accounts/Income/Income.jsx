@@ -171,19 +171,19 @@ const handleAddClick = () => {
 }
 
 const searchOptions = [
-  { label: 'Income Name', value: 'name' },
+  { label: 'Income Name', value: 'incomeName' },
   { label: 'Description', value: 'description' },
-  { label: 'Source', value: 'source' },
-  { label: 'Date', value: 'date' },
+  { label: 'Source', value: 'incomeSource' },
+  { label: 'Date', value: 'incomeDate' },
   { label: 'Amount', value: 'amount' },
-  { label: 'Invoice no.', value: 'Invoice no.' },
-  { label: 'Payment Method', value: 'paymentmethod' },
+  { label: 'Invoice no.', value: 'invoice' },
+  { label: 'Payment Method', value: 'paymentMode' },
 ];
 
   return (
     <div className=' h-full mb-10 mr-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Expenses</h1>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Income</h1>
       <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/expenses'> Expenses </NavLink>/ <span className='text-[#ffae01] font-semibold'>Income</span> </p>
 
       <Table

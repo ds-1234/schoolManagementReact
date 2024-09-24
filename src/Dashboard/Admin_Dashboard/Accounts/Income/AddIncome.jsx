@@ -5,8 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+
 
 function AddIncome() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
