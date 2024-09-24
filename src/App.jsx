@@ -45,7 +45,6 @@ import Invoices from './Dashboard/Admin_Dashboard/Accounts/Invoices/Invoices';
 import InvoiceView from './Dashboard/Admin_Dashboard/Accounts/Invoice View/InvoiceView';
 import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Transactions';
 import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpenses';
-import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
 
 function App() {
   return (
