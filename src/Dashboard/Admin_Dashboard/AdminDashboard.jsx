@@ -7,14 +7,14 @@ import HeaderBar from '../../Reusable_components/HeaderBar';
 const AdminDashboard = () => {
   return (
     <Layout>
-     <div className='flex gap-10'>
+     <div className='flex flex-col md:flex-row md:gap-10 m-2 md:m-0'>
        {/* Sidebar */}
-       <div className=" w-1/3 text-white flex flex-col sm:w-1/5 h-full ">
+       <div className=" w-full md:w-1/4 text-white flex flex-col h-full ">
         <Sidebar/>
       </div>
 
       {/* Main content */} 
-      <div className="w-full mr-10">
+      <div className="w-full md:mr-10 ">
         <HeaderBar/>
         <Outlet />
       </div>

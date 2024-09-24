@@ -17,7 +17,6 @@ function PntSidebar() {
               <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
               Dashboard
             </div>
-            <FontAwesomeIcon icon={faAngleDown} className="mr-3 text-[#ffae01]" onClick={toggleDropdown} />
           </NavLink>
 
       </li>
