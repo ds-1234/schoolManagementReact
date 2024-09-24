@@ -45,6 +45,7 @@ import Invoices from './Dashboard/Admin_Dashboard/Accounts/Invoices/Invoices';
 import InvoiceView from './Dashboard/Admin_Dashboard/Accounts/Invoice View/InvoiceView';
 import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Transactions';
 import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpenses';
+import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
 
 function App() {
   return (
@@ -95,6 +96,7 @@ function App() {
             <Route path="addExpenses" element={<AddExpenses />} />
             <Route path="ExpenseCategory" element={<ExpenseCategory />} />
             <Route path="income" element={<Income />} />
+            <Route path="addincome" element={<AddIncome />} />
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />

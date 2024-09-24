@@ -8,125 +8,112 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-function AddExpenses() {
+function AddIncome() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
   const [value, setValue] = useState(true);
-  const [expenseCat, setExpenseCat] = useState([]);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
+//   const [expenseCat, setExpenseCat] = useState([]);
+//   const [dropdownOpen, setDropdownOpen] = useState(false);
+//   const [selectedCategory, setSelectedCategory] = useState('');
 
-  const fetchExpenseCat = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/expenseCat/getExpenseCatList');
-      setExpenseCat(response.data.data);
-    } catch (error) {
-      toast.error("Error fetching Expense Category");
-    }
-  };
+//   const fetchExpenseCat = async () => {
+//     try {
+//       const response = await axios.get('http://localhost:8080/expenseCat/getExpenseCatList');
+//       setExpenseCat(response.data.data);
+//     } catch (error) {
+//       toast.error("Error fetching Expense Category");
+//     }
+//   };
 
-  useEffect(() => {
-    fetchExpenseCat();
-  }, []);
+//   useEffect(() => {
+//     fetchExpenseCat();
+//   }, []);
 
-  const handleSelectCategory = (category) => {
-    setSelectedCategory(category.expenseCategoryName);
-    setDropdownOpen(false);
-  };
+//   const handleSelectCategory = (category) => {
+//     setSelectedCategory(category.expenseCategoryName);
+//     setDropdownOpen(false);
+//   };
 
   const onSubmit = (data) => {
-    const selectedExpenseCategory = expenseCat.find(cat => cat.expenseCategoryName === selectedCategory);
+    // const selectedExpenseCategory = expenseCat.find(cat => cat.expenseCategoryName === selectedCategory);
 
-    if (selectedExpenseCategory) {
+    // if (selectedExpenseCategory) {
       axios({
         method: "POST",
-        url: `http://localhost:8080/expenses/createExpenses`,
+        url: `http://localhost:8080/income/saveIncome`,
         data: {
-          name: data.expenseName,
-          expenseType: {
-            id: selectedExpenseCategory.id,
-            expenseCategoryId: selectedExpenseCategory.expenseCategoryId,
-            expenseCategoryName: selectedExpenseCategory.expenseCategoryName,
-            expenseCategoryDescription: selectedExpenseCategory.expenseCategoryDescription ,
-            isActive: selectedExpenseCategory.isActive
-          },
-          amount: data.amount,
-          paymentMode: data.paymentmethod,
-          date: data.date,
-          email: data.email,
-          isActive: value
+            incomeName: data.incomeName,
+            incomeSource: data.source,
+            incomeDate: data.date,
+            amount: data.amount,
+            invoice: data.invoiceno,
+            paymentMode: data.paymentmethod,
+            description: data.description,
+            isActive: value
         },
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
-        toast.success("Successfully added expense!");
-        navigate('/admin/Expenses');
+        toast.success("Successfully added Income!");
+        navigate('/admin/income');
         setValue(true);
       })
       .catch(err => {
-        toast.error("Error adding new expense!");
+        toast.error("Error adding new Income!");
         setValue(true);
       });
-    } else {
-      toast.error("Please select a valid expense category.");
-    }
+    // } else {
+    //   toast.error("Please select a valid expense category.");
+    // }
   };
 
   return (
     <div className='pl-0 h-full'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Expenses</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/ <NavLink to='/admin/Expenses'> Expenses </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Expense</span></p>
+      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Income</h1>
+      <p className='pl-20 mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/<NavLink to='/admin/expenses'> Expenses </NavLink>/ <NavLink to='/admin/income'> Income </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Income</span></p>
 
       <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
-        <h2 className="text-2xl font-semibold mb-6 text-black">Add New Expense</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-black">Add New Income</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-6">
-            {/* Expense Name */}
+            {/* Income Name */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="expenseName">
-                Expense Name *
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="incomeName">
+                Income Name *
               </label>
               <input
                 type="text"
-                id="expenseName"
-                {...register("expenseName", { required: "Expense Name is required" })}
+                id="incomeName"
+                {...register("incomeName", { required: "Income Name is required" })}
                 className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
               />
-              {errors.expenseName && (
-                <p className="text-red-500 text-sm">{errors.expenseName.message}</p>
+              {errors.incomeName && (
+                <p className="text-red-500 text-sm">{errors.incomeName.message}</p>
               )}
             </div>
 
-            {/* Expense Category Dropdown */}
-            <div className="relative">
-              <label htmlFor="category" className="block text-sm font-medium mb-2 text-black">Category *</label>
-              <div
-                className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <p>{selectedCategory || 'Select a category'}</p>
-                <FontAwesomeIcon icon={faAngleDown} />
-              </div>
-              {dropdownOpen && (
-                <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                  {expenseCat.map((category) => (
-                    <div
-                      key={category.id}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleSelectCategory(category)}
-                    >
-                      {category.expenseCategoryName}
-                    </div>
-                  ))}
-                </div>
+            {/* Source */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="source">
+                Source *
+              </label>
+              <input
+                type="text"
+                id="source"
+                {...register("source", { required: "Source is required" })}
+                className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
+              />
+              {errors.source && (
+                <p className="text-red-500 text-sm">{errors.source.message}</p>
               )}
             </div>
+
 
             {/* Date */}
             <div>
-              <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date *</label>
+              <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date Of Birth *</label>
               <input
                 {...register('date', { required: 'Date is required' })}
                 className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
@@ -194,6 +181,20 @@ function AddExpenses() {
               )}
             </div>
 
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="description">Description *</label>
+              <textarea
+                type="text"
+                id="description"
+                {...register("description", { required: "Description is required" })}
+                className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
+              />
+              {errors.description && (
+                <p className="text-red-500 text-sm">{errors.description.message}</p>
+              )}
+            </div>
+
             {/* Status Toggle */}
             <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status *</label>
@@ -222,4 +223,4 @@ function AddExpenses() {
   );
 }
 
-export default AddExpenses;
+export default AddIncome;
