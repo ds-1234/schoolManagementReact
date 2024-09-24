@@ -45,6 +45,8 @@ import Invoices from './Dashboard/Admin_Dashboard/Accounts/Invoices/Invoices';
 import InvoiceView from './Dashboard/Admin_Dashboard/Accounts/Invoice View/InvoiceView';
 import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Transactions';
 import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpenses';
+import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
+import Guest from './Dashboard/Guest_DashBoard/Guest';
 
 function App() {
   return (
@@ -52,7 +54,7 @@ function App() {
       <div className="h-screen">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LandingPage />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/successCard" element={<SuccessCard />} />
 
@@ -95,6 +97,7 @@ function App() {
             <Route path="addExpenses" element={<AddExpenses />} />
             <Route path="ExpenseCategory" element={<ExpenseCategory />} />
             <Route path="income" element={<Income />} />
+            <Route path="addincome" element={<AddIncome />} />
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />
@@ -137,6 +140,17 @@ function App() {
             }
           >
             <Route index element={<Parent />} />
+          </Route>
+        {/* Guest Dashboard Routes */}
+        <Route
+            path="/guestDashboard"
+            element={
+              <ProtectedRoute>
+                <GuestDashboard/>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Guest/>} />
           </Route>
         </Routes>
       </div>

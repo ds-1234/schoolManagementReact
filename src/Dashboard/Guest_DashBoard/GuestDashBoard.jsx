@@ -1,20 +1,20 @@
 import React from 'react';
 import {Outlet } from 'react-router-dom';
 import Layout from '../../Reusable_components/Layout';
-import Sidebar from '../../Reusable_components/Sidebars/Sidebar';
 import HeaderBar from '../../Reusable_components/HeaderBar';
+import GstSidebar from '../../Reusable_components/Sidebars/GstSidebar';
 
-const AdminDashboard = () => {
+const GuestDashboard = () => {
   return (
     <Layout>
-     <div className='flex flex-col md:flex-row md:gap-10 m-2 md:m-0'>
+     <div className='flex gap-10'>
        {/* Sidebar */}
-       <div className=" w-full md:w-1/4 text-white flex flex-col h-full ">
-        <Sidebar/>
+       <div className=" w-1/3 text-white flex flex-col sm:w-1/5 h-full ">
+        <GstSidebar/>
       </div>
 
       {/* Main content */} 
-      <div className="w-full md:mr-10 ">
+      <div className="w-full mr-10">
         <HeaderBar/>
         <Outlet />
       </div>
@@ -23,5 +23,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
-
+export default GuestDashboard;

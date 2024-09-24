@@ -2,7 +2,8 @@ import React, { useRef , useState} from 'react';
 import DataTable from 'react-data-table-component';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
+import AddBtn from './AddBtn';
 
 const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick }) => {
   const searchInputRef = useRef(null);
@@ -55,17 +56,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
 
   return (
     <div>
-      <div className='group'>
-        <button
-          onClick={onAddClick}
-          className="flex items-center bg-green-500 text-white rounded-full transition-all duration-300 h-12 px-2 text-2xl w-12 absolute top-5 right-10 group-hover:w-28 group-hover:px-4 group-hover:text-xl"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Add
-          </span>
-        </button>
-      </div>
+      <AddBtn onAddClick={onAddClick}/>
 
       <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10 ">
         <div className="rounded-lg text-black">

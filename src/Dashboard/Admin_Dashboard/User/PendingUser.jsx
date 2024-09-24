@@ -92,6 +92,7 @@ const column = [
   }, []);
 
   const searchOptions = [
+    {label : 'Role' , value: 'role'} ,
     { label: 'First Name', value: 'firstName' },
     { label: 'Last Name', value: 'lastName' },
     { label: 'Email', value: 'email' },
@@ -109,11 +110,17 @@ const column = [
     const selectedFields = Object.keys(checkboxRefs)
       .filter((key) => checkboxRefs[key].checked);
   
-    const filteredData = filterUser.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
-      )
-    );
+      const filteredData = filterUser.filter((row) =>
+        selectedFields.some((field) => {
+          if (field === 'role') {
+            // Check if role name matches the query
+            return row.role?.name?.toLowerCase().includes(query.toLowerCase());
+          }else{
+            return row[field]?.toLowerCase().includes(query.toLowerCase())
+          }
+        }
+        )
+      );
   
     setUser(filteredData);
   };
