@@ -137,24 +137,31 @@ const navigate =useNavigate()
 //     setBook(newData);
 //  }
 
-  // Handle Search Logic
-  const handleSearch = (query, checkboxRefs) => {
-    if (!query) {
-      setExpense(filterexpense);
-      return;
-    }
-  
-    const selectedFields = Object.keys(checkboxRefs)
-      .filter((key) => checkboxRefs[key].checked);
-  
-    const filteredData = filterexpense.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
-      )
-    );
-  
-    setExpense(filteredData);
-  };
+// Helper function to access nested object properties
+const getNestedValue = (obj, path) => {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+};
+
+// Handle Search Logic
+const handleSearch = (query, checkboxRefs) => {
+  if (!query) {
+    setExpense(filterexpense); // Reset to original data
+    return;
+  }
+
+  const selectedFields = Object.keys(checkboxRefs)
+    .filter((key) => checkboxRefs[key].checked);
+
+  const filteredData = filterexpense.filter((row) =>
+    selectedFields.some((field) => {
+      const fieldValue = getNestedValue(row, field);
+      return fieldValue?.toString().toLowerCase().includes(query.toLowerCase());
+    })
+  );
+
+  setExpense(filteredData);
+};
+
 
 // handle clear button logic
 const handleClear = () => {
