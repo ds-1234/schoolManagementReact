@@ -12,11 +12,11 @@ import DatePicker from '../../../Reusable_components/DatePicker';
 const AddUser = () => {
 
   const [value, setValue] = useState(true);
-  const [isParent, setIsParent] = useState('');
-  const [classes , setClasses] = useState([]) ;
-  const [books , setBooks] = useState([]) ;
-  const [schools , setSchools] = useState([]) ;
-  const [users , setUsers] = useState([]) ;
+  // const [isParent, setIsParent] = useState('');
+  // const [classes , setClasses] = useState([]) ;
+  // const [books , setBooks] = useState([]) ;
+  // const [schools , setSchools] = useState([]) ;
+  // const [users , setUsers] = useState([]) ;
   const [roles , setRoles] = useState([]) ;
 
   const {
@@ -44,87 +44,87 @@ const AddUser = () => {
       })
     }
 
-    const fetchUsers = async() =>{
-      axios({
-        method:"GET" , 
-        url:'http://localhost:8080/user/getUserList' , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setUsers(res.data.data) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
-      const fetchClasses = async() =>{
-        axios({
-          method:"GET" , 
-          url:'http://localhost:8080/class/getClassList' , 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setClasses(res.data.data) ;
-        })
-        .catch(err => {
-          console.log(err , 'error:');
-        })
-      }
+    // const fetchUsers = async() =>{
+    //   axios({
+    //     method:"GET" , 
+    //     url:'http://localhost:8080/user/getUserList' , 
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setUsers(res.data.data) ;
+    //   })
+    //   .catch(err => {
+    //     console.log(err , 'error:');
+    //   })
+    // }
+      // const fetchClasses = async() =>{
+      //   axios({
+      //     method:"GET" , 
+      //     url:'http://localhost:8080/class/getClassList' , 
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     setClasses(res.data.data) ;
+      //   })
+      //   .catch(err => {
+      //     console.log(err , 'error:');
+      //   })
+      // }
 
-      const fetchBooks = async() =>{
-        axios({
-          method:"GET" , 
-          url:'http://localhost:8080/book/getBookList' , 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setBooks(res.data.data) ;
-        })
-        .catch(err => {
-          console.log(err , 'error:');
-        })
-      }
+      // const fetchBooks = async() =>{
+      //   axios({
+      //     method:"GET" , 
+      //     url:'http://localhost:8080/book/getBookList' , 
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     setBooks(res.data.data) ;
+      //   })
+      //   .catch(err => {
+      //     console.log(err , 'error:');
+      //   })
+      // }
 
-      const fetchSchools = async() =>{
-        axios({
-          method:"GET" , 
-          url:'http://localhost:8080/school/getSchoolList' , 
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setSchools(res.data.data) ;
-        })
-        .catch(err => {
-          console.log(err , 'error:');
-        })
-      }
+      // const fetchSchools = async() =>{
+      //   axios({
+      //     method:"GET" , 
+      //     url:'http://localhost:8080/school/getSchoolList' , 
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     setSchools(res.data.data) ;
+      //   })
+      //   .catch(err => {
+      //     console.log(err , 'error:');
+      //   })
+      // }
 
-      fetchUsers();
+      // fetchUsers();
       fetchRoles() ;
-      fetchClasses() ;
-      fetchBooks() ;
-      fetchSchools() ;
+      // fetchClasses() ;
+      // fetchBooks() ;
+      // fetchSchools() ;
   } , []);
   
 
   const onSubmit = (data) => {
-    const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
-    const selectedBooks = books.find(book => book.id === parseInt(data.book));
-    const selectedSchools = schools.find(school => school.id === parseInt(data.school));
+    // const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
+    // const selectedBooks = books.find(book => book.id === parseInt(data.book));
+    // const selectedSchools = schools.find(school => school.id === parseInt(data.school));
     const selectedRoles = roles.find(role => role.id === parseInt(data.role));
-    const selectedChilds = users.find(user => user.id === parseInt(data.isParent));
+    // const selectedChilds = users.find(user => user.id === parseInt(data.isParent));
 
     const userData = {
       ...data , 
@@ -132,11 +132,11 @@ const AddUser = () => {
         id: selectedRoles.id ,
         name: selectedRoles.name,
       },
-      className : selectedClasses , 
-      book: [selectedBooks] , 
-      school : selectedSchools ,
+      // className : selectedClasses , 
+      // book: [selectedBooks] , 
+      // school : selectedSchools ,
       isActive: data.active = value ? 'true' : 'false', 
-      isParent: [selectedChilds.id]
+      // isParent: [selectedChilds.id]
     }
     axios({
         method:"post",
@@ -152,7 +152,7 @@ const AddUser = () => {
         console.log('response' , response.data)
         toast.success("Successfully Add User");
         setValue(true)
-        setIsParent('');
+        // setIsParent('');
     })
     .catch(err=>{
         console.log(err,'error:')

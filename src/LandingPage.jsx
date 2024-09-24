@@ -59,10 +59,10 @@ function LandingPage() {
             navigate('/admin', { state: data });
             break;
           case 'Guest':
-            navigate('/admin', { state: data });
+            navigate('/guestDashboard', { state: data });
             break;
           default:
-            console.log('Unknown user type');
+            navigate('/guestDashboard', { state: data });
         }
       })
       .catch((err) => {

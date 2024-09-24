@@ -45,6 +45,8 @@ import Invoices from './Dashboard/Admin_Dashboard/Accounts/Invoices/Invoices';
 import InvoiceView from './Dashboard/Admin_Dashboard/Accounts/Invoice View/InvoiceView';
 import Transactions from './Dashboard/Admin_Dashboard/Accounts/Transactions/Transactions';
 import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpenses';
+import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
+import Guest from './Dashboard/Guest_DashBoard/Guest';
 
 function App() {
   return (
@@ -138,6 +140,17 @@ function App() {
             }
           >
             <Route index element={<Parent />} />
+          </Route>
+        {/* Guest Dashboard Routes */}
+        <Route
+            path="/guestDashboard"
+            element={
+              <ProtectedRoute>
+                <GuestDashboard/>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Guest/>} />
           </Route>
         </Routes>
       </div>
