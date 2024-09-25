@@ -13,41 +13,73 @@ function Income() {
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
+      width: '100px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Income Name',
       selector: row => row.incomeName,
       sortable: true,
+      width: '100px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Description',
       selector: row => row.description,
       sortable: true,
+      width: '165px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Source',
       selector: row => row.incomeSource,
       sortable: true,
+      width: '117px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Date',
       selector: row => row.incomeDate,
       sortable: true,
+      width: '117px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Amount',
       selector: row => row.amount,
       sortable: true,
+      width: '117px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Invoice No.',
       selector: row => row.invoice,
       sortable: true,
+      width: '117px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Payment Method',
       selector: row => row.paymentMode,
       sortable: true,
+      width: '100px',
+            wrap: true, 
+ 
+
     },
     {
       name: 'Status',
@@ -55,6 +87,10 @@ function Income() {
         <StatusButton isActive={row.isActive} />
       ),
       sortable: true,
+      width: '117px',
+            // wrap: true, 
+ 
+
     },
     {
       name: 'Action',
@@ -68,6 +104,10 @@ function Income() {
           </button>
         </div>
       ),
+      width: '120px',
+            wrap: true, 
+ 
+
     },
   ];
 
@@ -153,14 +193,17 @@ function Income() {
         <span className='text-[#ffae01] font-semibold'>Income</span>
       </p>
 
-      <Table
-        columns={column}
-        data={income}
-        searchOptions={searchOptions}
-        onSearch={handleSearch}
-        handleClear={handleClear}
-        onAddClick={handleAddClick}
-      />
+      <div className='h-full   mr-6'> {/* Reduced margin and padding */}
+  {/* <h1 className='text-md md:text-xl pt-4 font-semibold text-black'>Income</h1> Smaller heading */}
+  <Table
+    columns={column}
+    data={income}
+    searchOptions={searchOptions}
+    onSearch={handleSearch}
+    handleClear={handleClear}
+    onAddClick={handleAddClick}
+  />
+</div>
     </div>
   );
 }

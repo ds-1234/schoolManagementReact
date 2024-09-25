@@ -93,21 +93,21 @@ const handleDelete = (id)=>{
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-      width: '300px', 
+      width: '280px', 
     },
     {
       name: 'Category',
       selector: (row) => row.expenseCategoryName,
       sortable: true,
       wrap: true, 
-      width: '300px', 
+      width: '280px', 
     },
     {
       name: 'Description',
       selector: (row) => row.expenseCategoryDescription,
       sortable: true,
       wrap: true,
-      width: '300px', 
+      width: '280px', 
     },
     {
         name: 'Status',
@@ -132,7 +132,7 @@ const handleDelete = (id)=>{
           </button>
         </div>
       ),
-      width: '300px', 
+      width: '200px', 
     },
   ];
 

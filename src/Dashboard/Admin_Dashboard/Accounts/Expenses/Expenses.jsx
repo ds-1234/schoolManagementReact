@@ -26,6 +26,9 @@ const navigate =useNavigate()
       name: 'Description',
       selector: row => row.expenseType.expenseCategoryDescription,
       sortable: true,
+      wrap: true,
+      width:'150px' 
+
     },
     {
       name: 'Category',
@@ -75,34 +78,7 @@ const navigate =useNavigate()
   const [expense, setExpense] = useState([]);
   const [filterexpense, setFilterexpense] = useState([]);
 
-//   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editBookId, setEditBookId] = useState(null);
 
-//   const openAddPopup = () => setIsAddPopupOpen(true);
-//   const closeAddPopup = () => setIsAddPopupOpen(false);
-
-//   const openEditPopup = (id) => {
-//     setEditBookId(id);
-//     setIsEditPopupOpen(true);
-//   };
-
-//   const closeEditPopup = () => {
-//     setEditBookId(null);
-//     setIsEditPopupOpen(false);
-//   };
-
-//   useEffect(() => {
-//     if (isAddPopupOpen || isEditPopupOpen) {
-//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-//     } else {
-//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-//     }
-
-//     return () => {
-//       document.body.style.overflow = 'auto';  // Cleanup on unmount
-//     };
-//   }, [isAddPopupOpen, isEditPopupOpen]);
 
   const fetchData = () => {
     axios({
