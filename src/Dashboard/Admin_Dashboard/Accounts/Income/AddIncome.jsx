@@ -5,12 +5,25 @@ import { toast, ToastContainer } from 'react-toastify';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 
 function AddIncome() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
   const [value, setValue] = useState(true);
+
+    // State for payment method dropdown
+const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+const [payDropdownOpen, setPayDropdownOpen] = useState(false);
+
+// Function to handle selection of payment method
+const handleSelectPaymentMethod = (method) => {
+  setSelectedPaymentMethod(method);
+  setPayDropdownOpen(false);
+};
+
 //   const [expenseCat, setExpenseCat] = useState([]);
 //   const [dropdownOpen, setDropdownOpen] = useState(false);
 //   const [selectedCategory, setSelectedCategory] = useState('');
@@ -46,7 +59,7 @@ function AddIncome() {
             incomeDate: data.date,
             amount: data.amount,
             invoice: data.invoiceno,
-            paymentMode: data.paymentmethod,
+            paymentMode: selectedPaymentMethod,
             description: data.description,
             isActive: value
         },
@@ -112,7 +125,7 @@ function AddIncome() {
 
             {/* Date */}
             <div>
-              <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date Of Birth *</label>
+              <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date Of Income *</label>
               <input
                 {...register('date', { required: 'Date is required' })}
                 className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
@@ -167,18 +180,34 @@ function AddIncome() {
             </div>
 
             {/* Payment Method */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="paymentmethod">Payment Method *</label>
-              <input
-                type="text"
-                id="paymentmethod"
-                {...register("paymentmethod", { required: "Payment Method is required" })}
-                className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
-              />
-              {errors.paymentmethod && (
-                <p className="text-red-500 text-sm">{errors.paymentmethod.message}</p>
-              )}
-            </div>
+            <div className="relative">
+  <label htmlFor="paymentmethod" className="block text-sm font-medium mb-2 text-black">
+    Payment Method *
+  </label>
+  <div
+    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+    onClick={() => setPayDropdownOpen(!payDropdownOpen)}
+  >
+    <p>{selectedPaymentMethod || 'Select Payment Method'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {payDropdownOpen && (
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      <div
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        onClick={() => handleSelectPaymentMethod('Cash')}
+      >
+        Cash
+      </div>
+      <div
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        onClick={() => handleSelectPaymentMethod('Online')}
+      >
+        Online
+      </div>
+    </div>
+  )}
+</div>
 
             {/* Description */}
             <div>
