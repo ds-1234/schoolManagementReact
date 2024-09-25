@@ -7,6 +7,7 @@ const Sidebar = () => {
   // const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
   const [isStdDropdown , setIsStdDropdown] = useState(false) ;
   const [isExamDropdown , setIsExamDropdown] = useState(false) ;
+  const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
   const [isUserDropdown , setIsUserDropdown] = useState(false) ;
   const [isConfOpen , setIsConfOpen] = useState(false) ;
   const userRole = sessionStorage.getItem('role') 
@@ -21,6 +22,9 @@ const Sidebar = () => {
 
   const toggleExamDropdown = () => {
     setIsExamDropdown(!isExamDropdown);
+  };
+  const toggleIncomeDropdown = () => {
+    setIsIncomeDropdown(!isIncomeDropdown);
   };
 
   const toggleUserDropdown = () => {
@@ -447,9 +451,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Accounts
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleExamDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleIncomeDropdown} />
             </NavLink>
-            {isExamDropdown && (
+            {isIncomeDropdown && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink

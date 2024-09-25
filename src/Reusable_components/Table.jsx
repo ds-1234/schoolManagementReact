@@ -4,6 +4,8 @@ import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 import AddBtn from './AddBtn';
+import { width } from '@fortawesome/free-regular-svg-icons/faAddressBook';
+import { Padding } from '@mui/icons-material';
 
 const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick }) => {
   const searchInputRef = useRef(null);
@@ -35,12 +37,16 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
       style: {
         backgroundColor: '#f3f4f6',
         fontWeight: 'bold',
-        fontSize: '16px', 
+        fontSize: '16px',
+        wrap:'true'
+        // width:'40% '
       },
     },
     rows: {
       style: {
         fontSize: '14px',
+        // width:'40% ',
+
         '&:hover': {
           backgroundColor: '#f9fafb',
         },
@@ -50,9 +56,12 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
       style: {
         backgroundColor: '#f3f4f6',
         borderRadius: '0.5rem',
+        // width:'40% '
+
       },
     },
   };
+  // const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   return (
     <div>
@@ -113,6 +122,8 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
             </div>
 
             <DataTable
+            // expandableRows
+            // expandableRowsComponent={ExpandedComponent}
               columns={columns}
               data={data}
               pagination
