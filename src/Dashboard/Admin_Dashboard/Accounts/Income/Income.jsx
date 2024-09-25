@@ -11,6 +11,7 @@ function Income() {
   const column = [
     {
       name: 'SR.No',
+      // wrap: true, 
       selector: (row, idx) => idx + 1,
       sortable: false,
       width: '100px',

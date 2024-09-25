@@ -15,6 +15,16 @@ function AddExpenses() {
   const [expenseCat, setExpenseCat] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
+  // State for payment method dropdown
+const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+const [payDropdownOpen, setPayDropdownOpen] = useState(false);
+
+// Function to handle selection of payment method
+const handleSelectPaymentMethod = (method) => {
+  setSelectedPaymentMethod(method);
+  setPayDropdownOpen(false);
+};
+
 
   const fetchExpenseCat = async () => {
     try {
@@ -51,7 +61,7 @@ function AddExpenses() {
             isActive: selectedExpenseCategory.isActive
           },
           amount: data.amount,
-          paymentMode: data.paymentmethod,
+          paymentMode: selectedPaymentMethod,
           date: data.date,
           email: data.email,
           isActive: value
@@ -181,7 +191,7 @@ function AddExpenses() {
             </div>
 
             {/* Payment Method */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="paymentmethod">Payment Method *</label>
               <input
                 type="text"
@@ -192,7 +202,38 @@ function AddExpenses() {
               {errors.paymentmethod && (
                 <p className="text-red-500 text-sm">{errors.paymentmethod.message}</p>
               )}
-            </div>
+            </div> */}
+
+            {/* Payment Method */}
+<div className="relative">
+  <label htmlFor="paymentmethod" className="block text-sm font-medium mb-2 text-black">
+    Payment Method *
+  </label>
+  <div
+    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+    onClick={() => setPayDropdownOpen(!payDropdownOpen)}
+  >
+    <p>{selectedPaymentMethod || 'Select Payment Method'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {payDropdownOpen && (
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      <div
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        onClick={() => handleSelectPaymentMethod('Cash')}
+      >
+        Cash
+      </div>
+      <div
+        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+        onClick={() => handleSelectPaymentMethod('Online')}
+      >
+        Online
+      </div>
+    </div>
+  )}
+</div>
+
 
             {/* Status Toggle */}
             <div className="mb-2">
