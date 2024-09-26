@@ -5,9 +5,25 @@ import deleteIcon from '../../../../assets/delete.png';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
+import EditIncome from './EditIncome';
 
 function Income() {
   const navigate = useNavigate();
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editIncomeId , setEditIncomeId] = useState(null)
+
+  const openEditPopup = (id) => {
+    setEditIncomeId(id);
+    setIsEditPopupOpen(true);
+  };
+
+  const closeEditPopup = () => {
+    setEditIncomeId(null);
+    setIsEditPopupOpen(false);
+  };
+
+
+
   const column = [
     {
       name: 'SR.No',
@@ -142,6 +158,19 @@ function Income() {
     setFilterIncome(income);
   }, [income]);
 
+  useEffect(() => {
+    if ( isEditPopupOpen ) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+  
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [ isEditPopupOpen]);
+
+
   // Helper function to access nested fields
   const getNestedFieldValue = (obj, field) => {
     return field.split('.').reduce((acc, part) => acc && acc[part], obj);
@@ -204,6 +233,14 @@ function Income() {
     handleClear={handleClear}
     onAddClick={handleAddClick}
   />
+
+<EditIncome
+        isOpen={isEditPopupOpen}
+        onClose={closeEditPopup}
+        incomeId={editIncomeId}
+        onSuccess={fetchData} // Refresh data after editing
+      />
+
 </div>
     </div>
   );
