@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 
-function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
-  const [income, setIncome] = useState({ Income: '', source: '', date: '', amount: '',invoice: '',payment: '', description: '' });
+function EditExpenses({ isOpen, onClose, expenseId, onSuccess }) {
+  const [expense, setExpense] = useState({ Expense: '', category: '', date: '', amount: '',invoice: '',payment: ''});
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [value, setValue] = useState(true);
 
@@ -15,31 +14,30 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
     if (isOpen) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/income/getIncomeById/${incomeId}`,
+        url: `http://localhost:8080/expenses/getExpensesById/${expenseId}`,
         headers: {
           'Content-Type': 'application/json',
         },
       })
         .then((response) => {
-          setIncome(response.data.data);
+          setExpense(response.data.data);
           // Reset the form with the fetched data
           reset({
-            Income: response.data.data.incomeName,
-            source: response.data.data.incomeSource,
-            date: response.data.data.incomeDate,
+            Expense: response.data.data.name,
+            category: response.data.data.expenseType.expenseCategoryName,
+            date: response.data.data.date,
             amount: response.data.data.amount,
-            invoice: response.data.data.invoice,
-            payment: response.data.data.paymentMode,
-            description: response.data.data.description,
+            invoice: '',
+            payment: response.data.data.payment_mode,
           });
           // Update the toggle button value
         //   setValue(response.data.data.isActive === 'true');
         })
         .catch((error) => {
-          console.error('Error fetching Income:', error);
+          console.error('Error fetching Expense:', error);
         });
     }
-  }, [incomeId, isOpen, reset]);
+  }, [expenseId, isOpen, reset]);
 
   useEffect(() => {
       // Disable scrolling on background when the popup is open
@@ -107,46 +105,46 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
         </button>
 
         <form  className="">
-          <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">View Income</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">View Expense</h2>
 
-          {/* Income Input */}
+          {/* Expense Input */}
           <div className="mb-1">
-            <label htmlFor="Income" className="block text-gray-700 font-semibold mb-1">Income Name</label>
+            <label htmlFor="Expense" className="block text-gray-700 font-semibold mb-1">Expense Name</label>
             <input
             readOnly
               type="text"
-              id="Income"
-              className={`w-full px-3 py-2 border ${errors.Income ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register('Income')}
-              value={income.Income}
+              id="Expense"
+              className={`w-full px-3 py-2 border ${errors.Expense ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register('Expense')}
+              value={expense.Expense}
             />
-            {errors.Income && <p className="text-red-500 text-sm mt-1">{errors.Income.message}</p>}
+            {errors.Expense && <p className="text-red-500 text-sm mt-1">{errors.Expense.message}</p>}
           </div>
 
-          {/* Source from */}
+          {/* Category from */}
           <div className="mb-1">
-            <label htmlFor="source" className="block text-gray-700 font-semibold mb-1">Source</label>
+            <label htmlFor="category" className="block text-gray-700 font-semibold mb-1">Category</label>
             <input
             readOnly
               type="text"
-              id="source"
-              className={`w-full px-3 py-2 border ${errors.source ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register('source')}
-              value={income.source}
+              id="category"
+              className={`w-full px-3 py-2 border ${errors.category ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register('category')}
+              value={expense.category}
             />
-            {errors.source && <p className="text-red-500 text-sm mt-1">{errors.source.message}</p>}
+            {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
           </div>
 
           {/* Date Upto */}
           <div className="mb-1">
-            <label htmlFor="date" className="block text-gray-700 font-semibold mb-1">Date Of Income</label>
+            <label htmlFor="date" className="block text-gray-700 font-semibold mb-1">Date Of Expense</label>
             <input
             readOnly
               type="text"
               id="date"
               className={`w-full px-3 py-2 border ${errors.date ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register('date')}
-              value={income.date}
+              value={expense.date}
             />
             {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>}
           </div>
@@ -160,7 +158,7 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
               id="amount"
               className={`w-full px-3 py-2 border ${errors.amount ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register('amount')}
-              value={income.amount}
+              value={expense.amount}
             />
             {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
           </div>
@@ -173,7 +171,7 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
               id="invoice"
               className={`w-full px-3 py-2 border ${errors.invoice ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register('invoice')}
-              value={income.invoice}
+              value={expense.invoice}
             />
             {errors.invoice && <p className="text-red-500 text-sm mt-1">{errors.invoice.message}</p>}
           </div>
@@ -186,24 +184,11 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
               id="payment"
               className={`w-full px-3 py-2 border ${errors.payment ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register('payment')}
-              value={income.payment}
+              value={expense.payment}
             />
             {errors.payment && <p className="text-red-500 text-sm mt-1">{errors.payment.message}</p>}
           </div>
 
-          {/* Description Input */}
-          <div className="mb-1">
-            <label htmlFor="description" className="block text-gray-700 font-semibold mb-1">Description</label>
-            <textarea
-            readOnly
-              id="description"
-              className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="2"
-              {...register('description')}
-              value={income.description}
-            ></textarea>
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-          </div>
 
         </form>
       </div>
@@ -212,4 +197,4 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
   );
 }
 
-export default EditIncome;
+export default EditExpenses;
