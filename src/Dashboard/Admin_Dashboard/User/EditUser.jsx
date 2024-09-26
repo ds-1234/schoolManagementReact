@@ -5,6 +5,7 @@ import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { NavLink, useLocation } from 'react-router-dom';
 import { set, useForm } from 'react-hook-form';
+import DatePicker from '../../../Reusable_components/DatePicker';
 
 function EditUser() {
   const location = useLocation();
@@ -240,6 +241,16 @@ function EditUser() {
             </select>
             {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
           </div>
+            <div className="flex flex-col px-1 ">
+                  <DatePicker 
+                  name={'dateOfBirth'}
+                  label={"Date of Birth"}
+                  register={register}
+                  required={true}
+                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                  />
+          {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+                </div>
 
           <div className="flex flex-col px-1 ">
             <label htmlFor="fatherName">Father's Name *</label>
