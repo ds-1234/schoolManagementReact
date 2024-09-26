@@ -6,11 +6,26 @@ import deleteIcon from '../../../../assets/delete.png'
 import { NavLink, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
+import EditExpenses from './EditExpenses';
 // import StatusButton from '../../../Reusable_components/StatusButton';
 
 
 function Expenses() {
 const navigate =useNavigate()
+
+const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+const [editExpenseId , setEditExpenseId] = useState(null)
+
+const openEditPopup = (id) => {
+  setEditExpenseId(id);
+  setIsEditPopupOpen(true);
+};
+
+const closeEditPopup = () => {
+  setEditExpenseId(null);
+  setIsEditPopupOpen(false);
+};
+
   const column = [
     {
       name: 'SR.No',
@@ -108,6 +123,18 @@ const navigate =useNavigate()
     setFilterexpense(expense); 
   }, []);
 
+  useEffect(() => {
+    if ( isEditPopupOpen ) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+  
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [ isEditPopupOpen]);
+
 //   const handleFilter = (event) => {
 //     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
 //     setBook(newData);
@@ -172,20 +199,13 @@ const searchOptions = [
       onAddClick={handleAddClick}
       />
 
-      {/* <AddBooksPopup
-        isOpen={isAddPopupOpen} 
-        onClose={() => {
-          closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
-        }} 
-      /> */}
 
-      {/* <EditBookPopup
+      <EditExpenses
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        bookId={editBookId}
+        expenseId={editExpenseId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 }
