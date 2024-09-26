@@ -4,8 +4,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { NavLink, useLocation } from 'react-router-dom';
-import { set, useForm } from 'react-hook-form';
+import {useForm } from 'react-hook-form';
 import DatePicker from '../../../Reusable_components/DatePicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function EditUser() {
   const location = useLocation();
@@ -23,8 +25,8 @@ function EditUser() {
   // const [classes , setClasses] = useState([]) ;
   // const [books , setBooks] = useState([]) ;
   // const [schools , setSchools] = useState([]) ;
-  const [userRole, setUserRole] = useState(null);
-  const [val , setValue] = useState('');
+  const [selectedRole, setSelectedRole] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
   useEffect(() => {
@@ -113,18 +115,19 @@ function EditUser() {
     })
       .then((response) => {
         const userData = response.data.data;
-        console.log(userData);
         reset(userData);
         setToggleValue(userData.isActive);
-        setUserRole(userData.role); 
-        console.log(userData.role);
-        setValue(userData.role.id);
+        setSelectedRole(userData.role.id)
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
       });
   }, [userId, reset]);
 
+  const handleChange = (role) => {
+    setSelectedRole(role.id); 
+    setDropdownOpen(false); 
+  };
   const onSubmit = (data) => {
     // const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
     // const selectedBooks = books.find(book => book.id === parseInt(data.book));
@@ -140,7 +143,7 @@ function EditUser() {
         // className : null, 
         // book: [] , 
         // school : null ,
-        role :  {id: userRole.id} ,
+        role :  {id: selectedRole} ,
         isActive: toggleValue ? 'true' : 'false' },
     })
     .then((response) => {
@@ -152,12 +155,6 @@ function EditUser() {
       });
   };
 
-  const handleRoleChange = (e) => {
-    const selectedRoleId = e.target.value;
-    const selectedRole = roles.find(role => role.id === parseInt(selectedRoleId));
-    setValue(selectedRoleId);
-    setUserRole(selectedRole);
-  };
 
   return (
     <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
@@ -370,22 +367,45 @@ function EditUser() {
         <h2 className="text-xl font-semibold text-black mt-10 ">Role Details</h2>
         {/* Role Input */}
         <div className="mt-4">
-            <select
-              id="role"
-              className={`w-1/2 px-3 py-2 border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register('role', { required: 'Role Field is required' })}
-              value={val}
-              onChange={handleRoleChange}
-            >
-              <option value="" hidden>Select a Role</option>
-              {roles.map(role => (
-                <option key={role.id} value={role.id}>
-                  {role.name}
-                </option>
-              ))}
-            </select>
-            {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
+        <label htmlFor="role" className="block">Role</label>
+        {/* <select
+          id="role"
+          className={`w-1/2 px-3 py-2 border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          {...register('role', { required: 'Role Field is required' })}
+          onChange={handleChange}
+          value={selectedRole}
+        >
+          <option  value="" disabled>{selectedRole ? roles.find(role => role.id === parseInt(selectedRole))?.name : "Select Role"}</option>
+          {roles.map(role => (
+            <option key={role.id} value={role.id}>
+              {role.name}
+            </option>
+          ))}
+        </select> */}
+
+        <div
+          className="border rounded-lg cursor-pointer  flex justify-between items-center w-1/4 p-2"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          <p>{selectedRole ? roles.find(role => role.id === parseInt(selectedRole))?.name : "Select Role"}</p>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+        {dropdownOpen && (
+          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/6">
+            {roles.map(role => (
+            <div
+            key={role.id}
+            className="p-2 cursor-pointer hover:bg-gray-100"
+            onClick={() => handleChange(role)}
+          >
+              {role.name}
+            </div>
+          ))}
           </div>
+        )}
+        {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
+      </div>
+
 
 
         {/* Class Input
