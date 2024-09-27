@@ -6,14 +6,15 @@ import deleteIcon from '../../../assets/delete.png'
 import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import AddHolidays from './AddHolidays';
+import EditHolidays from './EditHolidays';
 
 
 function Holidays() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editSubjectId , setEditSubjectId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editHolidayId , setEditHolidayId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -30,15 +31,15 @@ function Holidays() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditSubjectId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditHolidayId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditSubjectId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditHolidayId(null);
+    setIsEditPopupOpen(false);
+  };
 
 const handleDelete = (id)=>{
     axios({
@@ -128,7 +129,7 @@ const handleDelete = (id)=>{
       cell: (row) => (
         <div className="flex gap-2">
           <button 
-        //   onClick={() => openEditPopup(row.id)}
+          onClick={() => openEditPopup(row.id)}
           >
             <img src={edit} alt="Edit" className="h-8" />
           </button>
@@ -199,15 +200,15 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditSubject
+      <EditHolidays
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  // Only close the Edit popup here
           fetchData();       // Fetch data after the Edit popup is closed
         }}
-        subjectId={editSubjectId}
+        holidayId={editHolidayId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };
