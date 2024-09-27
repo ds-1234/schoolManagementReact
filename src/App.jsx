@@ -48,6 +48,7 @@ import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpens
 import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
 import Guest from './Dashboard/Guest_DashBoard/Guest';
 import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
+import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 
 function App() {
   return (
@@ -102,7 +103,8 @@ function App() {
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />
-
+            <Route path="holidays" element={<Holidays />} />
+            
 
             
           </Route>
