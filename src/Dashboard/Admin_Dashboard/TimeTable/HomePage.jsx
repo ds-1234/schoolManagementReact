@@ -25,7 +25,7 @@ const HomePage = () => {
       {/* Teacher Time Table Tile */}
       <div 
         className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
-        onClick={() => navigate('/admin/timetable')}>
+        onClick={() => navigate('/admin/teachers')}>
         <img src={teacherTT} alt="Teacher Time Table" className="w-full py-4 px-4 object-cover" />
         <div className="p-4 text-center">
           <h3 className="text-lg font-semibold">Teacher Time Table</h3>
