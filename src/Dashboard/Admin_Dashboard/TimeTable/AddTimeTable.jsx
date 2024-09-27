@@ -85,51 +85,6 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  // const onSubmit = (data) => {
-  //   const timetableEntries = [];
-  //   console.log(classItem);
-    
-  //   // Loop through each day and its entries
-  //   for (const day in data.days) {
-
-  //     data.days[day].forEach(entry => {
-  //       if (entry.subject && entry.teacher && entry.timeFrom && entry.timeTo) {
-  //         const selectedTeacher = JSON.parse(entry.teacher); 
-  //         const selectedSubject = JSON.parse(entry.subject);
-
-  //         timetableEntries.push({
-  //           className : classItem ,
-  //           weekDay: day,
-  //           startTime: entry.timeFrom,
-  //           endTime: entry.timeTo,
-  //           teacherName: selectedTeacher,
-  //           subject : selectedSubject
-  //         });
-  //       }
-  //     });
-  //   }
-  
-  //   // Prepare the final payload
-  //   const payload = {
-  //     timetable: timetableEntries,
-  //   };
-  //   axios({
-  //     method: 'POST' , 
-  //     url: 'https://localhost:8080/timeTable/addTimeTable',
-  //     data: payload
-  //   })
-  //   .then((response) => {
-  //     console.log(response);
-  //       toast.success('Successfully added Time Table!');
-  //       reset();
-  //       onClose();
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       toast.error('Error adding new Time Table!');
-  //       onClose();
-  //     });
-  // };
 
   const onSubmit = (data) => {
     const payload = {
@@ -143,7 +98,6 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
       startTime: data.days[activeDay][0].timeFrom,
       endTime: data.days[activeDay][0].timeTo,
       teacherName: JSON.parse(data.days[activeDay][0].teacher),
-      // subject: JSON.parse(data.days[activeDay][0].subject),
     };
   
     // Send the payload directly to the API
