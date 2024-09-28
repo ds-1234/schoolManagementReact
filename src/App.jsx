@@ -103,7 +103,6 @@ function App() {
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />
-            <Route path="holidays" element={<Holidays />} />
             
 
             
