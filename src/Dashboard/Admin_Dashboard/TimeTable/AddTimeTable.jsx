@@ -86,6 +86,8 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
       teacherName: JSON.parse(data.days[activeDay][0].teacher),
     };
   
+    console.log(payload);
+    
     // Send the payload directly to the API
     axios({
       method: 'POST',

@@ -7,7 +7,7 @@ const TimetablePage = () => {
   const { teacherId } = useParams(); // Get teacherId from the route
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -22,7 +22,9 @@ const TimetablePage = () => {
         console.log(filteredTimetable);
         setTimetableData(filteredTimetable);
       } catch (error) {
-        setError(error.message || 'Something went wrong');
+        // setError(error.message || 'Something went wrong');
+        console.log(error);
+        
       } finally {
         setLoading(false);
       }
@@ -35,9 +37,9 @@ const TimetablePage = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   return (
     <div className='flex flex-col justify-start pl-0'>

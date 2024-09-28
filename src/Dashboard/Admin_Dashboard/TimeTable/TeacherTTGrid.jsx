@@ -17,7 +17,7 @@ const TeacherTTGrid = ({ timetableData }) => {
 
       result[day].push({
         time,
-        subject: item.className?.subject[0].subject || 'N/A',
+        subject: item.className?.subject[0]?.subject || 'N/A',
         className: item.className?.name || 'N/A',
         section: item.className?.section || 'N/A',
         color,
