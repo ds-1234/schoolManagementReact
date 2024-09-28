@@ -4,10 +4,15 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const AddSports = ({ isOpen, onClose }) => {
 
     const [value, setValue] = useState(true);
+    const [coach, setCoach] = useState([]);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [selectedCoach, setSelectedCoach] = useState(null);
 
 
   const {
@@ -17,10 +22,24 @@ const AddSports = ({ isOpen, onClose }) => {
     reset
   } = useForm();
 
+
+  const fetchCoach = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/user/getUserList');
+        const filteredCoaches = response.data.data.filter(user => user.role.name === 'Teacher');
+        setCoach(filteredCoaches);
+    } catch (error) {
+        toast.error("Error fetching coaches");
+    }
+};
+  
+
   useEffect(() => {
     // Disable scrolling on background when the popup is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      fetchCoach();
+
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -47,7 +66,7 @@ const AddSports = ({ isOpen, onClose }) => {
       url: 'http://localhost:8080/sports/saveSports',
       data: {
         sportsName: data.sportsName,
-        coachName: {id:'1'},
+        coachName: {id: selectedCoach?.id },
         startedYear: data.startedYear,
         isActive:value
       },
@@ -95,23 +114,40 @@ const AddSports = ({ isOpen, onClose }) => {
           </div>
 
 
-          {/* Coach Input */}
-          <div className="mb-4">
-            <label htmlFor="coachName" className="block text-gray-700 font-semibold mb-2">Coach</label>
-            <input
-              id="coachName"
-              className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            //   rows="4"
-              {...register('coachName', { required: 'Coach Name is required' })}
-            ></input>
-            {errors.coachName && <p className="text-red-500 text-sm mt-1">{errors.coachName.message}</p>}
-          </div>
+       {/* Coach Input */}
+       <div className="mb-4 relative">
+                        <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
+                        <div 
+                            className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                        >
+                            <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
+                            <FontAwesomeIcon icon={faAngleDown} />
+                        </div>
+                        {dropdownOpen && (
+                            <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
+                                {coach.map(coach => (
+                                    <label
+                                        key={coach.id}
+                                        className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                                        onClick={() => {
+                                            setSelectedCoach(coach); // Set selected coach
+                                            setDropdownOpen(false); // Close dropdown after selection
+                                        }}
+                                    >
+                                        {coach.firstName}
+                                    </label>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
 
           {/* Started Year  Input */}
                     <div className="mb-4">
             <label htmlFor="startedYear" className="block text-gray-700 font-semibold mb-2">Started Year</label>
             <input
-              type="text"
+              type="number"
               id="startedYear"
               className={`w-full px-3 py-2 border ${errors.startedYear ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               {...register('startedYear', { required: 'startedYear is required' })}
