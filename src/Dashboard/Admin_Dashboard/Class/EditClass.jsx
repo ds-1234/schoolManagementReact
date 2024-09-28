@@ -77,12 +77,12 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
 
     axios({
       method: 'post',
-      url: `http://localhost:8080/class/updateClass`,
+      url: `http://localhost:8080/class/createClass`,
       headers: {
         'Content-Type': 'application/json',
       },
       data: {
-        id: `{$GradeId}`,
+        id: `${GradeId}`,
         ...grade,
         subject: selectedSubjectObjects, // Pass selected subjects in the required format
       },

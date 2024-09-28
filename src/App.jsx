@@ -26,9 +26,6 @@ import ExamAttendance from './Dashboard/Admin_Dashboard/Examinations/ExamAttenda
 import ExamResults from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamResults';
 import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade/Grade';
 import Role from './Dashboard/Admin_Dashboard/User/Role/Role';
-import TimeTable from './Dashboard/Admin_Dashboard/TimeTable/TimeTable';
-import ClassSelect from './Dashboard/Admin_Dashboard/TimeTable/ClassSelect';
-import SectionSelect from './Dashboard/Admin_Dashboard/TimeTable/SectionSelect';
 import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser';
 import AddUser from './Dashboard/Admin_Dashboard/User/AddUser';
 import EditUser from './Dashboard/Admin_Dashboard/User/EditUser';
@@ -48,7 +45,12 @@ import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpens
 import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
 import Guest from './Dashboard/Guest_DashBoard/Guest';
 import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
-import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
+
+import HomePage from './Dashboard/Admin_Dashboard/TimeTable/HomePage'
+import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
+import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
+import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
+import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
 
 function App() {
   return (
@@ -92,9 +94,11 @@ function App() {
             <Route path="examAttendance" element={<ExamAttendance />} />
             <Route path="examResults" element={<ExamResults />} />
             <Route path="grade" element={<Grade />} />
-            <Route path="timeTable" element={<TimeTable />} />
-            <Route path="timetable/class" element={<ClassSelect />} />
-            <Route path="timetable/class/section" element={<SectionSelect />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="classes" element={<ClassPage />} />
+            <Route path="teachers" element={<TeacherPage/>} />
+            <Route path="timetable/:className/:section" element={<TimetablePage />} />
+            <Route path='timetable/:teacherId' element = {<TeacherTimeTable/>}/>
             <Route path="Expenses" element={<Expenses />} />
             <Route path="addExpenses" element={<AddExpenses />} />
             <Route path="ExpenseCategory" element={<ExpenseCategory />} />
