@@ -11,7 +11,7 @@ const HomePage = () => {
     <div className='flex flex-col justify-start pl-0'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Time Table</h1>
     <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/  <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
-    <div className='flex items-center justify-center mt-24 gap-5'>
+    <div className='flex items-center justify-center mt-24 mb-5 gap-5'>
       {/* Class Time Table Tile */}
       <div 
         className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"

@@ -20,7 +20,6 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
     },
   });
 
-  const [subjects, setSubjects] = useState([]);
   const [teachers , setTeachers] = useState([]) ;
 
   useEffect(() => {
@@ -45,17 +44,6 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/subject/getSubjectList', {
-          headers: { 'Content-Type': 'application/json' },
-        });
-        setSubjects(response.data.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     const fetchTeachers = async () => {
       try {
         const response = await axios.get('http://localhost:8080/user/getUserList', {
@@ -70,8 +58,6 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching data:', error);
       }
     };
-
-    fetchSubjects();
     fetchTeachers();
   }, []);
 
@@ -165,7 +151,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
                 <label className="block text-sm font-semibold mb-1">Subject</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" {...register(`days.${activeDay}.${index}.subject`)}>
                   <option value="" disabled>Select Subject</option>
-                  {subjects.map((sub) => (
+                  {classItem.subject.map((sub) => (
                     <option key={sub.id} value={JSON.stringify(sub)}>
                       {sub.subject}
                     </option>
