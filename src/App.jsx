@@ -45,6 +45,7 @@ import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpens
 import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
 import Guest from './Dashboard/Guest_DashBoard/Guest';
 import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
+
 import HomePage from './Dashboard/Admin_Dashboard/TimeTable/HomePage'
 import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
 import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
@@ -106,7 +107,7 @@ function App() {
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />
-
+            
 
             
           </Route>
