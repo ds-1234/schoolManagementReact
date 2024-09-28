@@ -13,6 +13,7 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
       try {
         const response = await axios.get('http://localhost:8080/timeTable/getTimeTable');
         const transformedData = transformData(response.data.data);
+        console.log(transformedData);
         setTimetableData(transformedData);
         setLoading(false);
       } catch (error) {
@@ -40,7 +41,7 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
 
       result[className][section][day].push({
         time,
-        subject: item.className?.subject?.name || 'N/A',
+        subject: item.className?.subject.subject || 'N/A',
         teacher: (item.teacherName?.firstName + ' ' +  item.teacherName?.lastName)  || 'N/A',
         color,
       });
