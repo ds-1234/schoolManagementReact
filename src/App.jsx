@@ -51,6 +51,7 @@ import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
 import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
 import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
 import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
+import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 
 function App() {
   return (
