@@ -3,9 +3,11 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
   const [holiday, setHoliday] = useState({ title: '',holidayDate: '', description: '' });
+  const [value,setValue] =useState(true)
 
   const {
     register,
@@ -23,7 +25,14 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
       },
     })
       .then((response) => {
-        setHoliday(response.data.data);
+        const holidayData = response.data.data;
+        // Populate the holiday state with the API response
+        setHoliday({
+          title: holidayData.holidayName,
+          holidayDate: holidayData.holidayDate,
+          description: holidayData.description,
+        });
+        setValue(holidayData.isActive); // Set active status based on API response
       })
       .catch((error) => {
         console.error('Error fetching Holiday:', error);
@@ -51,14 +60,20 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
   };
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     axios({
       method: 'POST',
       url: `http://localhost:8080/holidays/saveholidays`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data:{id : '${holidayId}', ...holiday},
+      data:{
+        id : `${holidayId}`,
+        holidayName:holiday.title,
+        holidayDate:holiday.holidayDate,
+        description:holiday.description,
+        isActive:value,
+        },
     })
       .then((response) => {
         console.log('holiday updated:', response.data);
@@ -91,10 +106,10 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
             <input
               type="text"
               name="title"
-              value={holiday.title}
+              value={holiday.title}  
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter Title name"
+              placeholder="Enter title name"
               required
             />
           </div>
@@ -103,7 +118,9 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
           <div className="mb-4">
               <label htmlFor="date" className="block text-sm font-medium mb-2 text-black">Date </label>
               <input
-                {...register('date', { required: 'Date is required' })}
+                  defaultValue={holiday.holidayDate}
+                  onChange={handleChange}
+                // {...register('date', { required: 'Date is required' })}
                 className="block h-11 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
                 placeholder="Select Date"
                 onFocus={(e) => {
@@ -140,6 +157,19 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
               required
             />
           </div>
+
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status 
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
           <Button
             type="submit"
