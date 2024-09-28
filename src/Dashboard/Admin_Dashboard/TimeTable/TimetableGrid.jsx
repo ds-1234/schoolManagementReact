@@ -12,8 +12,9 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
     const fetchTimetable = async () => {
       try {
         const response = await axios.get('http://localhost:8080/timeTable/getTimeTable');
+        console.log(response.data.data);
+        
         const transformedData = transformData(response.data.data);
-        console.log(transformedData);
         setTimetableData(transformedData);
         setLoading(false);
       } catch (error) {
@@ -25,29 +26,36 @@ const TimetableGrid = ({ selectedClass, selectedSection }) => {
     fetchTimetable();
   }, []);
 
-  // Transforming the API data to match the timetable format
   const transformData = (data) => {
     const result = {};
     data.forEach((item, index) => {
+      // Check if className and weekDay are not null
       const className = item.className?.name || 'N/A';
       const section = item.className?.section || 'N/A';
       const day = item.weekDay || 'N/A';
-      const time = `${item.startTime} - ${item.endTime}`;
+      const time = item.startTime && item.endTime ? `${item.startTime} - ${item.endTime}` : 'N/A';
       const color = colors[index % colors.length]; // Assign a color from the list
-
+  
+      // Check if teacherName is not null
+      const teacherName = item.teacherName
+        ? `${item.teacherName?.firstName || 'N/A'} ${item.teacherName?.lastName || ''}`
+        : 'N/A';
+  
+      // Only process valid class and section names
       if (!result[className]) result[className] = {};
       if (!result[className][section]) result[className][section] = {};
       if (!result[className][section][day]) result[className][section][day] = [];
-
+  
       result[className][section][day].push({
         time,
-        subject: item.className?.subject.subject || 'N/A',
-        teacher: (item.teacherName?.firstName + ' ' +  item.teacherName?.lastName)  || 'N/A',
+        subject: item.className?.subject[0]?.subject || 'N/A', // Handle subject array or missing field
+        teacher: teacherName,
         color,
       });
     });
     return result;
   };
+  
 
   if (loading) {
     return <p>Loading timetable...</p>;

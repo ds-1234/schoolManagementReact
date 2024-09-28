@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Login';
+// import Login from './Login';
 import Registration from './Registration';
 import SuccessCard from './SuccessCard';
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard';
@@ -52,6 +52,8 @@ import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
 import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
 import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
 import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
+import Timetable from './Dashboard/Teacher_Dashboard/TimeTable/TimeTable';
+import StdTimetable from './Dashboard/Student_Dashboard/TimeTable/StdTimeTable';
 import Leave from './Dashboard/Admin_Dashboard/Leave/Leave';
 
 function App() {
@@ -123,6 +125,7 @@ function App() {
             }
           >
             <Route index element={<Student />} />
+            <Route path='timetable' element={<StdTimetable/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -135,6 +138,7 @@ function App() {
             }
           >
             <Route index element={<Teacher />} />
+            <Route path='timetable' element={<Timetable/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}

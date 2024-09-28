@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from './Reusable_components/Layout';
-import loginImg from './assets/Login.png';
+// import loginImg from './assets/Login.png';
 import { CutEyeIcon } from './assets/Icons/CutEyeIcon';
 import { EyeIcon } from './assets/Icons/EyeIcon';
 import { useForm } from 'react-hook-form';
@@ -39,10 +39,11 @@ function LandingPage() {
       },
     })
       .then((res) => {
-        console.log('role:', res.data.data.role.name);
+        console.log('user:', res.data.data);
         let role = res.data.data.role;
         sessionStorage.setItem('username', res.data.data.userId);
         sessionStorage.setItem('role', res.data.data.role.name);
+        sessionStorage.setItem('user' , JSON.stringify(res.data.data)) ;
         toast.success('Successfully Logged In');
 
         switch (role.name) {
