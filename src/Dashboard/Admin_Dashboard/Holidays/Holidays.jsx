@@ -7,6 +7,7 @@ import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import AddHolidays from './AddHolidays';
 import EditHolidays from './EditHolidays';
+import Swal from 'sweetalert2'
 
 
 function Holidays() {
@@ -42,22 +43,43 @@ function Holidays() {
   };
 
 const handleDelete = (id)=>{
-    axios({
-        method: "post",
-        url: `http://localhost:8080/holidays/deleteholidays/${id}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // withCredentials: true,
-      })
-        .then((response) => {
-          console.log("Data from Delete API:", response.data);
-          fetchData()
-        })
-        .catch((error) => {
-          console.error("Error to Delete data:", error);
-          fetchData()
-        });
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+            axios({
+                method: "post",
+                url: `http://localhost:8080/holidays/deleteholidays/${id}`,
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                // withCredentials: true,
+              })
+                .then((response) => {
+                  console.log("Data from Delete API:", response.data);
+                  fetchData()
+                })
+                .catch((error) => {
+                  console.error("Error to Delete data:", error);
+                  fetchData()
+                });
+
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+        }
+      });
+
 }
 
 
