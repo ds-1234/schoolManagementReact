@@ -51,6 +51,7 @@ import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
 import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
 import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
 import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
+import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 
 function App() {
   return (
@@ -107,6 +108,7 @@ function App() {
             <Route path="Invoices" element={<Invoices />} />
             <Route path="Invoiceview" element={<InvoiceView />} />
             <Route path="Transactions" element={<Transactions />} />
+            <Route path="holidays" element={<Holidays />} />
             
 
             
