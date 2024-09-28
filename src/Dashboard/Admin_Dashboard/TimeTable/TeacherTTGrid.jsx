@@ -10,12 +10,14 @@ const TeacherTTGrid = ({ timetableData }) => {
       const day = item.weekDay || 'N/A';
       const time = `${item.startTime} - ${item.endTime}`;
       const color = colors[index % colors.length]; // Assign a color from the list
+      console.log(item);
+      
 
       if (!result[day]) result[day] = [];
 
       result[day].push({
         time,
-        subject: item.subject?.name || 'N/A',
+        subject: item.className?.subject[0].subject || 'N/A',
         className: item.className?.name || 'N/A',
         section: item.className?.section || 'N/A',
         color,
@@ -25,6 +27,7 @@ const TeacherTTGrid = ({ timetableData }) => {
   };
 
   const transformedTimetable = transformData(timetableData);
+  
 
   return (
     <div className='flex flex-nowrap justify-evenly gap-4 bg-white pb-10 pt-4 rounded-lg'>
