@@ -54,6 +54,7 @@ import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeT
 import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 import Leave from './Dashboard/Admin_Dashboard/Leave/Leave';
 import Sports from './Dashboard/Admin_Dashboard/Sports/Sports/Sports';
+import Players from './Dashboard/Admin_Dashboard/Sports/Players/Players';
 
 function App() {
   return (
@@ -113,6 +114,7 @@ function App() {
             <Route path="holidays" element={<Holidays />} />
             <Route path="leave" element={<Leave />} />
             <Route path="sports" element={<Sports />} />
+            <Route path="players" element={<Players />} />
           </Route>
 
           {/* Student Dashboard Routes */}
