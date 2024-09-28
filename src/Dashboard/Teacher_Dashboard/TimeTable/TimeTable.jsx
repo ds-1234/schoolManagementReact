@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import TeacherTTGrid from '../../Admin_Dashboard/TimeTable/TeacherTTGrid';
 
 const Timetable = () => {
-  const { teacherId } = useParams(); // Get teacherId from the route
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +16,7 @@ const Timetable = () => {
         
         // Filter timetable for specific teacher based on teacherId
         const filteredTimetable = response.data.data.filter(
-          (timetable) => timetable.teacherName?.id == parseInt(teacherId) 
+          (timetable) => timetable.teacherName?.id == user.id
         );
         console.log(filteredTimetable);
         setTimetableData(filteredTimetable);
@@ -29,7 +28,7 @@ const Timetable = () => {
     };
 
     fetchTimetable();
-  }, [teacherId]);
+  }, [user.id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,7 +42,7 @@ const Timetable = () => {
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Teacher Timetable</h1>
       <p className='mt-2'>
-        Dashboard /<NavLink to='/teacherDashboard/timetable'> Teachers</NavLink> /
+        Dashboard /
         <span className='text-[#ffae01] font-semibold'>Teacher Timetable</span>
       </p>
 

@@ -170,7 +170,7 @@ function Login() {
               }
               type={isVisible ? "text" : "password"}
             />
-                                      {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+              {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
 
 
 

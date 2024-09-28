@@ -52,9 +52,7 @@ import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
 import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
 import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
 import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
-import Teachers from './Dashboard/Teacher_Dashboard/TimeTable/Teachers';
 import Timetable from './Dashboard/Teacher_Dashboard/TimeTable/TimeTable';
-import Classes from './Dashboard/Student_Dashboard/TimeTable/Classes';
 import StdTimetable from './Dashboard/Student_Dashboard/TimeTable/StdTimeTable';
 import Leave from './Dashboard/Admin_Dashboard/Leave/Leave';
 
@@ -127,8 +125,7 @@ function App() {
             }
           >
             <Route index element={<Student />} />
-            <Route path='timetable' element={<Classes/>}/>
-            <Route path='timetable/:className/:section' element={<StdTimetable/>}/>
+            <Route path='timetable' element={<StdTimetable/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -141,8 +138,7 @@ function App() {
             }
           >
             <Route index element={<Teacher />} />
-            <Route path='timetable' element={<Teachers/>}/>
-            <Route path='timetable/:teacherId' element={<Timetable/>}/>
+            <Route path='timetable' element={<Timetable/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}
