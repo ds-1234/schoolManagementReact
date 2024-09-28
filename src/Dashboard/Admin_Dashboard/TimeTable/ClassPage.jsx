@@ -48,7 +48,7 @@ const ClassPage = () => {
     <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <NavLink to='/admin/home'> Home  </NavLink>/  <span className='text-[#ffae01] font-semibold'>Classes</span> </p>
     <div className='mt-10'>
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Classes</h2>
-      <div className="flex justify-center items-center gap-5 mx-20">
+      <div className="flex justify-center items-center gap-5 pb-2 mx-20">
         {classes.map((classItem, index) => (
           <div
             key={index}
