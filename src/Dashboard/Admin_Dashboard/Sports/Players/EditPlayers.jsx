@@ -4,8 +4,11 @@ import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import { useForm } from 'react-hook-form';
 
 function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
+    const [value, setValue] = useState(true);
   const [playerData, setPlayerData] = useState({});
   const [players, setPlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState(null);
@@ -13,6 +16,13 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
   const [selectedSports, setSelectedSports] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownOpen2, setDropdownOpen2] = useState(false);
+
+  const {
+    register,
+    // handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -55,8 +65,9 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
         .then((response) => {
           const playerData = response.data.data;
           setPlayerData(playerData);
-          setSelectedPlayers(playerData.playersName.map(pla => pla.id));
-          setSelectedSports(playerData.sportsName.map(spo => spo.id));
+          setSelectedPlayers(playerData.playersName);
+          setSelectedSports(playerData.sportsName);
+          console.log(selectedPlayers,selectedSports,'selected:')
         })
         .catch((error) => {
           console.error('Error fetching player:', error);
@@ -192,6 +203,19 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
               className="block h-11 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
             />
           </div>
+
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status 
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
           {/* Submit Button */}
           <Button type="submit" className="w-full text-center" />
