@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faHouse , faCalendarDay , faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
 function StdSidebar() {
   return (
@@ -18,7 +18,32 @@ function StdSidebar() {
               Dashboard
             </div>
           </NavLink>
-
+      </li>
+      {/* Time Table Section */}
+      <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/studentDashboard/timetable"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faCalendarDay} className="mr-3 text-[#ffae01]" />
+                Time Table
+              
+            </NavLink>
+      </li>
+       {/* HomeWork Section */}
+       <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+        <NavLink
+          to="/studentDashboard/homework"
+          className={({ isActive }) =>
+            `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+          }
+        >
+            <FontAwesomeIcon icon={faBookOpen} className="mr-3 text-[#ffae01]" />
+            Home work
+          
+        </NavLink>
       </li>
       </ul>
       </nav>

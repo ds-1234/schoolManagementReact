@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBook, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
-  // const [isDashboardDropdown, setIsDashBoardDropdown] = useState(false);
+
   const [isStdDropdown , setIsStdDropdown] = useState(false) ;
   const [isExamDropdown , setIsExamDropdown] = useState(false) ;
   const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
@@ -13,9 +13,6 @@ const Sidebar = () => {
   const [isConfOpen , setIsConfOpen] = useState(false) ;
   const userRole = sessionStorage.getItem('role') 
 
-  // const toggleDropdown = () => {
-  //   setIsDashBoardDropdown(!isDashboardDropdown);
-  // };
 
   const toggleStdDropdown = () => {
     setIsStdDropdown(!isStdDropdown);
@@ -39,86 +36,13 @@ const Sidebar = () => {
     setIsConfOpen(!isConfOpen) ;
   }
 
-  const getDashboardPath = () => {
-    switch (userRole) {
-      case 'Student':
-        return '/studentDashboard';
-      case 'Teacher':
-        return '/teacherDashboard';
-      case 'Parent':
-        return '/parentsDashboard';
-      case 'Admin':
-        return '/admin';
-      case 'Guest':
-        return '/guestDashboard';
-    }
-  };
  
   return (
     <div className='bg-[#051f3e] fixed h-screen '>
       <nav className="p-5 h-full overflow-y-auto scrollbar-hide">
         <ul>
-          {/* Dashboard Section */}
-          {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to="#" className="flex justify-between items-center hover:bg-[#063256] p-2 hover:rounded-xl">
-              <div className="flex gap-1 justify-center items-center">
-                <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
-                Dashboard
-              </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3 text-[#ffae01]" onClick={toggleDropdown} />
-            </NavLink>
-            {isDashboardDropdown && (
-              <ul className="text-sm font-normal  flex items-center justify-center gap-1 flex-col bg-[#021933] py-2">
-                <li >
-                  <NavLink
-                    to="/admin"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight}  />
-                    Admin
-                  </NavLink>
-                </li>
-                <li >
-                  <NavLink
-                    to="/studentDashboard"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16  ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight}/>
-                    Students
-                  </NavLink>
-                </li>
-                <li >
-                  <NavLink
-                    to="/parentsDashboard"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16  ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight}  />
-                    Parents
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/teacherDashboard"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-16 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight} />
-                    Teachers
-                  </NavLink>
-                </li>
-              </ul>
-            )}
-          </li> */}
-
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink to={`${getDashboardPath()}`} className={({ isActive }) =>
+            <NavLink to={'/admin'} className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] p-2 hover:rounded-xl ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`}
               >
               <div className="flex gap-1 justify-center items-center">
@@ -441,6 +365,19 @@ const Sidebar = () => {
               
             </NavLink>
           </li>
+          {/* HomeWork Section */}
+       <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+        <NavLink
+          to="/admin/homework"
+          className={({ isActive }) =>
+            `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+          }
+        >
+            <FontAwesomeIcon icon={faBookOpen} className="mr-3 text-[#ffae01]" />
+            Home work
+          
+        </NavLink>
+      </li>
 
 
           {/* accounts Section */}

@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Login';
+// import Login from './Login';
 import Registration from './Registration';
 import SuccessCard from './SuccessCard';
 import AdminDashboard from './Dashboard/Admin_Dashboard/AdminDashboard';
@@ -45,16 +45,21 @@ import AddExpenses from './Dashboard/Admin_Dashboard/Accounts/Expenses/AddExpens
 import GuestDashboard from './Dashboard/Guest_DashBoard/GuestDashBoard';
 import Guest from './Dashboard/Guest_DashBoard/Guest';
 import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
-
+import AdminHomework from './Dashboard/Admin_Dashboard/Homework/AdminHomework'
 import HomePage from './Dashboard/Admin_Dashboard/TimeTable/HomePage'
 import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
 import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
 import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
 import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
 import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
+import Timetable from './Dashboard/Teacher_Dashboard/TimeTable/TimeTable';
+import StdTimetable from './Dashboard/Student_Dashboard/TimeTable/StdTimeTable';
 import Leave from './Dashboard/Admin_Dashboard/Leave/Leave';
 import Sports from './Dashboard/Admin_Dashboard/Sports/Sports/Sports';
 import Players from './Dashboard/Admin_Dashboard/Sports/Players/Players';
+import Homework from './Dashboard/Teacher_Dashboard/Homework/Homework';
+import StdHomework from './Dashboard/Student_Dashboard/Homework/Homework';
+
 
 function App() {
   return (
@@ -115,6 +120,8 @@ function App() {
             <Route path="leave" element={<Leave />} />
             <Route path="sports" element={<Sports />} />
             <Route path="players" element={<Players />} />
+
+            <Route path='homework' element = {<AdminHomework/>} />
           </Route>
 
           {/* Student Dashboard Routes */}
@@ -127,6 +134,8 @@ function App() {
             }
           >
             <Route index element={<Student />} />
+            <Route path='timetable' element={<StdTimetable/>}/>
+            <Route path='homework' element = {<StdHomework/>} />
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -139,6 +148,8 @@ function App() {
             }
           >
             <Route index element={<Teacher />} />
+            <Route path='timetable' element={<Timetable/>}/>
+            <Route path='homework' element = {<Homework/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}
