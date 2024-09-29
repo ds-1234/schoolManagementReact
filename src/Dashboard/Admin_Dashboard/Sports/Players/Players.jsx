@@ -1,23 +1,22 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import edit from '../../../assets/edit.png';
-import deleteIcon from '../../../assets/delete.png'
-import Table from '../../../Reusable_components/Table';
-import StatusButton from '../../../Reusable_components/StatusButton';
-import AddBtn from '../../../Reusable_components/AddBtn'
+import edit from '../../../../assets/edit.png';
+import deleteIcon from '../../../../assets/delete.png'
+import Table from '../../../../Reusable_components/Table';
+import StatusButton from '../../../../Reusable_components/StatusButton';
 
 import Swal from 'sweetalert2'
-import AddLeave from './AddLeave';
-import EditLeave from './EditLeave';
+import EditPlayers from './EditPlayers';
+import AddPlayers from './AddPlayers';
 
 
-function Leave() {
+function Players() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editLeaveId , setEditLeaveId] = useState(null)
+  const [editPlayerId , setEditPlayerId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -35,12 +34,12 @@ function Leave() {
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
   const openEditPopup = (id) => {
-    setEditLeaveId(id);
+    setEditPlayerId(id);
     setIsEditPopupOpen(true);
   };
 
   const closeEditPopup = () => {
-    setEditLeaveId(null);
+    setEditPlayerId(null);
     setIsEditPopupOpen(false);
   };
 
@@ -48,7 +47,7 @@ const handleDelete = (id)=>{
 
     Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -59,7 +58,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/leaves/deleteLeaveById/${id}`,
+                url: `http://localhost:8080/players/deletePlayers/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -76,7 +75,7 @@ const handleDelete = (id)=>{
 
           Swal.fire({
             title: "Deleted!",
-            // text: "Your file has been deleted.",
+            text: "Your Data has been deleted.",
             icon: "success"
           });
         }
@@ -88,7 +87,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/leaves/getLeavesList`,
+      url: `http://localhost:8080/players/getPlayersList `,
       headers: {
         "Content-Type": "application/json",
       },
@@ -121,22 +120,22 @@ const handleDelete = (id)=>{
     //   width: '280px', 
     },
     {
-      name: 'Leave Type',
-      selector: (row) => row.leaveType,
+      name: 'Player Name',
+      selector: (row) => row.playersName.firstName,
       sortable: true,
       wrap: true, 
     //   width: '280px', 
     },
-    // {
-    //   name: 'Date',
-    //   selector: (row) => row.holidayDate,
-    //   sortable: true,
-    //   wrap: true,
-    // //   width: '280px', 
-    // },
     {
-      name: 'Description',
-      selector: (row) => row.leaveDescription,
+      name: 'Sports',
+      selector: (row) => row.sportsName.sportsName,
+      sortable: true,
+      wrap: true,
+    //   width: '280px', 
+    },
+    {
+      name: 'Date of Join',
+      selector: (row) => row.dateOfJoin,
       sortable: true,
       wrap: true,
     //   width: '280px', 
@@ -197,24 +196,26 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Leave Type', value: 'leaveType' },
-  { label: 'Description', value: 'leaveDescription' }
+  { label: 'Player Name', value: 'playersName.firstName' },
+  { label: 'Sports', value: 'sportsName.sportsName' },
+  { label: 'Date of Join', value: 'dateOfJoin' }
 ];
 
   return (
-    <div className=' h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Leave</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Leave</span> </p>
-      <AddBtn onAddClick={openAddPopup}/>
+    <div className=' h-full mr-8 mb-10'>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Players</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/Sports'> Sports </NavLink>/ <span className='text-[#ffae01] font-semibold'>Players</span> </p>
+
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
+      onAddClick={openAddPopup}
       />
 
-      <AddLeave
+      <AddPlayers
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
@@ -222,13 +223,13 @@ const searchOptions = [
         }} 
         />
 
-      <EditLeave
+      <EditPlayers
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  // Only close the Edit popup here
           fetchData();       // Fetch data after the Edit popup is closed
         }}
-        leaveId={editLeaveId}
+        playersId={editPlayerId}
         onSuccess={fetchData} // Refresh data after editing
       />
     </div>
@@ -236,4 +237,4 @@ const searchOptions = [
 };
 
 
-export default Leave
+export default Players

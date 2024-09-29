@@ -55,8 +55,11 @@ import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 import Timetable from './Dashboard/Teacher_Dashboard/TimeTable/TimeTable';
 import StdTimetable from './Dashboard/Student_Dashboard/TimeTable/StdTimeTable';
 import Leave from './Dashboard/Admin_Dashboard/Leave/Leave';
+import Sports from './Dashboard/Admin_Dashboard/Sports/Sports/Sports';
+import Players from './Dashboard/Admin_Dashboard/Sports/Players/Players';
 import Homework from './Dashboard/Teacher_Dashboard/Homework/Homework';
 import StdHomework from './Dashboard/Student_Dashboard/Homework/Homework';
+
 
 function App() {
   return (
@@ -115,6 +118,9 @@ function App() {
             <Route path="Transactions" element={<Transactions />} />
             <Route path="holidays" element={<Holidays />} />
             <Route path="leave" element={<Leave />} />
+            <Route path="sports" element={<Sports />} />
+            <Route path="players" element={<Players />} />
+
             <Route path='homework' element = {<AdminHomework/>} />
           </Route>
 
