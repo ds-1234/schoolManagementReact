@@ -142,7 +142,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter Hostel description"
-              rows="4"
+              rows="2"
               required
             />
           </div>
