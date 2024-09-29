@@ -187,7 +187,7 @@ const column = [
          data={transport}
          searchOptions={searchOptions}
          onSearch={handleSearch}
-         handleClear = {handleClear}
+         handleClear ={handleClear}
       />
 
       <EditTransport 

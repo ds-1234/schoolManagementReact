@@ -99,7 +99,7 @@ const column = [
 ]
 
 // const handleFilter = (event) => {
-//   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
+//   const newData = filterData.filter(row=>row.role.toLowerCase().includes(event.target.value.toLowerCase()))
 //   setData(newData);
 // }
 
@@ -109,12 +109,17 @@ const handleSearch = (query, checkboxRefs) => {
     return;
   }
 
-  const selectedFields = Object.keys(checkboxRefs)
-    .filter((key) => checkboxRefs[key].checked);
+  const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
 
   const filteredData = filterData.filter((row) =>
-    selectedFields.some((field) =>
-      row[field]?.toLowerCase().includes(query.toLowerCase())
+    selectedFields.some((field) => {
+      if (field === 'role') {
+        // Check if role name matches the query
+        return row.role?.name?.toLowerCase().includes(query.toLowerCase());
+      }else{
+      return row[field]?.toLowerCase().includes(query.toLowerCase())
+      }
+    }
     )
   );
 
@@ -127,8 +132,7 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'role', value: 'role' },
-//   { label: 'Subject Description', value: 'description' }
+  { label: 'Role', value: 'name' },
 ];
 
   return (

@@ -114,7 +114,6 @@ const column = [
     const filteredData = filterUser.filter((row) =>
       selectedFields.some((field) => {
         if (field === 'role') {
-          // Check if role name matches the query
           return row.role?.name?.toLowerCase().includes(query.toLowerCase());
         }else{
         return row[field]?.toLowerCase().includes(query.toLowerCase())
