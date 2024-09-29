@@ -1,22 +1,20 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
+import edit from '../../../../assets/edit.png'
+import Table from '../../../../Reusable_components/Table';
+import deleteIcon from '../../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
-import edit from '../../../assets/edit.png';
-import deleteIcon from '../../../assets/delete.png'
-import Table from '../../../Reusable_components/Table';
-import StatusButton from '../../../Reusable_components/StatusButton';
-import AddHolidays from './AddHolidays';
-import EditHolidays from './EditHolidays';
 import Swal from 'sweetalert2'
-import AddBtn from '../../../Reusable_components/AddBtn'
+import AddBtn from '../../../../Reusable_components/AddBtn'
+import AddHostel from './AddHostel';
+import EditHostel from './EditHostel';
 
-
-function Holidays() {
+function Hostel() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editHolidayId , setEditHolidayId] = useState(null)
+  const [editHostelId , setEditHostelId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -34,20 +32,21 @@ function Holidays() {
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
   const openEditPopup = (id) => {
-    setEditHolidayId(id);
+    setEditHostelId(id);
     setIsEditPopupOpen(true);
   };
 
   const closeEditPopup = () => {
-    setEditHolidayId(null);
+    setEditHostelId(null);
     setIsEditPopupOpen(false);
   };
+
+
 
 const handleDelete = (id)=>{
 
     Swal.fire({
         title: "Are you sure?",
-        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -58,7 +57,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/holidays/deleteholidays/${id}`,
+                url: `http://localhost:8080/hostel/deleteHostel/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -87,7 +86,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/holidays/getHolidaysList`,
+      url: `http://localhost:8080/hostel/getHostelList`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -117,43 +116,48 @@ const handleDelete = (id)=>{
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-    //   width: '280px', 
+    //   width: '300px', 
     },
     {
-      name: 'Holiday Title',
-      selector: (row) => row.holidayName,
+      name: 'Hostel Name',
+      selector: (row) => row.hostelName,
       sortable: true,
       wrap: true, 
-    //   width: '280px', 
+    //   width: '300px', 
     },
     {
-      name: 'Date',
-      selector: (row) => row.holidayDate,
+      name: 'Hostel Type',
+      selector: (row) => row.hostelType,
       sortable: true,
-      wrap: true,
-    //   width: '280px', 
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'Address',
+      selector: (row) => row.hostelAddress,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'Intake',
+      selector: (row) => row.intakeBedCount,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
     },
     {
       name: 'Description',
       selector: (row) => row.description,
       sortable: true,
       wrap: true,
-    //   width: '280px', 
+      width: '300px', 
     },
-    {
-        name: 'Status',
-        selector: row => (
-          <StatusButton isActive={row.isActive}/>
-        ),
-        sortable: true,
-      },
     {
       name: 'Action',
       cell: (row) => (
         <div className="flex gap-2">
-          <button 
-          onClick={() => openEditPopup(row.id)}
-          >
+          <button onClick={() => openEditPopup(row.id)}>
             <img src={edit} alt="Edit" className="h-8" />
           </button>
           <button
@@ -163,7 +167,7 @@ const handleDelete = (id)=>{
           </button>
         </div>
       ),
-    //   width: '200px', 
+    //   width: '300px', 
     },
   ];
 
@@ -196,15 +200,17 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Holiday Title', value: 'holidayName' },
-  { label: 'Date', value: 'holidayDate' },
-  { label: 'Description', value: 'description' }
+  { label: 'Hostel Name', value: 'hostelName' },
+  { label: 'Hostel Type', value: 'hostelType' },
+  { label: 'Address', value: 'hostelAddress' },
+  { label: 'Intake ', value: 'intakeBedCount' },
+  { label: ' Description', value: 'description' }
 ];
 
   return (
-    <div className=' h-full mb-10'>
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Holidays</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Holidays</span> </p>
+    <div className=' h-full mb-10 mr-2'>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Hostel</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Hostel</span> </p>
       <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
@@ -212,9 +218,10 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
+    //   onAddClick={openAddPopup}
       />
 
-      <AddHolidays
+      <AddHostel
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
@@ -222,18 +229,18 @@ const searchOptions = [
         }} 
         />
 
-      <EditHolidays
+      <EditHostel
         isOpen={isEditPopupOpen}
         onClose={() => {
-          closeEditPopup();  // Only close the Edit popup here
-          fetchData();       // Fetch data after the Edit popup is closed
+          closeEditPopup();  
+          fetchData();       
         }}
-        holidayId={editHolidayId}
-        onSuccess={fetchData} // Refresh data after editing
+        hostelId={editHostelId}
+        onSuccess={fetchData} 
       />
     </div>
   );
 };
 
 
-export default Holidays
+export default Hostel
