@@ -9,6 +9,7 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2'
 import AddSports from './AddSports';
 import EditSports from './EditSports';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 
 function Sports() {
@@ -205,6 +206,7 @@ const searchOptions = [
     <div className=' h-full mr-8 mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Sports</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Sports</span> </p>
+      <AddBtn onAddClick={openAddPopup}/>
 
       <Table 
       columns={column}
@@ -212,7 +214,7 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
+    //   onAddClick={openAddPopup}
       />
 
       <AddSports
