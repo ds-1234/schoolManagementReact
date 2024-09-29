@@ -7,6 +7,7 @@ import AddGrade from './AddGrade';
 import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditGrade from './EditGrade';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 function Grade() {
   const [data, setData] = useState([]);
@@ -183,14 +184,13 @@ const searchOptions = [
     <div className='pl-0 h-full mb-10'>
       <h1 className='text-lg md:text-2xl pl-0 pt-8 font-semibold text-black'>Grade</h1>
       <p className='pl-0 mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/<NavLink to = '/admin/Examinations'> Examinations </NavLink>/ <span className='text-[#ffae01] font-semibold'>Grade</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
       />
 
       <AddGrade

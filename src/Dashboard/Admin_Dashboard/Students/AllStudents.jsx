@@ -6,6 +6,7 @@ import deleteIcon from '../../../assets/delete.png'
 import AddUser from '../User/AddUser';
 import EditUser from '../User/EditUser';
 import { NavLink } from 'react-router-dom';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 function AllStudents() {
 
@@ -142,14 +143,13 @@ const column = [
        <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>All Students</h1>
        <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>All Students</span> </p>
 
-
+       <AddBtn onAddClick={openAddPopup}/>
       <Table
          columns={column}
          data={user}
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-         onAddClick={openAddPopup}
       />
       <AddUser 
         isOpen={isAddPopupOpen} 

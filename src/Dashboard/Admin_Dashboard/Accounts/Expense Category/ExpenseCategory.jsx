@@ -7,6 +7,7 @@ import Table from '../../../../Reusable_components/Table';
 import { NavLink } from 'react-router-dom';
 import AddExpenseCategory from './AddExpenseCategory';
 import StatusButton from '../../../../Reusable_components/StatusButton';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 function ExpenseCategory() {
   const [data, setData] = useState([]);
@@ -173,14 +174,13 @@ const searchOptions = [
     <div className=' h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Expense Category</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/expenses'> Expenses </NavLink>/ <span className='text-[#ffae01] font-semibold'>Expense Category</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
       />
 
       <AddExpenseCategory

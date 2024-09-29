@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditIncome from './EditIncome';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 function Income() {
   const navigate = useNavigate();
@@ -225,6 +226,8 @@ function Income() {
 
       <div className='h-full   mr-6'> {/* Reduced margin and padding */}
   {/* <h1 className='text-md md:text-xl pt-4 font-semibold text-black'>Income</h1> Smaller heading */}
+
+  <AddBtn onAddClick={handleAddClick}/>
   <Table
     columns={column}
     data={income}

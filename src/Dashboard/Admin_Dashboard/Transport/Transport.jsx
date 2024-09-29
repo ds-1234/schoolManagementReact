@@ -6,6 +6,7 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink, useNavigate } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import EditTransport from './EditTransport';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 
 function Transport() {
@@ -179,7 +180,7 @@ const column = [
     <div className='h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Transport Lists</h1>
        <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Transport</span> </p>
-
+       <AddBtn onAddClick={handleAddClick}/>
 
       <Table
          columns={column}
@@ -187,7 +188,6 @@ const column = [
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-         onAddClick={handleAddClick}
       />
 
       <EditTransport 
