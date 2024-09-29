@@ -61,6 +61,7 @@ import Homework from './Dashboard/Teacher_Dashboard/Homework/Homework';
 import StdHomework from './Dashboard/Student_Dashboard/Homework/Homework';
 import Hostel from './Dashboard/Admin_Dashboard/Hostel/Hostel/Hostel';
 import RoomType from './Dashboard/Admin_Dashboard/Hostel/RoomType/RoomType';
+import HostelRooms from './Dashboard/Admin_Dashboard/Hostel/HostelRooms/HostelRooms';
 
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
             <Route path='homework' element = {<AdminHomework/>} />
             <Route path='hostel' element = {<Hostel/>} />
             <Route path='roomtype' element = {<RoomType/>} />
+            <Route path='hostelrooms' element = {<HostelRooms/>} />
           </Route>
 
           {/* Student Dashboard Routes */}
