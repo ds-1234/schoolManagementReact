@@ -7,14 +7,15 @@ import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 
 import Swal from 'sweetalert2'
+import EditPlayers from './EditPlayers';
 
 
 function Players() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
 //   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editHolidayId , setEditHolidayId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editPlayerId , setEditPlayerId] = useState(null)
 
 //   useEffect(() => {
 //     if (isAddPopupOpen ) {
@@ -31,15 +32,15 @@ function Players() {
 //   const openAddPopup = () => setIsAddPopupOpen(true);
 //   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditHolidayId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditPlayerId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditHolidayId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditPlayerId(null);
+    setIsEditPopupOpen(false);
+  };
 
 const handleDelete = (id)=>{
 
@@ -221,15 +222,15 @@ const searchOptions = [
         }} 
         /> */}
 
-      {/* <EditHolidays
+      <EditPlayers
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  // Only close the Edit popup here
           fetchData();       // Fetch data after the Edit popup is closed
         }}
-        holidayId={editHolidayId}
+        playersId={editPlayerId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };

@@ -1,15 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Button from '../../../Reusable_components/Button';
+import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
-  const [player, setPlayer] = useState({ name: '', section: '', startedyear: '' });
-  const [coach, setCoach] = useState([]);
-//   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [playerData, setPlayerData] = useState({});
+  const [players, setPlayers] = useState([]);
+  const [selectedPlayers, setSelectedPlayers] = useState(null);
+  const [sports, setSports] = useState([]);
+  const [selectedSports, setSelectedSports] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen2, setDropdownOpen2] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -19,83 +22,90 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/subject/getSubjectList')
+    axios.get('http://localhost:8080/user/getUserList')
       .then((response) => {
-        setSubjects(response.data.data);
+        const filteredPlayers = response.data.data.filter(user => user.role.name === 'Student');
+        setPlayers(filteredPlayers);
       })
       .catch((error) => {
-        toast.error('Error fetching subjects');
+        toast.error('Error fetching Players');
+      });
+  }, []);
+  useEffect(() => {
+    axios.get('http://localhost:8080/sports/getSportsList')
+      .then((response) => {
+        // const filteredPlayers = response.data.data.filter(user => user.role.name === 'Student');
+        // setPlayers(filteredPlayers);
+        setSports(response.data.data)
+      })
+      .catch((error) => {
+        toast.error('Error fetching Sports');
       });
   }, []);
 
   useEffect(() => {
     if (playersId) {
-      axios.get(`http://localhost:8080/class/getClass/${GradeId}`)
+      axios.get(`http://localhost:8080/players/getPlayersById/${playersId}`)
         .then((response) => {
-          const classData = response.data.data;
-          setGrade(classData);
-          setSelectedSubjects(classData.subject.map(sub => sub.id)); // Pre-check subjects from API
+          const playerData = response.data.data;
+          setPlayerData(playerData);
+          setSelectedPlayers(playerData.playersName.map(pla => pla.id));
+          setSelectedSports(playerData.sportsName.map(spo => spo.id));
         })
         .catch((error) => {
-          console.error('Error fetching class:', error);
+          console.error('Error fetching player:', error);
         });
     }
   }, [playersId, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setGrade({ ...player, [name]: value });
+    setPlayerData({ ...playerData, [name]: value });
   };
 
-//   const handleCheckboxChange = (id) => {
-//     if (selectedSubjects.includes(id)) {
-//       setSelectedSubjects(selectedSubjects.filter(subjectId => subjectId !== id));
-//     } else {
-//       setSelectedSubjects([...selectedSubjects, id]);
-//     }
-//   };
+
+
+  const handleSportCheckboxChange = (id) => {
+    setSelectedSports(prevSelected => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter(sportId => sportId !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Construct the subject array in the required format
-    // const selectedSubjectObjects = selectedSubjects.map(id => {
-    //   const subjectData = subjects.find(sub => sub.id === id);
-    //   return {
-    //     id: subjectData.id,
-    //     subject: subjectData.subject,
-    //     description: subjectData.description
-    //   };
-    // });
-
     axios({
       method: 'post',
-      url: `http://localhost:8080/sports/saveSports`,
+      url: `http://localhost:8080/players/savePlayers`,
       headers: {
         'Content-Type': 'application/json',
       },
       data: {
-        id: `${playersId}`,
-        ...player,
-        // subject: selectedSubjectObjects, 
-        isActive:value
+        id: playersId,
+        ...playerData,
+        playersName: selectedPlayers,
+        sportsName: selectedSports,
+        isActive: true,
       },
     })
-      .then((response) => {
-        toast.success('Sports updated successfully!');
+      .then(() => {
+        toast.success('Player updated successfully!');
         onSuccess();
         onClose();
       })
       .catch((error) => {
-        toast.error('Failed to update Sports.');
-        console.error('Error updating Sports:', error);
+        toast.error('Failed to update Player.');
+        console.error('Error updating Player:', error);
       });
   };
 
@@ -112,70 +122,79 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
         </button>
 
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Class</h2>
+          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Player</h2>
 
-          {/* Name Input */}
+{/* Player Name Input */}
+<div className="mb-4 relative">
+  <label htmlFor="playersName" className="block text-gray-700 font-semibold mb-2">Player Name</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown for players only
+  >
+    <p>{selectedPlayers ? `${selectedPlayers.firstName} ${selectedPlayers.lastName}` : 'Select Player'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {dropdownOpen && (
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {players.map(player => (
+        <div
+          key={player.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedPlayers(player); // Set selected player
+            setDropdownOpen(false); // Close dropdown after selection
+          }}
+        >
+          {`${player.firstName} ${player.lastName}`}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+{/* Sports Input */}
+<div className="mb-4 relative">
+  <label htmlFor="sportsName" className="block text-gray-700 font-semibold mb-2">Sports</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for sports only
+  >
+    <p>{selectedSports ? selectedSports.sportsName : 'Select Sports'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {dropdownOpen2 && (
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {sports.map(sport => (
+        <div
+          key={sport.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedSports(sport); // Set selected sport
+            setDropdownOpen2(false); // Close dropdown after selection
+          }}
+        >
+          {sport.sportsName}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
+          {/* Date of Joining */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Name</label>
+            <label htmlFor="dateOfJoin" className="block text-sm font-medium mb-2 text-black">Date of Joining</label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={grade.name}
+              type="date"
+              name="dateOfJoin"
+              value={playerData.dateOfJoin || ''}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter class name"
-              required
+              className="block h-11 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3"
             />
-          </div>
-
-          {/* Section Input */}
-          <div className="mb-4">
-            <label htmlFor="section" className="block text-gray-700 text-sm font-bold mb-2">Section</label>
-            <input
-              type="text"
-              id="section"
-              name="section"
-              value={grade.section}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter section"
-              required
-            />
-          </div>
-
-          {/* Subject Input */}
-          <div className="mb-4 relative">
-            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
-            <div
-              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
-              <p>{selectedSubjects.length === 0 ? 'Select subjects' : selectedSubjects.map(id => subjects.find(sub => sub.id === id)?.subject).join(', ')}</p>
-              <FontAwesomeIcon icon={faAngleDown} />
-            </div>
-            {dropdownOpen && (
-              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
-                {subjects.map(subject => (
-                  <label key={subject.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedSubjects.includes(subject.id)}
-                      onChange={() => handleCheckboxChange(subject.id)}
-                      className="mr-2"
-                    />
-                    {subject.subject}
-                  </label>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full text-center"
-          />
+          <Button type="submit" className="w-full text-center" />
         </form>
       </div>
     </div>
