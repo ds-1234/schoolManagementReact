@@ -8,14 +8,15 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 
 import Swal from 'sweetalert2'
 import AddSports from './AddSports';
+import EditSports from './EditSports';
 
 
 function Sports() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editHolidayId , setEditHolidayId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editSportId , setEditSportId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -32,15 +33,15 @@ function Sports() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditHolidayId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditSportId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditHolidayId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditSportId(null);
+    setIsEditPopupOpen(false);
+  };
 
 const handleDelete = (id)=>{
 
@@ -74,7 +75,7 @@ const handleDelete = (id)=>{
 
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "Your Data has been deleted.",
             icon: "success"
           });
         }
@@ -125,20 +126,20 @@ const handleDelete = (id)=>{
       wrap: true, 
     //   width: '280px', 
     },
-    {
-      name: 'Coach',
-      selector: (row) => row.coachName.firstName,
-      sortable: true,
-      wrap: true,
-    //   width: '280px', 
-    },
     // {
-    //   name: 'Description',
-    //   selector: (row) => row.description,
+    //   name: 'Coach',
+    //   selector: (row) => row.coachName.firstName,
     //   sortable: true,
     //   wrap: true,
-    //   width: '280px', 
+    // //   width: '280px', 
     // },
+    {
+      name: 'Started Year',
+      selector: (row) => row.startedYear,
+      sortable: true,
+      wrap: true,
+      width: '280px', 
+    },
     {
         name: 'Status',
         selector: row => (
@@ -197,7 +198,7 @@ const handleClear = () => {
 const searchOptions = [
   { label: 'Name', value: 'sportsName' },
   { label: 'Coach', value: 'coachName.firstName' },
-//   { label: 'Description', value: 'description' }
+  { label: 'Started Year', value: 'startedYear' }
 ];
 
   return (
@@ -222,15 +223,15 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditHolidays
+      <EditSports
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  // Only close the Edit popup here
           fetchData();       // Fetch data after the Edit popup is closed
         }}
-        holidayId={editHolidayId}
+        sportsId={editSportId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };
