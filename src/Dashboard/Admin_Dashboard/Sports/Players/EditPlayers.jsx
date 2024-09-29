@@ -106,7 +106,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
         ...playerData,
         playersName: selectedPlayers,
         sportsName: selectedSports,
-        isActive: true,
+        isActive: value,
       },
     })
       .then(() => {

@@ -8,29 +8,30 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 
 import Swal from 'sweetalert2'
 import EditPlayers from './EditPlayers';
+import AddPlayers from './AddPlayers';
 
 
 function Players() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
-//   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editPlayerId , setEditPlayerId] = useState(null)
 
-//   useEffect(() => {
-//     if (isAddPopupOpen ) {
-//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-//     } else {
-//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-//     }
+  useEffect(() => {
+    if (isAddPopupOpen ) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
 
-//     return () => {
-//       document.body.style.overflow = 'auto';  // Cleanup on unmount
-//     };
-//   }, [isAddPopupOpen]);
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen]);
   
-//   const openAddPopup = () => setIsAddPopupOpen(true);
-//   const closeAddPopup = () => setIsAddPopupOpen(false);
+  const openAddPopup = () => setIsAddPopupOpen(true);
+  const closeAddPopup = () => setIsAddPopupOpen(false);
 
   const openEditPopup = (id) => {
     setEditPlayerId(id);
@@ -211,16 +212,16 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-    //   onAddClick={openAddPopup}
+      onAddClick={openAddPopup}
       />
 
-      {/* <AddSports
+      <AddPlayers
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
           fetchData(); // Refresh data when add popup closes
         }} 
-        /> */}
+        />
 
       <EditPlayers
         isOpen={isEditPopupOpen}
