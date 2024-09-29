@@ -6,6 +6,7 @@ import deleteIcon from '../../../../assets/delete.png'
 import AddExamType from './AddExamType';
 import { NavLink } from 'react-router-dom';
 import EditExamType from './EditExamType';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 function ExamType() {
   const [data, setData] = useState([]);
@@ -168,14 +169,13 @@ const searchOptions = [
     <div className=' h-full mb-10'>
       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Type</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Type</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
       />
 
       <AddExamType

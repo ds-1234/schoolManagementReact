@@ -6,6 +6,7 @@ import edit from '../../../assets/edit.png'
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 function Subject() {
   const [data, setData] = useState([]);
@@ -142,7 +143,7 @@ const searchOptions = [
     <div className=' h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Subjects</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>All Subjects</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}

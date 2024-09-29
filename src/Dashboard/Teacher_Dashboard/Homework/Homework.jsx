@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import edit from '../../../assets/edit.png';
-import AddBooksPopup from './AddBooksPopup';
-import EditBookPopup from './EditBookPopup';
+import AddHomework from './AddHomework';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
@@ -10,53 +9,53 @@ import StatusButton from '../../../Reusable_components/StatusButton';
 import AddBtn from '../../../Reusable_components/AddBtn'
 
 
-function Books() {
+function Homework() {
 
   const column = [
     {
-      name: 'SR.No',
-      selector: (row,idx) => idx+1 ,
-      sortable: false,
-    },
-    {
-      name: 'Name',
-      selector: row => row.name,
+      name: 'ID',
+      selector: row => row.homeworkId,
       sortable: true,
     },
     {
-      name: 'Description',
-      selector: row => row.description,
+      name: 'Class',
+      selector: row => row.className.name,
       sortable: true,
     },
     {
-      name: 'Author',
-      selector: row => row.author,
+      name: 'Section',
+      selector: row => row.className.section,
       sortable: true,
     },
     {
-      name: 'Publishing Year',
-      selector: row => row.publishingYear,
-      sortable: true,
-    },
-    // {
-    //   name: 'Book unique Id',
-    //   selector: row => row.bookUniqueId,
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Book ref Id',
-    //   selector: row => row.bookRefId,
-    //   sortable: true,
-    // },
-    {
-      name: 'Alloted start date',
-      selector: row => row.allotedStratDate,
+      name: 'Subject',
+      selector: row => row.subjectName.subject,
       sortable: true,
     },
     {
-      name: 'Alloted End Date',
-      selector: row => row.allotedEndtDate,
+      name: 'Homework Date',
+      selector: row => row.homeworkDate,
       sortable: true,
+    },
+    {
+      name: 'Submission Date',
+      selector: row => row.submissionDate,
+      sortable: true,
+    },
+    {
+        name: 'Created By',
+        selector: row => "",
+        sortable: true,
+    },
+    {
+        name: 'Attachment Name',
+        selector: row => row.attachmentName,
+        sortable: true,
+    },
+    {
+    name: 'Attachment Path',
+    selector: row => row.attachmentPath,
+    sortable: true,
     },
     {
       name: 'Status',
@@ -83,28 +82,28 @@ function Books() {
     },
   ]
 
-  const [book, setBook] = useState([]);
-  const [filterBook, setFilterBook] = useState([]);
+  const [homework, setHomework] = useState([]);
+  const [filterHomework, setFilterHomework] = useState([]);
 
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editBookId, setEditBookId] = useState(null);
+//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editHomeId, setEditHomeId] = useState(null);
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  const openEditPopup = (id) => {
-    setEditBookId(id);
-    setIsEditPopupOpen(true);
-  };
+//   const openEditPopup = (id) => {
+//     setEditHomeId(id);
+//     setIsEditPopupOpen(true);
+//   };
 
-  const closeEditPopup = () => {
-    setEditBookId(null);
-    setIsEditPopupOpen(false);
-  };
+//   const closeEditPopup = () => {
+//     setEditHomeId(null);
+//     setIsEditPopupOpen(false);
+//   };
 
   useEffect(() => {
-    if (isAddPopupOpen || isEditPopupOpen) {
+    if (isAddPopupOpen || {/*isEditPopupOpen*/}) {
       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
     } else {
       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
@@ -113,20 +112,20 @@ function Books() {
     return () => {
       document.body.style.overflow = 'auto';  // Cleanup on unmount
     };
-  }, [isAddPopupOpen, isEditPopupOpen]);
+  }, [isAddPopupOpen, {/*isEditPopupOpen*/}]);
 
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/book/getBookList',
+      url: 'http://localhost:8080/homework/getHomework',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => {
         console.log('Data from API:', response.data);
-        setBook(response.data.data);
-        setFilterBook(response.data.data)
+        setHomework(response.data.data);
+        setFilterHomework(response.data.data)
 
       })
       .catch((error) => {
@@ -139,67 +138,63 @@ function Books() {
   }, []);
 
   useEffect(() => {
-    setBook(book);  
-    setFilterBook(book); 
+    setHomework(homework);  
+    setFilterHomework(homework); 
   }, []);
 
-//   const handleFilter = (event) => {
-//     const newData = filterSchool.filter(row=>row.name.toLowerCase().includes(event.target.value.toLowerCase()))
-//     setBook(newData);
-//  }
+
 
   // Handle Search Logic
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
-      setBook(filterBook);
+      setHomework(filterHomework);
       return;
     }
   
     const selectedFields = Object.keys(checkboxRefs)
       .filter((key) => checkboxRefs[key].checked);
   
-    const filteredData = filterBook.filter((row) =>
+    const filteredData = filterHomework.filter((row) =>
       selectedFields.some((field) =>
         row[field]?.toLowerCase().includes(query.toLowerCase())
       )
     );
   
-    setBook(filteredData);
+    setHomework(filteredData);
   };
 
 // handle clear button logic
 const handleClear = () => {
-  setBook(filterBook);  // Reset to original data
+  setHomework(filterHomework);  // Reset to original data
 };
 
 const searchOptions = [
-  { label: 'Book Name', value: 'name' },
-  { label: 'Book Description', value: 'description' },
-  { label: 'Author', value: 'author' },
-  { label: 'Publishing Year', value: 'publishingYear' },
-  { label: 'Book Unique Id', value: 'bookUniqueId' },
-  { label: 'Book Reference Id', value: 'bookRefId' },
-  { label: 'Alloted Start Date', value: 'allotedStratDate' },
-  { label: 'Alloted End Date', value: 'allotedEndtDate' },
+  { label: 'Homework ID', value: 'homeworkId' },
+  { label: 'Class', value: 'className.name' },
+  { label: 'Section', value: 'className.section' },
+  { label: 'Subject', value: 'subjectName.subject' },
+  { label: 'Homework Date', value: 'homeworkDate' },
+  { label: 'Submission Date', value: 'submissionDate' },
+  { label: 'Created By', value: '' },
+  { label: 'Attachment Name', value: 'attachmentName' },
   { label: 'isActive', value: 'isActive' },
 ];
 
   return (
     <div className=' h-full mb-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Books</h1>
-      <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Books</span> </p>
-
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Class Home Work</h1>
+      <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/ <span className='text-[#ffae01] font-semibold'>Homework</span> </p>
+      <AddBtn onAddClick={openAddPopup}/>
       <Table
       columns={column}
-      data={book}
+      data={homework}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
        />
-        <AddBtn onAddClick={openAddPopup}/>
 
-      <AddBooksPopup
+      <AddHomework
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
@@ -207,15 +202,15 @@ const searchOptions = [
         }} 
       />
 
-      <EditBookPopup
+      {/*<EditBookPopup
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        bookId={editBookId}
+        bookId={editHomeId}
         onSuccess={fetchData} // Refresh data after editing
-      />
+      /> */}
     </div>
   );
 }
 
-export default Books;
+export default Homework;
 

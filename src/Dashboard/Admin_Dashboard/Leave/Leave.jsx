@@ -5,6 +5,7 @@ import edit from '../../../assets/edit.png';
 import deleteIcon from '../../../assets/delete.png'
 import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 import Swal from 'sweetalert2'
 import AddLeave from './AddLeave';
@@ -201,17 +202,16 @@ const searchOptions = [
 ];
 
   return (
-    <div className=' h-full mr-8 mb-10'>
+    <div className=' h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Leave</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Leave</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
       />
 
       <AddLeave

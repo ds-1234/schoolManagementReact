@@ -6,6 +6,7 @@ import deleteIcon from '../../../assets/delete.png'
 // import AddUser from './AddUser';
 // import EditUser from './EditUser';
 import { NavLink, useNavigate } from 'react-router-dom';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 function PendingUser() {
 const navigate = useNavigate()
@@ -147,13 +148,13 @@ const column = [
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Pending Users</h1>
        <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<span className='text-[#ffae01] font-semibold'> Pending_Users</span> </p>
+       <AddBtn onAddClick={handleClick}/>
       <Table
          columns={column}
          data={user}
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-         onAddClick={handleClick}
       />
     </div>
   );

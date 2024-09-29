@@ -3,11 +3,8 @@ import DataTable from 'react-data-table-component';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
-import AddBtn from './AddBtn';
-import { width } from '@fortawesome/free-regular-svg-icons/faAddressBook';
-import { Padding } from '@mui/icons-material';
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick }) => {
+const Table = ({ columns, data, searchOptions, onSearch, handleClear}) => {
   const searchInputRef = useRef(null);
   const checkboxRefs = useRef({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -65,8 +62,6 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear, onAddClick
 
   return (
     <div>
-      <AddBtn onAddClick={onAddClick}/>
-
       <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10 ">
         <div className="rounded-lg text-black">
           <div>

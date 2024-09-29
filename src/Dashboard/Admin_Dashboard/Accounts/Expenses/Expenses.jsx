@@ -8,6 +8,7 @@ import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditExpenses from './EditExpenses';
 // import StatusButton from '../../../Reusable_components/StatusButton';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 
 function Expenses() {
@@ -189,14 +190,13 @@ const searchOptions = [
 
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Expenses</h1>
       <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Expenses</span> </p>
-
+      <AddBtn onAddClick={handleAddClick}/>
       <Table
       columns={column}
       data={expense}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={handleAddClick}
       />
 
 
