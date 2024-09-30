@@ -62,6 +62,7 @@ import StdHomework from './Dashboard/Student_Dashboard/Homework/Homework';
 import Hostel from './Dashboard/Admin_Dashboard/Hostel/Hostel/Hostel';
 import RoomType from './Dashboard/Admin_Dashboard/Hostel/RoomType/RoomType';
 import HostelRooms from './Dashboard/Admin_Dashboard/Hostel/HostelRooms/HostelRooms';
+import StdHolidays from './Dashboard/Student_Dashboard/Holidays/StdHolidays';
 
 
 function App() {
@@ -142,6 +143,7 @@ function App() {
             <Route index element={<Student />} />
             <Route path='timetable' element={<StdTimetable/>}/>
             <Route path='homework' element = {<StdHomework/>} />
+            <Route path='holidays' element = {<StdHolidays/>} />
           </Route>
 
           {/* Teacher Dashboard Routes */}
