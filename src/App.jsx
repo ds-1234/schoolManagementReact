@@ -63,6 +63,7 @@ import Hostel from './Dashboard/Admin_Dashboard/Hostel/Hostel/Hostel';
 import RoomType from './Dashboard/Admin_Dashboard/Hostel/RoomType/RoomType';
 import HostelRooms from './Dashboard/Admin_Dashboard/Hostel/HostelRooms/HostelRooms';
 import StdHolidays from './Dashboard/Student_Dashboard/Holidays/StdHolidays';
+import TeaHolidays from './Dashboard/Teacher_Dashboard/Holidays/TeaHolidays';
 
 
 function App() {
@@ -158,6 +159,7 @@ function App() {
             <Route index element={<Teacher />} />
             <Route path='timetable' element={<Timetable/>}/>
             <Route path='homework' element = {<Homework/>} />
+            <Route path='teaholidays' element = {<TeaHolidays/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}
