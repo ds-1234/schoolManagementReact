@@ -9,6 +9,7 @@ const Sidebar = () => {
   const [isExamDropdown , setIsExamDropdown] = useState(false) ;
   const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
   const [isSportsDropdown , setIsSportsDropdown] = useState(false) ;
+  const [isHostelDropdown , setIsHostelDropdown] = useState(false) ;
   const [isUserDropdown , setIsUserDropdown] = useState(false) ;
   const [isConfOpen , setIsConfOpen] = useState(false) ;
   const userRole = sessionStorage.getItem('role') 
@@ -26,6 +27,9 @@ const Sidebar = () => {
   };
   const toggleSportsDropdown = () => {
     setIsSportsDropdown(!isSportsDropdown);
+  };
+  const toggleHostelDropdown = () => {
+    setIsHostelDropdown(!isHostelDropdown);
   };
 
   const toggleUserDropdown = () => {
@@ -528,6 +532,69 @@ const Sidebar = () => {
                   >
                     <FontAwesomeIcon icon={faAngleRight}  />
                     Players 
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+          {/* Hostel Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+            to={'/admin/hostel'}
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                Hostel
+              </div>
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleHostelDropdown} />
+            </NavLink>
+            {isHostelDropdown && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/hostel"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Hostel
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/hostelrooms"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
+                    Hostel Rooms 
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/roomtype"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
+                     Room Type
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/hostelallocation"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
+                    Hostel Allocation 
                   </NavLink>
                 </li>
               </ul>

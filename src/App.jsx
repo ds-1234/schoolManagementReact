@@ -59,6 +59,11 @@ import Sports from './Dashboard/Admin_Dashboard/Sports/Sports/Sports';
 import Players from './Dashboard/Admin_Dashboard/Sports/Players/Players';
 import Homework from './Dashboard/Teacher_Dashboard/Homework/Homework';
 import StdHomework from './Dashboard/Student_Dashboard/Homework/Homework';
+import Hostel from './Dashboard/Admin_Dashboard/Hostel/Hostel/Hostel';
+import RoomType from './Dashboard/Admin_Dashboard/Hostel/RoomType/RoomType';
+import HostelRooms from './Dashboard/Admin_Dashboard/Hostel/HostelRooms/HostelRooms';
+import StdHolidays from './Dashboard/Student_Dashboard/Holidays/StdHolidays';
+import TeaHolidays from './Dashboard/Teacher_Dashboard/Holidays/TeaHolidays';
 
 
 function App() {
@@ -122,6 +127,9 @@ function App() {
             <Route path="players" element={<Players />} />
 
             <Route path='homework' element = {<AdminHomework/>} />
+            <Route path='hostel' element = {<Hostel/>} />
+            <Route path='roomtype' element = {<RoomType/>} />
+            <Route path='hostelrooms' element = {<HostelRooms/>} />
           </Route>
 
           {/* Student Dashboard Routes */}
@@ -136,6 +144,7 @@ function App() {
             <Route index element={<Student />} />
             <Route path='timetable' element={<StdTimetable/>}/>
             <Route path='homework' element = {<StdHomework/>} />
+            <Route path='holidays' element = {<StdHolidays/>} />
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -150,6 +159,7 @@ function App() {
             <Route index element={<Teacher />} />
             <Route path='timetable' element={<Timetable/>}/>
             <Route path='homework' element = {<Homework/>} />
+            <Route path='teaholidays' element = {<TeaHolidays/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

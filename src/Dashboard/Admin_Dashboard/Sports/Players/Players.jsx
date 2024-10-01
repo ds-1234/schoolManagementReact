@@ -9,6 +9,7 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2'
 import EditPlayers from './EditPlayers';
 import AddPlayers from './AddPlayers';
+import AddBtn from '../../../../Reusable_components/AddBtn';
 
 
 function Players() {
@@ -205,14 +206,14 @@ const searchOptions = [
     <div className=' h-full mr-8 mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Players</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/Sports'> Sports </NavLink>/ <span className='text-[#ffae01] font-semibold'>Players</span> </p>
-
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-      onAddClick={openAddPopup}
+    //   onAddClick={openAddPopup}
       />
 
       <AddPlayers

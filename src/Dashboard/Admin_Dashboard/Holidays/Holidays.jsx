@@ -47,7 +47,7 @@ const handleDelete = (id)=>{
 
     Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -75,7 +75,7 @@ const handleDelete = (id)=>{
 
           Swal.fire({
             title: "Deleted!",
-            // text: "Your file has been deleted.",
+            text: "Your Data has been deleted.",
             icon: "success"
           });
         }

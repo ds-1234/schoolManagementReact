@@ -1,54 +1,52 @@
 import axios from 'axios';
 import React, {useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom';
-import edit from '../../../../assets/edit.png';
-import deleteIcon from '../../../../assets/delete.png'
+import edit from '../../../../assets/edit.png'
 import Table from '../../../../Reusable_components/Table';
+import deleteIcon from '../../../../assets/delete.png'
+import { NavLink } from 'react-router-dom';
+import Swal from 'sweetalert2'
+import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
 
-import Swal from 'sweetalert2'
-import AddSports from './AddSports';
-import EditSports from './EditSports';
-import AddBtn from '../../../../Reusable_components/AddBtn';
 
-
-function Sports() {
+function HostelRooms() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editSportId , setEditSportId] = useState(null)
+//   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+//   const [editHostelId , setEditHostelId] = useState(null)
 
-  useEffect(() => {
-    if (isAddPopupOpen ) {
-      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-    } else {
-      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-    }
+//   useEffect(() => {
+//     if (isAddPopupOpen ) {
+//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+//     } else {
+//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+//     }
 
-    return () => {
-      document.body.style.overflow = 'auto';  // Cleanup on unmount
-    };
-  }, [isAddPopupOpen]);
+//     return () => {
+//       document.body.style.overflow = 'auto';  // Cleanup on unmount
+//     };
+//   }, [isAddPopupOpen]);
   
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+//   const openAddPopup = () => setIsAddPopupOpen(true);
+//   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  const openEditPopup = (id) => {
-    setEditSportId(id);
-    setIsEditPopupOpen(true);
-  };
+//   const openEditPopup = (id) => {
+//     setEditHostelId(id);
+//     setIsEditPopupOpen(true);
+//   };
 
-  const closeEditPopup = () => {
-    setEditSportId(null);
-    setIsEditPopupOpen(false);
-  };
+//   const closeEditPopup = () => {
+//     setEditHostelId(null);
+//     setIsEditPopupOpen(false);
+//   };
+
+
 
 const handleDelete = (id)=>{
 
     Swal.fire({
         title: "Are you sure?",
-        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -59,7 +57,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/sports/deleteSport/${id}`,
+                url: `http://localhost:8080/hostelRooms/deleteHostelRooms/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -88,7 +86,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/sports/getSportsList`,
+      url: `http://localhost:8080/hostelRooms/getHostelRoomsList`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -118,43 +116,57 @@ const handleDelete = (id)=>{
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-    //   width: '280px', 
+    //   width: '300px', 
     },
     {
-      name: 'Name',
-      selector: (row) => row.sportsName,
+      name: 'Room No.',
+      selector: (row) => row.hostelRoomNumber,
       sortable: true,
       wrap: true, 
-    //   width: '280px', 
+    //   width: '300px', 
     },
-    // {
-    //   name: 'Coach',
-    //   selector: (row) => row.coachName.firstName,
-    //   sortable: true,
-    //   wrap: true,
-    // //   width: '280px', 
-    // },
     {
-      name: 'Started Year',
-      selector: (row) => row.startedYear,
+      name: 'Hostel Name',
+      selector: (row) => row.hostelName.hostelName,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'Room Type',
+      selector: (row) => row.roomType.roomTypeName,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'No. of Bed',
+      selector: (row) => row.numOfBeds,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'Cost per Bed',
+      selector: (row) => row.costPerBed,
       sortable: true,
       wrap: true,
-      width: '280px', 
+    //   width: '300px', 
     },
     {
         name: 'Status',
         selector: row => (
-          <StatusButton isActive={row.isActive}/>
+          <StatusButton isActive={row.isActive} />
         ),
         sortable: true,
+        // width: '117px',
+              // wrap: true, 
       },
     {
       name: 'Action',
       cell: (row) => (
         <div className="flex gap-2">
-          <button 
-          onClick={() => openEditPopup(row.id)}
-          >
+          <button onClick={() => openEditPopup(row.id)}>
             <img src={edit} alt="Edit" className="h-8" />
           </button>
           <button
@@ -164,7 +176,7 @@ const handleDelete = (id)=>{
           </button>
         </div>
       ),
-    //   width: '200px', 
+    //   width: '300px', 
     },
   ];
 
@@ -197,17 +209,18 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Name', value: 'sportsName' },
-  { label: 'Coach', value: 'coachName.firstName' },
-  { label: 'Started Year', value: 'startedYear' }
+  { label: 'Room No.', value: 'hostelRoomNumber' },
+  { label: 'Hostel Name ', value: 'hostelName.hostelName' },
+  { label: 'Room Type', value: 'roomType.roomTypeName' },
+  { label: 'No. of Bed', value: 'numOfBeds' },
+  { label: 'Cost per Bed', value: 'costPerBed' }
 ];
 
   return (
-    <div className=' h-full mr-8 mb-10'>
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Sports</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Sports</span> </p>
-      <AddBtn onAddClick={openAddPopup}/>
-
+    <div className=' h-full mb-10 mr-2'>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>All Hostel Rooms</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/hostel'> Hostel </NavLink>/ <span className='text-[#ffae01] font-semibold'>Hostel Rooms</span> </p>
+      {/* <AddBtn onAddClick={openAddPopup}/> */}
       <Table 
       columns={column}
       data={data}
@@ -217,26 +230,26 @@ const searchOptions = [
     //   onAddClick={openAddPopup}
       />
 
-      <AddSports
+      {/* <AddHostel
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
           fetchData(); // Refresh data when add popup closes
         }} 
-        />
+        /> */}
 
-      <EditSports
+      {/* <EditHostel
         isOpen={isEditPopupOpen}
         onClose={() => {
-          closeEditPopup();  // Only close the Edit popup here
-          fetchData();       // Fetch data after the Edit popup is closed
+          closeEditPopup();  
+          fetchData();       
         }}
-        sportsId={editSportId}
-        onSuccess={fetchData} // Refresh data after editing
-      />
+        hostelId={editHostelId}
+        onSuccess={fetchData} 
+      /> */}
     </div>
   );
 };
 
 
-export default Sports
+export default HostelRooms
