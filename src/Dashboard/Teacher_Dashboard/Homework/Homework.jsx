@@ -117,13 +117,13 @@ function Homework() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/homework/getHomework',
+      url: 'http://localhost:8080/homework/getHomeworkList',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => {
-        console.log('Data from API:', response.data);
+        console.log('Data from API:', response.data.data);
         setHomework(response.data.data);
         setFilterHomework(response.data.data)
 
@@ -177,7 +177,7 @@ const searchOptions = [
   { label: 'Submission Date', value: 'submissionDate' },
   { label: 'Created By', value: '' },
   { label: 'Attachment Name', value: 'attachmentName' },
-  { label: 'isActive', value: 'isActive' },
+  { label: 'Status', value: 'isActive' },
 ];
 
   return (

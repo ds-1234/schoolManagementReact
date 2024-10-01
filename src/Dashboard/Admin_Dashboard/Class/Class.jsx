@@ -16,9 +16,6 @@ function Class() {
     const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     const [editGradeId , setEditGradeId] = useState(null)
   
-    const [selectedColumn, setSelectedColumn] = useState(''); 
-    const [searchValue, setSearchValue] = useState('');
-  
     
     const openAddPopup = () => setIsAddPopupOpen(true);
     const closeAddPopup = () => setIsAddPopupOpen(false);
@@ -55,7 +52,7 @@ function Class() {
         // withCredentials: true,
       })
         .then((response) => {
-          console.log("Data from API:", response.data);
+          console.log("Data from API:", response.data.data);
           setData(response.data.data);
           setFilterData(response.data.data) ;
         })
@@ -126,8 +123,10 @@ function Class() {
       .filter((key) => checkboxRefs[key].checked);
   
     const filteredData = filterData.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
+      selectedFields.some((field) => {
+        return row[field]?.toLowerCase().includes(query.toLowerCase())
+        
+      }
       )
     );
   
@@ -140,8 +139,8 @@ function Class() {
   };
   
   const searchOptions = [
-    { label: 'Class Name', value: 'class' },
-    { label: 'Section', value: 'Section' }
+    { label: 'Class Name', value: 'name' },
+    { label: 'Section', value: 'section' }
   ];
   
     return (

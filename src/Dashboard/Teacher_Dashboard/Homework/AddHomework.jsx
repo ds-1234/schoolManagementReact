@@ -28,6 +28,12 @@ const AddHomework = ({ isOpen, onClose }) => {
     e.target.placeholder = '';
   };
 
+  const formatDateToDDMMYYYY = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const handleBlur = (e) => {
     const value = e.target.value;
     e.target.type = 'text'; // Switch back to text input on blur
