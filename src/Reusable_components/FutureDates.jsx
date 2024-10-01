@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DatePicker = ({ labelClass , name, label, register, required = false , className }) => {
+const FutureDates = ({ labelClass , name, label, register, required = false , className , currentDate}) => {
 
   // Function to format the date to dd/mm/yyyy
   const formatDateToDDMMYYYY = (dateString) => {
@@ -11,7 +11,7 @@ const DatePicker = ({ labelClass , name, label, register, required = false , cla
 
   // Function to get the current date in yyyy-mm-dd format
   const getCurrentDate = () => {
-    const today = new Date();
+    const today = new Date() ;
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
     const dd = String(today.getDate()).padStart(2, '0');
@@ -41,10 +41,10 @@ const DatePicker = ({ labelClass , name, label, register, required = false , cla
         placeholder="Select Date"
         onFocus={handleFocus}
         onBlur={handleBlur}
-        max={getCurrentDate()} // Restrict future dates
+        min={getCurrentDate()} // Restrict past dates
       />
     </div>
   );
 };
 
-export default DatePicker;
+export default FutureDates;
