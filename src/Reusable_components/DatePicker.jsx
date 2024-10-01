@@ -33,7 +33,7 @@ const DatePicker = ({ labelClass , name, label, register, required = false , cla
   };
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <label className={labelClass} >{label} *</label>
       <input
         {...register(name, { required })}

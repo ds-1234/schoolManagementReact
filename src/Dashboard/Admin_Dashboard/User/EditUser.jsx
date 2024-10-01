@@ -238,13 +238,13 @@ function EditUser() {
             </select>
             {errors.gender && <span className="text-red-500 text-sm">{errors.gender.message}</span>}
           </div>
-            <div className="flex flex-col px-1 ">
+            <div className="flex flex-col px-1">
                   <DatePicker 
                   name={'dateOfBirth'}
                   label={"Date of Birth"}
                   register={register}
                   required={true}
-                  className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                  className={`py-1 px-4  rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                   />
           {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
                 </div>
@@ -368,20 +368,6 @@ function EditUser() {
         {/* Role Input */}
         <div className="mt-4">
         <label htmlFor="role" className="block">Role</label>
-        {/* <select
-          id="role"
-          className={`w-1/2 px-3 py-2 border ${errors.role ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-          {...register('role', { required: 'Role Field is required' })}
-          onChange={handleChange}
-          value={selectedRole}
-        >
-          <option  value="" disabled>{selectedRole ? roles.find(role => role.id === parseInt(selectedRole))?.name : "Select Role"}</option>
-          {roles.map(role => (
-            <option key={role.id} value={role.id}>
-              {role.name}
-            </option>
-          ))}
-        </select> */}
 
         <div
           className="border rounded-lg cursor-pointer  flex justify-between items-center w-1/4 p-2"

@@ -48,6 +48,7 @@ const AddHomework = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setValue(true);
+      // setClasses(user.teacherName.className)
 
       // Fetch classes
       const fetchClasses = async() => {

@@ -83,7 +83,7 @@ function Homework() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/homework/getHomework',
+      url: 'http://localhost:8080/homework/getHomeworkList',
       headers: {
         'Content-Type': 'application/json',
       },
