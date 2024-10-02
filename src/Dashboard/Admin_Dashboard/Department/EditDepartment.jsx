@@ -39,8 +39,9 @@ function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
     if (departmentId) {
       axios.get(`http://localhost:8080/department/getDepartmentById/${departmentId}`)
         .then((response) => {
-          const designation = response.data.data;
+          const department = response.data.data;
           setDepartment(department);
+
         })
         .catch((error) => {
           console.error('Error fetching Department:', error);
@@ -109,7 +110,7 @@ const handleSubmit = (e) => {
             <input
               type="text"
               id="departmentName"
-              name="designationName"
+              name="departmentName"
               value={department.departmentName}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
