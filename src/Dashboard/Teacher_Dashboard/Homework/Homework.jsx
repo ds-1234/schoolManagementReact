@@ -157,11 +157,28 @@ function Homework() {
     const selectedFields = Object.keys(checkboxRefs)
       .filter((key) => checkboxRefs[key].checked);
   
-    const filteredData = filterHomework.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
-      )
-    );
+      const filteredData = filterHomework.filter((row) =>
+        selectedFields.some((field) => {
+          let fieldValue = '';
+          
+          // Manually handle nested properties
+          if (field === 'class') {
+            fieldValue = row.className?.name;
+          } else if (field === 'section') {
+            fieldValue = row.className?.section;
+          } else if (field === 'subject') {
+            fieldValue = row.subjectName?.subject;
+          } else if (field === 'name') {
+            fieldValue = row.user?.firstName;
+          } else {
+            // For non-nested fields, access directly
+            fieldValue = row[field];
+          }
+    
+          // Check if the field value matches the query
+          return fieldValue && fieldValue.toString().toLowerCase().includes(query.toLowerCase());
+        })
+      );
   
     setHomework(filteredData);
   };
@@ -173,13 +190,12 @@ const handleClear = () => {
 
 const searchOptions = [
   { label: 'Homework ID', value: 'homeworkId' },
-  { label: 'Class', value: 'className.name' },
-  { label: 'Section', value: 'className.section' },
-  { label: 'Subject', value: 'subjectName.subject' },
+  { label: 'Class', value: 'class' },
+  { label: 'Section', value: 'section' },
+  { label: 'Subject', value: 'subject' },
   { label: 'Homework Date', value: 'homeworkDate' },
   { label: 'Submission Date', value: 'submissionDate' },
-  { label: 'Created By', value: 'user.firstName' },
-  // { label: 'Attachment Name', value: 'attachmentName' },
+  { label: 'Created By', value: 'name' },
   { label: 'Status', value: 'isActive' },
 ];
 
