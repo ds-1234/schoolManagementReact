@@ -20,7 +20,8 @@ const AddHomework = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    getValues ,
+    reset ,
     setValue: setFormValue,
   } = useForm();
 
@@ -73,6 +74,7 @@ const AddHomework = ({ isOpen, onClose }) => {
         console.log('Response:', res.data.data);
         toast.success('Homework added successfully!');
         setValue(true);
+        reset()
         onClose();
       })
       .catch((err) => {

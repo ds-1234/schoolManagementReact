@@ -10,6 +10,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset ,
     getValues,
   } = useForm();
 
@@ -60,12 +61,14 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
       .then((res) => {
         console.log('Response:', res.data);
         toast.success('School added successfully!');
+        reset()
         onClose();
       })
       .catch((err) => {
         console.log('Error:', err);
         toast.error('Failed to add school.');
         onClose();
+        reset()
       });
   };
 

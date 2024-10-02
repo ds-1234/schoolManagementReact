@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const AddClassPopup = ({ isOpen, onClose }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset , formState: { errors } } = useForm();
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -75,7 +75,11 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       });
 
       toast.success("Successfully added class");
+      reset()
+      setSelectedSubjects([])
+      setSubjects([])
       onClose();
+
     } catch (error) {
       toast.error("Error adding new class");
       console.error(error);
