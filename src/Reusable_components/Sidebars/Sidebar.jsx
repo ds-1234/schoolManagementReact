@@ -168,6 +168,19 @@ const Sidebar = () => {
               School
             </NavLink>
           </li>
+                 {/* Designation Section */}
+                 <li className="">
+            <NavLink
+              to="/admin/designation"
+              className={({ isActive }) =>
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+              }
+            >
+              {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
+               <FontAwesomeIcon icon={faAngleRight} />
+               Designation
+            </NavLink>
+          </li>
               </ul>
             )}
           </li>
