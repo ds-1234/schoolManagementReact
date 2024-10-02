@@ -78,12 +78,13 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
         id: classItem.id,
         name: classItem.name,
         section: classItem.section,
-        subject: [JSON.parse(data.days[activeDay][0].subject)],
+        subject: classItem.subject,
       },
       weekDay: activeDay,
       startTime: data.days[activeDay][0].timeFrom,
       endTime: data.days[activeDay][0].timeTo,
       teacherName: JSON.parse(data.days[activeDay][0].teacher),
+      subject: JSON.parse(data.days[activeDay][0].subject)
     };
   
     console.log(payload);

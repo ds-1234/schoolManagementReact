@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../../Reusable_components/Button';
 import Tile from './Tile';
+import AddBtn from '../../../Reusable_components/AddBtn'
 
 
 
@@ -55,17 +54,7 @@ function NoticeBoard() {
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Notice Board</h1>
        <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Notice Board</span> </p>
 
-       <div className='group'>
-        <button
-          onClick={addClick}
-          className="flex items-center gap-1 bg-green-500 text-white rounded-full transition-all duration-300 h-12 px-3 text-2xl w-12 absolute top-20 right-10 group-hover:w-24 group-hover:px-4 group-hover:text-xl"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          <span className="ml-1 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Add
-          </span>
-        </button>
-      </div>
+      <AddBtn onAddClick={addClick}/>
       
       <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">
       

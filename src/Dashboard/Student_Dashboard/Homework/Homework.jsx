@@ -2,14 +2,21 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Table from '../../../Reusable_components/Table';
 import { NavLink } from 'react-router-dom';
-import StatusButton from '../../../Reusable_components/StatusButton';
+// import StatusButton from '../../../Reusable_components/StatusButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 
 function Homework() {
+  const user = JSON.parse( sessionStorage.getItem('user') )
 
   const column = [
+    {
+      name: 'SR.No',
+      selector: (row , idx) => idx+1,
+      // sortable: true,
+      width : '100px'
+    },
     {
       name: 'ID',
       selector: row => row.homeworkId,
@@ -32,35 +39,20 @@ function Homework() {
     },
     {
       name: 'Homework Date',
-      selector: row => row.homeworkDate,
+      selector: row => new Date(row.homeworkDate).toLocaleDateString('en-GB'),
       sortable: true,
+      //  width: '150px'
     },
     {
       name: 'Submission Date',
-      selector: row => row.submissionDate,
+      selector: row => new Date(row.submissionDate).toLocaleDateString('en-GB'),
       sortable: true,
+      //  width: '150px'
     },
     {
         name: 'Created By',
-        selector: row => "",
+        selector: row => row.user.firstName + " " + row.user.lastName,
         sortable: true,
-    },
-    {
-        name: 'Attachment Name',
-        selector: row => row.attachmentName,
-        sortable: true,
-    },
-    // {
-    // name: 'Attachment Path',
-    // selector: row => row.attachmentPath,
-    // sortable: true,
-    // },
-    {
-      name: 'Status',
-      selector: row => (
-        <StatusButton isActive={row.isActive}/>
-      ),
-      sortable: true,
     },
     {
         name: 'Action',
@@ -83,14 +75,14 @@ function Homework() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/homework/getHomework',
+      url: 'http://localhost:8080/homework/getHomeworkList',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => {
         console.log('Data from API:', response.data);
-        setHomework(response.data.data);
+        setHomework(response.data.data.filter((hm) => hm.className.id == user.className[0]?.id));
         setFilterHomework(response.data.data)
 
       })

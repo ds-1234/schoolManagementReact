@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Input } from '@nextui-org/react';
+// import { Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import DatePicker from '../../../Reusable_components/DatePicker'
+import TodayDate from '../../../Reusable_components/TodayDate';
+import FutureDates from '../../../Reusable_components/futureDates';
 
 const AddHomework = ({ isOpen, onClose }) => {
 
@@ -23,49 +24,13 @@ const AddHomework = ({ isOpen, onClose }) => {
     setValue: setFormValue,
   } = useForm();
 
-  const handleFocus = (e) => {
-    e.target.type = 'date';
-    e.target.placeholder = '';
-  };
-
-  const formatDateToDDMMYYYY = (dateString) => {
-    if (!dateString) return '';
-    const [year, month, day] = dateString.split('-');
-    return `${day}/${month}/${year}`;
-  };
-
-  const handleBlur = (e) => {
-    const value = e.target.value;
-    e.target.type = 'text'; // Switch back to text input on blur
-    e.target.placeholder = 'Select Date'; // Restore placeholder
-    if (value) {
-      e.target.value = formatDateToDDMMYYYY(value);
-    }
-  };
 
   // Fetch class and subject data
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setValue(true);
-
-      // Fetch classes
-      const fetchClasses = async() => {
-        await axios({
-          method: "GET" ,
-          url: "http://localhost:8080/class/getClassList",
-          headers: {
-          'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log(response.data.data);
-          setClasses(response.data.data) ;
-        })
-        .catch((error) => console.log(error))
-      }
-
-      fetchClasses() ;
+      setClasses(user.className)
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -189,7 +154,7 @@ const AddHomework = ({ isOpen, onClose }) => {
 
             {/* Homework Date */}
             <div>
-              <DatePicker 
+              <TodayDate 
               labelClass={"block text-sm font-medium text-gray-700"}
               name={"homeworkDate"}
               label={"Homework Date"}
@@ -207,15 +172,16 @@ const AddHomework = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-2 gap-4">
             {/* Submission Date */}
             <div>
-              <label className= "block text-sm font-medium text-gray-700">Submission Date*</label>
-              <Input
-              type='date'
-                {...register("submissionDate", "Submission Date is required" )}
-                className="w-full border rounded-xl bg-gray-100 "
-                placeholder="Select Date"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+              <FutureDates
+              labelClass="block text-sm font-medium text-gray-700"
+              label="Submission Date"
+              name={"submissionDate"}
+              className="w-full border rounded-xl bg-gray-100 "
+              register={register}
+              required={true}
+              // currentDate={homeworkDate}
               />
+
               {errors.submissionDate && (
                 <span className="text-red-500 text-sm">{errors.submissionDate.message}</span>
               )}
