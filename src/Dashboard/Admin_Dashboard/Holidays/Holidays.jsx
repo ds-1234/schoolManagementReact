@@ -120,7 +120,7 @@ const handleDelete = (id)=>{
     //   width: '280px', 
     },
     {
-      name: 'Holiday Title',
+      name: 'Holiday',
       selector: (row) => row.holidayName,
       sortable: true,
       wrap: true, 
@@ -196,7 +196,7 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Holiday Title', value: 'holidayName' },
+  { label: 'Holiday', value: 'holidayName' },
   { label: 'Date', value: 'holidayDate' },
   { label: 'Description', value: 'description' }
 ];
