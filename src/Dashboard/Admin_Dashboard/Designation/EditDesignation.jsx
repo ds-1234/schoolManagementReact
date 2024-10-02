@@ -105,7 +105,7 @@ const handleSubmit = (e) => {
 
           {/* Designation Input */}
           <div className="mb-4">
-            <label htmlFor="sportsName" className="block text-gray-700 text-sm font-bold mb-2">Designation</label>
+            <label htmlFor="designationName" className="block text-gray-700 text-sm font-bold mb-2">Designation</label>
             <input
               type="text"
               id="designationName"
@@ -113,7 +113,7 @@ const handleSubmit = (e) => {
               value={designation.designationName}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter Sports name"
+              placeholder="Enter Designation name"
               required
             />
           </div>

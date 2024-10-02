@@ -81,7 +81,7 @@ const AddDesignation = ({ isOpen, onClose }) => {
 
           {/* Designation Input */}
           <div className="mb-4">
-            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Designation</label>
+            <label htmlFor="designationName" className="block text-gray-700 font-semibold mb-2">Designation</label>
             <input
               type="text"
               id="designationName"
