@@ -50,32 +50,50 @@ const AddHomework = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const submitHomework = (data) => {
-
+    // Extract only necessary fields for className and subjectName
+    const selectedClass = JSON.parse(data.className);  // Parse className to get the selected class object
+    const selectedSubject = JSON.parse(data.subjectName);  // Parse subjectName to get the selected subject object
+  
     const homeworkRequest = {
-      user: user,
-      className: JSON.parse(data.className),
-      subjectName: JSON.parse(data.subjectName),
+      user: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role, // include only required fields here
+        isActive: user.isActive,
+      },
+      className: {
+        id: selectedClass.id,
+        name: selectedClass.name,
+        section: selectedClass.section,
+      },
+      subjectName: {
+        id: selectedSubject.id,
+        subject: selectedSubject.subject,
+      },
       homeworkDate: data.homeworkDate,
       submissionDate: data.submissionDate,
       isActive: value, 
     };
-
+  
     const formData = new FormData();
     formData.append('homeworkRequest', new Blob([JSON.stringify(homeworkRequest)], { type: 'application/json' }));
-    formData.append('file', file);
-
+    formData.append('file', file); 
+  
     axios({
       method: 'post',
       url: 'http://localhost:8080/homework/saveHomework',
-      data : formData ,
-      headers: { 'Content-Type': 'multipart/form-data' } 
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((res) => {
         console.log('Response:', res.data.data);
         toast.success('Homework added successfully!');
         setValue(true);
-        reset()
-        onClose();
+        reset(); 
+        onClose(); 
       })
       .catch((err) => {
         console.log('Error:', err);
@@ -178,7 +196,7 @@ const AddHomework = ({ isOpen, onClose }) => {
               labelClass="block text-sm font-medium text-gray-700"
               label="Submission Date"
               name={"submissionDate"}
-              className="w-full border rounded-xl bg-gray-100 "
+              className="w-full border rounded-xl bg-gray-100 py-2 px-2 "
               register={register}
               required={true}
               // currentDate={homeworkDate}
