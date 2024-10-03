@@ -9,7 +9,7 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
     const [value, setValue] = useState(true);
-  const [designation, setDesignation] = useState({ designationName: '' });
+  const [designation, setDesignation] = useState({ designationName: '',isActive:true });
 
 
   const {
@@ -41,6 +41,7 @@ function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
         .then((response) => {
           const designation = response.data.data;
           setDesignation(designation);
+          setValue(designation.isActive)
         })
         .catch((error) => {
           console.error('Error fetching Designation:', error);

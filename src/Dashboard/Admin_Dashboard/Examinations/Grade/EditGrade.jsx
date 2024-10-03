@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 
 function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
-  const [grade, setGrade] = useState({ grade: '', percentageFrom: '', percentageUpto: '', gradePoints: '', description: '' });
+  const [grade, setGrade] = useState({ grade: '', percentageFrom: '', percentageUpto: '', gradePoints: '', description: '',isActive:true });
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [value, setValue] = useState(true);
 
@@ -20,6 +20,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
         },
       })
         .then((response) => {
+          let data = response.data.data
           setGrade(response.data.data);
           // Reset the form with the fetched data
           reset({
@@ -30,7 +31,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
             description: response.data.data.description,
           });
           // Update the toggle button value
-          setValue(response.data.data.isActive === 'true');
+          setValue(data.isActive);
         })
         .catch((error) => {
           console.error('Error fetching Grade:', error);
@@ -164,22 +165,25 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
             <textarea
               id="description"
               className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
+              rows="2"
               {...register('description')}
               defaultValue={grade.description}
             ></textarea>
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 
-          {/* <div className="mb-2">
-            <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status</label>
-            <ToggleButton
-              isOn={value}
-              handleToggle={() => setValue(!value)}
-              id="active"
-              register={register}
-            />
-          </div> */}
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status 
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
           {/* Submit Button */}
           <Button type="submit" className="w-full text-center" />

@@ -23,7 +23,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     publishingYear: '',
     // allotedStartDate: '',
     // allotedEndDate: '',
-    // isActive: ''
+    isActive: true
   });
   const {
     register,
@@ -55,8 +55,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           setValue('publishingYear', formatDateToDDMMYYYY(data.publishingYear)); // Set formatted date
           setValue('allotedStartDate', data.allotedStartDate);
           setValue('allotedEndDate', data.allotedEndDate);
-          // setValue('isActive', data.isActive);
-          setActive(true)
+          setValue('isActive', data.isActive);
+          setActive(data.isActive)
         })
         .catch((error) => {
           console.error('Error fetching Book:', error);
@@ -69,7 +69,6 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      setActive(true)
   
     } else {
       document.body.style.overflow = 'auto';
@@ -116,12 +115,12 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         toast.success('Book updated successfully!');
         onSuccess(); // Call onSuccess to refresh data
         onClose(); // Close the popup
-        setValue(true)
+        // setValue(true)
       })
       .catch((err) => {
         console.error('Error:', err);
         toast.error('Failed to update Book.');
-        setValue(true)
+        // setValue(true)
       });
   };
 

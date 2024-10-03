@@ -18,7 +18,9 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
       },
     })
       .then((response) => {
+        data = response.data.data
         setRoomTy(response.data.data);
+        setValue(data.isActive)
       })
       .catch((error) => {
         console.error('Error fetching room type:', error);
