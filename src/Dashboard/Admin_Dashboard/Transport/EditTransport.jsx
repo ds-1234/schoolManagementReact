@@ -15,13 +15,13 @@ function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
     driverName:'' , 
     licenseNumber:'' , 
     phone:'' ,
-    isActive:'' 
+    isActive:true 
 });
 
 useEffect(() => {
   if (isOpen) {
     document.body.style.overflow = 'hidden';
-    setValue(true)
+    // setValue(transport.isActive)
 
   } else {
     document.body.style.overflow = 'auto';
@@ -49,15 +49,17 @@ useEffect(() => {
       },
     })
       .then((response) => {
-        setTransport(response.data.data);
-        setValue(true)
+        let data=response.data.data
+        setTransport(data);
+        console.log(transport)
+        setValue(data.isActive)
       })
       .catch((error) => {
         console.error("Error fetching transport:", error);
-        setValue(true)
 
       });
-  }, [transportId , isOpen]);
+  }, [transportId , isOpen,onClose]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;

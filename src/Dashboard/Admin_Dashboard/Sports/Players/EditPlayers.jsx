@@ -68,6 +68,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
           setSelectedPlayers(playerData.playersName);
           setSelectedSports(playerData.sportsName);
           console.log(selectedPlayers,selectedSports,'selected:')
+          setValue(playerData.isActive)
         })
         .catch((error) => {
           console.error('Error fetching player:', error);

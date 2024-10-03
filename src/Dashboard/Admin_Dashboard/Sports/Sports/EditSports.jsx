@@ -56,6 +56,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
           setSports(sportsData);
           setSelectedCoach(sportsData.coachName.map(coa => coa.id));
           console.log(selectedCoach) 
+          setValue(sportsData.isActive)
         })
         .catch((error) => {
           console.error('Error fetching Sport:', error);

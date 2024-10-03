@@ -68,6 +68,8 @@ import StdSports from './Dashboard/Student_Dashboard/Sports/StdSports';
 import TeaSports from './Dashboard/Teacher_Dashboard/Sports/TeaSports';
 import Designation from './Dashboard/Admin_Dashboard/Designation/Designation';
 import Department from './Dashboard/Admin_Dashboard/Department/Department';
+import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
+import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
 
 
 function App() {
@@ -152,6 +154,7 @@ function App() {
             <Route path='homework' element = {<StdHomework/>} />
             <Route path='holidays' element = {<StdHolidays/>} />
             <Route path='stdsports' element = {<StdSports/>} />
+            <Route path='stdnotice' element = {<StdNotice/>} />
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -168,6 +171,7 @@ function App() {
             <Route path='homework' element = {<Homework/>} />
             <Route path='teaholidays' element = {<TeaHolidays/>} />
             <Route path='teasports' element = {<TeaSports/>} />
+            <Route path='teanotice' element = {<TeaNotice/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

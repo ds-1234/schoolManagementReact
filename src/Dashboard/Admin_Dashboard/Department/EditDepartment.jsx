@@ -9,7 +9,7 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
     const [value, setValue] = useState(true);
-  const [department, setDepartment] = useState({ departmentName: '' });
+  const [department, setDepartment] = useState({ departmentName: '',isActive:true });
 
 
   const {
@@ -41,6 +41,7 @@ function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
         .then((response) => {
           const department = response.data.data;
           setDepartment(department);
+          setValue(department.isActive)
 
         })
         .catch((error) => {

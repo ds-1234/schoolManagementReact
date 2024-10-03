@@ -127,13 +127,13 @@ const handleDelete = (id)=>{
       wrap: true, 
     //   width: '280px', 
     },
-    {
-      name: 'Coach',
-      selector: (row) => row.coachName.firstName,
-      sortable: true,
-      wrap: true,
-    //   width: '280px', 
-    },
+    // {
+    //   name: 'Coach',
+    //   selector: (row) => row.coachName.firstName,
+    //   sortable: true,
+    //   wrap: true,
+    // //   width: '280px', 
+    // },
     {
       name: 'Started Year',
       selector: (row) => row.startedYear,
