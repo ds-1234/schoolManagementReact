@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-// import downloadFile from '../../../assets/utils/download'
 
 function Homework() {
 
@@ -32,7 +31,7 @@ function Homework() {
       name: 'Section',
       selector: row => row.className.section,
       sortable: true,
-      // width: '80px'
+      width: '100px'
     },
     {
       name: 'Subject',
@@ -56,7 +55,7 @@ function Homework() {
         name: 'Created By',
         selector: row => row.user.firstName + " " + row.user.lastName,
         sortable: true,
-        width: '150px'
+        width: '120px'
     },
     {
       name: 'Status',
@@ -64,13 +63,13 @@ function Homework() {
         <StatusButton isActive={row.isActive}/>
       ),
       sortable: true,
-      width: '130px'
+      width: '120px'
     },
     {
         name: 'Action',
         cell: row => (
           <button
-            // onClick={() => downloadFile(row.attachmentPath)}
+            onClick={() => handleDownload( row.attachmentName)}
             className="text-blue-500 underline"
           >
             <FontAwesomeIcon icon={faDownload} />
@@ -142,8 +141,6 @@ function Homework() {
             // For non-nested fields, access directly
             fieldValue = row[field];
           }
-    
-          // Check if the field value matches the query
           return fieldValue && fieldValue.toString().toLowerCase().includes(query.toLowerCase());
         })
       );
@@ -154,6 +151,18 @@ function Homework() {
 // handle clear button logic
 const handleClear = () => {
   setHomework(filterHomework);  // Reset to original data
+};
+
+const handleDownload = (attachmentName) => {
+  const fullPath = `${attachmentName}`; 
+
+  // Create a temporary link to download the file
+  const link = document.createElement('a');
+  link.href = fullPath;  
+  link.setAttribute('download', attachmentName); 
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 const searchOptions = [

@@ -57,8 +57,8 @@ function Homework() {
         name: 'Action',
         cell: row => (
           <button
-            // onClick={() => downloadFile(row.attachmentPath)} // Use the reusable function
-            // className="text-blue-500 underline"
+            onClick={() => handleDownload(row.attachmentName)}
+            className="text-blue-500 underline"
           >
             <FontAwesomeIcon icon={faDownload} />
           </button>
@@ -140,6 +140,18 @@ function Homework() {
 // handle clear button logic
 const handleClear = () => {
   setHomework(filterHomework);  // Reset to original data
+};
+
+const handleDownload = (attachmentName) => {
+  const fullPath = `${attachmentName}`; 
+  
+  // Create a temporary link to download the file
+  const link = document.createElement('a');
+  link.href = fullPath;  
+  link.setAttribute('download', attachmentName); 
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 const searchOptions = [
