@@ -43,9 +43,9 @@ function StdNotice() {
     setNotices(filteredNotices);
   };
 
-  const addClick = () => {
-    navigate('/admin/AddNotice')
-  }
+//   const addClick = () => {
+//     navigate('/admin/AddNotice')
+//   }
 
   return (
 
