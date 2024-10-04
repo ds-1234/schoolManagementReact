@@ -50,7 +50,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      data:{id : '${subjectId}', ...subject},
+      data:{id : '${subjectId}', ...subject , isActive: true},
     })
       .then((response) => {
         console.log('Subject updated:', response.data);

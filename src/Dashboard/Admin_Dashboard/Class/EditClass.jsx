@@ -41,7 +41,9 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
         .then((response) => {
           const classData = response.data.data;
           setGrade(classData);
-          setSelectedSubjects(classData.subject.map(sub => sub.id)); // Pre-check subjects from API
+          console.log(classData.subject);
+          
+          setSelectedSubjects(classData.subject); // Pre-check subjects from API
         })
         .catch((error) => {
           console.error('Error fetching class:', error);
@@ -71,7 +73,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
       return {
         id: subjectData.id,
         subject: subjectData.subject,
-        description: subjectData.description
+        description: subjectData.description,
+        isActive: true
       };
     });
 

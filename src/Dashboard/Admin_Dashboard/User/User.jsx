@@ -93,7 +93,7 @@ const column = [
   }, []);
 
   const searchOptions = [
-    {label : 'Role' , value: 'role'} ,
+    // {label : 'Role' , value: 'role'} ,
     { label: 'First Name', value: 'firstName' },
     { label: 'Last Name', value: 'lastName' },
     { label: 'Email', value: 'email' },
@@ -113,11 +113,11 @@ const column = [
   
     const filteredData = filterUser.filter((row) =>
       selectedFields.some((field) => {
-        if (field === 'role') {
-          return row.role?.name?.toLowerCase().includes(query.toLowerCase());
-        }else{
+        // if (field === 'role') {
+        //   return row.role?.toLowerCase().includes(query.toLowerCase());
+        // }else{
         return row[field]?.toLowerCase().includes(query.toLowerCase())
-        }
+        // }
       }
       )
     );

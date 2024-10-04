@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from './Reusable_components/Layout';
 // import loginImg from './assets/Login.png';
@@ -22,11 +22,42 @@ function LandingPage() {
     getValues,
   } = useForm();
 
-  const onSubmit = (data) => {
-    const formData = getValues();
-    console.log(formData);
-    console.log(data, 'data');
+  const handleRole = (id) => {
+    axios({
+      method: 'GET',
+      url: `http://localhost:8080/role/getRole/${id}`,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((res) => {
+      let roleID = res.data.data.id;
+      switch (roleID) {
+        case 3:
+          navigate('/studentDashboard');
+          break;
+        case 4:
+          navigate('/teacherDashboard');
+          break;
+        case 5:
+          navigate('/parentsDashboard');
+          break;
+        case 2:
+          navigate('/admin');
+          break;
+        case 1:
+          navigate('/guestDashboard');
+          break;
+        default:
+          navigate('/guestDashboard');
+      }
+    })
+    .catch((err) => {
+      toast.error('Role fetching error');
+    });
+  };
 
+  const onSubmit = (data) => {
     axios({
       method: 'post',
       url: `http://localhost:8080/user/login`,
@@ -38,38 +69,18 @@ function LandingPage() {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => {
-        console.log('user:', res.data.data);
-        let role = res.data.data.role;
-        sessionStorage.setItem('username', res.data.data.userId);
-        sessionStorage.setItem('role', res.data.data.role.name);
-        sessionStorage.setItem('user' , JSON.stringify(res.data.data)) ;
-        toast.success('Successfully Logged In');
+    .then((res) => {
+      let roleID = res.data.data.role;
+      sessionStorage.setItem('username', res.data.data.userId);
+      sessionStorage.setItem('role', res.data.data.role);
+      sessionStorage.setItem('user', JSON.stringify(res.data.data));
+      toast.success('Successfully Logged In');
 
-        switch (role.name) {
-          case 'Student':
-            navigate('/studentDashboard', { state: data });
-            break;
-          case 'Teacher':
-            navigate('/teacherDashboard', { state: data });
-            break;
-          case 'Parent':
-            navigate('/parentsDashboard', { state: data });
-            break;
-          case 'Admin':
-            navigate('/admin', { state: data });
-            break;
-          case 'Guest':
-            navigate('/guestDashboard', { state: data });
-            break;
-          default:
-            navigate('/guestDashboard', { state: data });
-        }
-      })
-      .catch((err) => {
-        console.log(err, 'error:');
-        toast.error('Runtime error');
-      });
+      handleRole(roleID); // Pass the role ID to handleRole
+    })
+    .catch((err) => {
+      toast.error('Runtime error');
+    });
   };
 
 

@@ -53,6 +53,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         state: data.state,
         pinCode: data.pinCode,
         country: data.country,
+        isActive: true
       },
       headers: {
         'Content-Type': 'application/json',
