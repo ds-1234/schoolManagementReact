@@ -120,6 +120,13 @@ const handleDelete = (id)=>{
     //   width: '280px', 
     },
     {
+      name: 'Holiday Id',
+      selector: (row) => row.holidayId,
+      sortable: true,
+      wrap: true, 
+    //   width: '280px', 
+    },
+    {
       name: 'Holiday',
       selector: (row) => row.holidayName,
       sortable: true,

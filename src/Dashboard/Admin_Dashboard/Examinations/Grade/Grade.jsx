@@ -101,6 +101,11 @@ const column = [
     sortable: false,
   },
   {
+    name: 'Grade Point ID',
+    selector: row => row.gradePointsId,
+    sortable: true,
+  },
+  {
     name: 'Grade',
     selector: row => row.grade,
     sortable: true,

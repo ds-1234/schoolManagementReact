@@ -121,6 +121,13 @@ const handleDelete = (id)=>{
     //   width: '280px', 
     },
     {
+      name: 'Player Id',
+      selector: (row) => row.playersId,
+      sortable: true,
+      wrap: true, 
+    //   width: '280px', 
+    },
+    {
       name: 'Player Name',
       selector: (row) => row.playersName.firstName,
       sortable: true,

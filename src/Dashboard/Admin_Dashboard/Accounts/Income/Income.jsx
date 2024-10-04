@@ -31,10 +31,16 @@ function Income() {
       // wrap: true, 
       selector: (row, idx) => idx + 1,
       sortable: false,
+      width: '70px',
+            wrap: true, 
+
+    },
+    {
+      name: 'Income Id',
+      selector: row => row.incomeId,
+      sortable: true,
       width: '100px',
             wrap: true, 
- 
-
     },
     {
       name: 'Income Name',
@@ -42,14 +48,13 @@ function Income() {
       sortable: true,
       width: '100px',
             wrap: true, 
- 
-
     },
+
     {
       name: 'Description',
       selector: row => row.description,
       sortable: true,
-      width: '165px',
+      width: '150px',
             wrap: true, 
  
 

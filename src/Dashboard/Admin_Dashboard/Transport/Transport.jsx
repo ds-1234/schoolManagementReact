@@ -13,15 +13,23 @@ function Transport() {
 
 const column = [
   {
+    name: 'SR.No',
+    selector: (row, idx) => idx + 1,
+    sortable: false,
+    width: '70px', 
+  },
+  {
     name: 'Transport Id',
     selector: row => row.transportId,
     sortable: true,
-    width: '150px',
+    width: '120px',
   }, 
   {
     name: 'Route Name',
     selector: row => row.routeName,
     sortable: true,
+    width: '120px',
+
   }, 
   {
     name: 'Vehicle Number',

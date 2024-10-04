@@ -121,6 +121,11 @@ function Designation() {
       sortable: false,
     },
     {
+      name: 'Designation Id',
+      selector: row => row.designationId,
+      sortable: true,
+    },
+    {
       name: 'Designation',
       selector: row => row.designationName,
       sortable: true,
