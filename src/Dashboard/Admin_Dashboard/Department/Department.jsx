@@ -122,6 +122,11 @@ function Department() {
       sortable: false,
     },
     {
+      name: 'Department Id',
+      selector: row => row.departmentId,
+      sortable: true,
+    },
+    {
       name: 'Department',
       selector: row => row.departmentName,
       sortable: true,

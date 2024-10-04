@@ -32,11 +32,20 @@ const closeEditPopup = () => {
       name: 'SR.No',
       selector: (row,idx) => idx+1 ,
       sortable: false,
+      width:'70px'
+    },
+    {
+      name: 'Expense Id',
+      selector: row => row.expenseId,
+      sortable: true,
+      width:'100px'
     },
     {
       name: 'Expense Name',
       selector: row => row.name,
       sortable: true,
+      width:'100px'
+
     },
     {
       name: 'Description',
@@ -50,16 +59,22 @@ const closeEditPopup = () => {
       name: 'Category',
       selector: row => row.expenseType.expenseCategoryName,
       sortable: true,
+      width:'100px'
+
     },
     {
       name: 'Date',
       selector: row => row.date,
       sortable: true,
+      width:'100px'
+
     },
     {
       name: 'Amount',
       selector: row => row.amount,
       sortable: true,
+      width:'100px'
+
     },
     {
       name: 'Payment Method',

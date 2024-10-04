@@ -119,6 +119,13 @@ const handleDelete = (id)=>{
     //   width: '300px', 
     },
     {
+      name: 'Room Type Id',
+      selector: (row) => row.roomTypeId,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
       name: 'Room Type',
       selector: (row) => row.roomTypeName,
       sortable: true,
@@ -140,8 +147,6 @@ const handleDelete = (id)=>{
         sortable: true,
         // width: '117px',
               // wrap: true, 
-   
-  
       },
     {
       name: 'Action',

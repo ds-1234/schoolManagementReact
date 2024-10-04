@@ -121,6 +121,13 @@ const handleDelete = (id)=>{
     //   width: '280px', 
     },
     {
+      name: 'Leave Id',
+      selector: (row) => row.leaveId,
+      sortable: true,
+      wrap: true, 
+    //   width: '280px', 
+    },
+    {
       name: 'Leave Type',
       selector: (row) => row.leaveType,
       sortable: true,
