@@ -55,19 +55,18 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
   const onSubmit = async (data) => {
     const subjectDetails = selectedSubjects.map(id => {
+      console.log(subjects , id);
+      
       const subject = subjects.find(sub => sub.id === id);
-      return {
-        id: subject.id,
-        subject: subject.subject,
-        description: subject.description // Assuming description is available
-      };
+      return subject.id
     });
 
     try {
       await axios.post('http://localhost:8080/class/createClass', {
         name: data.name,
         section: data.section,
-        subject: subjectDetails
+        subject: subjectDetails,
+        isActive: true 
       }, {
         headers: {
           "Content-Type": "application/json",
