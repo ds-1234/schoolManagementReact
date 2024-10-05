@@ -13,13 +13,7 @@ const Tile = ({ title, details, date, postedBy,index }) => {
           <div className={`${titlePillColors[index % titlePillColors.length]} text-white px-3 py-2 rounded-full text-base inline-block w-max`}>
              {title}
           </div>
-          {/* <div className={`${titlePillColors[index % titlePillColors.length]} text-white px-3 py-2 rounded-full text-base inline-block w-max`}>
-            {new Date(date).toLocaleDateString('en-US', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </div> */}
+
 
           {/* Notice Details */}
           <h1 className="absolute top-0 right-0 p-2 text-ls font-bold">
