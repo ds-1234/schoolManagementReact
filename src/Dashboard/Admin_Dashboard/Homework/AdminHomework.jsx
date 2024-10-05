@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 function Homework() {
+  const [classMap , setClassMap] = useState({}) 
+  const [subjectMap , setSubjectMap] = useState({})
+  const [userMap , setUserMap] = useState({})
 
   const column = [
     {
@@ -23,19 +26,19 @@ function Homework() {
     },
     {
       name: 'Class',
-      selector: row => row.className.name,
+      selector: row => classMap[row.className]?.name,
       sortable: true,
       width: '100px'
     },
     {
       name: 'Section',
-      selector: row => row.className.section,
+      selector: row => classMap[row.className]?.section,
       sortable: true,
       width: '100px'
     },
     {
       name: 'Subject',
-      selector: row => row.subjectName.subject,
+      selector: row => subjectMap[row.subject],
       sortable: true,
       // width: '100px'
     },
@@ -53,7 +56,7 @@ function Homework() {
     },
     {
         name: 'Created By',
-        selector: row => row.user.firstName + " " + row.user.lastName,
+        selector: row => userMap[row.userId]?.firstName + ' ' +  userMap[row.userId]?.lastName,
         sortable: true,
         width: '120px'
     },
@@ -103,8 +106,78 @@ function Homework() {
       });
   };
 
+  const fetchCls = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/class/getClassList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const classes = {} ;
+        response.data.data.forEach((cls) => {
+          classes[cls.id] = cls;
+        })
+
+        setClassMap(classes)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const fetchSub = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/subject/getSubjectList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const subjects = {} ;
+        response.data.data.forEach((sub) => {
+          subjects[sub.id] = sub.subject ;
+        })
+    
+        setSubjectMap(subjects)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const fetchUsers = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/user/getUserList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const users = {} ;
+        response.data.data.forEach((tch) => {
+          users[tch.id] = tch ;
+        })
+        
+        setUserMap(users)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+ 
   useEffect(() => {
     fetchData();
+    fetchSub();
+    fetchCls();
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -128,15 +201,14 @@ function Homework() {
         selectedFields.some((field) => {
           let fieldValue = '';
           
-          // Manually handle nested properties
           if (field === 'class') {
-            fieldValue = row.className?.name;
+            fieldValue = classMap[row.className]?.name;
           } else if (field === 'section') {
-            fieldValue = row.className?.section;
+            fieldValue = classMap[row.className]?.section;
           } else if (field === 'subject') {
-            fieldValue = row.subjectName?.subject;
+            fieldValue = subjectMap[row.subject];
           } else if (field === 'name') {
-            fieldValue = row.user?.firstName;
+            fieldValue = userMap[row.userId]?.firstName;
           } else {
             // For non-nested fields, access directly
             fieldValue = row[field];
