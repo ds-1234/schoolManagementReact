@@ -12,8 +12,8 @@ const TimetableGrid = ({classID}) => {
   const colors = ['bg-red-300', 'bg-blue-300', 'bg-yellow-300', 'bg-green-300', 'bg-purple-300', 'bg-pink-300'];
 
   // Fetch class data
-  const fetchCls = () => {
-    axios.get('http://localhost:8080/class/getClassList')
+  const fetchCls = async() => {
+    await axios.get('http://localhost:8080/class/getClassList')
       .then((response) => {
         const classes = {};
         response.data.data.forEach((cls) => {
@@ -27,8 +27,8 @@ const TimetableGrid = ({classID}) => {
   };
 
   // Fetch subject data
-  const fetchSub = () => {
-    axios.get('http://localhost:8080/subject/getSubjectList')
+  const fetchSub = async () => {
+    await axios.get('http://localhost:8080/subject/getSubjectList')
       .then((response) => {
         const subjects = {};
         response.data.data.forEach((sub) => {
@@ -42,8 +42,8 @@ const TimetableGrid = ({classID}) => {
   };
 
   // Fetch user (teacher) data
-  const fetchUsers = () => {
-    axios.get('http://localhost:8080/user/getUserList')
+  const fetchUsers = async() => {
+   await axios.get('http://localhost:8080/user/getUserList')
       .then((response) => {
         const users = {};
         response.data.data.forEach((tch) => {
@@ -60,7 +60,7 @@ const TimetableGrid = ({classID}) => {
   const fetchTimetable = async () => {
     try {
       const response = await axios.get('http://localhost:8080/timeTable/getTimeTable');
-      console.log(response.data.data);
+      // console.log(response.data.data);
       const transformedData = transformData(response.data.data);
       setTimetableData(transformedData);
       setLoading(false);
@@ -72,10 +72,13 @@ const TimetableGrid = ({classID}) => {
 
   useEffect(() => {
     fetchTimetable();
+  }, [classID]);
+
+  useEffect(() => {
     fetchSub();
     fetchCls();
     fetchUsers();
-  }, []);
+  } , [])
   
   const transformData = (data) => {
     const result = {};
@@ -108,8 +111,8 @@ const TimetableGrid = ({classID}) => {
 
   // debugger;
   const timetable = timetableData[classMap[classID]?.name]?.[classMap[classID]?.section];
-  console.log('Selected Class:', classMap[classID]?.name, 'Selected Section:', classMap[classID]?.section);
-  console.log('Timetable:', timetable);
+  // console.log('Selected Class:', classMap[classID]?.name, 'Selected Section:', classMap[classID]?.section);
+  // console.log('Timetable:', timetable);
 
   return (
     <div>

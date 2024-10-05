@@ -8,6 +8,7 @@ const StdTimetable = () => {
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [classMap , setClassMap] = useState({})
   
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -20,7 +21,7 @@ const StdTimetable = () => {
 
         // Filter the response data based on user className and section
         const filteredData = response.data.data.filter(item => 
-          item.className === user.className.name && item.section === user.className.section
+          item.className === user.className
         );
 
         // Set the filtered timetable data
@@ -33,7 +34,22 @@ const StdTimetable = () => {
       }
     };
 
+    const fetchCls = async () => {
+      await axios.get('http://localhost:8080/class/getClassList')
+        .then((response) => {
+          const classes = {};
+          response.data.data.forEach((cls) => {
+            classes[cls.id] = cls;
+          });
+          setClassMap(classes);
+        })
+        .catch((error) => {
+          console.error('Error fetching class data:', error);
+        });
+    };
+
     fetchTimetable();
+    fetchCls()
   }, [user]); // Dependency array includes user to refetch if user changes
 
   if (loading) {
@@ -51,9 +67,9 @@ const StdTimetable = () => {
 
         <div>
             <h2 className="text-lg mb-4 text-black font-semibold mt-5">
-              Time Table for {user.className?.name} - {user.className?.section}
+              Time Table for {classMap[user.className]?.name} - {classMap[user.className]?.section}
             </h2>
-            <TimetableGrid selectedClass={user.className?.name} selectedSection={user.className?.section} />
+            <TimetableGrid classID={user.className} />
         </div> 
     </div>
   );

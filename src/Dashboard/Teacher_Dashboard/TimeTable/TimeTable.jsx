@@ -16,7 +16,7 @@ const Timetable = () => {
         
         // Filter timetable for specific teacher based on teacherId
         const filteredTimetable = response.data.data.filter(
-          (timetable) => timetable.teacherName?.id == user.id
+          (timetable) => timetable.userId == user.id
         );
         console.log(filteredTimetable);
         setTimetableData(filteredTimetable);
