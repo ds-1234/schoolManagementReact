@@ -49,7 +49,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
         const response = await axios.get('http://localhost:8080/user/getUserList', {
           headers: { 'Content-Type': 'application/json' },
         });
-        const filteredTeachers = response.data.data.filter(user => user.role.name === 'Teacher' )
+        const filteredTeachers = response.data.data.filter(user => user.role === 4 )
         console.log(filteredTeachers);
         
         setTeachers(filteredTeachers);

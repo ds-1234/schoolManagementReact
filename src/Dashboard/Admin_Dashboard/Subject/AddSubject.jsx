@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 
 const AddSubject = ({ isOpen, onClose }) => {
+  const [value , setValue] = useState(true)
   const {
     register,
     handleSubmit,
@@ -43,6 +45,7 @@ const AddSubject = ({ isOpen, onClose }) => {
       data: {
         subject: data.subject,
         description: data.description,
+        isActive : value ,
       },
       headers: {
         'Content-Type': 'application/json',
@@ -98,6 +101,17 @@ const AddSubject = ({ isOpen, onClose }) => {
             ></textarea>
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
+
+          <div className="mb-2">
+            <label className="mb-2" htmlFor="active">
+              Status 
+            </label>
+            <ToggleButton
+              isOn={value}
+              handleToggle={() => setValue(!value)}
+              register={register}
+            />
+            </div>
 
           {/* Submit Button */}
           <Button

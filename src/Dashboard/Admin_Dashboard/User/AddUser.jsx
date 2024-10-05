@@ -4,7 +4,6 @@ import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { NavLink } from 'react-router-dom';
-// import { Input } from '@nextui-org/react';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import DatePicker from '../../../Reusable_components/DatePicker';
 
@@ -12,11 +11,6 @@ import DatePicker from '../../../Reusable_components/DatePicker';
 const AddUser = () => {
 
   const [value, setValue] = useState(true);
-  // const [isParent, setIsParent] = useState('');
-  // const [classes , setClasses] = useState([]) ;
-  // const [books , setBooks] = useState([]) ;
-  // const [schools , setSchools] = useState([]) ;
-  // const [users , setUsers] = useState([]) ;
   const [roles , setRoles] = useState([]) ;
 
   const {
@@ -44,99 +38,18 @@ const AddUser = () => {
       })
     }
 
-    // const fetchUsers = async() =>{
-    //   axios({
-    //     method:"GET" , 
-    //     url:'http://localhost:8080/user/getUserList' , 
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setUsers(res.data.data) ;
-    //   })
-    //   .catch(err => {
-    //     console.log(err , 'error:');
-    //   })
-    // }
-      // const fetchClasses = async() =>{
-      //   axios({
-      //     method:"GET" , 
-      //     url:'http://localhost:8080/class/getClassList' , 
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     setClasses(res.data.data) ;
-      //   })
-      //   .catch(err => {
-      //     console.log(err , 'error:');
-      //   })
-      // }
-
-      // const fetchBooks = async() =>{
-      //   axios({
-      //     method:"GET" , 
-      //     url:'http://localhost:8080/book/getBookList' , 
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     setBooks(res.data.data) ;
-      //   })
-      //   .catch(err => {
-      //     console.log(err , 'error:');
-      //   })
-      // }
-
-      // const fetchSchools = async() =>{
-      //   axios({
-      //     method:"GET" , 
-      //     url:'http://localhost:8080/school/getSchoolList' , 
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     setSchools(res.data.data) ;
-      //   })
-      //   .catch(err => {
-      //     console.log(err , 'error:');
-      //   })
-      // }
-
-      // fetchUsers();
-      fetchRoles() ;
-      // fetchClasses() ;
-      // fetchBooks() ;
-      // fetchSchools() ;
+   
+   fetchRoles()
   } , []);
   
 
   const onSubmit = (data) => {
-    // const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
-    // const selectedBooks = books.find(book => book.id === parseInt(data.book));
-    // const selectedSchools = schools.find(school => school.id === parseInt(data.school));
     const selectedRoles = roles.find(role => role.id === parseInt(data.role));
-    // const selectedChilds = users.find(user => user.id === parseInt(data.isParent));
 
     const userData = {
       ...data , 
-      role: {
-        id: selectedRoles.id ,
-        name: selectedRoles.name,
-      },
-      // className : selectedClasses , 
-      // book: [selectedBooks] , 
-      // school : selectedSchools ,
-      isActive: data.active = value ? 'true' : 'false', 
-      // isParent: [selectedChilds.id]
+      role: selectedRoles.id,
+      isActive: data.active = value ? 'True' : 'False', 
     }
     axios({
         method:"post",
@@ -152,7 +65,6 @@ const AddUser = () => {
         console.log('response' , response.data)
         toast.success("Successfully Add User");
         setValue(true)
-        // setIsParent('');
     })
     .catch(err=>{
         console.log(err,'error:')
@@ -162,9 +74,7 @@ const AddUser = () => {
     })
   }
 
-  // const handleIsParentChange = (e) => {
-  //   setIsParent(e.target.value); 
-  // };
+
 
 
   return (
@@ -415,111 +325,6 @@ const AddUser = () => {
             </select>
             {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
           </div>
-        {/* Class Input */}
-        {/* <div className="mt-4">
-            <select
-              id="className"
-              className={`w-1/2 px-3 py-2 border ${errors.classname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('className', { required: 'Class Field is required' })}
-            >
-                <option value="" className='hidden'>Select a Class</option>
-              {classes.map(cls => (
-                <option key={cls.id} value={cls.id}>
-                  {cls.name}
-                </option>
-              ))}
-            </select>
-            {errors.cls && <p className="text-red-500 text-sm mt-1">{errors.cls.message}</p>}
-          </div> */}
-
-        {/* Book Input */}
-        {/* <div className="mt-4">
-            <select
-              id="book"
-              className={`w-1/2 px-3 py-2 border ${errors.book ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('book', { required: 'Book details is required' })}
-            >
-                <option value="" className='hidden'>Select a Book</option>
-              {books.map(book => (
-                <option key={book.id} value={book.id}>
-                  {book.name}
-                </option>
-              ))}
-            </select>
-            {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
-          </div> */}
-
-        {/* School Input */}
-        {/* <div className="mt-4">
-            <select
-              id="school"
-              className={`w-1/2 px-3 py-2 border ${errors.school ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('school', { required: 'School details is required' })}
-            >
-                <option value="" className='hidden'>Select a School</option>
-              {schools.map(school => (
-                <option key={school.id} value={school.id}>
-                  {school.name}
-                </option>
-              ))}
-            </select>
-            {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school.message}</p>}
-          </div>
-      </div> */}
-      
-      {/* Checkbox for parent */}
-       {/* <div className="flex flex-col px-1">
-          <label htmlFor="isParent">Are you a Parent?</label>
-          <div className="flex items-center space-x-4 mt-2">
-            <label className="inline-flex items-center">
-              <input
-                type="radio"
-                name="isParent"
-                value="Yes"
-                checked={isParent === 'Yes'}
-                onChange={handleIsParentChange}
-                className="form-radio h-4 w-4 text-indigo-600"
-              />
-              <span className="ml-2">Yes</span>
-            </label>
-
-            <label className="inline-flex items-center">
-              <input
-                type="radio"
-                name="isParent"
-                value="No"
-                checked={isParent === 'No'}
-                onChange={handleIsParentChange}
-                className="form-radio h-4 w-4 text-indigo-600"
-              />
-              <span className="ml-2">No</span>
-            </label>
-          </div>
-          {errors.isParent && (
-            <span className="text-red-500 text-sm">{errors.isParent.message}</span>
-          )}
-        </div> */}
-
-        {/* Child Input */}
-        {/* <div className="mt-4">
-            <select
-              id="isParent"
-              className={`w-1/2 px-3 py-2 border ${errors.isParent ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('isParent', { required: 'Child details is required' })}
-            >
-                <option value="" className='hidden'>Select Child</option>
-              {users.map(user => (
-                <option key={user.id} value={user.id}>
-                  {user.firstName} - {user.userName}
-                </option>
-              ))}
-            </select>
-            {errors.isParent && <p className="text-red-500 text-sm mt-1">{errors.isParent.message}</p>}
-          </div> */}
         
 
         {/* Submit Button */}

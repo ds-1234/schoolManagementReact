@@ -18,7 +18,7 @@ const TeacherPage = () => {
         const response = await axios.get('http://localhost:8080/user/getUserList', {
           headers: { 'Content-Type': 'application/json' },
         });
-        const filteredTeachers = response.data.data.filter(user => user.role.name === 'Teacher');
+        const filteredTeachers = response.data.data.filter(user => user.role === 4);
         setTeachers(filteredTeachers);
         setLoading(false);
       } catch (error) {
@@ -74,7 +74,7 @@ const TeacherPage = () => {
         >
           <option value="" className='hidden'>Select a Teacher</option>
           {teachers.map((tch) => (
-            <option key={tch.id} value={tch.id}>{tch.firstName}</option>
+            <option key={tch.id} value={tch.id}>{tch.firstName}-{tch.userName}</option>
           ))}
         </select>
         <Button onClick={handleNavigate} label='Go to TimeTable' className='mt-10'/>

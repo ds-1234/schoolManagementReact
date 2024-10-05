@@ -11,6 +11,8 @@ import AddBtn from '../../../Reusable_components/AddBtn'
 
 function Homework() {
   const user = JSON.parse(sessionStorage.getItem('user'));
+  const [classMap , setClassMap] = useState({}) 
+  const [subjectMap , setSubjectMap] = useState({})
 
   const column = [
     {
@@ -27,19 +29,19 @@ function Homework() {
     },
     {
       name: 'Class',
-      selector: row => row.className.name,
+      selector: row => classMap[row.className]?.name,
       sortable: true,
       // width: '100px'
     },
     {
       name: 'Section',
-      selector: row => row.className.section,
-      // sortable: true,
+      selector: row => classMap[row.className]?.section,
+      sortable: true,
       // width: '100px'
     },
     {
       name: 'Subject',
-      selector: row => row.subjectName.subject,
+      selector: row => subjectMap[row.subject],
       sortable: true,
       // width: '100px'
     },
@@ -127,17 +129,63 @@ function Homework() {
     })
       .then((response) => {
         console.log('Data from API:', response.data.data);
-        setHomework(response.data.data.filter((hm) => hm.user.id == user.id));
+        setHomework(response.data.data.filter((hm) => hm.userId === user.id));
         setFilterHomework(response.data.data)
-
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   };
 
+  const fetchCls = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/class/getClassList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const classes = {} ;
+        response.data.data.forEach((cls) => {
+          classes[cls.id] = cls;
+        })
+        console.log(classes);
+        setClassMap(classes)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const fetchSub = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/subject/getSubjectList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const subjects = {} ;
+        response.data.data.forEach((sub) => {
+          subjects[sub.id] = sub.subject ;
+        })
+        console.log(subjects);
+        setSubjectMap(subjects)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+ 
   useEffect(() => {
     fetchData();
+    fetchSub();
+    fetchCls();
   }, []);
 
   useEffect(() => {
@@ -157,11 +205,26 @@ function Homework() {
     const selectedFields = Object.keys(checkboxRefs)
       .filter((key) => checkboxRefs[key].checked);
   
-    const filteredData = filterHomework.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
-      )
-    );
+      const filteredData = filterHomework.filter((row) =>
+        selectedFields.some((field) => {
+          let fieldValue = '';
+          
+          // Manually handle nested properties
+          if (field === 'class') {
+            fieldValue = classMap[row.className]?.name;
+          } else if (field === 'section') {
+            fieldValue = classMap[row.className]?.section;
+          } else if (field === 'subject') {
+            fieldValue = subjectMap[row.subject];
+          }else {
+            // For non-nested fields, access directly
+            fieldValue = row[field];
+          }
+    
+          // Check if the field value matches the query
+          return fieldValue && fieldValue.toString().toLowerCase().includes(query.toLowerCase());
+        })
+      );
   
     setHomework(filteredData);
   };
@@ -173,13 +236,11 @@ const handleClear = () => {
 
 const searchOptions = [
   { label: 'Homework ID', value: 'homeworkId' },
-  { label: 'Class', value: 'className.name' },
-  { label: 'Section', value: 'className.section' },
-  { label: 'Subject', value: 'subjectName.subject' },
+  { label: 'Class', value: 'class' },
+  { label: 'Section', value: 'section' },
+  { label: 'Subject', value: 'subject' },
   { label: 'Homework Date', value: 'homeworkDate' },
   { label: 'Submission Date', value: 'submissionDate' },
-  { label: 'Created By', value: 'user.firstName' },
-  // { label: 'Attachment Name', value: 'attachmentName' },
   { label: 'Status', value: 'isActive' },
 ];
 

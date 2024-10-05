@@ -10,6 +10,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset ,
     getValues,
   } = useForm();
 
@@ -52,6 +53,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         state: data.state,
         pinCode: data.pinCode,
         country: data.country,
+        isActive: true
       },
       headers: {
         'Content-Type': 'application/json',
@@ -60,12 +62,14 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
       .then((res) => {
         console.log('Response:', res.data);
         toast.success('School added successfully!');
+        reset()
         onClose();
       })
       .catch((err) => {
         console.log('Error:', err);
         toast.error('Failed to add school.');
         onClose();
+        reset()
       });
   };
 

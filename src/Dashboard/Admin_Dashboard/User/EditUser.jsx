@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {useForm } from 'react-hook-form';
 import DatePicker from '../../../Reusable_components/DatePicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,12 +22,9 @@ function EditUser() {
 
   const [toggleValue, setToggleValue] = useState(true);
   const [roles , setRoles] = useState([]) ;
-  // const [classes , setClasses] = useState([]) ;
-  // const [books , setBooks] = useState([]) ;
-  // const [schools , setSchools] = useState([]) ;
   const [selectedRole, setSelectedRole] = useState();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchRoles = async() =>{
@@ -47,61 +44,7 @@ function EditUser() {
       })
     }
 
-    // const fetchClasses = async() =>{
-    //   axios({
-    //     method:"GET" , 
-    //     url:'http://localhost:8080/class/getClassList' , 
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setClasses(res.data.data) ;
-    //   })
-    //   .catch(err => {
-    //     console.log(err , 'error:');
-    //   })
-    // }
-
-    // const fetchBooks = async() =>{
-    //   axios({
-    //     method:"GET" , 
-    //     url:'http://localhost:8080/book/getBookList' , 
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setBooks(res.data.data) ;
-    //   })
-    //   .catch(err => {
-    //     console.log(err , 'error:');
-    //   })
-    // }
-
-    // const fetchSchools = async() =>{
-    //   axios({
-    //     method:"GET" , 
-    //     url:'http://localhost:8080/school/getSchoolList' , 
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setSchools(res.data.data) ;
-    //   })
-    //   .catch(err => {
-    //     console.log(err , 'error:');
-    //   })
-    // }
-
     fetchRoles() ;
-    // fetchClasses() ;
-    // fetchBooks() ;
-    // fetchSchools() ;
 } , []);
 
 
@@ -117,7 +60,7 @@ function EditUser() {
         const userData = response.data.data;
         reset(userData);
         setToggleValue(userData.isActive);
-        setSelectedRole(userData.role.id)
+        setSelectedRole(userData.role)
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
@@ -125,13 +68,10 @@ function EditUser() {
   }, [userId, reset]);
 
   const handleChange = (role) => {
-    setSelectedRole(role.id); 
+    setSelectedRole(role); 
     setDropdownOpen(false); 
   };
   const onSubmit = (data) => {
-    // const selectedClasses = classes.find(cls => cls.id === parseInt(data.className));
-    // const selectedBooks = books.find(book => book.id === parseInt(data.book));
-    // const selectedSchools = schools.find(school => school.id === parseInt(data.school));
     axios({
       method: "post",
       url: `http://localhost:8080/user/updateUser`,
@@ -140,14 +80,12 @@ function EditUser() {
       },
       data: { 
         ...data,
-        // className : null, 
-        // book: [] , 
-        // school : null ,
-        role :  {id: selectedRole} ,
-        isActive: toggleValue ? 'true' : 'false' },
+        role :  selectedRole ,
+        isActive: toggleValue ? 'True' : 'False' },
     })
     .then((response) => {
         toast.success("User updated successfully!");
+        navigate('/admin/activeUser')
     })
     .catch((error) => {
         console.error("Error updating user:", error);
@@ -382,7 +320,7 @@ function EditUser() {
             <div
             key={role.id}
             className="p-2 cursor-pointer hover:bg-gray-100"
-            onClick={() => handleChange(role)}
+            onClick={() => handleChange(role.id)}
           >
               {role.name}
             </div>
@@ -391,63 +329,6 @@ function EditUser() {
         )}
         {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
       </div>
-
-
-
-        {/* Class Input
-        <div className="mt-4">
-            <select
-              id="className"
-              className={`w-1/2 px-3 py-2 border ${errors.classname ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('className', { required: 'Class Field is required' })}
-            >
-                <option value="" hidden>Select a Class</option>
-              {classes.map(cls => (
-                <option key={cls.id} value={cls.id} selected={cls.id === userClass}>
-                  {cls.name}
-                </option>
-              ))}
-            </select>
-            {errors.cls && <p className="text-red-500 text-sm mt-1">{errors.cls.message}</p>}
-          </div>
-
-
-        {/* Book Input */}
-        {/* <div className="mt-4">
-            <select
-              id="book"
-              className={`w-1/2 px-3 py-2 border ${errors.book ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('book', { required: 'Book details is required' })}
-            >
-                <option value="" hidden>Select a Book</option>
-              {books.map(book => (
-                <option key={book.id} value={book.id} selected={book.id === userBook}>
-                  {book.name}
-                </option>
-              ))}
-            </select>
-            {errors.book && <p className="text-red-500 text-sm mt-1">{errors.book.message}</p>}
-          </div> */}
-
-        {/* School Input */}
-        {/* <div className="mt-4">
-            <select
-              id="school"
-              className={`w-1/2 px-3 py-2 border ${errors.school ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('school', { required: 'School details is required' })}
-            >
-                <option value="" hidden>Select a School</option>
-              {schools.map(school => (
-                <option key={school.id} value={school.id} selected={school.id === userSchool}>
-                  {school.name}
-                </option>
-              ))}
-            </select>
-            {errors.school && <p className="text-red-500 text-sm mt-1">{errors.school.message}</p>}
-          </div> */}
 
         <Button  className='p-0 text-center mt-10' onClick={handleSubmit(onSubmit)} />
       </div>

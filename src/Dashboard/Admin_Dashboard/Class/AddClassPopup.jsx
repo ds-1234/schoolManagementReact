@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 const AddClassPopup = ({ isOpen, onClose }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset , formState: { errors } } = useForm();
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -55,19 +55,18 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
   const onSubmit = async (data) => {
     const subjectDetails = selectedSubjects.map(id => {
+      console.log(subjects , id);
+      
       const subject = subjects.find(sub => sub.id === id);
-      return {
-        id: subject.id,
-        subject: subject.subject,
-        description: subject.description // Assuming description is available
-      };
+      return subject.id
     });
 
     try {
       await axios.post('http://localhost:8080/class/createClass', {
         name: data.name,
         section: data.section,
-        subject: subjectDetails
+        subject: subjectDetails,
+        isActive: true 
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +74,11 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       });
 
       toast.success("Successfully added class");
+      reset()
+      setSelectedSubjects([])
+      setSubjects([])
       onClose();
+
     } catch (error) {
       toast.error("Error adding new class");
       console.error(error);

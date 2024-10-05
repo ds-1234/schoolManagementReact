@@ -16,13 +16,65 @@ const AddHomework = ({ isOpen, onClose }) => {
   const [subjects , setSubjects] = useState([]) ;
   const [file , setFile] = useState(null) ;
 
+  const [classMap , setClassMap] = useState({}) 
+  const [subjectMap , setSubjectMap] = useState({})
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    getValues ,
+    reset ,
     setValue: setFormValue,
   } = useForm();
+
+  const fetchCls = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/class/getClassList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const clss = {} ;
+        response.data.data.forEach((cls) => {
+          clss[cls.id] = cls;
+        })
+        setClassMap(clss)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  const fetchSub = () => {
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8080/subject/getSubjectList',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Data from API:', response.data.data);
+        const subs = {} ;
+        response.data.data.forEach((sub) => {
+          subs[sub.id] = sub.subject ;
+        })
+        setSubjectMap(subs)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  useEffect(() => {
+    setClasses(user.className)
+    fetchCls() ;
+    fetchSub()
+  } , [])
 
 
   // Fetch class and subject data
@@ -30,7 +82,6 @@ const AddHomework = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setValue(true);
-      setClasses(user.className)
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -49,31 +100,31 @@ const AddHomework = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const submitHomework = (data) => {
-
     const homeworkRequest = {
-      user: user,
-      className: JSON.parse(data.className),
-      subjectName: JSON.parse(data.subjectName),
+      user: user.id,
+      className: data.className,
+      subject: data.subject,
       homeworkDate: data.homeworkDate,
       submissionDate: data.submissionDate,
       isActive: value, 
     };
-
+  
     const formData = new FormData();
     formData.append('homeworkRequest', new Blob([JSON.stringify(homeworkRequest)], { type: 'application/json' }));
-    formData.append('file', file);
-
+    formData.append('file', file); 
+  
     axios({
       method: 'post',
       url: 'http://localhost:8080/homework/saveHomework',
-      data : formData ,
-      headers: { 'Content-Type': 'multipart/form-data' } 
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((res) => {
         console.log('Response:', res.data.data);
         toast.success('Homework added successfully!');
         setValue(true);
-        onClose();
+        reset(); 
+        onClose(); 
       })
       .catch((err) => {
         console.log('Error:', err);
@@ -86,10 +137,8 @@ const AddHomework = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleClassChange = (e) => {
-    const selectedClass = JSON.parse(e.target.value);
-    if (selectedClass && selectedClass.subject) {
-      setSubjects(selectedClass.subject);
-    }
+    const selectedClass = e.target.value;
+    setSubjects(classMap[selectedClass]?.subject)
   };
 
   const handleFileChange = (event) => {
@@ -121,8 +170,8 @@ const AddHomework = ({ isOpen, onClose }) => {
               >
                 <option value="">Select Class</option>
                 {classes.map((cls) => (
-                  <option key={cls.id} value={JSON.stringify(cls)}>
-                    {cls.name}-{cls.section}
+                  <option key={cls} value={cls}>
+                    {classMap[cls]?.name} - {classMap[cls]?.section}
                   </option>
                 ))}
               </select>
@@ -135,21 +184,21 @@ const AddHomework = ({ isOpen, onClose }) => {
           <div className="grid grid-cols-2 gap-4">
             {/* Subject */}
             <div>
-              <label htmlFor="subjectName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
                 Subject
               </label>
               <select
-                {...register('subjectName', { required: 'Subject is required' })}
+                {...register('subject', { required: 'Subject is required' })}
                 className="w-full py-2 border rounded-xl bg-gray-100 px-2"
               >
                 <option value="">Select Subject</option>
                 {subjects.map((sub) => (
-                  <option key={sub.id} value={JSON.stringify(sub)}>
-                    {sub.subject}
+                  <option key={sub} value={sub}>
+                    {subjectMap[sub]}
                   </option>
                 ))}
               </select>
-              {errors.subjectName && <span className="text-red-500 text-sm">{errors.subjectName.message}</span>}
+              {errors.subject && <span className="text-red-500 text-sm">{errors.subject.message}</span>}
             </div>
 
             {/* Homework Date */}
@@ -176,7 +225,7 @@ const AddHomework = ({ isOpen, onClose }) => {
               labelClass="block text-sm font-medium text-gray-700"
               label="Submission Date"
               name={"submissionDate"}
-              className="w-full border rounded-xl bg-gray-100 "
+              className="w-full border rounded-xl bg-gray-100 py-2 px-2 "
               register={register}
               required={true}
               // currentDate={homeworkDate}
