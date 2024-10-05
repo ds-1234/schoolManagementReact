@@ -17,9 +17,8 @@ const TimetablePage = () => {
         
         // Filter timetable for specific teacher based on teacherId
         const filteredTimetable = response.data.data.filter(
-          (timetable) => timetable.teacherName?.id == parseInt(teacherId) 
+          (timetable) => timetable.userId == parseInt(teacherId) 
         );
-        console.log(filteredTimetable);
         setTimetableData(filteredTimetable);
       } catch (error) {
         // setError(error.message || 'Something went wrong');
@@ -37,9 +36,6 @@ const TimetablePage = () => {
     return <div>Loading...</div>;
   }
 
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
 
   return (
     <div className='flex flex-col justify-start pl-0'>

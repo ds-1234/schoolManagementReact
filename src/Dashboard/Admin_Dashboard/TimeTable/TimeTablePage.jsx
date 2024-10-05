@@ -62,7 +62,7 @@ const TimetablePage = () => {
         <h2 className="text-lg mb-4 text-black font-semibold mt-5">
           Time Table for {className} - {section}
         </h2>
-        <TimetableGrid selectedClass={className} selectedSection={section} />
+        <TimetableGrid classID={classItem.id} />
     </div> 
     </div>
   );
