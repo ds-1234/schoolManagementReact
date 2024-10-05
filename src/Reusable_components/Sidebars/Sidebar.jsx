@@ -5,40 +5,45 @@ import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPen
 
 const Sidebar = () => {
 
-  const [isStdDropdown , setIsStdDropdown] = useState(false) ;
-  const [isExamDropdown , setIsExamDropdown] = useState(false) ;
-  const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
-  const [isSportsDropdown , setIsSportsDropdown] = useState(false) ;
-  const [isHostelDropdown , setIsHostelDropdown] = useState(false) ;
-  const [isUserDropdown , setIsUserDropdown] = useState(false) ;
-  const [isConfOpen , setIsConfOpen] = useState(false) ;
+  // const [isStdDropdown , setIsStdDropdown] = useState(false) ;
+  // const [isExamDropdown , setIsExamDropdown] = useState(false) ;
+  // const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
+  // const [isSportsDropdown , setIsSportsDropdown] = useState(false) ;
+  // const [isHostelDropdown , setIsHostelDropdown] = useState(false) ;
+  // const [isUserDropdown , setIsUserDropdown] = useState(false) ;
+  // const [isConfOpen , setIsConfOpen] = useState(false) ;
   const userRole = sessionStorage.getItem('role') 
+  const [openDropdown, setOpenDropdown] = useState(null)
 
 
-  const toggleStdDropdown = () => {
-    setIsStdDropdown(!isStdDropdown);
-  };
+  // const toggleStdDropdown = () => {
+  //   setIsStdDropdown(!isStdDropdown);
+  // };
 
-  const toggleExamDropdown = () => {
-    setIsExamDropdown(!isExamDropdown);
-  };
-  const toggleIncomeDropdown = () => {
-    setIsIncomeDropdown(!isIncomeDropdown);
-  };
-  const toggleSportsDropdown = () => {
-    setIsSportsDropdown(!isSportsDropdown);
-  };
-  const toggleHostelDropdown = () => {
-    setIsHostelDropdown(!isHostelDropdown);
-  };
+  // const toggleExamDropdown = () => {
+  //   setIsExamDropdown(!isExamDropdown);
+  // };
+  // const toggleIncomeDropdown = () => {
+  //   setIsIncomeDropdown(!isIncomeDropdown);
+  // };
+  // const toggleSportsDropdown = () => {
+  //   setIsSportsDropdown(!isSportsDropdown);
+  // };
+  // const toggleHostelDropdown = () => {
+  //   setIsHostelDropdown(!isHostelDropdown);
+  // };
 
-  const toggleUserDropdown = () => {
-    setIsUserDropdown(!isUserDropdown);
-  };
+  // const toggleUserDropdown = () => {
+  //   setIsUserDropdown(!isUserDropdown);
+  // };
 
-  const toggleConf = () => {
-    setIsConfOpen(!isConfOpen) ;
-  }
+  // const toggleConf = () => {
+  //   setIsConfOpen(!isConfOpen) ;
+  // }
+
+   const toggleDropdown = (dropdown) => {
+    setOpenDropdown(prevDropdown => prevDropdown === dropdown ? null : dropdown);
+  };
 
  
   return (
@@ -68,9 +73,9 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
                 User
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleUserDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('user')} />
             </NavLink>
-            {isUserDropdown && (
+            {openDropdown === 'user' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -110,9 +115,9 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faSliders} className="mr-3 text-[#ffae01]" />
                 Configuration
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleConf} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('conf')} />
             </NavLink>
-            {isConfOpen && (
+            {openDropdown=='conf' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -227,9 +232,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
                 Students
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleStdDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('students')} />
             </NavLink>
-            {isStdDropdown && (
+            {openDropdown == 'students' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 {/* <li>
                   <NavLink
@@ -319,9 +324,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Examinations
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleExamDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('exam')} />
             </NavLink>
-            {isExamDropdown && (
+            {openDropdown=='exam' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -422,9 +427,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Accounts
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleIncomeDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('accounts')} />
             </NavLink>
-            {isIncomeDropdown && (
+            {openDropdown=='accounts' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -534,9 +539,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
                 Sports
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleSportsDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('sports')} />
             </NavLink>
-            {isSportsDropdown && (
+            {openDropdown=='sports' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
@@ -575,9 +580,9 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
                 Hostel
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={toggleHostelDropdown} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('hostel')} />
             </NavLink>
-            {isHostelDropdown && (
+            {openDropdown == 'hostel' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
