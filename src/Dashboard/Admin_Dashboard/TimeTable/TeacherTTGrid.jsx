@@ -1,25 +1,61 @@
-import React from 'react';
+import React, { useEffect , useState } from 'react';
+import axios from 'axios';
 
 const TeacherTTGrid = ({ timetableData }) => {
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const colors = ['bg-red-300', 'bg-blue-300', 'bg-yellow-300', 'bg-green-300', 'bg-purple-300', 'bg-pink-300'];
+  const [classMap, setClassMap] = useState({});
+  const [subjectMap, setSubjectMap] = useState({});
 
+    // Fetch class data
+    const fetchCls = () => {
+      axios.get('http://localhost:8080/class/getClassList')
+        .then((response) => {
+          const classes = {};
+          response.data.data.forEach((cls) => {
+            classes[cls.id] = cls;
+          });
+          setClassMap(classes);
+        })
+        .catch((error) => {
+          console.error('Error fetching class data:', error);
+        });
+    };
+  
+    // Fetch subject data
+    const fetchSub = () => {
+      axios.get('http://localhost:8080/subject/getSubjectList')
+        .then((response) => {
+          const subjects = {};
+          response.data.data.forEach((sub) => {
+            subjects[sub.id] = sub.subject;
+          });
+          setSubjectMap(subjects);
+        })
+        .catch((error) => {
+          console.error('Error fetching subject data:', error);
+        });
+    };
+
+    useEffect(() => {
+      fetchCls() ;
+      fetchSub() ;
+    })
   const transformData = (data) => {
     const result = {};
     data.forEach((item, index) => {
       const day = item.weekDay || 'N/A';
       const time = `${item.startTime} - ${item.endTime}`;
       const color = colors[index % colors.length]; // Assign a color from the list
-      console.log(item);
       
 
       if (!result[day]) result[day] = [];
 
       result[day].push({
         time,
-        subject: item.className?.subject[0]?.subject || 'N/A',
-        className: item.className?.name || 'N/A',
-        section: item.className?.section || 'N/A',
+        subject: subjectMap[item.subject[0]] || 'N/A',
+        className: classMap[item.className]?.name || 'N/A',
+        section: classMap[item.className]?.section || 'N/A',
         color,
       });
     });
