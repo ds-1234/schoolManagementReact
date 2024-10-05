@@ -60,7 +60,7 @@ function AddNotice() {
     <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
       <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
 
-           {/* Radio buttons for "Notice For"
+           {/* Radio buttons for "Notice For" */}
            <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-700">Notice For *</label>
           <div className="mt-2 space-y-2">
@@ -77,7 +77,7 @@ function AddNotice() {
               <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
             </div>
           </div>
-        </div> */}
+        </div>
 
 
 
@@ -106,7 +106,7 @@ function AddNotice() {
         />
 
 
-           {/* Radio buttons for "Notice For" */}
+           {/* Radio buttons for "Notice For"
            <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-700">Notice For *</label>
           <div className="mt-2 space-y-2">
@@ -123,7 +123,7 @@ function AddNotice() {
               <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
       <div className="col-span-2 flex justify-start space-x-4 mt-10">
