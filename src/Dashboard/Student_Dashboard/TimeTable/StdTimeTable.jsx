@@ -15,42 +15,36 @@ const StdTimetable = () => {
       try {
         // Fetch timetable data from API
         const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
+
+        setTimetableData(response.data.data.filter((tt) => tt.className === user.className[0]))
+        console.log(timetableData);
         
-        // Log the user data to check if it's being fetched correctly
-        console.log(user);
-
-        // Filter the response data based on user className and section
-        const filteredData = response.data.data.filter(item => 
-          item.className === user.className
-        );
-
-        // Set the filtered timetable data
-        setTimetableData(filteredData); 
-        console.log(filteredData);
       } catch (error) {
         setError(error.message || 'Something went wrong'); 
       } finally {
         setLoading(false);
       }
     };
-
-    const fetchCls = async () => {
-      await axios.get('http://localhost:8080/class/getClassList')
-        .then((response) => {
-          const classes = {};
-          response.data.data.forEach((cls) => {
-            classes[cls.id] = cls;
-          });
-          setClassMap(classes);
-        })
-        .catch((error) => {
-          console.error('Error fetching class data:', error);
-        });
-    };
-
     fetchTimetable();
+  }, [user.id]);
+
+  const fetchCls = async () => {
+    await axios.get('http://localhost:8080/class/getClassList')
+      .then((response) => {
+        const classes = {};
+        response.data.data.forEach((cls) => {
+          classes[cls.id] = cls;
+        });
+        setClassMap(classes);
+      })
+      .catch((error) => {
+        console.error('Error fetching class data:', error);
+      });
+  };
+
+  useEffect(() => {
     fetchCls()
-  }, [user]); // Dependency array includes user to refetch if user changes
+  })
 
   if (loading) {
     return <div>Loading...</div>; 
@@ -69,7 +63,7 @@ const StdTimetable = () => {
             <h2 className="text-lg mb-4 text-black font-semibold mt-5">
               Time Table for {classMap[user.className]?.name} - {classMap[user.className]?.section}
             </h2>
-            <TimetableGrid classID={user.className} />
+            <TimetableGrid timetableData={timetableData} />
         </div> 
     </div>
   );

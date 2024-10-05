@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {useLocation, useParams } from 'react-router-dom'; // Use useParams for cleaner access
+import {useLocation } from 'react-router-dom'; // Use useParams for cleaner access
 import axios from 'axios'; 
 import TimetableGrid from './TimetableGrid';
 import AddBtn from '../../../Reusable_components/AddBtn';
@@ -8,10 +8,8 @@ import { NavLink } from 'react-router-dom';
 
 const TimetablePage = () => {
   const { classItem } = useLocation().state;
-  const {className , section} = useParams()
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
 
   const openAddPopup = () => setIsAddPopupOpen(true);
@@ -21,12 +19,8 @@ const TimetablePage = () => {
     const fetchTimetable = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
-
-        setTimetableData(response.data.data); 
-        console.log(response.data.data);
-        console.log(classItem);
-        
-        
+        setTimetableData(response.data.data.filter((tt) => tt.className === classItem.id))
+         console.log(response.data.data);
       } catch (error) {
         // setError(error.message || 'Something went wrong'); 
         console.log(error);
@@ -60,9 +54,9 @@ const TimetablePage = () => {
       <AddTimeTable isOpen={isAddPopupOpen} onClose={closeAddPopup} classItem={classItem}/>
      <div>
         <h2 className="text-lg mb-4 text-black font-semibold mt-5">
-          Time Table for {className} - {section}
+          Time Table for {classItem.name} - {classItem.section}
         </h2>
-        <TimetableGrid classID={classItem.id} />
+        <TimetableGrid timetableData={timetableData}/>
     </div> 
     </div>
   );

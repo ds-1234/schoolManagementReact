@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const TimetableGrid = ({classID}) => {
-  const [timetableData, setTimetableData] = useState({});
-  const [loading, setLoading] = useState(true);
+const TimetableGrid = ({timetableData}) => {
   const [classMap, setClassMap] = useState({});
   const [subjectMap, setSubjectMap] = useState({});
   const [userMap, setUserMap] = useState({});
@@ -56,96 +54,64 @@ const TimetableGrid = ({classID}) => {
       });
   };
 
-  // Fetch timetable data
-  const fetchTimetable = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/timeTable/getTimeTable');
-      // console.log(response.data.data);
-      const transformedData = transformData(response.data.data);
-      setTimetableData(transformedData);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching timetable:', error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTimetable();
-  }, [classID]);
-
   useEffect(() => {
     fetchSub();
     fetchCls();
     fetchUsers();
   } , [])
-  
-  const transformData = (data) => {
-    const result = {};
-    data.forEach((item, index) => {
-        const className = classMap[item.className]?.name;
-        const section = classMap[item.className]?.section;
-        const day = item.weekDay || 'N/A';
-        const time = item.startTime && item.endTime ? `${item.startTime} - ${item.endTime}` : 'N/A';
-        const color = colors[index % colors.length];
 
-        if (!result[className]) result[className] = {};
-        if (!result[className][section]) result[className][section] = {};
-        if (!result[className][section][day]) result[className][section][day] = [];
 
-        result[className][section][day].push({
-            time,
-            subject: subjectMap[item.subject[0]],
-            teacher: userMap[item.userId]?.firstName + " " + userMap[item.userId]?.lastName,
-            color,
-        });
+const transformData = (data) => {
+  const result = {};
+  data.forEach((item, index) => {
+    const className = classMap[item.className]?.name || 'N/A';
+    const section = classMap[item.className]?.section || 'N/A';
+    const day = item.weekDay || 'N/A';
+    const time = `${item.startTime} - ${item.endTime}`;
+    const color = colors[index % colors.length]; // Assign a color from the list
+    
+
+    if (!result[day]) result[day] = [];
+
+    result[day].push({
+      time,
+      subject: subjectMap[item.subject[0]] || 'N/A',
+     teacher: userMap[item.userId]?.firstName + " " + userMap[item.userId]?.lastName ,
+      color,
     });
-    return result;
+  });
+  return result;
 };
 
- 
 
-  if (loading) {
-    return <p>Loading timetable...</p>;
-  }
-
-  // debugger;
-  const timetable = timetableData[classMap[classID]?.name]?.[classMap[classID]?.section];
-  // console.log('Selected Class:', classMap[classID]?.name, 'Selected Section:', classMap[classID]?.section);
-  // console.log('Timetable:', timetable);
+  const timetable = transformData(timetableData);
 
   return (
-    <div>
-      {timetable ? (
-        <div className="flex flex-nowrap justify-evenly gap-4 bg-white pb-10 pt-4 rounded-lg">
-          {daysOfWeek.map((day) => (
-            <div key={day}>
-              <h3 className="text-base font-semibold text-[#202C4B] mb-4">{day}</h3>
-              <div className="space-y-4">
-                {timetable[day] ? (
-                  timetable[day].map((slot, index) => (
-                    <div key={index} className={`${slot.color} text-gray-900 p-4 rounded-lg shadow-lg space-y-2`}>
-                      <div className="flex items-center space-x-3">
-                        <span className="text-sm font-semibold">
-                          <i className="far fa-clock"></i> {slot.time}
-                        </span>
-                      </div>
-                      <p className="font-medium">Subject: {slot.subject}</p>
-                      <div className="flex items-center space-x-3">
-                        <p className="font-medium">{slot.teacher}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 italic">No classes</p>
-                )}
+<div className="flex flex-nowrap justify-evenly gap-4 bg-white pb-10 pt-4 rounded-lg">
+  {daysOfWeek.map((day) => (
+    <div key={day}>
+      <h3 className="text-base font-semibold text-[#202C4B] mb-4">{day}</h3>
+      <div className="space-y-4">
+        {timetable[day] ? (
+          timetable[day].map((slot, index) => (
+            <div key={index} className={`${slot.color} text-gray-900 p-4 rounded-lg shadow-lg space-y-2`}>
+              <div className="flex items-center space-x-3">
+                <span className="text-sm font-semibold">
+                  <i className="far fa-clock"></i> {slot.time}
+                </span>
+              </div>
+              <p className="font-medium">Subject: {slot.subject}</p>
+              <div className="flex items-center space-x-3">
+                <p className="font-medium">{slot.teacher}</p>
               </div>
             </div>
+          ))
+        ) : (
+          <p className="text-gray-500 italic">No classes</p>
+        )}
+      </div>
+    </div>
           ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-500">No timetable available for this class and section.</p>
-      )}
     </div>
   );
 };
