@@ -30,7 +30,7 @@ const TimetablePage = () => {
     };
 
     fetchTimetable();
-  }, [classItem]); 
+  }, [classItem , closeAddPopup]); 
 
   const handleAddClick = () => {
     openAddPopup()
