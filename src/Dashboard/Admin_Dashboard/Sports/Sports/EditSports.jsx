@@ -90,7 +90,7 @@ const handleSubmit = (e) => {
       data: {
         id: sportsId,
         sportsName: sports.sportsName,
-        coachId: selectedCoach, // Send selected coach ID
+        userId: selectedCoach.id, // Send selected coach ID
         startedYear: sports.startedYear,
         isActive: value
       },

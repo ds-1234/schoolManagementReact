@@ -18,6 +18,8 @@ function Players() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editPlayerId , setEditPlayerId] = useState(null)
+  const [playerName , setPlayerName] = useState('')
+  const [userId , setUserId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -95,9 +97,11 @@ const handleDelete = (id)=>{
       // withCredentials: true,
     })
       .then((response) => {
-        console.log("Data from API:", response.data);
+        console.log("Data from AAAPI:", response.data);
         setData(response.data.data);
         setFilterData(response.data.data) ;
+        console.log(filterData,'filtered data')
+        console.log(data,' data')
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -106,12 +110,38 @@ const handleDelete = (id)=>{
 
   useEffect(() => {
     fetchData() ;
+    UserName()
   } , []);
 
   useEffect(() => {
     setData(data);  
     setFilterData(data); 
   }, []);
+
+
+  const UserName = () => {
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/user/getUserList`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        const filteredUser = response.data.data.filter(user => user.id === filterData.userId);
+        console.log(filteredUser,'filtered user')
+        setUserId(filteredUser)
+
+
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+
   
   const column = [
     {

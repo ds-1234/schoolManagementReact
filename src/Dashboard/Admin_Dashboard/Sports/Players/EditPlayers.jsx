@@ -105,8 +105,8 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
       data: {
         id: playersId,
         ...playerData,
-        playersName: selectedPlayers,
-        sportsName: selectedSports,
+        playersName: selectedPlayers.id,
+        sportsName: {id:selectedSports.id},
         isActive: value,
       },
     })
