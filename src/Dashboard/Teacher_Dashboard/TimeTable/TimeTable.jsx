@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import TeacherTTGrid from '../../Admin_Dashboard/TimeTable/TeacherTTGrid';
+import TeacherTTGrid from '../../Admin_Dashboard/TimeTable/Teacher/TeacherTTGrid';
 
 const Timetable = () => {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
