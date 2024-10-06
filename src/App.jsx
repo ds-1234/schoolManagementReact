@@ -47,10 +47,10 @@ import Guest from './Dashboard/Guest_DashBoard/Guest';
 import AddIncome from './Dashboard/Admin_Dashboard/Accounts/Income/AddIncome';
 import AdminHomework from './Dashboard/Admin_Dashboard/Homework/AdminHomework'
 import HomePage from './Dashboard/Admin_Dashboard/TimeTable/HomePage'
-import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/ClassPage';
-import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/TimeTablePage';
-import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/TeacherPage'
-import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/TeacherTimeTable';
+import ClassPage from './Dashboard/Admin_Dashboard/TimeTable/Class/ClassPage'
+import TimetablePage from './Dashboard/Admin_Dashboard/TimeTable/Class/TimeTablePage';
+import TeacherPage from './Dashboard/Admin_Dashboard/TimeTable/Teacher/TeacherPage'
+import TeacherTimeTable from './Dashboard/Admin_Dashboard/TimeTable/Teacher/TeacherTimeTable';
 import Holidays from './Dashboard/Admin_Dashboard/Holidays/Holidays';
 import Timetable from './Dashboard/Teacher_Dashboard/TimeTable/TimeTable';
 import StdTimetable from './Dashboard/Student_Dashboard/TimeTable/StdTimeTable';

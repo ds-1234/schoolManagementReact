@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
 
@@ -12,7 +12,7 @@ const Sidebar = () => {
   // const [isHostelDropdown , setIsHostelDropdown] = useState(false) ;
   // const [isUserDropdown , setIsUserDropdown] = useState(false) ;
   // const [isConfOpen , setIsConfOpen] = useState(false) ;
-  const userRole = sessionStorage.getItem('role') 
+  // const userRole = sessionStorage.getItem('role') 
   const [openDropdown, setOpenDropdown] = useState(null)
 
 
@@ -45,6 +45,9 @@ const Sidebar = () => {
     setOpenDropdown(prevDropdown => prevDropdown === dropdown ? null : dropdown);
   };
 
+  const renderAngleIcon = (dropdown) => {
+    return openDropdown === dropdown ? faAngleDown : faAngleRight;
+  };
  
   return (
     <div className='bg-[#051f3e] fixed h-screen '>
@@ -73,7 +76,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
                 User
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-2" onClick={() => toggleDropdown('user')} />
+              <FontAwesomeIcon icon={renderAngleIcon('user')} className="mr-2" onClick={() => toggleDropdown('user')} />
             </NavLink>
             {openDropdown === 'user' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -115,7 +118,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faSliders} className="mr-2 text-[#ffae01]" />
                 Configuration
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('conf')} />
+              <FontAwesomeIcon icon={renderAngleIcon('conf')} className="mr-3" onClick={() => toggleDropdown('conf')} />
             </NavLink>
             {openDropdown=='conf' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -232,7 +235,7 @@ const Sidebar = () => {
                 <FontAwesomeIcon  icon={faChildren} className=" mr-2 text-[#ffae01]" />
                 Students
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('students')} />
+              <FontAwesomeIcon icon={renderAngleIcon('students')} className="mr-3" onClick={() => toggleDropdown('students')} />
             </NavLink>
             {openDropdown == 'students' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -324,7 +327,7 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Examinations
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('exam')} />
+              <FontAwesomeIcon icon={renderAngleIcon('exam')} className="mr-3" onClick={() => toggleDropdown('exam')} />
             </NavLink>
             {openDropdown=='exam' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -427,7 +430,7 @@ const Sidebar = () => {
                 <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
                 Accounts
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('accounts')} />
+              <FontAwesomeIcon icon={renderAngleIcon('accounts')} className="mr-3" onClick={() => toggleDropdown('accounts')} />
             </NavLink>
             {openDropdown=='accounts' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -509,7 +512,7 @@ const Sidebar = () => {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faBus} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
                 Holidays
             </NavLink>
           </li>
@@ -521,7 +524,7 @@ const Sidebar = () => {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faBus} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
                 Leave
             </NavLink>
           </li>
@@ -536,10 +539,10 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faChildren} className="mr-1 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faVolleyball} className="mr-1 text-[#ffae01]" />
                 Sports
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('sports')} />
+              <FontAwesomeIcon icon={renderAngleIcon('sports')} className="mr-3" onClick={() => toggleDropdown('sports')} />
             </NavLink>
             {openDropdown=='sports' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -577,10 +580,10 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faChildren} className="mr-1 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faHotel} className="mr-1 text-[#ffae01]" />
                 Hostel
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('hostel')} />
+              <FontAwesomeIcon icon={renderAngleIcon('hostel')} className="mr-3" onClick={() => toggleDropdown('hostel')} />
             </NavLink>
             {openDropdown == 'hostel' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">

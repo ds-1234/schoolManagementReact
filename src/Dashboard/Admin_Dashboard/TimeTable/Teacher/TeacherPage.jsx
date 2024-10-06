@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-import Button from '../../../Reusable_components/Button';
+import Button from '../../../../Reusable_components/Button';
 
 const TeacherPage = () => {
   const [teachers, setTeachers] = useState([]);
