@@ -32,20 +32,22 @@ function LandingPage() {
     })
     .then((res) => {
       let roleID = res.data.data.id;
-      switch (roleID) {
-        case 3:
-          navigate('/studentDashboard');
-          break;
-        case 4:
+      let roleName = res.data.data.name;
+      console.log(roleName)
+      switch (roleName) {
+        case 'Teacher':
           navigate('/teacherDashboard');
           break;
-        case 5:
+        case 'Student' :
+          navigate('/studentDashboard');
+          break;
+        case 'Parents':
           navigate('/parentsDashboard');
           break;
-        case 2:
+        case 'Admin':
           navigate('/admin');
           break;
-        case 1:
+        case 'Guest' :
           navigate('/guestDashboard');
           break;
         default:
@@ -54,6 +56,7 @@ function LandingPage() {
     })
     .catch((err) => {
       toast.error('Role fetching error');
+      console.log(err)
     });
   };
 

@@ -40,7 +40,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
   useEffect(() => {
     axios.get('http://localhost:8080/user/getUserList')
       .then((response) => {
-        const filteredPlayers = response.data.data.filter(user => user.role.name === 'Student');
+        const filteredPlayers = response.data.data.filter(user => user.role === 3);
         setPlayers(filteredPlayers);
       })
       .catch((error) => {
