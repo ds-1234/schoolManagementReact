@@ -55,7 +55,7 @@ const Sidebar = () => {
                       `flex items-center gap-1 hover:bg-[#063256] p-2 hover:rounded-xl ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`}
               >
               <div className="flex gap-1 justify-center items-center">
-                <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
+                <FontAwesomeIcon icon={faHouse} className="mr-2 text-[#ffae01]"  />
                   Dashboard
               </div>
             </NavLink>
@@ -73,7 +73,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
                 User
               </div>
-              <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('user')} />
+              <FontAwesomeIcon icon={faAngleDown} className="mr-2" onClick={() => toggleDropdown('user')} />
             </NavLink>
             {openDropdown === 'user' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -112,7 +112,7 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-              <FontAwesomeIcon icon={faSliders} className="mr-3 text-[#ffae01]" />
+              <FontAwesomeIcon icon={faSliders} className="mr-2 text-[#ffae01]" />
                 Configuration
               </div>
               <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('conf')} />
@@ -213,7 +213,7 @@ const Sidebar = () => {
                 `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-              <FontAwesomeIcon icon={faBookAtlas} className="mr-3 text-[#ffae01]" />
+              <FontAwesomeIcon icon={faBookAtlas} className="mr-4 text-[#ffae01]" />
               Library
             </NavLink>
           </li>
@@ -229,7 +229,7 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon  icon={faChildren} className=" mr-2 text-[#ffae01]" />
                 Students
               </div>
               <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('students')} />
@@ -284,8 +284,8 @@ const Sidebar = () => {
             )}
           </li>
 
-          {/* Transport section */}
-          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+    {/* Transport section */}
+    <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/transport"
               className={({ isActive }) =>
@@ -305,7 +305,7 @@ const Sidebar = () => {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
                 Notice
               
             </NavLink>
@@ -395,7 +395,7 @@ const Sidebar = () => {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faCalendarDay} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faCalendarDay} className="mr-4 text-[#ffae01]" />
                 Time Table
               
             </NavLink>
@@ -424,7 +424,7 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
                 Accounts
               </div>
               <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('accounts')} />
@@ -536,7 +536,7 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faChildren} className="mr-1 text-[#ffae01]" />
                 Sports
               </div>
               <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('sports')} />
@@ -577,7 +577,7 @@ const Sidebar = () => {
               }
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faChildren} className="mr-1 text-[#ffae01]" />
                 Hostel
               </div>
               <FontAwesomeIcon icon={faAngleDown} className="mr-3" onClick={() => toggleDropdown('hostel')} />
