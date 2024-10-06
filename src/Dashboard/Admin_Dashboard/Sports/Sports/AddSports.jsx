@@ -66,7 +66,8 @@ const AddSports = ({ isOpen, onClose }) => {
       url: 'http://localhost:8080/sports/saveSports',
       data: {
         sportsName: data.sportsName,
-        coachName: {id: selectedCoach?.id },
+        // coachName: {id: selectedCoach?.id },
+        userId:selectedCoach.userId,
         startedYear: data.startedYear,
         isActive:value
       },
@@ -90,7 +91,9 @@ const AddSports = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
+    
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      {console.log(selectedCoach)}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}
