@@ -6,7 +6,8 @@ import Button from '../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
-const AddTimeTable = ({ isOpen, onClose, classItem }) => {
+const AddTimeTable = ({ isOpen, onClose, classItem }) => {  
+  const [subjectMap , setSubjectMap] = useState({}) 
   const { register, control, handleSubmit, reset } = useForm({
     defaultValues: {
       days: {
@@ -58,6 +59,27 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching data:', error);
       }
     };
+    
+    const fetchSub = () => {
+      axios({
+        method: 'GET',
+        url: 'http://localhost:8080/subject/getSubjectList',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
+          const subjects = {};
+          response.data.data.forEach((sub) => {
+            subjects[sub.id] = sub.subject;
+          });
+          setSubjectMap(subjects);
+        })
+        .catch((error) => {
+          console.error('Error fetching subjects:', error);
+        });
+    };
+      fetchSub();
     fetchTeachers();
   }, []);
 
@@ -74,17 +96,13 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
 
   const onSubmit = (data) => {
     const payload = {
-      className: {
-        id: classItem.id,
-        name: classItem.name,
-        section: classItem.section,
-        subject: classItem.subject,
-      },
+      className: classItem.id,
       weekDay: activeDay,
       startTime: data.days[activeDay][0].timeFrom,
       endTime: data.days[activeDay][0].timeTo,
-      teacherName: JSON.parse(data.days[activeDay][0].teacher),
-      subject: JSON.parse(data.days[activeDay][0].subject)
+      userId: parseInt(data.days[activeDay][0].teacher),
+      subject: [parseInt(data.days[activeDay][0].subject)],
+      isActive : true
     };
   
     console.log(payload);
@@ -155,8 +173,8 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" {...register(`days.${activeDay}.${index}.subject`)}>
                   <option value="" disabled>Select Subject</option>
                   {classItem.subject.map((sub) => (
-                    <option key={sub.id} value={JSON.stringify(sub)}>
-                      {sub.subject}
+                    <option key={sub} value={sub}>
+                      {subjectMap[sub]}
                     </option>
                   ))}
                 </select>
@@ -166,7 +184,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" {...register(`days.${activeDay}.${index}.teacher`)}>
                   <option value="" disabled>Select Teacher</option>
                   {teachers.map((tch) => (
-                    <option key={tch.id} value={JSON.stringify(tch)}>
+                    <option key={tch.id} value={tch.id}>
                       {tch.firstName} - {tch.userName}
                     </option>
                   ))}
