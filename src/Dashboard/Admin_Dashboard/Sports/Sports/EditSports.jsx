@@ -39,7 +39,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
     const fetchCoach = async () => {
         try {
             const response = await axios.get('http://localhost:8080/user/getUserList');
-            const filteredCoaches = response.data.data.filter(user => user.role.name === 'Teacher');
+            const filteredCoaches = response.data.data.filter(user => user.role === 3);
             setCoach(filteredCoaches);
         } catch (error) {
             toast.error("Error fetching coaches");
