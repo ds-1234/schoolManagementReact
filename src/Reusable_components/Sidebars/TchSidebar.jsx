@@ -14,7 +14,7 @@ function TchSidebar() {
                       `flex items-center gap-1 hover:bg-[#063256] p-2 hover:rounded-xl ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`}
               >
             <div className="flex gap-1 justify-center items-center">
-              <FontAwesomeIcon icon={faHouse} className="mr-3 text-[#ffae01]"  />
+              <FontAwesomeIcon icon={faHouse} className="mr-2 text-[#ffae01]"  />
               Dashboard
             </div>
           </NavLink>
@@ -27,7 +27,7 @@ function TchSidebar() {
             `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
           }
         >
-            <FontAwesomeIcon icon={faCalendarDay} className="mr-3 text-[#ffae01]" />
+            <FontAwesomeIcon icon={faCalendarDay} className="mr-4 text-[#ffae01]" />
             Time Table
           
         </NavLink>
@@ -67,7 +67,7 @@ function TchSidebar() {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faChildren} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faChildren} className="mr-2 text-[#ffae01]" />
                 Sports
             </NavLink>
           </li>
@@ -79,7 +79,7 @@ function TchSidebar() {
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
-                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
                 Notice
               
             </NavLink>
