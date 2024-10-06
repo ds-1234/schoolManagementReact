@@ -27,7 +27,7 @@ const TeaSports = () => {
         
         // Filter the response data based on user ID
         const filteredData = response.data.data.filter(item => 
-          item.coachName.userId === user.userId
+          item.userId === user.id
         );
 
         // Set the filtered sports data

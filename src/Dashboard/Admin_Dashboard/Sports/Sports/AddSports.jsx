@@ -67,7 +67,7 @@ const AddSports = ({ isOpen, onClose }) => {
       data: {
         sportsName: data.sportsName,
         // coachName: {id: selectedCoach?.id },
-        userId:selectedCoach.userId,
+        userId:selectedCoach.id,
         startedYear: data.startedYear,
         isActive:value
       },

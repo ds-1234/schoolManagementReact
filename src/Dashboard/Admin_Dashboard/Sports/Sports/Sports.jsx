@@ -146,7 +146,7 @@ const handleDelete = (id)=>{
       selector: (row) => row.startedYear,
       sortable: true,
       wrap: true,
-      width: '280px', 
+      // width: '280px', 
     },
     {
         name: 'Status',
