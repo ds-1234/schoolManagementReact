@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
-import TimetableGrid from '../../Admin_Dashboard/TimeTable/TimetableGrid';
+import TimetableGrid from '../../Admin_Dashboard/TimeTable/Class/TimetableGrid';
 import { NavLink } from 'react-router-dom';
 
 const StdTimetable = () => {

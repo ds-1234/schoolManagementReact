@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {useLocation } from 'react-router-dom'; // Use useParams for cleaner access
 import axios from 'axios'; 
 import TimetableGrid from './TimetableGrid';
-import AddBtn from '../../../Reusable_components/AddBtn';
-import AddTimeTable from './AddTimeTable';
+import AddBtn from '../../../../Reusable_components/AddBtn';
+import AddTimeTable from '../AddTimeTable';
 import { NavLink } from 'react-router-dom';
 
 const TimetablePage = () => {

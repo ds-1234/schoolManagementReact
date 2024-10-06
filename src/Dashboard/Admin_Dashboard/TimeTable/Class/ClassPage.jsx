@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import classroom from '../../../assets/class.png';
+import classroom from '../../../../assets/class.png';
 import { NavLink } from 'react-router-dom';
 
 const ClassPage = () => {
