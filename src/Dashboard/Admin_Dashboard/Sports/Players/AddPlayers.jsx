@@ -24,13 +24,17 @@ function AddPlayers({ isOpen, onClose }) {
   } = useForm();
 
   // Fetch players (students)
+  // debugger
   useEffect(() => {
     axios.get('http://localhost:8080/user/getUserList')
       .then((response) => {
-        const filteredPlayers = response.data.data.filter(user => user.role.name === 'Student');
+        console.log(response.data)
+        const filteredPlayers = response.data.data.filter(user => user.role === 3);
         setPlayers(filteredPlayers);
+        console.log(players,'players')
       })
       .catch((error) => {
+        console.log(error,'error')
         toast.error('Error fetching Players');
       });
   }, []);
@@ -64,7 +68,8 @@ function AddPlayers({ isOpen, onClose }) {
         'Content-Type': 'application/json',
       },
       data: {
-        playersName: { id: selectedPlayer.id }, // Send selected player ID
+        // playersName: { id: selectedPlayer.id }, 
+        userId:  selectedPlayer.id , 
         sportsName: { id: selectedSport.id }, // Send selected sport ID
         dateOfJoin: dateOfJoin, // Send date of joining
         isActive: value // Send active status

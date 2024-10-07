@@ -28,18 +28,22 @@ const StdSports = () => {
         
         // Log the user data to check if it's being fetched correctly
         console.log(user,'user');
+        console.log(response.data.data,'dataresponse')
 
         // Filter the response data based on user className and section
         const filteredData = response.data.data.filter(item => 
-          item.playersName.userId === user.userId
+          item.userId === user.id
+
         );
 
         // Set the filtered sports data
         setPlayer(filteredData); 
         console.log(filteredData,'filtered');
-      } catch (error) {
+      }
+       catch (error) {
         setError(error.message || 'Something went wrong'); 
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
@@ -59,23 +63,24 @@ const StdSports = () => {
 <div className='flex flex-col justify-start pl-0'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Sports</h1>
     <p className='mt-2'>Dashboard /<NavLink to = '/studentDashboard'> Student </NavLink>/  <span className='text-[#ffae01] font-semibold'>Sports</span> </p>
-    <div className='flex items-center justify-center mt-10 mb-5 gap-5'>
-      {/* Sport Tile */}
-      <div 
-        className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
-        onClick={() => navigate('/admin/classes')}>
-        <img 
-        src={sportsImageMap[player[0].sportsName.sportsName] || SportSt} 
-        alt="Sport" 
-        className="w-full object-cover px-4 py-4" />
-        <div className="p-4 text-center">
-          <h3 className="text-lg font-semibold"> {player[0].sportsName.sportsName}</h3>
-          <h5>Date of Join: {player[0].dateOfJoin}</h5>
-        </div>
+    <div className='grid grid-cols-2 gap-4 mt-10 mb-5'>{console.log(player,'player')}
+        {player.map((item, index) => (
+          <div 
+            key={index} 
+            className="bg-white shadow-lg rounded-lg overflow-hidden w-60 h-200 hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
+            // onClick={() => navigate(`/sports/${item.sportsName}`)}
+          >
+            <img 
+              src={sportsImageMap[item.sportsName.sportsName] || SportSt} 
+              alt="Sport" 
+              className="w-full h-80 object-cover px-4 py-2" 
+            />
+            <div className="p-2 text-center">
+              <h3 className="text-md font-semibold">{item.sportsName.sportsName}</h3>
+            </div> 
+          </div>
+        ))}
       </div>
-
-
-    </div>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const AddSports = ({ isOpen, onClose }) => {
   const fetchCoach = async () => {
     try {
         const response = await axios.get('http://localhost:8080/user/getUserList');
-        const filteredCoaches = response.data.data.filter(user => user.role === 3);
+        const filteredCoaches = response.data.data.filter(user => user.role === 4);
         setCoach(filteredCoaches);
     } catch (error) {
         toast.error("Error fetching coaches");
@@ -67,7 +67,7 @@ const AddSports = ({ isOpen, onClose }) => {
       data: {
         sportsName: data.sportsName,
         // coachName: {id: selectedCoach?.id },
-        userId:selectedCoach.userId,
+        userId:selectedCoach.id,
         startedYear: data.startedYear,
         isActive:value
       },
