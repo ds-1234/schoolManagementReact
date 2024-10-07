@@ -70,6 +70,8 @@ import Designation from './Dashboard/Admin_Dashboard/Designation/Designation';
 import Department from './Dashboard/Admin_Dashboard/Department/Department';
 import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
 import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
+import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassSelect';
+import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
 
 
 function App() {
@@ -172,6 +174,8 @@ function App() {
             <Route path='teaholidays' element = {<TeaHolidays/>} />
             <Route path='teasports' element = {<TeaSports/>} />
             <Route path='teanotice' element = {<TeaNotice/>} />
+            <Route path='classSelect' element = {<ClassSelect/>}/>
+            <Route path='attendance/:className/:section' element={<Attendance/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}
