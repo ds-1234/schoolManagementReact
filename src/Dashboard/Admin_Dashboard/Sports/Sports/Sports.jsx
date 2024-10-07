@@ -98,7 +98,7 @@ function Sports() {
       });
   };
 
-  const fetchCoachData = (playersData) => {
+  const fetchCoachData = (coachData) => {
     axios({
       method: 'GET',
       url: `http://localhost:8080/user/getUserList`,
@@ -112,12 +112,12 @@ function Sports() {
         setUsers(usersList);
 
         // Map the player data to include the username
-        const updatedPlayers = playersData.map((player) => {
-          const user = usersList.find((user) => user.id === player.userId);
-          return { ...player, username: user ? `${user.firstName} ${user.lastName}` : 'Unknown User' };
+        const updatedCoaches = coachData.map((coach) => {
+          const user = usersList.find((user) => user.id === coach.userId);
+          return { ...coach, username: user ? `${user.firstName} ${user.lastName}` : 'Unknown User' };
         });
 
-        setData(updatedPlayers);
+        setData(updatedCoaches);
       })
       .catch((error) => {
         console.error('Error fetching user data:', error);
