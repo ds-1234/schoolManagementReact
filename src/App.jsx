@@ -69,7 +69,7 @@ import TeaSports from './Dashboard/Teacher_Dashboard/Sports/TeaSports';
 import Designation from './Dashboard/Admin_Dashboard/Designation/Designation';
 import Department from './Dashboard/Admin_Dashboard/Department/Department';
 import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
-import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
+import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/TeaNotice';
 
 
 function App() {
