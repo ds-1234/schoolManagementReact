@@ -5,12 +5,16 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import TodayDate from '../../../Reusable_components/TodayDate';
+import ToggleButton from '../../../Reusable_components/ToggleButton';
 // import DatePicker from '../../../Reusable_components/DatePicker';
 
 function AddNotice() {
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [value, setValue] = useState(true);
+
 
 
   // Handle form submission
@@ -23,11 +27,11 @@ function AddNotice() {
     let roleId = 0;
 
     if (data.noticeFor === 'Teacher') {
-      roleId = 3;
-    } else if (data.noticeFor === 'Student') {
       roleId = 4;
+    } else if (data.noticeFor === 'Student') {
+      roleId = 3;
     } else if (data.noticeFor === 'All') {
-      roleId = 2;
+      roleId = 0;
     }
 
     axios({
@@ -36,9 +40,10 @@ function AddNotice() {
       data: {
         noticeTitle: data.title,
         noticeDetails: data.details,
-        postedBy: data.postedby,
+        userId: user.id,
         noticeDate: formattedDate, 
-        role:{id:roleId}
+        role:roleId,
+        isActive : value
       },
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +63,7 @@ function AddNotice() {
   return (
 
     <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
-      <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
+      <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>{console.log(user,'user:')}
 
            {/* Radio buttons for "Notice For" */}
            <div className="col-span-2">
@@ -91,10 +96,10 @@ function AddNotice() {
           <label className="block text-sm font-medium text-gray-700">Details *</label>
           <input {...register('details', { required: true })} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1" />
         </div>
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700">Posted By *</label>
           <input {...register('postedby', { required: true })} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1" />
-        </div>
+        </div> */}
        
        <TodayDate 
        label="Date" 
@@ -124,6 +129,19 @@ function AddNotice() {
             </div>
           </div>
         </div> */}
+
+<div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Status *
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                // label="Active"
+                register={register}
+              />
+            </div>
 
       </div>
       <div className="col-span-2 flex justify-start space-x-4 mt-10">
