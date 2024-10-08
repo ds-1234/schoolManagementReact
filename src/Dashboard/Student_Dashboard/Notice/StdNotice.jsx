@@ -19,11 +19,16 @@ function StdNotice() {
   const [searchDate, setSearchDate] = useState('');
   const [searchTitle, setSearchTitle] = useState('');
   const navigate = useNavigate()
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
+
 
   const fetchNotices = async () => {
     try {
       const response = await axios.get('http://localhost:8080/notice/getNoticeList');
-      setNotices(response.data.data);
+      const filteredData = response.data.data.filter(item => 
+        item.role === user.role  || item.role === 0      
+      );
+      setNotices(filteredData);
     } catch (error) {
       console.error('Error fetching notices:', error);
     }
@@ -55,7 +60,7 @@ function StdNotice() {
 
       
       <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">
-      
+      {console.log(user,'user:')}
  {/* Search Inputs */}
 <div className="flex gap-4 mb-6 ">
   <input
