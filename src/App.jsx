@@ -72,6 +72,7 @@ import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
 import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
 import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassSelect';
 import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
+import StdAttendance from './Dashboard/Student_Dashboard/Attendance/Attendance'
 
 
 function App() {
@@ -157,6 +158,7 @@ function App() {
             <Route path='holidays' element = {<StdHolidays/>} />
             <Route path='stdsports' element = {<StdSports/>} />
             <Route path='stdnotice' element = {<StdNotice/>} />
+            <Route path = 'attendance' element = {<StdAttendance/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
