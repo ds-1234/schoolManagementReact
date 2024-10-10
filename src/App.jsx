@@ -73,6 +73,10 @@ import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
 import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassSelect';
 import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
 import StdAttendance from './Dashboard/Student_Dashboard/Attendance/Attendance'
+import Select from './Dashboard/Admin_Dashboard/Attendance/Select';
+import TchsAttendance from './Dashboard/Admin_Dashboard/Attendance/TchsAttendance';
+import ClassAttendance from './Dashboard/Admin_Dashboard/Attendance/ClassSelect'
+import StdsAttendance from './Dashboard/Admin_Dashboard/Attendance/StdsAttendance';
 
 
 function App() {
@@ -141,6 +145,11 @@ function App() {
             <Route path='hostelrooms' element = {<HostelRooms/>} />
             <Route path='designation' element = {<Designation/>} />
             <Route path='department' element = {<Department/>} />
+            <Route path='select' element = {<Select/>}/> 
+            <Route path='classSelect' element={<ClassAttendance/>}/>
+            <Route path='stdsAttendance/:className/:section' element = {<StdsAttendance/>}/>
+            <Route path='tchsAttendance' element = {<TchsAttendance/>}/> 
+            
           </Route>
 
           {/* Student Dashboard Routes */}
