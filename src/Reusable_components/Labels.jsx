@@ -1,5 +1,5 @@
 const Labels = () => (
-    <div className="flex items-center justify-end space-x-2 bg-white p-2 rounded-xl w-1/3 absolute right-5 top-32">
+    <div className="flex items-center justify-around bg-white p-2 rounded-xl w-1/3 absolute right-5 top-32">
       <div className="flex items-center">
         <span className="text-green-400 font-bold">P</span>
         <span className="ml-2">- Present</span>
