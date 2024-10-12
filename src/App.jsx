@@ -77,6 +77,13 @@ import Select from './Dashboard/Admin_Dashboard/Attendance/Select';
 import TchsAttendance from './Dashboard/Admin_Dashboard/Attendance/TchsAttendance';
 import ClassAttendance from './Dashboard/Admin_Dashboard/Attendance/ClassSelect'
 import StdsAttendance from './Dashboard/Admin_Dashboard/Attendance/StdsAttendance';
+import BasicDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/BasicDets';
+import AcademicDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/AcademicDets';
+import OfficeDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/OfficeDets';
+import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/TransportDets';
+import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
+import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
+import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
 
 
 function App() {
@@ -148,7 +155,14 @@ function App() {
             <Route path='select' element = {<Select/>}/> 
             <Route path='classSelect' element={<ClassAttendance/>}/>
             <Route path='stdsAttendance/:className/:section' element = {<StdsAttendance/>}/>
-            <Route path='tchsAttendance' element = {<TchsAttendance/>}/> 
+            <Route path='tchsAttendance' element = {<TchsAttendance/>}/>
+            <Route path = 'basic' element = {<BasicDets/>}/>
+            <Route path = 'academic' element={<AcademicDets/>}/>
+            <Route path='office' element= {<OfficeDets/>}/>
+            <Route path='transportation' element={<TransportDets/>}/>
+            <Route path='hostelDetails' element={<HostelDets/>}/>
+            <Route path='uploadDocs' element={<DocsDets/>}/>
+            <Route path='prevSchool' element={<PrevSchlDets/>}/> 
             
           </Route>
 
