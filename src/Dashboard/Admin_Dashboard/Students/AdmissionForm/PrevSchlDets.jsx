@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
 
-function PrevSchlDets({handleNextStep}) {
+function PrevSchlDets({handleNextStep , currentStep}) {
     const navigate = useNavigate()
     const [value , setValue] = useState(true) 
     const {
@@ -16,9 +16,8 @@ function PrevSchlDets({handleNextStep}) {
 
       const onSubmit = (data) => {
         console.log(data);
-        handleNextStep()
-        navigate('/admin')
-    }
+        navigate('/admin/allStudents')
+      }
     
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
@@ -73,7 +72,7 @@ function PrevSchlDets({handleNextStep}) {
           <Button type='submit' label="Save" className='px-8'/>
           <Button onClick={() => {
             reset() 
-            navigate('/admin')
+            navigate('/admin/allStudents')
           }} 
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>

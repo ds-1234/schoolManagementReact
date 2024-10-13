@@ -4,7 +4,7 @@ import DatePicker from '../../../../Reusable_components/DatePicker';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
 
-function BasicDets({handleNextStep}) {
+function BasicDets({handleNextStep , currentStep}) {
 
 const {
     register,
@@ -17,8 +17,9 @@ const {
 
     const onSubmit = (data) => {
         console.log(data);
-        handleNextStep()
-        navigate('/admin/academic')
+        console.log(handleNextStep);
+        
+        handleNextStep(currentStep)
     }
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
@@ -279,7 +280,7 @@ const {
           <Button type='submit' label="Save" className='px-8'/>
           <Button onClick={() => {
             reset() 
-            navigate('/admin')
+            navigate('/admin/allStudents')
           }} 
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>

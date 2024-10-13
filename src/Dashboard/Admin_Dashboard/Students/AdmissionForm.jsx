@@ -14,33 +14,39 @@ function AdmissionForm() {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    setCurrentStep(currentStep+1) ;
+    console.log(currentStep);
+    
   };
+  
 
   // const handlePreviousStep = () => {
   //   setCurrentStep(currentStep - 1);
   // };
 
   const renderStepComponent = () => {
+    console.log(currentStep);
+    
     switch (currentStep) {
       case 1:
-        return <BasicDets handleNextStep={handleNextStep} />;
+        return <BasicDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 2:
-        return <AcademicDets handleNextStep={handleNextStep}/>;
+        return <AcademicDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 3:
-        return <OfficeDets handleNextStep={handleNextStep} />
+        return <OfficeDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 4:
-        return <TransportDets handleNextStep={handleNextStep}/>
+        return <TransportDets handleNextStep={handleNextStep} currentStep={currentStep}/>
       case 5:
-        return <HostelDets handleNextStep={handleNextStep} />
+        return <HostelDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 6:
-        return <DocsDets handleNextStep={handleNextStep} />
+        return <DocsDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 7:
-        return <PrevSchlDets handleNextStep={handleNextStep} />
+        return <PrevSchlDets handleNextStep={handleNextStep} currentStep={currentStep} />
       default:
-        return <BasicDets handleNextStep={handleNextStep} />;
+        return <BasicDets handleNextStep={handleNextStep} currentStep={currentStep} />
     }
   };
+  
   return (
     <div className='h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>

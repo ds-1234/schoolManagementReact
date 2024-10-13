@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 
-function DocsDets({handleNextStep}) {
+function DocsDets({handleNextStep , currentStep}) {
     const {
         register,
         handleSubmit,
@@ -13,10 +13,13 @@ function DocsDets({handleNextStep}) {
 
     const navigate = useNavigate()
     const onSubmit = (data) => {
-        console.log(data);
-        handleNextStep()
-        navigate('/admin/prevSchool')
-    }
+      console.log(data);
+      if (handleNextStep) {
+        handleNextStep(currentStep);
+      } else {
+        console.error("handleNextStep is not defined");
+      }
+    };
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
          <h2 className="col-span-4  mt-8 text-xl font-semibold text-black">Documents Required</h2>
@@ -44,7 +47,7 @@ function DocsDets({handleNextStep}) {
           <Button type='submit' label="Save" className='px-8'/>
           <Button onClick={() => {
             reset() 
-            navigate('/admin')
+            navigate('/admin/allStudents')
           }} 
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>

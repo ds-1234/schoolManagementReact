@@ -61,22 +61,6 @@ const column = [
 
   const [user, setUser] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editUserId, setEditUserId] = useState(null);
-
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
-
-  const openEditPopup = (id) => {
-    setEditUserId(id);
-    setIsEditPopupOpen(true);
-  };
-
-  const closeEditPopup = () => {
-    setEditUserId(null);
-    setIsEditPopupOpen(false);
-  };
 
   const fetchData = async() => {
     axios({
@@ -87,10 +71,8 @@ const column = [
       },
     })
       .then((response) => {
-        setUser(response.data.data);
-        console.log('Data from API:', response.data.data);
-        console.log('Data from userData', user);
-        setFilterUser(response.data.data)
+        setUser(response.data.data.filter((user) => user.role === 3));
+        setFilterUser(response.data.data.filter((user) => user.role === 3))
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -140,30 +122,15 @@ const column = [
 
   return (
     <div className='pl-0 h-full mb-10'>
-       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>All Students</h1>
-       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>All Students</span> </p>
+       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Students</h1>
+       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Students</span> </p>
 
-       <AddBtn onAddClick={openAddPopup}/>
       <Table
          columns={column}
          data={user}
          searchOptions={searchOptions}
          onSearch={handleSearch}
          handleClear = {handleClear}
-      />
-      <AddUser 
-        isOpen={isAddPopupOpen} 
-        onClose={() => {
-          closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
-        }} 
-      />
-
-      <EditUser
-        isOpen={isEditPopupOpen}
-        onClose={closeEditPopup}
-        userId={editUserId}
-        onSuccess={fetchData} // Refresh data after editing
       />
     </div>
   );
