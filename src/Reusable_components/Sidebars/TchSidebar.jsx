@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse , faCalendarDay, faBookOpen,faChildren,faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faHouse , faCalendarDay, faBookOpen,faChildren,faFileLines, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
 
 function TchSidebar() {
   return (
@@ -18,6 +18,19 @@ function TchSidebar() {
               Dashboard
             </div>
           </NavLink>
+      </li>
+      {/* Attendance Section */}
+      <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+        <NavLink
+          to="/teacherDashboard/classSelect"
+          className={({ isActive }) =>
+            `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+          }
+        >
+            <FontAwesomeIcon icon={faClipboardUser} className="mr-3 text-[#ffae01]" />
+            Attendance
+          
+        </NavLink>
       </li>
       {/* Time Table Section */}
       <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
