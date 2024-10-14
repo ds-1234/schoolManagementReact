@@ -15,7 +15,7 @@ function FeesCollection() {
 //   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
 //   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 //   const [editPlayerId, setEditPlayerId] = useState(null);
-  const [users, setUsers] = useState([]); 
+  const [feeGrp, setFeeGrp] = useState([]); 
 
 //   useEffect(() => {
 //     if (isAddPopupOpen) {
@@ -77,7 +77,7 @@ function FeesCollection() {
 //     });
 //   };
 
-  const fetchData = () => {
+const fetchData = () => {
     axios({
       method: 'GET',
       url: `http://localhost:8080/feesCollection/getFeesCollectionList`,
@@ -87,40 +87,49 @@ function FeesCollection() {
     })
       .then((response) => {
         console.log('Data from API:', response.data);
-        setData(response.data.data);
-        setFilterData(response.data.data);
-        // fetchUsers(response.data.data); 
+        const feesCollectionData = response.data.data;
+        setData(feesCollectionData);
+        setFilterData(feesCollectionData);
+        fetchFeeGrp(feesCollectionData);  // Fetch group data after fees collection is fetched
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   };
-
-//   const fetchUsers = (playersData) => {
-//     axios({
-//       method: 'GET',
-//       url: `http://localhost:8080/user/getUserList`,
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => {
-//         console.log('User Data from API:', response.data);
-//         const usersList = response.data.data;
-//         setUsers(usersList);
-
-//         // Map the player data to include the username
-//         const updatedPlayers = playersData.map((player) => {
-//           const user = usersList.find((user) => user.id === player.userId);
-//           return { ...player, username: user ? `${user.firstName} ${user.lastName}` : 'Unknown User' };
-//         });
-
-//         setData(updatedPlayers);
-//       })
-//       .catch((error) => {
-//         console.error('Error fetching user data:', error);
-//       });
-//   };
+  
+  const fetchFeeGrp = (feesCollectionData) => {
+    axios({
+      method: 'GET',
+      url: `http://localhost:8080/feesGroup/getFeesGroupList`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('Group Data from API:', response.data); // Log group data
+        const feeGrpList = response.data.data;
+        setFeeGrp(feeGrpList);
+  
+        console.log('Fees Collection Data:', feesCollectionData); // Log fees collection data before mapping
+  
+        // Map feesCollectionData to include the fee group name
+        const updatedFeesCollection = feesCollectionData.map((feeCollection) => {
+          const matchedGroup = feeGrpList.find(group => group.id === feeCollection.feesGroupNameId);
+          return {
+            ...feeCollection,
+            feesGroupName: matchedGroup ? matchedGroup.feesGroupName : 'Unknown Group',  // Assign group name
+          };
+        });
+  
+        console.log('Updated Fees Collection with Group Names:', updatedFeesCollection); // Log updated data
+        setData(updatedFeesCollection);  // Update data with group name
+      })
+      .catch((error) => {
+        console.error('Error fetching group data:', error);
+      });
+  };
+  
+  
 
   useEffect(() => {
     fetchData();
@@ -140,7 +149,7 @@ function FeesCollection() {
     },
     {
       name: 'Fees Group',
-      selector: (row) => row.feesGroupNameId, 
+      selector: (row) => row.feesGroupName,  // Display the group name here
       sortable: true,
       wrap: true,
     },
@@ -169,6 +178,7 @@ function FeesCollection() {
       ),
     },
   ];
+  
 
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
@@ -190,7 +200,7 @@ function FeesCollection() {
   };
 
   const searchOptions = [
-    { label: 'Fees Group', value: 'feesGroupNameId' }, // Search by username
+    { label: 'Fees Group', value: 'feesGroupName' }, 
     { label: 'Description', value: 'description' },
   ];
 
