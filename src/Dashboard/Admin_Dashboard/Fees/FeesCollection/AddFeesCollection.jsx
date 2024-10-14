@@ -9,41 +9,59 @@ import { useForm } from 'react-hook-form';
 
 function AddFeesCollection({ isOpen, onClose }) {
   const [value, setValue] = useState(true); // Toggle button state
-  const [student, setStudent] = useState([]); // Student list
+  const [students, setStudents] = useState([]); // Student list
+  const [filteredStudents, setFilteredStudents] = useState([]); // Filtered student list
   const [selectedStudent, setSelectedStudent] = useState(null); // Selected Student
-  const [feesGrp, setFeesGrp] = useState([]); // fee grp list
-  const [selectedFeesGrp, setSelectedFeesGrp] = useState(null); // Selected Fee grp
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Player dropdown
-  const [dropdownOpen2, setDropdownOpen2] = useState(false); // Sport dropdown
-
-
+  const [feesGrp, setFeesGrp] = useState([]); // Fee group list
+  const [selectedFeesGrp, setSelectedFeesGrp] = useState(null); // Selected Fee group
+  const [classes, setClasses] = useState([]); // Class list
+  const [selectedClass, setSelectedClass] = useState(null); // Selected Class
+  const [dropdownOpen, setDropdownOpen] = useState(false); // class dropdown
+  const [dropdownOpen1, setDropdownOpen1] = useState(false); // Student dropdown
+  const [dropdownOpen2, setDropdownOpen2] = useState(false); // Fees group dropdown
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
-const [payDropdownOpen, setPayDropdownOpen] = useState(false);
+  const [payDropdownOpen, setPayDropdownOpen] = useState(false);
 
-// Function to handle selection of payment method
-const handleSelectPaymentMethod = (method) => {
-  setSelectedPaymentMethod(method);
-  setPayDropdownOpen(false);
-};
-const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
 
-  // debugger
+
+  useEffect(() => {
+    // Disable scrolling on background when the popup is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Add event listener for ESC key press
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto'; // Clean up scrolling style
+    };
+  }, [isOpen, onClose]);
+
+  // Fetch students
   useEffect(() => {
     axios.get('http://localhost:8080/user/getUserList')
       .then((response) => {
-        console.log(response.data)
         const studentList = response.data.data.filter(user => user.role === 3);
-        setStudent(studentList);
-        console.log(studentList,'studentList')
+        setStudents(studentList);
       })
       .catch((error) => {
-        console.log(error,'error')
-        toast.error('Error fetching Student');
+        toast.error('Error fetching Students');
       });
   }, []);
 
-  // Fetch Fees Grp
+  // Fetch Fees Groups
   useEffect(() => {
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
       .then((response) => {
@@ -54,41 +72,56 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
       });
   }, []);
 
+  // Fetch Classes
+  useEffect(() => {
+    axios.get('http://localhost:8080/class/getClassList')
+      .then((response) => {
+        setClasses(response.data.data);
+      })
+      .catch((error) => {
+        toast.error('Error fetching Classes');
+      });
+  }, []);
+
+  // Filter students by selected class
+  useEffect(() => {
+    if (selectedClass) {
+      const filtered = students.filter(student => student.className.includes(selectedClass.id));
+      setFilteredStudents(filtered);
+    } else {
+      setFilteredStudents(students);
+    }
+  }, [selectedClass, students]);
+
   // Handle form submission
   const onSubmit = (data) => {
-    // e.preventDefault();
-
-    // Ensure that both a player and a sport are selected
     if (!selectedStudent || !selectedFeesGrp) {
-      toast.error('Please select both a player and a sport');
+      toast.error('Please select both a student and a fees group');
       return;
     }
 
     // Submit the form data to the server
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/feesCollection/savefeesCollection',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        userId:  selectedStudent.id , 
-        feesGroupNameId:  selectedFeesGrp.id , // Send selected Fee grp ID
-        feeAmount:data.amount,
-        paymentType: selectedPaymentMethod,
-        description:data.description,
-        isActive: value // Send active status
-      },
+    axios.post('http://localhost:8080/feesCollection/savefeesCollection', {
+      userId: selectedStudent.id,
+      feesGroupNameId: selectedFeesGrp.id,
+      feeAmount: data.amount,
+      paymentType: selectedPaymentMethod,
+      description: data.description,
+      isActive: value
     })
-    .then(() => {
-      toast.success('Fee Collection Created successfully!');
-    //   onSuccess();
-      onClose();
-    })
-    .catch((error) => {
-      toast.error('Failed to Create Fee Collection.');
-      console.error('Error Creating Fee Collection:', error);
-    });
+      .then(() => {
+        toast.success('Fee Collection Created successfully!');
+        reset();
+        setSelectedStudent(null)
+        setSelectedFeesGrp(null)
+        setSelectedClass(null)
+        setSelectedPaymentMethod('')
+        onClose();
+      })
+      .catch((error) => {
+        toast.error('Failed to Create Fee Collection.');
+        console.error('Error Creating Fee Collection:', error);
+      });
   };
 
   if (!isOpen) return null;
@@ -96,145 +129,170 @@ const { register, handleSubmit, formState: { errors }, reset } = useForm();
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
-        >
-          &times;
-        </button>
+        <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Add Fee Collection</h2>
 
-          {/* Student List Input */}
-          <div className="mb-4 relative">
-            <label htmlFor="playersName" className="block text-gray-700 font-semibold mb-2">Student List</label>
-            <div
-              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown for Student
-            >
-              <p>{selectedStudent? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Select Student'}</p>
-              <FontAwesomeIcon icon={faAngleDown} />
-            </div>
-            {dropdownOpen && (
-              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                {student.map(student => (
-                  <div
-                    key={student.id}
-                    className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                    onClick={() => {
-                        setSelectedStudent(student); // Set selected player
-                      setDropdownOpen(false); // Close dropdown after selection
-                    }}
-                  >
-                    {`${student.firstName} ${student.lastName}`}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+ {/* Class Input */}
+<div className="mb-2 relative">
+  <label htmlFor="className" className="block text-gray-700 font-semibold mb-2">Class</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+  >
+    <p>{selectedClass ? selectedClass.name : 'Select Class'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {dropdownOpen && (  // Correctly check dropdownOpen
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {classes.map(classItem => (
+        <div
+          key={classItem.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedStudent(null)
+            setSelectedClass(classItem);
+            setDropdownOpen(false);
+          }}
+        >
+          {classItem.name}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
-          {/* Fees Grp Input */}
-          <div className="mb-4 relative">
-            <label htmlFor="sportsName" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
+{/* Student List Input */}
+<div className="mb-2 relative">
+  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    onClick={() => setDropdownOpen1(!dropdownOpen1)}  // Toggle dropdown for Student
+  >
+    <p>{selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Select Student'}</p>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </div>
+  {dropdownOpen1 && (  // Change this to dropdownOpen1 for the Student dropdown
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {filteredStudents.map(student => (
+        <div
+          key={student.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedStudent(student);
+            setDropdownOpen1(false); // Close dropdown after selection
+          }}
+        >
+          {`${student.firstName} ${student.lastName}`}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
+          {/* Fees Group Input */}
+          <div className="mb-2 relative">
+            <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for sports
+              onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
             >
               <p>{selectedFeesGrp ? selectedFeesGrp.feesGroupName : 'Select Fees Group'}</p>
               <FontAwesomeIcon icon={faAngleDown} />
             </div>
             {dropdownOpen2 && (
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                {feesGrp.map(feesGrp => (
+                {feesGrp.map(feesGroup => (
                   <div
-                    key={feesGrp.id}
+                    key={feesGroup.id}
                     className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
                     onClick={() => {
-                      setSelectedFeesGrp(feesGrp); // Set selected sport
-                      setDropdownOpen2(false); // Close dropdown after selection
+                      setSelectedFeesGrp(feesGroup);
+                      setDropdownOpen2(false);
                     }}
                   >
-                    {feesGrp.feesGroupName}
+                    {feesGroup.feesGroupName}
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-        {/* Amount */}
-                      <div>
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="amount">Amount *</label>
-              <input
-                type="number"
-                id="amount"
-                {...register("amount", { required: "Amount is required" })}
-                className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
-              />
-              {errors.amount && (
-                <p className="text-red-500 text-sm">{errors.amount.message}</p>
-              )}
-            </div>
-
-             {/* Payment Method */}
-<div className="relative">
-  <label htmlFor="paymentmethod" className="block text-sm font-medium mb-2 text-black">
-    Payment Method *
-  </label>
-  <div
-    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
-    onClick={() => setPayDropdownOpen(!payDropdownOpen)}
-  >
-    <p>{selectedPaymentMethod || 'Select Payment Method'}</p>
-    <FontAwesomeIcon icon={faAngleDown} />
-  </div>
-  {payDropdownOpen && (
-    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-      <div
-        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-        onClick={() => handleSelectPaymentMethod('Cash')}
-      >
-        Cash
-      </div>
-      <div
-        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-        onClick={() => handleSelectPaymentMethod('Online')}
-      >
-        Online
-      </div>
-    </div>
-  )}
-</div>
-
-         {/* Description Input */}
-         <div className="mb-2">
-            <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
-            <textarea
-              id="description"
-              className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('description', { required: 'Description is required' })}
-            ></textarea>
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+          {/* Amount */}
+          <div>
+            <label className="block text-sm font-medium mb-2 text-black" htmlFor="amount">Amount *</label>
+            <input
+              type="number"
+              id="amount"
+              {...register("amount", { required: "Amount is required" })}
+              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
+            />
+            {errors.amount && (
+              <p className="text-red-500 text-sm">{errors.amount.message}</p>
+            )}
           </div>
 
+          {/* Payment Method */}
+          <div className="relative">
+            <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
+            <div
+              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+              onClick={() => setPayDropdownOpen(!payDropdownOpen)}
+            >
+              <span>{selectedPaymentMethod || 'Select Payment Method'}</span>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </div>
+            {payDropdownOpen && (
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+                <div
+                  className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                  onClick={() => {
+                    setSelectedPaymentMethod('Cash');
+                    setPayDropdownOpen(false);
+                  }}
+                >
+                  Cash
+                </div>
+                <div
+                  className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                  onClick={() => {
+                    setSelectedPaymentMethod('Online');
+                    setPayDropdownOpen(false);
+                  }}
+                >
+                  Online
+                </div>
+              </div>
+            )}
+          </div>
 
-
-          {/* Toggle for Status */}
+          {/* Description */}
           <div className="mb-2">
-            <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-              Status 
-            </label>
-            <ToggleButton
-              isOn={value}
-              handleToggle={() => setValue(!value)}
-              id="active"
-              register={register}
+            <label className="block text-sm font-medium mb-2 text-black" htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              {...register("description")}
+              rows="3"
+              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-2"
             />
           </div>
 
+            {/* Status Toggle */}
+            <div className="">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status *</label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+              />
+            </div>
+
           {/* Submit Button */}
-          <Button type="submit" className="w-full text-center" />
+          <div className="mt-2 flex justify-center">
+            <Button type="submit" text="Save" />
+          </div>
         </form>
       </div>
     </div>
