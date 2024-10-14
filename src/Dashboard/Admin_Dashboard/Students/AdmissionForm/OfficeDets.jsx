@@ -3,8 +3,11 @@ import DatePicker from '../../../../Reusable_components/DatePicker'
 import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../../../hooks/UserContext';
+import axios from 'axios';
 
 function OfficeDets({handleNextStep , currentStep}) {
+  const {userId} = useUserContext()
     const {
         register,
         handleSubmit,
@@ -12,15 +15,33 @@ function OfficeDets({handleNextStep , currentStep}) {
         reset,
       } = useForm();
 
-      const navigate = useNavigate()
-      const onSubmit = (data) => {
+      const navigate = useNavigate();
+      const onSubmit = async(data) => {
         console.log(data);
-        if (handleNextStep) {
-          handleNextStep(currentStep);
-        } else {
-          console.error("handleNextStep is not defined");
-        }
-      };
+        
+        const userData = {
+            ...data , 
+            userId : userId ,
+          }
+          await axios({
+              method:"Post",
+              url : `http://localhost:8080/user/updateOfficeDetails`,
+              data: userData ,
+              headers: {
+                "Content-Type": "application/json",
+              },
+          
+            })
+            .then((response)=>{
+              console.log('response' , response.data.data)
+              handleNextStep(currentStep)
+              reset()
+          })
+          .catch(err=>{
+              console.log(err,'error:')
+              reset()
+          })
+    }
 
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
@@ -31,7 +52,7 @@ function OfficeDets({handleNextStep , currentStep}) {
             name={'admissionDate'}
             label={"Admission Date"}
             register={register}
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.admissionDate ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none`}
             />
         </div>
 

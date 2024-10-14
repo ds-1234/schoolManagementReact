@@ -243,7 +243,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/AllStudents"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -254,7 +254,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/AdmissionForm"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -263,9 +263,25 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
+                    to="/admin/pendingAdmissionForm"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    <span
+                      className="block "
+                      style={{ maxWidth: '100px', whiteSpace: 'normal', wordBreak: 'break-word' }} // Adjust maxWidth as needed
+                    >
+                      Pending Admission Form
+                    </span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to="/admin/studentDetails"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight}  />
@@ -276,7 +292,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/studentPromotion"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />

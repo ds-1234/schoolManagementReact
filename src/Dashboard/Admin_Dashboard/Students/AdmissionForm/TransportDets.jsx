@@ -3,8 +3,10 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../../../hooks/UserContext';
 
 function TransportDets({handleNextStep , currentStep}) {
+  const {userId} = useUserContext() ;
     const {
         register,
         handleSubmit,
@@ -17,7 +19,7 @@ function TransportDets({handleNextStep , currentStep}) {
     const navigate = useNavigate()
 
     const fetchTransportOptions = async() => {
-        axios({
+        await axios({
             method: 'GET',
             url: 'http://localhost:8080/transport/getTransportList',
             headers: {
@@ -32,12 +34,12 @@ function TransportDets({handleNextStep , currentStep}) {
             });
         };
 
-        const fetchVehicleNum = (routeId) => {
+        const fetchVehicleNum = async(routeId) => {
         console.log(routeId);
         
         if (!routeId) return;
 
-        axios({
+        await axios({
             method: "GET",
             url: `http://localhost:8080/transport/getTransport/${routeId}`,
             headers: {
@@ -61,7 +63,7 @@ function TransportDets({handleNextStep , currentStep}) {
     useEffect(() => {
         fetchTransportOptions() ;
         fetchVehicleNum(selectedRoute) ;
-    })
+    } , [])
 
     
   const handleRouteChange = (e) => {    
@@ -70,14 +72,32 @@ function TransportDets({handleNextStep , currentStep}) {
     fetchVehicleNum(selectedRouteId);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    if (handleNextStep) {
-      handleNextStep(currentStep);
-    } else {
-      console.error("handleNextStep is not defined");
-    }
-  };
+    
+    const userData = {
+        ...data , 
+        userId : userId ,
+      }
+      await axios({
+          method:"Post",
+          url : `http://localhost:8080/user/updateTransportDetails`,
+          data: userData ,
+          headers: {
+            "Content-Type": "application/json",
+          },
+      
+        })
+        .then((response)=>{
+          console.log('response' , response.data.data)
+          handleNextStep(currentStep)
+          reset()
+      })
+      .catch(err=>{
+          console.log(err,'error:')
+          reset()
+      })
+}
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Transport Information</h2>
@@ -107,7 +127,6 @@ function TransportDets({handleNextStep , currentStep}) {
           value={vehicleNumber} // Bind the state value here
           readOnly // Make the field read-only
           className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-          {...register('vehicleNumber')}
         />
       </div>
 
