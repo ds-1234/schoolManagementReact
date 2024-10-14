@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
 
@@ -226,7 +226,7 @@ const Sidebar = () => {
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/AdmissionForm'}
+            to={'/admin/allStudents'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -239,7 +239,7 @@ const Sidebar = () => {
             </NavLink>
             {openDropdown == 'students' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                {/* <li>
+                <li>
                   <NavLink
                     to="/admin/AllStudents"
                     className={({ isActive }) =>
@@ -249,7 +249,7 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faAngleRight} />
                     All Students
                   </NavLink>
-                </li> */}
+                </li>
                 <li>
                   <NavLink
                     to="/admin/AdmissionForm"
@@ -285,6 +285,20 @@ const Sidebar = () => {
                 </li>
               </ul>
             )}
+          </li>
+
+             {/* Attendance Section */}
+             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/select"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
+                Attendance
+              
+            </NavLink>
           </li>
 
     {/* Transport section */}
@@ -504,29 +518,29 @@ const Sidebar = () => {
             )}
           </li>
 
-    {/* Holidays section */}
-    <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/holidays"
-              className={({ isActive }) =>
-                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-                <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
-                Holidays
-            </NavLink>
+          {/* Holidays section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+                  <NavLink
+                    to="/admin/holidays"
+                    className={({ isActive }) =>
+                      `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                      <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
+                      Holidays
+                  </NavLink>
           </li>
-    {/* Leave section */}
-    <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/leave"
-              className={({ isActive }) =>
-                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-                <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
-                Leave
-            </NavLink>
+          {/* Leave section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+                  <NavLink
+                    to="/admin/leave"
+                    className={({ isActive }) =>
+                      `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                      <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
+                      Leave
+                  </NavLink>
           </li>
 
 
@@ -635,7 +649,7 @@ const Sidebar = () => {
             )}
           </li>
 
-
+         
 
 
 

@@ -69,9 +69,26 @@ import TeaSports from './Dashboard/Teacher_Dashboard/Sports/TeaSports';
 import Designation from './Dashboard/Admin_Dashboard/Designation/Designation';
 import Department from './Dashboard/Admin_Dashboard/Department/Department';
 import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
+
 import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/TeaNotice';
 import FeesGrp from './Dashboard/Admin_Dashboard/Fees/FeesGrp/FeesGrp';
 import FeesCollection from './Dashboard/Admin_Dashboard/Fees/FeesCollection/FeesCollection';
+
+import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassSelect';
+import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
+import StdAttendance from './Dashboard/Student_Dashboard/Attendance/Attendance'
+import Select from './Dashboard/Admin_Dashboard/Attendance/Select';
+import TchsAttendance from './Dashboard/Admin_Dashboard/Attendance/TchsAttendance';
+import ClassAttendance from './Dashboard/Admin_Dashboard/Attendance/ClassSelect'
+import StdsAttendance from './Dashboard/Admin_Dashboard/Attendance/StdsAttendance';
+import BasicDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/BasicDets';
+import AcademicDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/AcademicDets';
+import OfficeDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/OfficeDets';
+import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/TransportDets';
+import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
+import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
+import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
+
 
 
 function App() {
@@ -140,8 +157,23 @@ function App() {
             <Route path='hostelrooms' element = {<HostelRooms/>} />
             <Route path='designation' element = {<Designation/>} />
             <Route path='department' element = {<Department/>} />
+
             <Route path='feesgrp' element = {<FeesGrp/>} />
             <Route path='feescollect' element = {<FeesCollection/>} />
+
+            <Route path='select' element = {<Select/>}/> 
+            <Route path='classSelect' element={<ClassAttendance/>}/>
+            <Route path='stdsAttendance/:className/:section' element = {<StdsAttendance/>}/>
+            <Route path='tchsAttendance' element = {<TchsAttendance/>}/>
+            <Route path = 'basic' element = {<BasicDets/>}/>
+            <Route path = 'academic' element={<AcademicDets/>}/>
+            <Route path='office' element= {<OfficeDets/>}/>
+            <Route path='transportation' element={<TransportDets/>}/>
+            <Route path='hostelDetails' element={<HostelDets/>}/>
+            <Route path='uploadDocs' element={<DocsDets/>}/>
+            <Route path='prevSchool' element={<PrevSchlDets/>}/> 
+            
+
           </Route>
 
           {/* Student Dashboard Routes */}
@@ -159,6 +191,7 @@ function App() {
             <Route path='holidays' element = {<StdHolidays/>} />
             <Route path='stdsports' element = {<StdSports/>} />
             <Route path='stdnotice' element = {<StdNotice/>} />
+            <Route path = 'attendance' element = {<StdAttendance/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -176,6 +209,8 @@ function App() {
             <Route path='teaholidays' element = {<TeaHolidays/>} />
             <Route path='teasports' element = {<TeaSports/>} />
             <Route path='teanotice' element = {<TeaNotice/>} />
+            <Route path='classSelect' element = {<ClassSelect/>}/>
+            <Route path='attendance/:className/:section' element={<Attendance/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}
