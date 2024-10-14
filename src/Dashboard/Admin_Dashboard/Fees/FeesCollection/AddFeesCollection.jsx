@@ -89,7 +89,7 @@ function AddFeesCollection({ isOpen, onClose }) {
       const filtered = students.filter(student => student.className.includes(selectedClass.id));
       setFilteredStudents(filtered);
     } else {
-      setFilteredStudents(students);
+    //   setFilteredStudents(students);
     }
   }, [selectedClass, students]);
 

@@ -9,13 +9,14 @@ import Swal from 'sweetalert2';
 
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import AddFeesCollection from './AddFeesCollection';
+import EditFeesCollection from './EditFeesCollection';
 
 function FeesCollection() {
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editPlayerId, setEditPlayerId] = useState(null);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editFeesCollectionId, setFeesCollectionId] = useState(null);
   const [feeGrp, setFeeGrp] = useState([]); 
 
   useEffect(() => {
@@ -33,15 +34,15 @@ function FeesCollection() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditPlayerId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setFeesCollectionId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditPlayerId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setFeesCollectionId(null);
+    setIsEditPopupOpen(false);
+  };
 
 //   const handleDelete = (id) => {
 //     Swal.fire({
@@ -229,16 +230,16 @@ const fetchData = () => {
           fetchData(); // Refresh data when add popup closes
         }}
       />
-{/* 
-      <EditPlayers
+
+      <EditFeesCollection
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup(); // Only close the Edit popup here
           fetchData(); // Fetch data after the Edit popup is closed
         }}
-        playersId={editPlayerId}
+        FeeCollectionId={editFeesCollectionId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 }
