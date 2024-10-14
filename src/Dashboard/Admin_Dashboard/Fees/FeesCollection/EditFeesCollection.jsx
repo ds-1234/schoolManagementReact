@@ -63,9 +63,9 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
                 setValue(FeeCollectionData.isActive);
                 
                 // Set selected values for dropdowns
-                setSelectedStudent(FeeCollectionData.userId); // Assuming FeeCollectionData.userId returns the student object
-                setSelectedFeesGrp(FeeCollectionData.setFeeGrpId); // Assuming this directly returns the fees group object
-                setSelectedClass(FeeCollectionData.classId); // Assuming this directly returns the class object
+                setSelectedStudent(FeeCollectionData.userId);
+                setSelectedFeesGrp(FeeCollectionData.setFeeGrpId);
+                setSelectedClass(FeeCollectionData.classId); 
             })
             .catch((error) => {
                 console.error('Error fetching Fees Collection:', error);
@@ -101,6 +101,7 @@ useEffect(() => {
             // Set selected fees group
             const selectedGroup = feeGroups.find(feeGrp => feeGrp.id === feeGrpId);
             setSelectedFeesGrp(selectedGroup);
+            console.log(feeGrpId,'select grp')
         })
         .catch((error) => {
             toast.error('Error fetching Fees Group');
@@ -114,7 +115,7 @@ useEffect(() => {
             setClasses(response.data.data);
             
             // Set selected class if it matches
-            const selectedClass = response.data.data.find(cls => cls.id === selectedClassId); // Update with your class ID logic
+            const selectedClass = response.data.data.find(cls => cls.id === classId); // Update with your class ID logic
             setSelectedClass(selectedClass);
         })
         .catch((error) => {
@@ -139,7 +140,7 @@ useEffect(() => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFeeCollectionData({ ...feeCollectionData, [name]: value });
+    setFeeData({ ...feeData, [name]: value });
   };
 
 
