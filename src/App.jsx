@@ -71,6 +71,7 @@ import Department from './Dashboard/Admin_Dashboard/Department/Department';
 import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
 import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/TeaNotice';
 import FeesGrp from './Dashboard/Admin_Dashboard/Fees/FeesGrp/FeesGrp';
+import FeesCollection from './Dashboard/Admin_Dashboard/Fees/FeesCollection/FeesCollection';
 
 
 function App() {
@@ -140,7 +141,7 @@ function App() {
             <Route path='designation' element = {<Designation/>} />
             <Route path='department' element = {<Department/>} />
             <Route path='feesgrp' element = {<FeesGrp/>} />
-            {/* <Route path='feescollect' element = {<Fees/>} /> */}
+            <Route path='feescollect' element = {<FeesCollection/>} />
           </Route>
 
           {/* Student Dashboard Routes */}
