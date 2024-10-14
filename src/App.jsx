@@ -69,7 +69,11 @@ import TeaSports from './Dashboard/Teacher_Dashboard/Sports/TeaSports';
 import Designation from './Dashboard/Admin_Dashboard/Designation/Designation';
 import Department from './Dashboard/Admin_Dashboard/Department/Department';
 import StdNotice from './Dashboard/Student_Dashboard/Notice/StdNotice';
-import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/StdNotice';
+
+import TeaNotice from './Dashboard/Teacher_Dashboard/Notice/TeaNotice';
+import FeesGrp from './Dashboard/Admin_Dashboard/Fees/FeesGrp/FeesGrp';
+import FeesCollection from './Dashboard/Admin_Dashboard/Fees/FeesCollection/FeesCollection';
+
 import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassSelect';
 import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
 import StdAttendance from './Dashboard/Student_Dashboard/Attendance/Attendance'
@@ -84,6 +88,7 @@ import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/Tr
 import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
 import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
 import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
+
 
 
 function App() {
@@ -152,6 +157,10 @@ function App() {
             <Route path='hostelrooms' element = {<HostelRooms/>} />
             <Route path='designation' element = {<Designation/>} />
             <Route path='department' element = {<Department/>} />
+
+            <Route path='feesgrp' element = {<FeesGrp/>} />
+            <Route path='feescollect' element = {<FeesCollection/>} />
+
             <Route path='select' element = {<Select/>}/> 
             <Route path='classSelect' element={<ClassAttendance/>}/>
             <Route path='stdsAttendance/:className/:section' element = {<StdsAttendance/>}/>
@@ -164,6 +173,7 @@ function App() {
             <Route path='uploadDocs' element={<DocsDets/>}/>
             <Route path='prevSchool' element={<PrevSchlDets/>}/> 
             
+
           </Route>
 
           {/* Student Dashboard Routes */}
