@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import PaymentStatus from '../../../Reusable_components/PaymentStatus';
 
 function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -200,33 +201,7 @@ useEffect(() => {
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
 
-{/* Student List Input */}
-{/* <div className="mb-2 relative">
-  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
-  <div
-    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-    onClick={() => setDropdownOpen1(!dropdownOpen1)}  // Toggle dropdown for Student
-  >
-    <p>{selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Select Student'}</p>
-    <FontAwesomeIcon icon={faAngleDown} />
-  </div>
-  {dropdownOpen1 && (  // Change this to dropdownOpen1 for the Student dropdown
-    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-      {filteredStudents.map(student => (
-        <div
-          key={student.id}
-          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-          onClick={() => {
-            setSelectedStudent(student);
-            setDropdownOpen1(false); // Close dropdown after selection
-          }}
-        >
-          {`${student.firstName} ${student.lastName}`}
-        </div>
-      ))}
-    </div>
-  )}
-</div> */}
+
 
 
           {/* Student Name Input */}
@@ -303,39 +278,7 @@ useEffect(() => {
 
 
 
-          {/* Payment Method
-          <div className="relative">
-            <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
-            <div
-              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
-              onClick={() => setPayDropdownOpen(!payDropdownOpen)}
-            >
-              <span>{selectedPaymentMethod || 'Select Payment Method'}</span>
-              <FontAwesomeIcon icon={faAngleDown} />
-            </div>
-            {payDropdownOpen && (
-              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                <div
-                  className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                  onClick={() => {
-                    setSelectedPaymentMethod('Cash');
-                    setPayDropdownOpen(false);
-                  }}
-                >
-                  Cash
-                </div>
-                <div
-                  className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                  onClick={() => {
-                    setSelectedPaymentMethod('Online');
-                    setPayDropdownOpen(false);
-                  }}
-                >
-                  Online
-                </div>
-              </div>
-            )}
-          </div> */}
+
 
 
 
@@ -358,13 +301,9 @@ useEffect(() => {
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
                 Status 
               </label>
-              <ToggleButton
-                isOn={value}
-                handleToggle={() => setValue(!value)}
-                id="active"
-                // label="Active"
-                register={register}
-              />
+
+
+              <PaymentStatus isActive={value}/>
             </div>
 
         </form>
