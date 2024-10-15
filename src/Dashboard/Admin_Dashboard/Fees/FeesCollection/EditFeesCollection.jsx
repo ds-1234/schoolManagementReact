@@ -27,6 +27,8 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   const [classId, setClassId] = useState(null);
   const [studentId, setStudentId] = useState(null);
   const [feeGrpId, setFeeGrpId] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
+
 
   const {
     register,
@@ -169,11 +171,17 @@ useEffect(() => {
         ...feeCollectionData,
         ...feeData,
         paymentType:'',
-        isActive: value,
+        isActive: paymentStatus,
       },
     })
       .then(() => {
         toast.success('Fee Collection updated successfully!');
+        reset();
+        setSelectedStudent(null)
+        setSelectedFeesGrp(null)
+        setSelectedClass(null)
+        setSelectedPaymentMethod('')
+        setPaymentStatus(null); // Reset to null after submission
         onSuccess();
         onClose();
       })
@@ -352,18 +360,32 @@ useEffect(() => {
             />
           </div>
 
-          <div className="mb-2">
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status 
+          {/* Payment Status (Radio Buttons) */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2 text-black">Payment Status *</label>
+            <div className="flex items-center">
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  value="Paid"
+                  checked={paymentStatus === true}
+                  onChange={() => setPaymentStatus(true)}
+                  className="mr-2"
+                />
+                Paid
               </label>
-              <ToggleButton
-                isOn={value}
-                handleToggle={() => setValue(!value)}
-                id="active"
-                // label="Active"
-                register={register}
-              />
+              <label>
+                <input
+                  type="radio"
+                  value="Unpaid"
+                  checked={paymentStatus === false}
+                  onChange={() => setPaymentStatus(false)}
+                  className="mr-2"
+                />
+                Unpaid
+              </label>
             </div>
+          </div>
 
           {/* Submit Button */}
           <Button type="submit" className="w-full text-center" />

@@ -7,7 +7,7 @@ import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2';
 import EditStdFeesCollection from './EditStdFeeCollection';
-import PaymentStatus from '../../../Reusable_components/PaymentStaus';
+import PaymentStatus from '../../../Reusable_components/PaymentStatus';
 
 function StdFeeCollection() {
   const [data, setData] = useState([]);
