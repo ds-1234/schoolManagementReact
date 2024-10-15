@@ -64,11 +64,7 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
                 setFeeGrpId(FeeCollectionData.setFeeGrpId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
                 setValue(FeeCollectionData.isActive);
-                
-                // Set selected values for dropdowns
-                setSelectedStudent(FeeCollectionData.userId);
-                setSelectedFeesGrp(FeeCollectionData.setFeeGrpId);
-                setSelectedClass(FeeCollectionData.classId); 
+
             })
             .catch((error) => {
                 console.error('Error fetching Fees Collection:', error);
@@ -76,39 +72,29 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
     }
 }, [FeeCollectionId, isOpen]);
 
-// Ensure students and fees groups are set correctly in their respective useEffect hooks
-useEffect(() => {
-    // Fetch Students
-    axios.get('http://localhost:8080/user/getUserList')
-        .then((response) => {
-            const studentList = response.data.data.filter(user => user.role === 3);
-            setStudents(studentList);
-            
-            // Optionally set filtered students based on pre-selected student
-            const selstulist = studentList.find(user => user.id === studentId);
-            setFilteredStudents(selstulist ? [selstulist] : []);
-            setSelectedStudent(selstulist); // Set selected student
-        })
-        .catch((error) => {
-            toast.error('Error fetching Students');
-        });
-}, [studentId]);
+
 
 useEffect(() => {
-    // Fetch Fees Groups
-    axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
-        .then((response) => {
-            const feeGroups = response.data.data;
-            setFeesGrp(feeGroups);
-            
-            // Set selected fees group
-            const selectedGroup = feeGroups.find(feeGrp => feeGrp.id === feeGrpId);
-            setSelectedFeesGrp(selectedGroup);
-            console.log(feeGrpId,'select grp')
-        })
-        .catch((error) => {
-            toast.error('Error fetching Fees Group');
-        });
+    // Fetch all fee groups
+    if (feeGrpId) {
+        axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
+            .then((response) => {
+                const feeGroups = response.data.data;
+                console.log(feeGroups,"feeGroups")
+                setFeesGrp(feeGroups);
+
+                // Find the fee group by matching feeGrpId
+                const selectedGroup = feeGroups.find(feeGrp => feeGrp.id === feeGrpId);
+                if (selectedGroup) {
+                    setSelectedFeesGrp(selectedGroup); // Set the selected fee group
+                } else {
+                    console.error(`No fee group found with id: ${feeGrpId}`);
+                }
+            })
+            .catch((error) => {
+                toast.error('Error fetching Fees Group');
+            });
+    }
 }, [feeGrpId]);
 
 useEffect(() => {
@@ -158,33 +144,7 @@ useEffect(() => {
 //     });
 //   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    axios({
-      method: 'post',
-      url: `http://localhost:8080/feesCollection/savefeesCollection`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        id: FeeCollectionId,
-        ...feeCollectionData,
-        ...feeData,
-        paymentType:'',
-        isActive: value,
-      },
-    })
-      .then(() => {
-        toast.success('Fee Collection updated successfully!');
-        onSuccess();
-        onClose();
-      })
-      .catch((error) => {
-        toast.error('Failed to update Fee Collection.');
-        console.error('Error updating Fee Collection:', error);
-      });
-  };
+ 
 
   if (!isOpen) return null;
 
@@ -198,10 +158,10 @@ useEffect(() => {
           &times;
         </button>
 
-        <form onSubmit={handleSubmit}>
+        <form >
           <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
 
-
+{console.log(selectedFeesGrp,'selectedFeesGrp')}
 
 
           {/* Student Name Input */}
@@ -219,8 +179,23 @@ useEffect(() => {
           </div>
 
 
-
           {/* Fees Group Input */}
+          <div className="mb-2">
+            <label htmlFor="feesGroup" className="block text-gray-700 text-sm font-bold mb-2">Fees Group</label>
+            <input
+                        readOnly
+              type="text"
+              id="feesGroup"
+              name="feesGroup"
+              value={selectedFeesGrp}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+          </div>
+
+
+
+          {/* Fees Group Input
           <div className="mb-2 relative">
             <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
@@ -246,7 +221,7 @@ useEffect(() => {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Amount Input */}
           <div className="mb-2">
@@ -299,7 +274,7 @@ useEffect(() => {
 
           <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status 
+                Payment Status 
               </label>
 
 
