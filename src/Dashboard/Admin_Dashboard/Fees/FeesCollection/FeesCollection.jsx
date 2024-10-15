@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import AddFeesCollection from './AddFeesCollection';
 import EditFeesCollection from './EditFeesCollection';
+import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
 
 function FeesCollection() {
   const [data, setData] = useState([]);
@@ -169,7 +170,7 @@ const fetchData = () => {
     },
     {
       name: 'Status',
-      selector: (row) => <StatusButton isActive={row.isActive} />,
+      selector: (row) => <PaymentStatus isActive={row.isActive} />,
       sortable: true,
     },
     {

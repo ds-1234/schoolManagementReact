@@ -6,6 +6,8 @@ import deleteIcon from '../../../assets/delete.png';
 import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2';
+import EditStdFeesCollection from './EditStdFeeCollection';
+import PaymentStatus from '../../../Reusable_components/PaymentStaus';
 
 function StdFeeCollection() {
   const [data, setData] = useState([]);
@@ -30,15 +32,15 @@ function StdFeeCollection() {
 
 
 
-//   const openEditPopup = (id) => {
-//     setFeesCollectionId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setFeesCollectionId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setFeesCollectionId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setFeesCollectionId(null);
+    setIsEditPopupOpen(false);
+  };
 
 //   const handleDelete = (id) => {
 //     Swal.fire({
@@ -86,20 +88,21 @@ const fetchData = () => {
       .then((response) => {
         console.log('Data from API:', response.data);
         const feesCollectionData = response.data.data;
-        const requiredFeeCollection = feesCollectionData.find(feeCollection => feeCollection.userId === user.id);
+        console.log(feesCollectionData,'feecollectiom')
+        const requiredFeeCollection = feesCollectionData.filter(feeCollection => feeCollection.userId === user.id);
         setData(requiredFeeCollection);
         setFilterData(requiredFeeCollection);
         fetchFeeGrp(requiredFeeCollection);  
-        // setData(feesCollectionData);
-        // setFilterData(feesCollectionData);
-        // fetchFeeGrp(feesCollectionData);  
+        // setData(requiredFeeCollection);
+        // setFilterData(requiredFeeCollection);
+        // fetchFeeGrp(requiredFeeCollection);  
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   };
   
-  const fetchFeeGrp = (feesCollectionData) => {
+  const fetchFeeGrp = (requiredFeeCollection) => {
     axios({
       method: 'GET',
       url: `http://localhost:8080/feesGroup/getFeesGroupList`,
@@ -112,10 +115,10 @@ const fetchData = () => {
         const feeGrpList = response.data.data;
         setFeeGrp(feeGrpList);
   
-        console.log('Fees Collection Data:', feesCollectionData); // Log fees collection data before mapping
+        console.log('Fees Collection Data:', requiredFeeCollection); // Log fees collection data before mapping
   
-        // Map feesCollectionData to include the fee group name
-        const updatedFeesCollection = feesCollectionData.map((feeCollection) => {
+        // Map requiredFeeCollection to include the fee group name
+        const updatedFeesCollection = requiredFeeCollection.map((feeCollection) => {
           const matchedGroup = feeGrpList.find(group => group.id === feeCollection.feesGroupNameId);
           return {
             ...feeCollection,
@@ -169,7 +172,7 @@ const fetchData = () => {
     },
     {
       name: 'Status',
-      selector: (row) => <StatusButton isActive={row.isActive} />,
+      selector: (row) => <PaymentStatus isActive={row.isActive} />,
       sortable: true,
     },
     {
@@ -216,7 +219,7 @@ const fetchData = () => {
     <div className="h-full mr-8 mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Fees Collection</h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/studentDashboard"> Admin </NavLink>/
+        Dashboard /<NavLink to="/studentDashboard"> Student </NavLink>/
         <span className="text-[#ffae01] font-semibold">Fees Collection</span>
       </p>
       <Table
@@ -229,7 +232,7 @@ const fetchData = () => {
 
 
 
-      {/* <EditFeesCollection
+      <EditStdFeesCollection
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup(); // Only close the Edit popup here
@@ -237,7 +240,7 @@ const fetchData = () => {
         }}
         FeeCollectionId={editFeesCollectionId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 }
