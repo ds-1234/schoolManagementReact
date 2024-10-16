@@ -6,11 +6,13 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
 import { useUserContext } from '../../../hooks/UserContext';
+import { useStepContext } from '../../../hooks/StepContext';
 
 function PendingAdmForm() {
 const navigate = useNavigate();
 const [formDets , setFormDets] = useState([]) ;
 const {setUserId} = useUserContext() 
+const {setCurrentStep} = useStepContext() 
 
 const column = [
   {
@@ -82,11 +84,11 @@ const column = [
       });
   };
 
-  const fetchFormDetails = async(userId) => {
+  const fetchFormDetails = async (userId) => {
     await axios({
-      method: 'GET' ,
+      method: 'GET',
       url: `${BASE_URL}/user/getStudentDetails/${userId}`,
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -94,26 +96,31 @@ const column = [
       console.log(res.data.data);
       const details = res.data.data;
       setFormDets(details);
-      setUserId(userId) ;
-      // Check conditions and navigate accordingly
+      setUserId(userId);
+  
+      // Update the step based on the details without navigating
       if (details.school === null) {
-        navigate('/admin/academic');
+        setCurrentStep(2);
       } else if (details.admissionDate === null) {
-        navigate('/admin/office');
+        setCurrentStep(3);
       } else if (details.routeName === null) {
-        navigate('/admin/transportation');
+        setCurrentStep(4);
       } else if (details.buildingName === null) {
-        navigate('/admin/hostelDetails');
+        setCurrentStep(5);
       } else if (details.isActive === null) {
-        navigate('/admin/prevSchool');
+        setCurrentStep(7);
       } else {
         console.log("All details are filled");
       }
+  
+      // Navigate to the AdmissionForm page (if not already there)
+      navigate('/admin/admissionForm');
     })
     .catch((err) => {
-      console.error("Error in fetching form details : " , err);
+      console.error("Error in fetching form details:", err);
     });
   };
+  
 
   useEffect(() => {
     fetchData();

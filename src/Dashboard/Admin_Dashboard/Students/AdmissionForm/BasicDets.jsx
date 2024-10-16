@@ -8,10 +8,13 @@ import { toast , ToastContainer } from 'react-toastify';
 import { useUserContext } from '../../../../hooks/UserContext';
 import BASE_URL from '../../../../conf/conf';
 import ProgressIndicator from './ProgressIndicator';
+import { useStepContext } from '../../../../hooks/StepContext';
+import { NavLink } from 'react-router-dom';
 
-function BasicDets({handleNextStep}) {
+function BasicDets() {
 
 const { setUserId } = useUserContext()
+const { currentStep, handleNextStep } = useStepContext();
 const {
     register,
     handleSubmit,
@@ -41,7 +44,7 @@ const {
               console.log('response' , response.data.data)
               setUserId(response.data.data.userId)
               toast.success("Successfully Add Student!");
-              handleNextStep(2)
+              handleNextStep()
               reset()
           })
           .catch(err=>{
@@ -52,7 +55,9 @@ const {
     }
   return (
     <div>
-         <ProgressIndicator currentStep={1} />
+        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+        <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+         <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="text-xl font-semibold text-black ">Basic Details</h2>
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">

@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
 import ProgressIndicator from './ProgressIndicator';
+import { NavLink } from 'react-router-dom';
 
 function PrevSchlDets() {
   const {userId} = useUserContext() 
@@ -47,6 +48,8 @@ function PrevSchlDets() {
     
   return (
     <div>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
        <ProgressIndicator currentStep={7} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
          <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Previous School Details</h2>
