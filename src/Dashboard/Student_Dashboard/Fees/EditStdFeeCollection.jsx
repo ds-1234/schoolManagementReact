@@ -61,7 +61,7 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
                 setFeeData(FeeCollectionData);
                 setFeeCollectionData(FeeCollectionData);
                 setStudentId(FeeCollectionData.userId);
-                setFeeGrpId(FeeCollectionData.setFeeGrpId);
+                setFeeGrpId(FeeCollectionData.feesGroupNameId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
                 setValue(FeeCollectionData.isActive);
 
@@ -95,7 +95,7 @@ useEffect(() => {
                 toast.error('Error fetching Fees Group');
             });
     }
-}, [feeGrpId]);
+}, [feeGrpId,isOpen]);
 
 useEffect(() => {
     // Fetch Classes
@@ -110,7 +110,7 @@ useEffect(() => {
         .catch((error) => {
             toast.error('Error fetching Classes');
         });
-}, []);
+}, [isOpen]);
 
 
     // Filter students by selected class
@@ -187,7 +187,7 @@ useEffect(() => {
               type="text"
               id="feesGroup"
               name="feesGroup"
-              value={selectedFeesGrp}
+              value={selectedFeesGrp.feesGroupName}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
