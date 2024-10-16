@@ -24,6 +24,11 @@ function DocsDets({handleNextStep , currentStep}) {
     <div className='bg-white mt-10 p-5 rounded-xl'>
          <h2 className="col-span-4  mt-8 text-xl font-semibold text-black">Documents Required</h2>
          <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
+         <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Upload Student Photo (150px X 150px)</label>
+          <input {...register('photo')} type="file" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base py-1 px-1"/>
+        </div>
+
           <div className="col-span-2">
             <label htmlFor="transferCertificate">Upload Transfer Certificate</label>
             <input

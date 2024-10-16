@@ -3,8 +3,11 @@ import ToggleButton from '../../../../Reusable_components/ToggleButton'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
+import { useUserContext } from '../../../../hooks/UserContext';
+import axios from 'axios';
 
 function PrevSchlDets({handleNextStep , currentStep}) {
+  const {userId} = useUserContext() 
     const navigate = useNavigate()
     const [value , setValue] = useState(true) 
     const {
@@ -14,10 +17,33 @@ function PrevSchlDets({handleNextStep , currentStep}) {
         reset,
       } = useForm();
 
-      const onSubmit = (data) => {
+      const onSubmit = async (data) => {
         console.log(data);
-        navigate('/admin/allStudents')
-      }
+        
+        const userData = {
+            ...data , 
+            userId : userId ,
+          }
+          await axios({
+              method:"Post",
+              url : `http://localhost:8080/user/updatePreSchoolDetails`,
+              data: userData ,
+              headers: {
+                "Content-Type": "application/json",
+              },
+          
+            })
+            .then((response)=>{
+              console.log('response' , response.data.data)
+              handleNextStep(1)
+              navigate('/admin/allStudents')
+              reset()
+          })
+          .catch(err=>{
+              console.log(err,'error:')
+              reset()
+          })
+    }
     
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
@@ -27,10 +53,10 @@ function PrevSchlDets({handleNextStep , currentStep}) {
             <label htmlFor="previousSchool">School Name</label>
             <input
               type="text"
-              id="previousSchool"
+              id="previousSchoolName"
               placeholder=""
               className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-              {...register('previousSchool')}
+              {...register('previousSchoolName')}
             />
           </div>
 
@@ -41,7 +67,7 @@ function PrevSchlDets({handleNextStep , currentStep}) {
               id="previousAddress"
               placeholder=""
               className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-              {...register('previousAddress')}
+              {...register('preSchoolAddress')}
             />
           </div>
 
@@ -49,22 +75,23 @@ function PrevSchlDets({handleNextStep , currentStep}) {
             <label htmlFor="leavingYear">Leaving Year Session</label>
             <input
               type="text"
-              id="leavingYear"
+              id="preSchoolLeavingSession"
               placeholder=""
               className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-              {...register('leavingYear')}
+              {...register('preSchoolLeavingSession')}
             />
           </div>
 
           <div className="mb-2">
-                <label className="mb-2" htmlFor="isActive">
+                <label className="mb-2" htmlFor="status">
                   Status 
                 </label>
                 <ToggleButton
                   isOn={value}
                   handleToggle={() => setValue(!value)}
-                  id="isActive"
+                  id="status"
                   register={register}
+                  {...register('status')}
                 />
             </div>
 

@@ -3,9 +3,13 @@ import { useForm } from 'react-hook-form'
 import DatePicker from '../../../../Reusable_components/DatePicker';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
+import axios from 'axios';
+import { toast , ToastContainer } from 'react-toastify';
+import { useUserContext } from '../../../../hooks/UserContext';
 
 function BasicDets({handleNextStep , currentStep}) {
 
+const { setUserId } = useUserContext()
 const {
     register,
     handleSubmit,
@@ -15,11 +19,34 @@ const {
 
     const navigate = useNavigate()
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data);
-        console.log(handleNextStep);
         
-        handleNextStep(currentStep)
+        const userData = {
+            ...data , 
+            role: 3,
+          }
+          await axios({
+              method:"Post",
+              url : `http://localhost:8080/user/addStudentBasicDetails`,
+              data: userData ,
+              headers: {
+                "Content-Type": "application/json",
+              },
+          
+            })
+            .then((response)=>{
+              console.log('response' , response.data.data)
+              setUserId(response.data.data.userId)
+              toast.success("Successfully Add Student!");
+              handleNextStep(currentStep)
+              reset()
+          })
+          .catch(err=>{
+              console.log(err,'error:')
+              toast.error("Error to add new User");
+              reset()
+          })
     }
   return (
     <div className='bg-white mt-10 p-5 rounded-xl'>
@@ -238,7 +265,7 @@ const {
         <label htmlFor="religion">Religion</label>
         <select
             id="religion"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.religion ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.relegion ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('religion')}
         >
             <option value="">Select Religion</option>
@@ -258,8 +285,8 @@ const {
         <label htmlFor="caste">Caste Category</label>
         <select
             id="caste"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.caste ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            {...register('caste')}
+            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.casteCategory ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('casteCategory')}
         >
             <option value="">Select Caste Category</option>
             <option value="General">General</option>
@@ -271,13 +298,8 @@ const {
         </select>
         </div>
 
-        <div className="col-span-2">
-        <label className="block text-sm font-medium text-gray-700">Upload Student Photo (150px X 150px)</label>
-        <input {...register('photo')} type="file" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base py-1 px-1"/>
-    </div>
-
-    <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8'/>
+        <div className="col-span-2 flex justify-start space-x-4 mt-10">
+          <Button type='submit' label="Save" className='px-8' />
           <Button onClick={() => {
             reset() 
             navigate('/admin/allStudents')
@@ -285,6 +307,7 @@ const {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
+      <ToastContainer/>
     </div>
 
   )

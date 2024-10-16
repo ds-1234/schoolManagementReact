@@ -5,8 +5,7 @@ import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 
-
-function AllStudents() {
+function PendingAdmForm() {
 
 const column = [
   {
@@ -70,8 +69,8 @@ const column = [
     })
       .then((response) => {
         const users = response.data.data.filter((user) => user.role === 3) ;
-        setUser(users.filter((user) => user.isActive === true));
-        setFilterUser(users.filter((user) => user.isActive === true))
+        setUser(users.filter((user) => user.isActive == null));
+        setFilterUser(users.filter((user) => user.isActive == null))
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -121,7 +120,7 @@ const column = [
 
   return (
     <div className='pl-0 h-full mb-10'>
-       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Students</h1>
+       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Pending Students</h1>
        <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Students</span> </p>
 
       <Table
@@ -135,4 +134,4 @@ const column = [
   );
 }
 
-export default AllStudents;
+export default PendingAdmForm;
