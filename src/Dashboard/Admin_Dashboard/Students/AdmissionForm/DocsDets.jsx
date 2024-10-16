@@ -2,8 +2,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
+import Table from '../../../../Reusable_components/Table';
+import ProgressIndicator from './ProgressIndicator';
 
-function DocsDets({handleNextStep , currentStep}) {
+function DocsDets({handleNextStep}) {
     const {
         register,
         handleSubmit,
@@ -11,43 +13,66 @@ function DocsDets({handleNextStep , currentStep}) {
         reset,
     } = useForm();
 
+    const handleFileChange = (event, documentName) => {
+      const file = event.target.files[0];
+      console.log(`File for ${documentName}: `, file);
+    };
+
+    const columns = [
+      {
+        name: 'SR.No',
+        selector: (row, index) => index + 1, // Display the row number starting from 1
+        sortable: false,
+      },
+      {
+        name: 'Document Name',
+        selector: (row) => row.documentName,
+        sortable: false,
+      },
+      {
+        name: 'Upload Document',
+        cell: (row) => (
+          <input
+            type="file"
+            {...register(row.field)}
+            onChange={(e) => row.onFileChange(e, row.documentName)}
+            className="border border-gray-300 rounded p-1"
+          />
+        ),
+        sortable: false,
+      },
+    ];
+    
+    const documentEntries = [
+      { documentName: 'Student Photo', onFileChange: handleFileChange  , field: 'photo'},
+      { documentName: 'Transfer Certificate', onFileChange: handleFileChange , field: 'transferCertificate'},
+      { documentName: 'ID Proof', onFileChange: handleFileChange , field: 'idProof'},
+    ];
+    
+    
+    
+
     const navigate = useNavigate()
     const onSubmit = (data) => {
       console.log(data);
       if (handleNextStep) {
-        handleNextStep(currentStep);
+        handleNextStep(7);
       } else {
         console.error("handleNextStep is not defined");
       }
     };
   return (
-    <div className='bg-white mt-10 p-5 rounded-xl'>
+    <div>
+      <ProgressIndicator currentStep={6} />
          <h2 className="col-span-4  mt-8 text-xl font-semibold text-black">Documents Required</h2>
-         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
-         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Upload Student Photo (150px X 150px)</label>
-          <input {...register('photo')} type="file" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base py-1 px-1"/>
-        </div>
+         <form onSubmit={handleSubmit(onSubmit)} >
 
-          <div className="col-span-2">
-            <label htmlFor="transferCertificate">Upload Transfer Certificate</label>
-            <input
-              type="file"
-              id="transferCertificate"
-              className="mt-1 block w-full border-gray-300 rounded-md"
-              {...register('transferCertificate')}
-            />
-          </div>
+          <Table 
+          columns={columns}
+          data={documentEntries}
+          className={"hidden"}
+          />
 
-          <div className="col-span-2">
-            <label htmlFor="idProof">Upload ID Proof</label>
-            <input
-              type="file"
-              id="idProof"
-              className="mt-1 block w-full border-gray-300 rounded-md"
-              {...register('idProof')}
-            />
-          </div>
           <div className="col-span-2 flex justify-start space-x-4 mt-10">
           <Button type='submit' label="Save" className='px-8'/>
           <Button onClick={() => {

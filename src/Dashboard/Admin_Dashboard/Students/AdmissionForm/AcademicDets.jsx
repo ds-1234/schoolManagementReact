@@ -4,8 +4,10 @@ import axios from 'axios';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../../hooks/UserContext';
+import BASE_URL from '../../../../conf/conf';
+import ProgressIndicator from './ProgressIndicator';
 
-function AcademicDets({ handleNextStep , currentStep }) {
+function AcademicDets({ handleNextStep }) {
     const {userId} = useUserContext() 
     const {
         register,
@@ -21,7 +23,7 @@ function AcademicDets({ handleNextStep , currentStep }) {
     const fetchClassOptions = () => {
         axios({
           method: "GET",
-          url: `http://localhost:8080/class/getClassList`,
+          url: `${BASE_URL}/class/getClassList`,
           headers: {
             "Content-Type": "application/json",
           },
@@ -38,7 +40,7 @@ function AcademicDets({ handleNextStep , currentStep }) {
       const fetchSchoolOptions = () => {
         axios({
           method: "GET",
-          url: `http://localhost:8080/school/getSchoolList`,
+          url: `${BASE_URL}/school/getSchoolList`,
           headers: {
             "Content-Type": "application/json",
           },
@@ -67,7 +69,7 @@ function AcademicDets({ handleNextStep , currentStep }) {
           }
           await axios({
               method:"Post",
-              url : `http://localhost:8080/user/updateAcademicDetails`,
+              url : `${BASE_URL}/user/updateAcademicDetails`,
               data: userData ,
               headers: {
                 "Content-Type": "application/json",
@@ -76,7 +78,7 @@ function AcademicDets({ handleNextStep , currentStep }) {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
-              handleNextStep(currentStep)
+              handleNextStep(3)
               reset()
           })
           .catch(err=>{
@@ -86,6 +88,8 @@ function AcademicDets({ handleNextStep , currentStep }) {
     }
       
   return (
+    <div>
+       <ProgressIndicator currentStep={2} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Academic Details</h2>
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -149,7 +153,7 @@ function AcademicDets({ handleNextStep , currentStep }) {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
-
+</div>
     </div>
   )
 }

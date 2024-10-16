@@ -178,7 +178,7 @@ function App() {
             <Route path='hostelDetails' element={<HostelDets/>}/>
             <Route path='uploadDocs' element={<DocsDets/>}/>
             <Route path='prevSchool' element={<PrevSchlDets/>}/> 
-            
+            <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
           </Route>
 
           {/* Student Dashboard Routes */}

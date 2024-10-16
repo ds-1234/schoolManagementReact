@@ -6,8 +6,10 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import { useUserContext } from '../../../../hooks/UserContext';
+import BASE_URL from '../../../../conf/conf';
+import ProgressIndicator from './ProgressIndicator';
 
-function BasicDets({handleNextStep , currentStep}) {
+function BasicDets({handleNextStep}) {
 
 const { setUserId } = useUserContext()
 const {
@@ -28,7 +30,7 @@ const {
           }
           await axios({
               method:"Post",
-              url : `http://localhost:8080/user/addStudentBasicDetails`,
+              url : `${BASE_URL}/user/addStudentBasicDetails`,
               data: userData ,
               headers: {
                 "Content-Type": "application/json",
@@ -39,7 +41,7 @@ const {
               console.log('response' , response.data.data)
               setUserId(response.data.data.userId)
               toast.success("Successfully Add Student!");
-              handleNextStep(currentStep)
+              handleNextStep(2)
               reset()
           })
           .catch(err=>{
@@ -49,6 +51,8 @@ const {
           })
     }
   return (
+    <div>
+         <ProgressIndicator currentStep={1} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="text-xl font-semibold text-black ">Basic Details</h2>
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -309,7 +313,7 @@ const {
     </form>
       <ToastContainer/>
     </div>
-
+</div>
   )
 }
 

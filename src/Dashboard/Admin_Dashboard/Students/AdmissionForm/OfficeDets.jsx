@@ -5,8 +5,10 @@ import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
+import ProgressIndicator from './ProgressIndicator';
 
-function OfficeDets({handleNextStep , currentStep}) {
+function OfficeDets({handleNextStep}) {
   const {userId} = useUserContext()
     const {
         register,
@@ -25,7 +27,7 @@ function OfficeDets({handleNextStep , currentStep}) {
           }
           await axios({
               method:"Post",
-              url : `http://localhost:8080/user/updateOfficeDetails`,
+              url : `${BASE_URL}/user/updateOfficeDetails`,
               data: userData ,
               headers: {
                 "Content-Type": "application/json",
@@ -34,7 +36,7 @@ function OfficeDets({handleNextStep , currentStep}) {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
-              handleNextStep(currentStep)
+              handleNextStep(4)
               reset()
           })
           .catch(err=>{
@@ -44,6 +46,8 @@ function OfficeDets({handleNextStep , currentStep}) {
     }
 
   return (
+    <div>
+       <ProgressIndicator currentStep={3} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Office Details</h2>
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -75,6 +79,7 @@ function OfficeDets({handleNextStep , currentStep}) {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
+</div>
 </div>
   )
 }

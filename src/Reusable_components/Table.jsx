@@ -4,7 +4,7 @@ import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear}) => {
+const Table = ({ columns, data, searchOptions, onSearch, handleClear , className}) => {
   const searchInputRef = useRef(null);
   const checkboxRefs = useRef({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -66,7 +66,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear}) => {
         <div className="rounded-lg text-black">
           <div>
             {/* Search Section */}
-            <div className="flex flex-wrap gap-4 mb-4 items-center">
+            <div className={`flex flex-wrap gap-4 mb-4 items-center ${className}`}>
               
               {/* Filter Dropdown */}
               <div className="relative">
