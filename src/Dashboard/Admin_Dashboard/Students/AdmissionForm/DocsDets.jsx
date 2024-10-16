@@ -4,8 +4,11 @@ import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 import ProgressIndicator from './ProgressIndicator';
+import { useStepContext } from '../../../../hooks/StepContext';
+import { NavLink } from 'react-router-dom';
 
-function DocsDets({handleNextStep}) {
+function DocsDets() {
+  const { currentStep, handleNextStep } = useStepContext();
     const {
         register,
         handleSubmit,
@@ -56,14 +59,17 @@ function DocsDets({handleNextStep}) {
     const onSubmit = (data) => {
       console.log(data);
       if (handleNextStep) {
-        handleNextStep(7);
+        handleNextStep();
       } else {
         console.error("handleNextStep is not defined");
       }
     };
   return (
     <div>
-      <ProgressIndicator currentStep={6} />
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+
+      <ProgressIndicator currentStep={currentStep} />
          <h2 className="col-span-4  mt-8 text-xl font-semibold text-black">Documents Required</h2>
          <form onSubmit={handleSubmit(onSubmit)} >
 

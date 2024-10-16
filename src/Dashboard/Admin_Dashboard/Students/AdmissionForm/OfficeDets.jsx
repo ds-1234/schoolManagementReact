@@ -7,8 +7,11 @@ import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import ProgressIndicator from './ProgressIndicator';
+import { useStepContext } from '../../../../hooks/StepContext';
+import { NavLink } from 'react-router-dom';
 
-function OfficeDets({handleNextStep}) {
+function OfficeDets() {
+  const { currentStep, handleNextStep } = useStepContext();
   const {userId} = useUserContext()
     const {
         register,
@@ -36,7 +39,7 @@ function OfficeDets({handleNextStep}) {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
-              handleNextStep(4)
+              handleNextStep()
               reset()
           })
           .catch(err=>{
@@ -47,7 +50,9 @@ function OfficeDets({handleNextStep}) {
 
   return (
     <div>
-       <ProgressIndicator currentStep={3} />
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+       <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Office Details</h2>
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
