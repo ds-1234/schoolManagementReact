@@ -88,12 +88,17 @@ import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/Tr
 import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
 import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
 import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
+
 import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollection';
+
+import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
+import { UserProvider } from './hooks/UserContext';
 
 
 
 function App() {
   return (
+    <UserProvider>
     <Router>
       <div className="h-screen">
         <Routes>
@@ -174,7 +179,6 @@ function App() {
             <Route path='uploadDocs' element={<DocsDets/>}/>
             <Route path='prevSchool' element={<PrevSchlDets/>}/> 
             
-
           </Route>
 
           {/* Student Dashboard Routes */}
@@ -240,6 +244,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </UserProvider>
   );
 }
 
