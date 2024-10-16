@@ -88,6 +88,8 @@ useEffect(() => {
             const selstulist = studentList.find(user => user.id === studentId);
             setFilteredStudents(selstulist ? [selstulist] : []);
             setSelectedStudent(selstulist); // Set selected student
+            console.log(selstulist,'selstulist')
+            setClassId(selstulist.className[0]); // Set selected classid
         })
         .catch((error) => {
             toast.error('Error fetching Students');
