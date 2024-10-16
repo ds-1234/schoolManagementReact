@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react';
 import edit from '../../../assets/edit.png';
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
+import { useUserContext } from '../../../hooks/UserContext';
 
 function PendingAdmForm() {
+const navigate = useNavigate();
+const [formDets , setFormDets] = useState([]) ;
+const {setUserId} = useUserContext() 
 
 const column = [
   {
@@ -43,7 +48,7 @@ const column = [
     cell: row => (
       <div className='flex gap-2'>
         <button
-        onClick={() => openEditPopup(row.id)}
+        onClick={() => handleForm(row.userId)}
       >
         <img src={edit} alt="Edit" className='h-8' />
       </button>
@@ -62,7 +67,7 @@ const column = [
   const fetchData = async() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/user/getUserList',
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -77,9 +82,46 @@ const column = [
       });
   };
 
+  const fetchFormDetails = async(userId) => {
+    await axios({
+      method: 'GET' ,
+      url: `${BASE_URL}/user/getStudentDetails/${userId}`,
+      headers:{
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => {
+      console.log(res.data.data);
+      const details = res.data.data;
+      setFormDets(details);
+      setUserId(userId) ;
+      // Check conditions and navigate accordingly
+      if (details.school === null) {
+        navigate('/admin/academic');
+      } else if (details.admissionDate === null) {
+        navigate('/admin/office');
+      } else if (details.routeName === null) {
+        navigate('/admin/transportation');
+      } else if (details.buildingName === null) {
+        navigate('/admin/hostelDetails');
+      } else if (details.isActive === null) {
+        navigate('/admin/prevSchool');
+      } else {
+        console.log("All details are filled");
+      }
+    })
+    .catch((err) => {
+      console.error("Error in fetching form details : " , err);
+    });
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleForm = (userId) => {
+    fetchFormDetails(userId) ;
+  }
 
   useEffect(() => {
     setUser(user);  

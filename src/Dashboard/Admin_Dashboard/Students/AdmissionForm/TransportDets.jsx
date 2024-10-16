@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../../hooks/UserContext';
+import ProgressIndicator from './ProgressIndicator'
 
 function TransportDets({handleNextStep , currentStep}) {
   const {userId} = useUserContext() ;
@@ -90,7 +91,7 @@ function TransportDets({handleNextStep , currentStep}) {
         })
         .then((response)=>{
           console.log('response' , response.data.data)
-          handleNextStep(currentStep)
+          handleNextStep(5)
           reset()
       })
       .catch(err=>{
@@ -99,6 +100,8 @@ function TransportDets({handleNextStep , currentStep}) {
       })
 }
   return (
+    <div>
+       <ProgressIndicator currentStep={4} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Transport Information</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -149,6 +152,7 @@ function TransportDets({handleNextStep , currentStep}) {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
+    </div>
     </div>
   )
 }

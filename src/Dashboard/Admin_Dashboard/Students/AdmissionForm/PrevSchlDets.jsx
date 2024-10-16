@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
 import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
+import ProgressIndicator from './ProgressIndicator';
 
-function PrevSchlDets({handleNextStep , currentStep}) {
+function PrevSchlDets() {
   const {userId} = useUserContext() 
     const navigate = useNavigate()
     const [value , setValue] = useState(true) 
@@ -35,7 +36,6 @@ function PrevSchlDets({handleNextStep , currentStep}) {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
-              handleNextStep(1)
               navigate('/admin/allStudents')
               reset()
           })
@@ -46,6 +46,8 @@ function PrevSchlDets({handleNextStep , currentStep}) {
     }
     
   return (
+    <div>
+       <ProgressIndicator currentStep={7} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
          <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Previous School Details</h2>
          <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -104,6 +106,7 @@ function PrevSchlDets({handleNextStep , currentStep}) {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
     </form>
+    </div>
     </div>
   )
 }

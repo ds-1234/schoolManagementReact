@@ -41,7 +41,7 @@ function AdmissionForm() {
       case 6:
         return <DocsDets handleNextStep={handleNextStep} currentStep={currentStep} />
       case 7:
-        return <PrevSchlDets handleNextStep={handleNextStep} currentStep={currentStep} />
+        return <PrevSchlDets />
       default:
         return <BasicDets handleNextStep={handleNextStep} currentStep={currentStep} />
     }
@@ -52,7 +52,6 @@ function AdmissionForm() {
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
        <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
 
-    <ProgressIndicator currentStep={currentStep}/>
     {renderStepComponent()}
     </div>
   );

@@ -6,12 +6,18 @@ import Button from '../../../Reusable_components/Button';
 import { NavLink } from 'react-router-dom';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import DatePicker from '../../../Reusable_components/DatePicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 
 const AddUser = () => {
 
   const [value, setValue] = useState(true);
   const [roles , setRoles] = useState([]) ;
+  const [dropdownIsVisible , setDropdownIsVisible] = useState(false)
+  const [stds , setStds] = useState([]) 
+  const [selectedStds , setSelectedStds] = useState([])
+  const [dropdownOpen , setDropdownOpen] = useState(false)
 
   const {
     register,
@@ -22,7 +28,7 @@ const AddUser = () => {
 
   useEffect(() => {
     const fetchRoles = async() =>{
-      axios({
+      await axios({
         method:"GET" , 
         url:'http://localhost:8080/role/getRoleList' , 
         headers: {
@@ -38,8 +44,23 @@ const AddUser = () => {
       })
     }
 
-   
+    const fetchStds = async() =>{
+      await axios({
+        method:"GET" , 
+        url:'http://localhost:8080/user/getUserList' , 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setStds(res.data.data.filter((std) => (std.role === 3 && std.isActive === true))) ;
+      })
+      .catch(err => {
+        console.log(err , 'error:');
+      })
+    }
    fetchRoles()
+   fetchStds()
   } , []);
   
 
@@ -74,8 +95,23 @@ const AddUser = () => {
     })
   }
 
+  const handleRoleChange = (e) => {  
+    const selectedRole = e.target.value ;
+    console.log(selectedRole);
+    if(selectedRole == 5){
+      setDropdownIsVisible(true) ;
+    }
+  }
 
-
+  const handleCheckboxChange = (stdId) => {
+    setSelectedStds((prevSelected) => {
+      if (prevSelected.includes(stdId)) {
+        return prevSelected.filter(id => id !== stdId);
+      } else {
+        return [...prevSelected, stdId];
+      }
+    });
+  };
 
   return (
     <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
@@ -314,6 +350,7 @@ const AddUser = () => {
               id="role"
               className={`w-1/2 px-3 py-2 border ${errors.roles ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               rows="4"
+              onMouseLeave={handleRoleChange}
               {...register('role', { required: 'Role Field is required' })}
             >
                 <option value="" hidden>Select a Role</option>
@@ -325,6 +362,34 @@ const AddUser = () => {
             </select>
             {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
           </div>
+
+          {dropdownIsVisible && (
+            <div className="mb-4 mt-4 relative">
+            <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
+            <div 
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <p>{selectedStds.length === 0 ? 'Select students' : selectedStds.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </div>
+            {dropdownOpen && (
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
+                {stds.map(std => (
+                  <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedStds.includes(std.id)}
+                      onChange={() => handleCheckboxChange(std.id)}
+                      className="mr-2"
+                    />
+                    {std.firstName} {std.lastName}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+          )}
         
 
         {/* Submit Button */}

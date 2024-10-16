@@ -4,8 +4,10 @@ import axios from 'axios';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../../hooks/UserContext';
+import BASE_URL from '../../../../conf/conf';
+import ProgressIndicator from './ProgressIndicator';
 
-function HostelDets({handleNextStep , currentStep}) {
+function HostelDets({handleNextStep}) {
   const {userId} = useUserContext()
     const navigate = useNavigate()
     const {
@@ -66,7 +68,7 @@ function HostelDets({handleNextStep , currentStep}) {
           }
           await axios({
               method:"Post",
-              url : `http://localhost:8080/user/updateHostelDetails`,
+              url : `${BASE_URL}/user/updateHostelDetails`,
               data: userData ,
               headers: {
                 "Content-Type": "application/json",
@@ -75,7 +77,7 @@ function HostelDets({handleNextStep , currentStep}) {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
-              handleNextStep(currentStep)
+              handleNextStep(6)
               reset()
           })
           .catch(err=>{
@@ -84,6 +86,8 @@ function HostelDets({handleNextStep , currentStep}) {
           })
     }
   return (
+    <div>
+       <ProgressIndicator currentStep={5} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Hostel Information</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
@@ -126,6 +130,7 @@ function HostelDets({handleNextStep , currentStep}) {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
       </div>
         </form>
+    </div>
     </div>
   )
 }
