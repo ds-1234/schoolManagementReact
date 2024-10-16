@@ -88,6 +88,9 @@ import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/Tr
 import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
 import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
 import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
+
+import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollection';
+
 import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
 import { UserProvider } from './hooks/UserContext';
 
@@ -194,6 +197,7 @@ function App() {
             <Route path='stdsports' element = {<StdSports/>} />
             <Route path='stdnotice' element = {<StdNotice/>} />
             <Route path = 'attendance' element = {<StdAttendance/>}/>
+            <Route path = 'StdFeeCollection' element = {<StdFeeCollection/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}

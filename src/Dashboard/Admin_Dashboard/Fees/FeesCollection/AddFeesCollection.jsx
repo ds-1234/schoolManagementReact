@@ -21,6 +21,8 @@ function AddFeesCollection({ isOpen, onClose }) {
   const [dropdownOpen2, setDropdownOpen2] = useState(false); // Fees group dropdown
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [payDropdownOpen, setPayDropdownOpen] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
+
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
@@ -89,7 +91,7 @@ function AddFeesCollection({ isOpen, onClose }) {
       const filtered = students.filter(student => student.className.includes(selectedClass.id));
       setFilteredStudents(filtered);
     } else {
-      setFilteredStudents(students);
+    //   setFilteredStudents(students);
     }
   }, [selectedClass, students]);
 
@@ -107,7 +109,7 @@ function AddFeesCollection({ isOpen, onClose }) {
       feeAmount: data.amount,
       paymentType: selectedPaymentMethod,
       description: data.description,
-      isActive: value
+      isActive: paymentStatus
     })
       .then(() => {
         toast.success('Fee Collection Created successfully!');
@@ -116,6 +118,8 @@ function AddFeesCollection({ isOpen, onClose }) {
         setSelectedFeesGrp(null)
         setSelectedClass(null)
         setSelectedPaymentMethod('')
+        setPaymentStatus(null); // Reset to null after submission
+
         onClose();
       })
       .catch((error) => {
@@ -278,16 +282,32 @@ function AddFeesCollection({ isOpen, onClose }) {
               className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-2"
             />
           </div>
-
-            {/* Status Toggle */}
-            <div className="">
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status *</label>
-              <ToggleButton
-                isOn={value}
-                handleToggle={() => setValue(!value)}
-                id="active"
-              />
+          {/* Payment Status (Radio Buttons) */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2 text-black">Payment Status *</label>
+            <div className="flex items-center">
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  value="Paid"
+                  checked={paymentStatus === true}
+                  onChange={() => setPaymentStatus(true)}
+                  className="mr-2"
+                />
+                Paid
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="Unpaid"
+                  checked={paymentStatus === false}
+                  onChange={() => setPaymentStatus(false)}
+                  className="mr-2"
+                />
+                Unpaid
+              </label>
             </div>
+          </div>
 
           {/* Submit Button */}
           <div className="mt-2 flex justify-center">
