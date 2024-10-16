@@ -1,39 +1,36 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import edit from '../../../../assets/edit.png';
-import deleteIcon from '../../../../assets/delete.png';
-import Table from '../../../../Reusable_components/Table';
-import StatusButton from '../../../../Reusable_components/StatusButton';
+import edit from '../../../assets/edit.png';
+import deleteIcon from '../../../assets/delete.png';
+import Table from '../../../Reusable_components/Table';
+import StatusButton from '../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2';
+import EditStdFeesCollection from './EditStdFeeCollection';
+import PaymentStatus from '../../../Reusable_components/PaymentStatus';
 
-import AddBtn from '../../../../Reusable_components/AddBtn';
-import AddFeesCollection from './AddFeesCollection';
-import EditFeesCollection from './EditFeesCollection';
-import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
-
-function FeesCollection() {
+function StdFeeCollection() {
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editFeesCollectionId, setFeesCollectionId] = useState(null);
   const [feeGrp, setFeeGrp] = useState([]); 
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
-  useEffect(() => {
-    if (isAddPopupOpen) {
-      document.body.style.overflow = 'hidden'; // Disable scroll when any popup is open
-    } else {
-      document.body.style.overflow = 'auto'; // Enable scroll when no popup is open
-    }
 
-    return () => {
-      document.body.style.overflow = 'auto'; // Cleanup on unmount
-    };
-  }, [isAddPopupOpen]);
+//   useEffect(() => {
+//     if (isAddPopupOpen) {
+//       document.body.style.overflow = 'hidden'; // Disable scroll when any popup is open
+//     } else {
+//       document.body.style.overflow = 'auto'; // Enable scroll when no popup is open
+//     }
 
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+//     return () => {
+//       document.body.style.overflow = 'auto'; // Cleanup on unmount
+//     };
+//   }, [isAddPopupOpen]);
+
+
 
   const openEditPopup = (id) => {
     setFeesCollectionId(id);
@@ -91,16 +88,21 @@ const fetchData = () => {
       .then((response) => {
         console.log('Data from API:', response.data);
         const feesCollectionData = response.data.data;
-        setData(feesCollectionData);
-        setFilterData(feesCollectionData);
-        fetchFeeGrp(feesCollectionData);  // Fetch group data after fees collection is fetched
+        console.log(feesCollectionData,'feecollectiom')
+        const requiredFeeCollection = feesCollectionData.filter(feeCollection => feeCollection.userId === user.id);
+        setData(requiredFeeCollection);
+        setFilterData(requiredFeeCollection);
+        fetchFeeGrp(requiredFeeCollection);  
+        // setData(requiredFeeCollection);
+        // setFilterData(requiredFeeCollection);
+        // fetchFeeGrp(requiredFeeCollection);  
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   };
   
-  const fetchFeeGrp = (feesCollectionData) => {
+  const fetchFeeGrp = (requiredFeeCollection) => {
     axios({
       method: 'GET',
       url: `http://localhost:8080/feesGroup/getFeesGroupList`,
@@ -113,10 +115,10 @@ const fetchData = () => {
         const feeGrpList = response.data.data;
         setFeeGrp(feeGrpList);
   
-        console.log('Fees Collection Data:', feesCollectionData); // Log fees collection data before mapping
+        console.log('Fees Collection Data:', requiredFeeCollection); // Log fees collection data before mapping
   
-        // Map feesCollectionData to include the fee group name
-        const updatedFeesCollection = feesCollectionData.map((feeCollection) => {
+        // Map requiredFeeCollection to include the fee group name
+        const updatedFeesCollection = requiredFeeCollection.map((feeCollection) => {
           const matchedGroup = feeGrpList.find(group => group.id === feeCollection.feesGroupNameId);
           return {
             ...feeCollection,
@@ -217,11 +219,9 @@ const fetchData = () => {
     <div className="h-full mr-8 mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Fees Collection</h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/admin"> Admin </NavLink>/
-        <NavLink to="/admin/feesgrp"> Fees Group </NavLink>/ 
+        Dashboard /<NavLink to="/studentDashboard"> Student </NavLink>/
         <span className="text-[#ffae01] font-semibold">Fees Collection</span>
       </p>
-      <AddBtn onAddClick={openAddPopup} />
       <Table
         columns={column}
         data={data}
@@ -230,15 +230,9 @@ const fetchData = () => {
         handleClear={handleClear}
       />
 
-      <AddFeesCollection
-        isOpen={isAddPopupOpen}
-        onClose={() => {
-          closeAddPopup();
-          fetchData(); // Refresh data when add popup closes
-        }}
-      />
 
-      <EditFeesCollection
+
+      <EditStdFeesCollection
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup(); // Only close the Edit popup here
@@ -251,4 +245,4 @@ const fetchData = () => {
   );
 }
 
-export default FeesCollection;
+export default StdFeeCollection;
