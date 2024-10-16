@@ -63,7 +63,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
                 setFeeGrpId(FeeCollectionData.feesGroupNameId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
                 setValue(FeeCollectionData.isActive);
-                console.log(FeeCollectionData.feesGroupNameId,'feesGroupNameId')
+                console.log(FeeCollectionData.paymentType,'paymentType')
                 
                 // Set selected values for dropdowns
                 setSelectedStudent(FeeCollectionData.userId);
@@ -92,7 +92,7 @@ useEffect(() => {
         .catch((error) => {
             toast.error('Error fetching Students');
         });
-}, [studentId]);
+}, [studentId,isOpen]);
 
 useEffect(() => {
     // Fetch Fees Groups
@@ -124,7 +124,7 @@ useEffect(() => {
         .catch((error) => {
             toast.error('Error fetching Classes');
         });
-}, []);
+}, [isOpen]);
 
 
     // Filter students by selected class
