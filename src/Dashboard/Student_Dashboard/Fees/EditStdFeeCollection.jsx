@@ -159,7 +159,7 @@ useEffect(() => {
         </button>
 
         <form >
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">View Fee </h2>
 
 {console.log(selectedFeesGrp,'selectedFeesGrp')}
 
