@@ -62,7 +62,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
                 setStudentId(FeeCollectionData.userId);
                 setFeeGrpId(FeeCollectionData.feesGroupNameId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
-                setValue(FeeCollectionData.isActive);
+                setPaymentStatus(FeeCollectionData.isActive);
                 console.log(FeeCollectionData.paymentType,'paymentType')
                 
                 // Set selected values for dropdowns
