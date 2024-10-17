@@ -11,7 +11,7 @@ import { useStepContext } from '../../../hooks/StepContext';
 function PendingAdmForm() {
 const navigate = useNavigate();
 const [formDets , setFormDets] = useState([]) ;
-const {setUserId} = useUserContext() 
+const {setUserId , setId} = useUserContext() 
 const {setCurrentStep} = useStepContext() 
 
 const column = [
@@ -97,6 +97,7 @@ const column = [
       const details = res.data.data;
       setFormDets(details);
       setUserId(userId);
+      setId(details.id);
   
       // Update the step based on the details without navigating
       if (details.school === null) {

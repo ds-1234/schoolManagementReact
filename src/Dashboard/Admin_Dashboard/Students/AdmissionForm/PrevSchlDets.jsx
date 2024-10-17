@@ -7,6 +7,9 @@ import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
 import ProgressIndicator from './ProgressIndicator';
 import { NavLink } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function PrevSchlDets() {
   const {userId} = useUserContext() 
@@ -24,6 +27,7 @@ function PrevSchlDets() {
         
         const userData = {
             ...data , 
+            status: value ,
             userId : userId ,
           }
           await axios({
@@ -37,6 +41,7 @@ function PrevSchlDets() {
             })
             .then((response)=>{
               console.log('response' , response.data.data)
+              toast.success('Form Uploaded Successfully!')
               navigate('/admin/allStudents')
               reset()
           })
@@ -53,7 +58,7 @@ function PrevSchlDets() {
        <ProgressIndicator currentStep={7} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
          <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Previous School Details</h2>
-         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
+         <form  className="grid grid-cols-4 mt-5 gap-6">
           <div className="flex flex-col px-1">
             <label htmlFor="previousSchool">School Name</label>
             <input
@@ -99,17 +104,25 @@ function PrevSchlDets() {
                   {...register('status')}
                 />
             </div>
-
-        <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8'/>
-          <Button onClick={() => {
-            reset() 
-            navigate('/admin/allStudents')
-          }} 
-          label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
-      </div>
     </form>
+    <div className='flex justify-between items-center'>
+        <div>
+            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+                <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
+                Back
+            </h1>
+        </div>
+        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+            <Button type='submit' label="Submit" className='' onClick={handleSubmit(onSubmit)} />
+            <Button onClick={() => {
+                reset() 
+                navigate('/admin/allStudents')
+            }} 
+            label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
+        </div>
     </div>
+    </div>
+    <ToastContainer/>
     </div>
   )
 }

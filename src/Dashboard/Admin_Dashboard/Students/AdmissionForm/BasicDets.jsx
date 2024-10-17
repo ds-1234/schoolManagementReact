@@ -10,6 +10,8 @@ import BASE_URL from '../../../../conf/conf';
 import ProgressIndicator from './ProgressIndicator';
 import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function BasicDets() {
 
@@ -60,7 +62,7 @@ const {
          <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="text-xl font-semibold text-black ">Basic Details</h2>
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
+    <form  className="grid grid-cols-4 mt-5 gap-6">
 
         {/* Input Fields */}
         <div className="flex flex-col px-1">
@@ -306,16 +308,24 @@ const {
             <option value="Other">Other</option>
         </select>
         </div>
-
-        <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8' />
-          <Button onClick={() => {
-            reset() 
-            navigate('/admin/allStudents')
-          }} 
-          label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
-      </div>
     </form>
+
+    <div className='flex justify-between items-center'>
+        <div>
+            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+                <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
+                Back
+            </h1>
+        </div>
+        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+            <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
+            <Button onClick={() => {
+                reset() 
+                navigate('/admin/allStudents')
+            }} 
+            label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
+        </div>
+    </div>
       <ToastContainer/>
     </div>
 </div>
