@@ -184,9 +184,9 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
       
       data: {
         id: FeeCollectionId,
-        feesGroupNameId:selectedFeesGrp.id,
         // ...feeCollectionData,
         ...feeData,
+        feesGroupNameId:selectedFeesGrp.id,
         paymentType:selectedPaymentMethod,
         isActive: paymentStatus,
       },
