@@ -90,14 +90,16 @@ useEffect(() => {
             setSelectedStudent(selstulist); // Set selected student
             console.log(selstulist,'selstulist')
             setClassId(selstulist.className[0]); // Set selected classid
+            console.log(classId,'clasid')
         })
         .catch((error) => {
-            toast.error('Error fetching Students');
+            // toast.error('Error fetching Students');
         });
 }, [studentId,isOpen]);
 
 useEffect(() => {
     // Fetch Fees Groups
+    if(feeGrpId){
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
         .then((response) => {
             const feeGroups = response.data.data;
@@ -111,6 +113,7 @@ useEffect(() => {
         .catch((error) => {
             toast.error('Error fetching Fees Group');
         });
+    }
 }, [feeGrpId,isOpen]);
 
 useEffect(() => {
@@ -122,11 +125,12 @@ useEffect(() => {
             // Set selected class if it matches
             const selectedClass = response.data.data.find(cls => cls.id === classId); // Update with your class ID logic
             setSelectedClass(selectedClass);
+            console.log(response.data.data,'selectecls')
         })
         .catch((error) => {
             toast.error('Error fetching Classes');
         });
-}, [isOpen]);
+}, [classId,isOpen,onclose]);
 
 
     // Filter students by selected class
@@ -208,16 +212,17 @@ useEffect(() => {
 
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
+          {console.log(selectedClass,'selectedclass')}
 
  {/* Class Input */}
  <div className="mb-2 relative">
   <label htmlFor="className" className="block text-gray-700 font-semibold mb-2">Class</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-    onClick={() => setDropdownOpen(!dropdownOpen)}
+    // onClick={() => setDropdownOpen(!dropdownOpen)}
   >
     <p>{selectedClass ? selectedClass.name : 'Select Class'}</p>
-    <FontAwesomeIcon icon={faAngleDown} />
+    {/* <FontAwesomeIcon icon={faAngleDown} /> */}
   </div>
   {dropdownOpen && (  // Correctly check dropdownOpen
     <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
@@ -238,16 +243,48 @@ useEffect(() => {
   )}
 </div>
 
+          {/* Class Input */}
+          {/* <div className="mb-2">
+            <label htmlFor="className" className="block text-gray-700 text-sm font-bold mb-2">Class</label>
+            <input
+            readOnly
+              type="text"
+              id="className"
+              name="className"
+              value={selectedClass[0].name}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter Class Name "
+              required
+            />
+          </div> */}
+          {/* Student Input */}
+          {/* <div className="mb-2">
+            <label htmlFor="studentsName" className="block text-gray-700 text-sm font-bold mb-2">Student Name</label>
+            <input
+            readOnly
+              type="text"
+              id="studentsName"
+              name="studentsName"
+              value={selectedStudent[0].firstName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter Class Name "
+              required
+            />
+          </div> */}
+
 
 {/* Student List Input */}
 <div className="mb-2 relative">
   <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-    onClick={() => setDropdownOpen1(!dropdownOpen1)}  // Toggle dropdown for Student
+    // onClick={() => setDropdownOpen1(!dropdownOpen1)} 
+     // Toggle dropdown for Student
   >
     <p>{selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Select Student'}</p>
-    <FontAwesomeIcon icon={faAngleDown} />
+    {/* <FontAwesomeIcon icon={faAngleDown} /> */}
   </div>
   {dropdownOpen1 && (  // Change this to dropdownOpen1 for the Student dropdown
     <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
@@ -351,8 +388,9 @@ useEffect(() => {
           {/* Description Input */}
           <div className="mb-2">
             <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <input
+            <textarea
               type="text"
+              rows='3'
               id="description"
               name="description"
               value={feeData.description}
