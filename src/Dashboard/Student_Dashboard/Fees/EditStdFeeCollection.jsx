@@ -64,6 +64,7 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
                 setFeeGrpId(FeeCollectionData.feesGroupNameId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
                 setValue(FeeCollectionData.isActive);
+                console.log(selectedPaymentMethod,'selectedPaymentMethod')
 
             })
             .catch((error) => {
@@ -180,7 +181,7 @@ useEffect(() => {
 
 
           {/* Fees Group Input */}
-          <div className="mb-2">
+          {/* <div className="mb-2">
             <label htmlFor="feesGroup" className="block text-gray-700 text-sm font-bold mb-2">Fees Group</label>
             <input
                         readOnly
@@ -191,19 +192,19 @@ useEffect(() => {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-          </div>
+          </div> */}
 
 
 
-          {/* Fees Group Input
+          {/* Fees Group Input */}
           <div className="mb-2 relative">
             <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
+            //   onClick={() => setDropdownOpen2(!dropdownOpen2)} 
             >
               <p>{selectedFeesGrp ? selectedFeesGrp.feesGroupName : 'Select Fees Group'}</p>
-              <FontAwesomeIcon icon={faAngleDown} />
+              {/* <FontAwesomeIcon icon={faAngleDown} /> */}
             </div>
             {dropdownOpen2 && (
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
@@ -221,8 +222,9 @@ useEffect(() => {
                 ))}
               </div>
             )}
-          </div> */}
-
+          </div>
+{                console.log(selectedPaymentMethod,'selectedPaymentMethod')
+}
           {/* Amount Input */}
           <div className="mb-2">
             <label htmlFor="feeAmount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
@@ -245,7 +247,7 @@ useEffect(() => {
               type="text"
               id="paymentMethod"
               name="paymentMethod"
-              value={feeData.paymentType}
+              value={selectedPaymentMethod}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />

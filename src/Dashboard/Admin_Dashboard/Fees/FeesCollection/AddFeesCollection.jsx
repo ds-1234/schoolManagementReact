@@ -40,6 +40,12 @@ function AddFeesCollection({ isOpen, onClose }) {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
+        reset();
+        setSelectedStudent(null)
+        setSelectedFeesGrp(null)
+        setSelectedClass(null)
+        setSelectedPaymentMethod('')
+        setPaymentStatus(null); // Reset to null after submission
       }
     };
 
@@ -101,6 +107,10 @@ function AddFeesCollection({ isOpen, onClose }) {
       toast.error('Please select both a student and a fees group');
       return;
     }
+    if (!paymentStatus ) {
+      toast.error('Please select Payment Method');
+      return;
+    }
 
     // Submit the form data to the server
     axios.post('http://localhost:8080/feesCollection/savefeesCollection', {
@@ -128,12 +138,22 @@ function AddFeesCollection({ isOpen, onClose }) {
       });
   };
 
+  const handleCut = () => {
+    onClose();
+    reset();
+    setSelectedStudent(null)
+    setSelectedFeesGrp(null)
+    setSelectedClass(null)
+    setSelectedPaymentMethod('')
+    setPaymentStatus(null); // Reset to null after submission   
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
+        <button onClick={handleCut} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Add Fee Collection</h2>
