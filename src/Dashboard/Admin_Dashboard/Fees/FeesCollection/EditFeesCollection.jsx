@@ -38,6 +38,14 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   } = useForm();
 
   useEffect(() => {
+
+        // Disable scrolling on background when the popup is open
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = 'auto';
+          }
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -166,18 +174,20 @@ useEffect(() => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
     axios({
       method: 'post',
       url: `http://localhost:8080/feesCollection/savefeesCollection`,
       headers: {
         'Content-Type': 'application/json',
       },
+      
       data: {
         id: FeeCollectionId,
-        ...feeCollectionData,
+        feesGroupNameId:selectedFeesGrp.id,
+        // ...feeCollectionData,
         ...feeData,
-        paymentType:'',
+        paymentType:selectedPaymentMethod,
         isActive: paymentStatus,
       },
     })
@@ -323,6 +333,7 @@ useEffect(() => {
                     onClick={() => {
                       setSelectedFeesGrp(feesGroup);
                       setDropdownOpen2(false);
+                    //   setFeeGrpId(feesGroup.id)
                     }}
                   >
                     {feesGroup.feesGroupName}
