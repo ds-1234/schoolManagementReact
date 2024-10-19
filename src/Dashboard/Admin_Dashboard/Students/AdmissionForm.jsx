@@ -1,6 +1,4 @@
 import React, {useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import ProgressIndicator from './AdmissionForm/ProgressIndicator';
 import BasicDets from './AdmissionForm/BasicDets';
 import AcademicDets from './AdmissionForm/AcademicDets';
 import OfficeDets from './AdmissionForm/OfficeDets';
@@ -28,9 +26,9 @@ function AdmissionForm() {
       case 5:
         return <HostelDets  />
       case 6:
-        return <DocsDets  />
+        return <PrevSchlDets/>
       case 7:
-        return <PrevSchlDets />
+        return <DocsDets/>
       default:
         return <BasicDets />
     }

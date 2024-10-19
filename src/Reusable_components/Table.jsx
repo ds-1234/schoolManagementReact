@@ -35,15 +35,19 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
         backgroundColor: '#f3f4f6',
         fontWeight: 'bold',
         fontSize: '16px',
-        wrap:'true'
-        // width:'40% '
+        whiteSpace: 'normal', // Ensure the header can wrap
+        wordWrap: 'break-word', // Break long words if necessary
+      },
+    },
+    cells: {
+      style: {
+        whiteSpace: 'normal', // Allow cell content to wrap
+        wordWrap: 'break-word', // Break long words if necessary
       },
     },
     rows: {
       style: {
         fontSize: '14px',
-        // width:'40% ',
-
         '&:hover': {
           backgroundColor: '#f9fafb',
         },
@@ -53,8 +57,6 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
       style: {
         backgroundColor: '#f3f4f6',
         borderRadius: '0.5rem',
-        // width:'40% '
-
       },
     },
   };
