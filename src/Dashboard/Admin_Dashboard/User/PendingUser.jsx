@@ -93,13 +93,21 @@ const column = [
   }, []);
 
   const searchOptions = [
-    // {label : 'Role' , value: 'role'} ,
+    {label : 'Role' , value: 'role'} ,
     { label: 'First Name', value: 'firstName' },
     { label: 'Last Name', value: 'lastName' },
     { label: 'Email', value: 'email' },
     { label: 'Phone', value: 'phone' },
     { label: 'Gender', value: 'gender' },
   ];
+
+  const roleMapping = {
+    1: 'Guest' ,
+    2: 'Admin',
+    3: 'Student',
+    4: 'Teacher',
+    5: 'Parents'
+  }
 
   // Handle Search Logic
   const handleSearch = (query, checkboxRefs) => {
@@ -113,13 +121,13 @@ const column = [
   
       const filteredData = filterUser.filter((row) =>
         selectedFields.some((field) => {
-          // if (field === 'role') {
-          //   // Check if role name matches the query
-          //   return row.role?.name?.toLowerCase().includes(query.toLowerCase());
-          // }else{
+          if (field === 'role') {
+            const roleName = roleMapping[row.role];
+          return roleName?.toLowerCase().includes(query.toLowerCase());
+          }else{
             return row[field]?.toLowerCase().includes(query.toLowerCase())
           }
-        // }
+        }
         )
       );
   
