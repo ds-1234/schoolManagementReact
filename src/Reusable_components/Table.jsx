@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,6 +6,7 @@ import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
   const searchInputRef = useRef(null);
+  const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({}); // State to track selected filters
 
@@ -58,6 +59,23 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
     },
   };
 
+  // Close the dropdown if clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false); // Close the dropdown
+      }
+    };
+
+    // Add event listener for clicks outside the dropdown
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10">
@@ -66,7 +84,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
             {/* Search Section */}
             <div className="flex flex-wrap gap-4 mb-4 items-center">
               {/* Filter Dropdown */}
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={toggleDropdown}
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 flex justify-evenly items-center gap-2"
