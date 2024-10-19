@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
 
 function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -28,6 +29,12 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   const [studentId, setStudentId] = useState(null);
   const [feeGrpId, setFeeGrpId] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
+  const [paid, setPaid] = useState(null); // paid unpaid state
+
+  const classDropdownRef = useRef(null); // Ref for the class dropdown
+  const studentDropdownRef = useRef(null); // Ref for the student dropdown
+  const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
+  const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
 
 
   const {
@@ -71,6 +78,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
                 setFeeGrpId(FeeCollectionData.feesGroupNameId);
                 setSelectedPaymentMethod(FeeCollectionData.paymentType);
                 setPaymentStatus(FeeCollectionData.isActive);
+                setPaid(FeeCollectionData.isActive);
                 console.log(FeeCollectionData.paymentType,'paymentType')
                 
                 // Set selected values for dropdowns
@@ -111,7 +119,9 @@ useEffect(() => {
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
         .then((response) => {
             const feeGroups = response.data.data;
-            setFeesGrp(feeGroups);
+            const reqGroup = feeGroups.filter(feeGrp => feeGrp.isActive === true);
+
+            setFeesGrp(reqGroup);
             
             // Set selected fees group
             const selectedGroup = feeGroups.find(feeGrp => feeGrp.id === feeGrpId);
@@ -172,6 +182,30 @@ useEffect(() => {
 //     });
 //   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownOpen && classDropdownRef.current && !classDropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+      if (dropdownOpen1 && studentDropdownRef.current && !studentDropdownRef.current.contains(e.target)) {
+        setDropdownOpen1(false);
+      }
+      if (dropdownOpen2 && feesGroupDropdownRef.current && !feesGroupDropdownRef.current.contains(e.target)) {
+        setDropdownOpen2(false);
+      }
+      if (payDropdownOpen && paymentmtdDropdownRef.current && !paymentmtdDropdownRef.current.contains(e.target)) {
+        setPayDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen, dropdownOpen1, dropdownOpen2,payDropdownOpen]);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
@@ -184,9 +218,9 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
       
       data: {
         id: FeeCollectionId,
-        feesGroupNameId:selectedFeesGrp.id,
         // ...feeCollectionData,
         ...feeData,
+        feesGroupNameId:selectedFeesGrp.id,
         paymentType:selectedPaymentMethod,
         isActive: paymentStatus,
       },
@@ -209,6 +243,180 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
   };
 
   if (!isOpen) return null;
+  else if (isOpen && paid) return(
+    <>
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
+        >
+          &times;
+        </button>
+
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">View Fee Collection</h2>
+          {console.log(selectedClass,'selectedclass')}
+
+ {/* Class Input */}
+ <div className="mb-2 relative">
+  <label htmlFor="className" className="block text-gray-700 font-semibold mb-2">Class</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    // onClick={() => setDropdownOpen(!dropdownOpen)}
+  >
+    <p>{selectedClass ? selectedClass.name : 'Select Class'}</p>
+    {/* <FontAwesomeIcon icon={faAngleDown} /> */}
+  </div>
+  {dropdownOpen && (  // Correctly check dropdownOpen
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {classes.map(classItem => (
+        <div
+          key={classItem.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedStudent(null)
+            setSelectedClass(classItem);
+            setDropdownOpen(false);
+          }}
+        >
+          {classItem.name}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+{/* Student List Input */}
+<div className="mb-2 relative">
+  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student Name</label>
+  <div
+    className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+    // onClick={() => setDropdownOpen1(!dropdownOpen1)} 
+     // Toggle dropdown for Student
+  >
+    <p>{selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Select Student'}</p>
+    {/* <FontAwesomeIcon icon={faAngleDown} /> */}
+  </div>
+  {dropdownOpen1 && (  // Change this to dropdownOpen1 for the Student dropdown
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+      {filteredStudents.map(student => (
+        <div
+          key={student.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => {
+            setSelectedStudent(student);
+            setDropdownOpen1(false); // Close dropdown after selection
+          }}
+        >
+          {`${student.firstName} ${student.lastName}`}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+          {/* Fees Group Input */}
+          <div className="mb-2 relative" ref={feesGroupDropdownRef}>
+            <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
+            <div
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+            //   onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
+            >
+              <p>{selectedFeesGrp ? selectedFeesGrp.feesGroupName : 'Select Fees Group'}</p>
+              {/* <FontAwesomeIcon icon={faAngleDown} /> */}
+            </div>
+            {dropdownOpen2 && (
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
+                {feesGrp.map(feesGroup => (
+                  <div
+                    key={feesGroup.id}
+                    className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                    onClick={() => {
+                      setSelectedFeesGrp(feesGroup);
+                      setDropdownOpen2(false);
+                    //   setFeeGrpId(feesGroup.id)
+                    }}
+                  >
+                    {feesGroup.feesGroupName}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Amount Input */}
+          <div className="mb-2">
+            <label htmlFor="feeAmount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+            <input
+            readOnly
+              type="text"
+              id="feeAmount"
+              name="feeAmount"
+              value={feeData.feeAmount}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter Fee Amount "
+              required
+            />
+          </div>
+
+                    {/* Method Type */}
+                    <div className="mb-2">
+            <label htmlFor="paymentMethod" className="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
+            <input
+            readOnly
+              type="text"
+              id="paymentMethod"
+              name="paymentMethod"
+              value={selectedPaymentMethod}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+          </div>
+
+
+
+          {/* Description Input */}
+          <div className="mb-2">
+            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea
+            readOnly
+              type="text"
+              rows='3'
+              id="description"
+              name="description"
+              value={feeData.description}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter description "
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+                Payment Status 
+              </label>
+
+
+              <PaymentStatus isActive={paymentStatus}/>
+              </div>
+
+        </form>
+      </div>
+    </div>
+    </>
+  );
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -221,7 +429,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
         </button>
 
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">Edit Fee Collection</h2>
           {console.log(selectedClass,'selectedclass')}
 
  {/* Class Input */}
@@ -287,7 +495,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 
 {/* Student List Input */}
 <div className="mb-2 relative">
-  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
+  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student Name</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
     // onClick={() => setDropdownOpen1(!dropdownOpen1)} 
@@ -315,7 +523,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 </div>
 
           {/* Fees Group Input */}
-          <div className="mb-2 relative">
+          <div className="mb-2 relative" ref={feesGroupDropdownRef}>
             <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
@@ -361,10 +569,10 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 
 
           {/* Payment Method */}
-          <div className="relative">
+          <div className="mb-2 relative" ref={paymentmtdDropdownRef}>
             <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
             <div
-              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setPayDropdownOpen(!payDropdownOpen)}
             >
               <span>{selectedPaymentMethod || 'Select Payment Method'}</span>

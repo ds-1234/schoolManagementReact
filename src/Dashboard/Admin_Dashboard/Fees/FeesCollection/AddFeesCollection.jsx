@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,6 +22,11 @@ function AddFeesCollection({ isOpen, onClose }) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [payDropdownOpen, setPayDropdownOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
+
+  const classDropdownRef = useRef(null); // Ref for the class dropdown
+  const studentDropdownRef = useRef(null); // Ref for the student dropdown
+  const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
+  const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
 
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -73,8 +78,11 @@ function AddFeesCollection({ isOpen, onClose }) {
   useEffect(() => {
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
       .then((response) => {
-        setFeesGrp(response.data.data);
-      })
+        const feeGroups = response.data.data;
+
+        const reqGroup = feeGroups.filter(feeGrp => feeGrp.isActive === true);
+
+        setFeesGrp(reqGroup);      })
       .catch((error) => {
         toast.error('Error fetching Fees Group');
       });
@@ -101,16 +109,44 @@ function AddFeesCollection({ isOpen, onClose }) {
     }
   }, [selectedClass, students]);
 
+
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownOpen && classDropdownRef.current && !classDropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+      if (dropdownOpen1 && studentDropdownRef.current && !studentDropdownRef.current.contains(e.target)) {
+        setDropdownOpen1(false);
+      }
+      if (dropdownOpen2 && feesGroupDropdownRef.current && !feesGroupDropdownRef.current.contains(e.target)) {
+        setDropdownOpen2(false);
+      }
+      if (payDropdownOpen && paymentmtdDropdownRef.current && !paymentmtdDropdownRef.current.contains(e.target)) {
+        setPayDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen, dropdownOpen1, dropdownOpen2,payDropdownOpen]);
+
+
+
+
   // Handle form submission
   const onSubmit = (data) => {
     if (!selectedStudent || !selectedFeesGrp) {
       toast.error('Please select both a student and a fees group');
       return;
     }
-    if (!paymentStatus ) {
-      toast.error('Please select Payment Method');
-      return;
-    }
+    // if (!paymentStatus ) {
+    //   toast.error('Please select Payment status');
+    //   return;
+    // }
 
     // Submit the form data to the server
     axios.post('http://localhost:8080/feesCollection/savefeesCollection', {
@@ -148,6 +184,15 @@ function AddFeesCollection({ isOpen, onClose }) {
     setPaymentStatus(null); // Reset to null after submission   
   };
 
+  const clearForm = () => {
+    reset();
+    setSelectedStudent(null)
+    setSelectedFeesGrp(null)
+    setSelectedClass(null)
+    setSelectedPaymentMethod('')
+    setPaymentStatus(null); // Reset to null after submission  
+    };
+
   if (!isOpen) return null;
 
   return (
@@ -156,11 +201,11 @@ function AddFeesCollection({ isOpen, onClose }) {
         <button onClick={handleCut} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Add Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">Add Fee Collection</h2>
 
  {/* Class Input */}
-<div className="mb-2 relative">
-  <label htmlFor="className" className="block text-gray-700 font-semibold mb-2">Class</label>
+ <div className="mb-2 relative" ref={classDropdownRef}>
+ <label htmlFor="className" className="block text-gray-700 font-semibold mb-2">Class</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
     onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -188,8 +233,8 @@ function AddFeesCollection({ isOpen, onClose }) {
 </div>
 
 {/* Student List Input */}
-<div className="mb-2 relative">
-  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
+<div className="mb-2 relative" ref={studentDropdownRef}>
+<label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
     onClick={() => setDropdownOpen1(!dropdownOpen1)}  // Toggle dropdown for Student
@@ -217,8 +262,8 @@ function AddFeesCollection({ isOpen, onClose }) {
 
 
           {/* Fees Group Input */}
-          <div className="mb-2 relative">
-            <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
+          <div className="mb-2 relative" ref={feesGroupDropdownRef}>
+          <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
@@ -246,12 +291,12 @@ function AddFeesCollection({ isOpen, onClose }) {
 
           {/* Amount */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-black" htmlFor="amount">Amount *</label>
+            <label className="block text-gray-700 font-semibold mb-2" htmlFor="amount">Amount *</label>
             <input
               type="number"
               id="amount"
               {...register("amount", { required: "Amount is required" })}
-              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
+              className="w-full px-3 py-2 border ${errors.feesGroupName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.amount && (
               <p className="text-red-500 text-sm">{errors.amount.message}</p>
@@ -259,10 +304,10 @@ function AddFeesCollection({ isOpen, onClose }) {
           </div>
 
           {/* Payment Method */}
-          <div className="relative">
+          <div className="mb-2 relative" ref={paymentmtdDropdownRef}>
             <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
             <div
-              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setPayDropdownOpen(!payDropdownOpen)}
             >
               <span>{selectedPaymentMethod || 'Select Payment Method'}</span>
@@ -299,11 +344,11 @@ function AddFeesCollection({ isOpen, onClose }) {
               id="description"
               {...register("description")}
               rows="3"
-              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-2"
+              className="w-full px-3 py-2 border ${errors.feesGroupName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {/* Payment Status (Radio Buttons) */}
-          <div className="mb-4">
+          <div className="mb-2">
             <label className="block text-sm font-medium mb-2 text-black">Payment Status *</label>
             <div className="flex items-center">
               <label className="mr-4">
@@ -330,8 +375,13 @@ function AddFeesCollection({ isOpen, onClose }) {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-2 flex justify-center">
+          <div className="flex flex-wrap gap-10 mb-1 items-center justify-center">
             <Button type="submit" text="Save" />
+            <Button
+                onClick={clearForm}
+                className="mt-0 bg-[#ffae01] hover:bg-[#042954]"
+                label="Clear"
+              />
           </div>
         </form>
       </div>

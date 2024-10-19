@@ -181,22 +181,26 @@ function FeesGrp() {
 //   setData(newData);
 // }
 
-const handleSearch = (query, checkboxRefs) => {
+const handleSearch = (query, selectedFilters) => {
   if (!query) {
-    setData(filterData);
+    setData(filterData); // Reset to the original unfiltered data
     return;
   }
 
-  const selectedFields = Object.keys(checkboxRefs)
-    .filter((key) => checkboxRefs[key].checked);
+  const selectedFields = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
+
+  console.log('Query:', query);
+  console.log('Selected Fields:', selectedFields);
 
   const filteredData = filterData.filter((row) =>
-    selectedFields.some((field) =>
-      row[field]?.toLowerCase().includes(query.toLowerCase())
-    )
+    selectedFields.some((field) => {
+      console.log('Field:', field, 'Value:', row[field]); // Check which field and value are being compared
+      const value = row[field]?.toString().toLowerCase(); // Convert field value to string and lowercase
+      return value && value.includes(query.toLowerCase());
+    })
   );
 
-  setData(filteredData);
+  setData(filteredData); // Update the data with filtered results
 };
 
 // handle clear button logic
