@@ -128,6 +128,8 @@ const fetchData = () => {
   
         console.log('Updated Fees Collection with Group Names:', updatedFeesCollection); // Log updated data
         setData(updatedFeesCollection);  // Update data with group name
+        setFilterData(updatedFeesCollection);
+
       })
       .catch((error) => {
         console.error('Error fetching group data:', error);
@@ -191,19 +193,25 @@ const fetchData = () => {
   ];
   
 
-  const handleSearch = (query, checkboxRefs) => {
+  const handleSearch = (query, selectedFilters) => {
     if (!query) {
-      setData(filterData);
+      setData(filterData); // Reset to the original unfiltered data
       return;
     }
-
-    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
-
+  
+    const selectedFields = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
+  
+    console.log('Query:', query);
+    console.log('Selected Fields:', selectedFields);
+  
     const filteredData = filterData.filter((row) =>
-      selectedFields.some((field) => row[field]?.toLowerCase().includes(query.toLowerCase()))
+      selectedFields.some((field) => {
+        const value = row[field]?.toString().toLowerCase(); // Convert field value to string and lowercase
+        return value && value.includes(query.toLowerCase()); // Check if query is included in the value
+      })
     );
-
-    setData(filteredData);
+  
+    setData(filteredData); // Update the data with filtered results
   };
 
   const handleClear = () => {
@@ -213,6 +221,9 @@ const fetchData = () => {
   const searchOptions = [
     { label: 'Fees Group', value: 'feesGroupName' }, 
     { label: 'Description', value: 'description' },
+    { label: 'Fees Collection Id', value: 'feesCollectionId' },
+    { label: 'Amount', value: 'feeAmount' },
+    { label: 'Status', value: 'isActive' },
   ];
 
   return (
