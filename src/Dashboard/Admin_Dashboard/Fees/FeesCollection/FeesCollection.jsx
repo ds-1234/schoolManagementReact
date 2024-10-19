@@ -191,27 +191,27 @@ const fetchData = () => {
   ];
   
 
-  const handleSearch = (query, checkboxRefs) => {
+  const handleSearch = (query, selectedFilters) => {
     if (!query) {
-      setData(filterData);  // Reset to the original unfiltered data
+      setData(filterData); // Reset to the original unfiltered data
       return;
     }
   
-    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
+    const selectedFields = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
   
     console.log('Query:', query);
     console.log('Selected Fields:', selectedFields);
-    
+  
     const filteredData = filterData.filter((row) =>
       selectedFields.some((field) => {
-        console.log('Field:', field, 'Value:', row[field]);  // Check which field and value are being compared
-        const value = row[field]?.toString().toLowerCase();  // Convert field value to string and lowercase
-        return value && value.includes(query.toLowerCase());
+        const value = row[field]?.toString().toLowerCase(); // Convert field value to string and lowercase
+        return value && value.includes(query.toLowerCase()); // Check if query is included in the value
       })
     );
   
-    setData(filteredData);  // Update the data with filtered results
+    setData(filteredData); // Update the data with filtered results
   };
+  
 
   const handleClear = () => {
     setData(filterData); // Reset to original data
