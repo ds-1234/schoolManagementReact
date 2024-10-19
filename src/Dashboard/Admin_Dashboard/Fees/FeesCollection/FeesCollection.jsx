@@ -115,17 +115,19 @@ const fetchData = () => {
   
         console.log('Fees Collection Data:', feesCollectionData); // Log fees collection data before mapping
   
-        // Map feesCollectionData to include the fee group name
-        const updatedFeesCollection = feesCollectionData.map((feeCollection) => {
-          const matchedGroup = feeGrpList.find(group => group.id === feeCollection.feesGroupNameId);
-          return {
-            ...feeCollection,
-            feesGroupName: matchedGroup ? matchedGroup.feesGroupName : 'Unknown Group',  // Assign group name
-          };
-        });
+             // Map feesCollectionData to include the fee group name
+      const updatedFeesCollection = feesCollectionData.map((feeCollection) => {
+        const matchedGroup = feeGrpList.find(group => group.id === feeCollection.feesGroupNameId);
+        return {
+          ...feeCollection,
+          feesGroupName: matchedGroup ? matchedGroup.feesGroupName : 'Unknown Group',  // Assign group name
+        };
+      });
   
         console.log('Updated Fees Collection with Group Names:', updatedFeesCollection); // Log updated data
         setData(updatedFeesCollection);  // Update data with group name
+        setFilterData(updatedFeesCollection);
+
       })
       .catch((error) => {
         console.error('Error fetching group data:', error);
@@ -191,20 +193,24 @@ const fetchData = () => {
 
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
-      setData(filterData);
-    //   setData(feeGrp)
+      setData(filterData);  // Reset to the original unfiltered data
       return;
     }
-
+  
     const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
-
+  
+    console.log('Query:', query);
+    console.log('Selected Fields:', selectedFields);
+    
     const filteredData = filterData.filter((row) =>
-      selectedFields.some((field) => row[field]?.toLowerCase().includes(query.toLowerCase()))
+      selectedFields.some((field) => {
+        console.log('Field:', field, 'Value:', row[field]);  // Check which field and value are being compared
+        const value = row[field]?.toString().toLowerCase();  // Convert field value to string and lowercase
+        return value && value.includes(query.toLowerCase());
+      })
     );
-
-    setData(filteredData);
-    // setData(feeGrp)
-
+  
+    setData(filteredData);  // Update the data with filtered results
   };
 
   const handleClear = () => {
@@ -217,7 +223,7 @@ const fetchData = () => {
     { label: 'Description', value: 'description' },
     { label: 'Fees Collection Id', value: 'feesCollectionId' },
     { label: 'Amount', value: 'feeAmount' },
-    { label: 'Status', value: 'value' },
+    { label: 'Status', value: 'isActive' },
   ];
 
   return (
