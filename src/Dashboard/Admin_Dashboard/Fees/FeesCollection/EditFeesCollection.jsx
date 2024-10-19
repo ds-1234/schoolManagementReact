@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,6 +30,11 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   const [feeGrpId, setFeeGrpId] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
   const [paid, setPaid] = useState(null); // paid unpaid state
+
+  const classDropdownRef = useRef(null); // Ref for the class dropdown
+  const studentDropdownRef = useRef(null); // Ref for the student dropdown
+  const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
+  const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
 
 
   const {
@@ -177,6 +182,30 @@ useEffect(() => {
 //     });
 //   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownOpen && classDropdownRef.current && !classDropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+      if (dropdownOpen1 && studentDropdownRef.current && !studentDropdownRef.current.contains(e.target)) {
+        setDropdownOpen1(false);
+      }
+      if (dropdownOpen2 && feesGroupDropdownRef.current && !feesGroupDropdownRef.current.contains(e.target)) {
+        setDropdownOpen2(false);
+      }
+      if (payDropdownOpen && paymentmtdDropdownRef.current && !paymentmtdDropdownRef.current.contains(e.target)) {
+        setPayDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen, dropdownOpen1, dropdownOpen2,payDropdownOpen]);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
@@ -288,7 +317,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 </div>
 
           {/* Fees Group Input */}
-          <div className="mb-2 relative">
+          <div className="mb-2 relative" ref={feesGroupDropdownRef}>
             <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
@@ -494,7 +523,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 </div>
 
           {/* Fees Group Input */}
-          <div className="mb-2 relative">
+          <div className="mb-2 relative" ref={feesGroupDropdownRef}>
             <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
@@ -540,7 +569,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 
 
           {/* Payment Method */}
-          <div className="relative">
+          <div className="mb-2 relative" ref={paymentmtdDropdownRef}>
             <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
             <div
               className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
