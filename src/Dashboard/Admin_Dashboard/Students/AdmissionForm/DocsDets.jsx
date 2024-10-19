@@ -1,64 +1,124 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
+import Table from '../../../../Reusable_components/Table';
+import ProgressIndicator from './ProgressIndicator';
+import { useStepContext } from '../../../../hooks/StepContext';
+import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../../conf/conf';
+import axios from 'axios';
+import { useUserContext } from '../../../../hooks/UserContext';
+import { toast, ToastContainer } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
-function DocsDets({handleNextStep , currentStep}) {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm();
+function DocsDets() {
+  const { id } = useUserContext();
+  const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
-    const onSubmit = (data) => {
-      console.log(data);
-      if (handleNextStep) {
-        handleNextStep(currentStep);
-      } else {
-        console.error("handleNextStep is not defined");
-      }
-    };
+  // State to hold the files
+  const [files, setFiles] = useState({});
+
+  const handleFileChange = (event, documentName) => {
+    const file = event.target.files[0];
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [documentName]: file,
+    }));
+    console.log(`File for ${documentName}: `, file);
+  };
+
+  const columns = [
+    {
+      name: 'SR.No',
+      selector: (row, index) => index + 1,
+      sortable: false,
+    },
+    {
+      name: 'Document Name',
+      selector: (row) => row.documentName,
+      sortable: false,
+    },
+    {
+      name: 'Upload Document',
+      cell: (row) => (
+        <input
+          type="file"
+          {...register(row.field)}
+          onChange={(e) => row.onFileChange(e, row.documentName)}
+          className="border border-gray-300 rounded p-1"
+        />
+      ),
+      sortable: false,
+    },
+  ];
+
+  const documentEntries = [
+    { documentName: 'Student Photo', onFileChange: handleFileChange, field: 'photo' },
+    { documentName: 'Transfer Certificate', onFileChange: handleFileChange, field: 'transferCertificate' },
+    { documentName: 'ID Proof', onFileChange: handleFileChange, field: 'idProof' },
+  ];
+
+  const onSubmit = async () => {
+    const formData = new FormData();
+    
+    // Append files to formData
+    Object.keys(files).forEach((key) => {
+      formData.append('files', files[key]);
+    });
+
+    try {
+      const response = await axios.post(`${BASE_URL}/document/saveDocument/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log("Docs submitted: ", response);
+      toast.success('Form Uploaded Successfully!')
+      navigate('/admin/allStudents')
+      
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to Upload Docs!");
+    }
+  };
+
   return (
-    <div className='bg-white mt-10 p-5 rounded-xl'>
-         <h2 className="col-span-4  mt-8 text-xl font-semibold text-black">Documents Required</h2>
-         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
-         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Upload Student Photo (150px X 150px)</label>
-          <input {...register('photo')} type="file" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base py-1 px-1"/>
+    <div>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+      <p className=' mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/ <NavLink to='/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+
+      <ProgressIndicator currentStep={currentStep} />
+      <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Documents Required</h2>
+      
+        <Table 
+          columns={columns}
+          data={documentEntries}
+          className={"hidden"}
+        />
+      
+      <div className='flex justify-between items-center'>
+        <button onClick={() => handlePrevStep()}>
+            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+                <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
+                Back
+            </h1>
+        </button>
+        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+            <Button type='submit' label="Submit" className='' onClick={handleSubmit(onSubmit)} />
+            <Button onClick={() => {
+                reset() 
+                navigate('/admin/allStudents')
+            }} 
+            label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
-
-          <div className="col-span-2">
-            <label htmlFor="transferCertificate">Upload Transfer Certificate</label>
-            <input
-              type="file"
-              id="transferCertificate"
-              className="mt-1 block w-full border-gray-300 rounded-md"
-              {...register('transferCertificate')}
-            />
-          </div>
-
-          <div className="col-span-2">
-            <label htmlFor="idProof">Upload ID Proof</label>
-            <input
-              type="file"
-              id="idProof"
-              className="mt-1 block w-full border-gray-300 rounded-md"
-              {...register('idProof')}
-            />
-          </div>
-          <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8'/>
-          <Button onClick={() => {
-            reset() 
-            navigate('/admin/allStudents')
-          }} 
-          label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
-      </div>
-        </form>
     </div>
-  )
+      <ToastContainer/>
+    </div>
+  );
 }
 
-export default DocsDets
+export default DocsDets;

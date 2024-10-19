@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 import { useForm } from 'react-hook-form'
 import DatePicker from '../../../../Reusable_components/DatePicker';
 import { useNavigate } from 'react-router-dom';
@@ -6,10 +6,15 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import { useUserContext } from '../../../../hooks/UserContext';
+import BASE_URL from '../../../../conf/conf';
+import ProgressIndicator from './ProgressIndicator';
+import { useStepContext } from '../../../../hooks/StepContext';
+import { NavLink } from 'react-router-dom';
 
-function BasicDets({handleNextStep , currentStep}) {
+function BasicDets() {
 
-const { setUserId } = useUserContext()
+const { userId ,  setUserId } = useUserContext()
+const { currentStep, handleNextStep } = useStepContext();
 const {
     register,
     handleSubmit,
@@ -18,6 +23,25 @@ const {
     } = useForm();
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        // Fetch the existing student details if available
+        const fetchStudentDetails = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
+                const studentData = response.data.data;
+
+                if (studentData) {
+                    // If data exists, populate the form
+                    reset(studentData);
+                }
+            } catch (error) {
+                console.error('Error fetching student details:', error);
+            }
+        };
+
+            fetchStudentDetails();
+    }, [reset , userId]);
 
     const onSubmit = async (data) => {
         console.log(data);
@@ -28,7 +52,7 @@ const {
           }
           await axios({
               method:"Post",
-              url : `http://localhost:8080/user/addStudentBasicDetails`,
+              url : `${BASE_URL}/user/addStudentBasicDetails`,
               data: userData ,
               headers: {
                 "Content-Type": "application/json",
@@ -39,7 +63,7 @@ const {
               console.log('response' , response.data.data)
               setUserId(response.data.data.userId)
               toast.success("Successfully Add Student!");
-              handleNextStep(currentStep)
+              handleNextStep()
               reset()
           })
           .catch(err=>{
@@ -49,9 +73,13 @@ const {
           })
     }
   return (
+    <div>
+        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
+        <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+         <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="text-xl font-semibold text-black ">Basic Details</h2>
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 mt-5 gap-6">
+    <form  className="grid grid-cols-4 mt-5 gap-6">
 
         {/* Input Fields */}
         <div className="flex flex-col px-1">
@@ -297,19 +325,19 @@ const {
             <option value="Other">Other</option>
         </select>
         </div>
-
-        <div className="col-span-2 flex justify-start space-x-4 mt-10">
-          <Button type='submit' label="Save" className='px-8' />
-          <Button onClick={() => {
-            reset() 
-            navigate('/admin/allStudents')
-          }} 
-          label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
-      </div>
     </form>
+
+        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+            <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
+            <Button onClick={() => {
+                reset() 
+                navigate('/admin/allStudents')
+            }} 
+            label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
+        </div>
       <ToastContainer/>
     </div>
-
+</div>
   )
 }
 

@@ -93,12 +93,14 @@ import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollectio
 
 import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
 import { UserProvider } from './hooks/UserContext';
+import { StepProvider } from './hooks/StepContext';
 
 
 
 function App() {
   return (
     <UserProvider>
+      <StepProvider>
     <Router>
       <div className="h-screen">
         <Routes>
@@ -178,7 +180,7 @@ function App() {
             <Route path='hostelDetails' element={<HostelDets/>}/>
             <Route path='uploadDocs' element={<DocsDets/>}/>
             <Route path='prevSchool' element={<PrevSchlDets/>}/> 
-            
+            <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
           </Route>
 
           {/* Student Dashboard Routes */}
@@ -244,6 +246,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </StepProvider>
     </UserProvider>
   );
 }
