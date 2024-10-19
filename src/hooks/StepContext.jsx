@@ -11,12 +11,16 @@ export const StepProvider = ({ children }) => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
 
+  const handlePrevStep = () => {
+    setCurrentStep((prevStep) => prevStep-1) ;
+  }
+
   useEffect(() => {
     console.log('Current Step:', currentStep);
   }, [currentStep]);
 
   return (
-    <StepContext.Provider value={{ currentStep, handleNextStep , setCurrentStep }}>
+    <StepContext.Provider value={{ currentStep, handleNextStep , setCurrentStep , handlePrevStep}}>
       {children}
     </StepContext.Provider>
   );

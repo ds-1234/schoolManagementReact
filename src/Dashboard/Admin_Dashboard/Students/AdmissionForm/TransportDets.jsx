@@ -9,9 +9,10 @@ import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import BASE_URL from '../../../../conf/conf';
 
 function TransportDets() {
-  const { currentStep, handleNextStep } = useStepContext();
+  const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const {userId} = useUserContext() ;
     const {
         register,
@@ -24,10 +25,29 @@ function TransportDets() {
     const [selectedRoute, setSelectedRoute] = useState('')
     const navigate = useNavigate()
 
+    useEffect(() => {
+      // Fetch the existing student details if available
+      const fetchStudentDetails = async () => {
+          try {
+              const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
+              const studentData = response.data.data;
+
+              if (studentData) {
+                  // If data exists, populate the form
+                  reset(studentData);
+              }
+          } catch (error) {
+              console.error('Error fetching student details:', error);
+          }
+      };
+
+      fetchStudentDetails();
+  }, [reset]);
+
     const fetchTransportOptions = async() => {
         await axios({
             method: 'GET',
-            url: 'http://localhost:8080/transport/getTransportList',
+            url: `${BASE_URL}/transport/getTransportList`,
             headers: {
             'Content-Type': 'application/json',
             },
@@ -78,6 +98,25 @@ function TransportDets() {
     fetchVehicleNum(selectedRouteId);
   };
 
+  useEffect(() => {
+    // Fetch the existing student details if available
+    const fetchStudentDetails = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
+            const studentData = response.data.data;
+
+            if (studentData) {
+                // If data exists, populate the form
+                reset(studentData);
+            }
+        } catch (error) {
+            console.error('Error fetching student details:', error);
+        }
+    };
+
+      fetchStudentDetails();
+}, [reset , userId]);
+
   const onSubmit = async (data) => {
     console.log(data);
     
@@ -87,7 +126,7 @@ function TransportDets() {
       }
       await axios({
           method:"Post",
-          url : `http://localhost:8080/user/updateTransportDetails`,
+          url : `${BASE_URL}/user/updateTransportDetails`,
           data: userData ,
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +146,7 @@ function TransportDets() {
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to = '/admin/user'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <NavLink to = '/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
        <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Transport Information</h2>
@@ -152,12 +191,12 @@ function TransportDets() {
           </div>
     </form>
     <div className='flex justify-between items-center'>
-        <div>
-            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
-                <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
-                Back
-            </h1>
-        </div>
+    <button onClick={() => handlePrevStep()}>
+      <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+          <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
+          Back
+      </h1>
+    </button>
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
             <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {

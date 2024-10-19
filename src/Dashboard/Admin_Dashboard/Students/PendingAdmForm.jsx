@@ -108,7 +108,9 @@ const column = [
         setCurrentStep(4);
       } else if (details.buildingName === null) {
         setCurrentStep(5);
-      } else if (details.isActive === null) {
+      } else if (details.previousSchoolName === null) {
+        setCurrentStep(6);
+      }else if (details.isActive === null) {
         setCurrentStep(7);
       } else {
         console.log("All details are filled");

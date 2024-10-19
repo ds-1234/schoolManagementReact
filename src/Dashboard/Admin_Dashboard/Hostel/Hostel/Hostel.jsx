@@ -225,7 +225,6 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-    //   onAddClick={openAddPopup}
       />
 
       <AddHostel

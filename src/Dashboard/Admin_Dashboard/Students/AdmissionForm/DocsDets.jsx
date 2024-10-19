@@ -15,7 +15,7 @@ import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function DocsDets() {
   const { id } = useUserContext();
-  const { currentStep, handleNextStep } = useStepContext();
+  const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
 
@@ -77,7 +77,9 @@ function DocsDets() {
         },
       });
       console.log("Docs submitted: ", response);
-      handleNextStep();
+      toast.success('Form Uploaded Successfully!')
+      navigate('/admin/allStudents')
+      
     } catch (error) {
       console.error(error);
       toast.error("Failed to Upload Docs!");
@@ -87,7 +89,7 @@ function DocsDets() {
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/ <NavLink to='/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+      <p className=' mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/ <NavLink to='/admin/allStudents'> Students </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
 
       <ProgressIndicator currentStep={currentStep} />
       <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Documents Required</h2>
@@ -99,14 +101,14 @@ function DocsDets() {
         />
       
       <div className='flex justify-between items-center'>
-        <div>
+        <button onClick={() => handlePrevStep()}>
             <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
                 <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
                 Back
             </h1>
-        </div>
+        </button>
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
-            <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
+            <Button type='submit' label="Submit" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {
                 reset() 
                 navigate('/admin/allStudents')
