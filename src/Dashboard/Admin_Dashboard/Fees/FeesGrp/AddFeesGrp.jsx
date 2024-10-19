@@ -81,7 +81,7 @@ const AddFeesGrp = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add Fees Group</h2>
 
-          {/* holidayTitle Input */}
+          {/* fee grp Input */}
           <div className="mb-4">
             <label htmlFor="feesGroupName" className="block text-gray-700 font-semibold mb-2">Fees Group</label>
             <input

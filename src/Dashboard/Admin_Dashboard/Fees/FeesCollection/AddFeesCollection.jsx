@@ -73,8 +73,11 @@ function AddFeesCollection({ isOpen, onClose }) {
   useEffect(() => {
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
       .then((response) => {
-        setFeesGrp(response.data.data);
-      })
+        const feeGroups = response.data.data;
+
+        const reqGroup = feeGroups.filter(feeGrp => feeGrp.isActive === true);
+
+        setFeesGrp(reqGroup);      })
       .catch((error) => {
         toast.error('Error fetching Fees Group');
       });
@@ -246,12 +249,12 @@ function AddFeesCollection({ isOpen, onClose }) {
 
           {/* Amount */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-black" htmlFor="amount">Amount *</label>
+            <label className="block text-gray-700 font-semibold mb-2" htmlFor="amount">Amount *</label>
             <input
               type="number"
               id="amount"
               {...register("amount", { required: "Amount is required" })}
-              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
+              className="w-full px-3 py-2 border ${errors.feesGroupName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.amount && (
               <p className="text-red-500 text-sm">{errors.amount.message}</p>
@@ -262,7 +265,7 @@ function AddFeesCollection({ isOpen, onClose }) {
           <div className="relative">
             <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
             <div
-              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setPayDropdownOpen(!payDropdownOpen)}
             >
               <span>{selectedPaymentMethod || 'Select Payment Method'}</span>
@@ -299,7 +302,7 @@ function AddFeesCollection({ isOpen, onClose }) {
               id="description"
               {...register("description")}
               rows="3"
-              className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-2"
+              className="w-full px-3 py-2 border ${errors.feesGroupName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           {/* Payment Status (Radio Buttons) */}

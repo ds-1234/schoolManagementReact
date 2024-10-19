@@ -111,7 +111,9 @@ useEffect(() => {
     axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
         .then((response) => {
             const feeGroups = response.data.data;
-            setFeesGrp(feeGroups);
+            const reqGroup = feeGroups.filter(feeGrp => feeGrp.isActive === true);
+
+            setFeesGrp(reqGroup);
             
             // Set selected fees group
             const selectedGroup = feeGroups.find(feeGrp => feeGrp.id === feeGrpId);
@@ -221,7 +223,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
         </button>
 
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">Edit Fee Collection</h2>
           {console.log(selectedClass,'selectedclass')}
 
  {/* Class Input */}
@@ -287,7 +289,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
 
 {/* Student List Input */}
 <div className="mb-2 relative">
-  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
+  <label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student Name</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
     // onClick={() => setDropdownOpen1(!dropdownOpen1)} 
