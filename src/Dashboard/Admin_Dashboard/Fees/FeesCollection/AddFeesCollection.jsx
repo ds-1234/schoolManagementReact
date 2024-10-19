@@ -201,7 +201,7 @@ function AddFeesCollection({ isOpen, onClose }) {
         <button onClick={handleCut} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Add Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">Add Fee Collection</h2>
 
  {/* Class Input */}
  <div className="mb-2 relative" ref={classDropdownRef}>
@@ -348,7 +348,7 @@ function AddFeesCollection({ isOpen, onClose }) {
             />
           </div>
           {/* Payment Status (Radio Buttons) */}
-          <div className="mb-4">
+          <div className="mb-2">
             <label className="block text-sm font-medium mb-2 text-black">Payment Status *</label>
             <div className="flex items-center">
               <label className="mr-4">
@@ -375,7 +375,7 @@ function AddFeesCollection({ isOpen, onClose }) {
           </div>
 
           {/* Submit Button */}
-          <div className="flex flex-wrap gap-10 mb-4 items-center justify-center">
+          <div className="flex flex-wrap gap-10 mb-1 items-center justify-center">
             <Button type="submit" text="Save" />
             <Button
                 onClick={clearForm}

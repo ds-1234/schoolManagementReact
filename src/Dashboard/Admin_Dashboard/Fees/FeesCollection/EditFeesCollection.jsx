@@ -572,7 +572,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
           <div className="mb-2 relative" ref={paymentmtdDropdownRef}>
             <label htmlFor="paymentMethod" className="block text-sm font-medium mb-2 text-black">Payment Method *</label>
             <div
-              className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setPayDropdownOpen(!payDropdownOpen)}
             >
               <span>{selectedPaymentMethod || 'Select Payment Method'}</span>
