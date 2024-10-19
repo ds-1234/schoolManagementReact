@@ -110,10 +110,10 @@ function AddFeesCollection({ isOpen, onClose }) {
       toast.error('Please select both a student and a fees group');
       return;
     }
-    if (!paymentStatus ) {
-      toast.error('Please select Payment Method');
-      return;
-    }
+    // if (!paymentStatus ) {
+    //   toast.error('Please select Payment status');
+    //   return;
+    // }
 
     // Submit the form data to the server
     axios.post('http://localhost:8080/feesCollection/savefeesCollection', {

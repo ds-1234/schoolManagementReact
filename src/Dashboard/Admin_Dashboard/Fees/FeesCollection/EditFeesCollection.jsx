@@ -226,7 +226,7 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
         </button>
 
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">Edit Fee Collection</h2>
+          <h2 className="text-2xl font-bold text-center mb-2 text-[#042954]">View Fee Collection</h2>
           {console.log(selectedClass,'selectedclass')}
 
  {/* Class Input */}

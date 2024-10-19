@@ -192,6 +192,7 @@ const fetchData = () => {
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
       setData(filterData);
+    //   setData(feeGrp)
       return;
     }
 
@@ -202,15 +203,21 @@ const fetchData = () => {
     );
 
     setData(filteredData);
+    // setData(feeGrp)
+
   };
 
   const handleClear = () => {
     setData(filterData); // Reset to original data
+    // setData(feeGrp)
   };
 
   const searchOptions = [
     { label: 'Fees Group', value: 'feesGroupName' }, 
     { label: 'Description', value: 'description' },
+    { label: 'Fees Collection Id', value: 'feesCollectionId' },
+    { label: 'Amount', value: 'feeAmount' },
+    { label: 'Status', value: 'value' },
   ];
 
   return (
