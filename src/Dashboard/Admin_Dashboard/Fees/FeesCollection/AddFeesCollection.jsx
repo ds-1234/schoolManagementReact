@@ -151,6 +151,15 @@ function AddFeesCollection({ isOpen, onClose }) {
     setPaymentStatus(null); // Reset to null after submission   
   };
 
+  const clearForm = () => {
+    reset();
+    setSelectedStudent(null)
+    setSelectedFeesGrp(null)
+    setSelectedClass(null)
+    setSelectedPaymentMethod('')
+    setPaymentStatus(null); // Reset to null after submission  
+    };
+
   if (!isOpen) return null;
 
   return (
@@ -333,8 +342,13 @@ function AddFeesCollection({ isOpen, onClose }) {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-2 flex justify-center">
+          <div className="flex flex-wrap gap-10 mb-4 items-center justify-center">
             <Button type="submit" text="Save" />
+            <Button
+                onClick={clearForm}
+                className="mt-0 bg-[#ffae01] hover:bg-[#042954]"
+                label="Clear"
+              />
           </div>
         </form>
       </div>
