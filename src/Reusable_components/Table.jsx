@@ -92,7 +92,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
         <div className="rounded-lg text-black">
           <div>
             {/* Search Section */}
-            <div className="flex flex-wrap gap-4 mb-4 items-center">
+            <div className={`flex flex-wrap gap-4 mb-4 items-center ${className}`}>
 
               {/* Filter Dropdown */}
               <div className="relative" ref={dropdownRef}>
