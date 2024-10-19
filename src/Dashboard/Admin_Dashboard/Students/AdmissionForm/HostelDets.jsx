@@ -28,7 +28,7 @@ function HostelDets() {
     const fetchHostelOptions = () => {
         axios({
           method: "GET",
-          url: `http://localhost:8080/hostel/getHostelList`,
+          url: `${BASE_URL}/hostel/getHostelList`,
           headers: {
             "Content-Type": "application/json",
           },
@@ -45,7 +45,7 @@ function HostelDets() {
       const fetchData = () => {
         axios({
           method: "GET",
-          url: `http://localhost:8080/hostelRooms/getHostelRoomsList`,
+          url: `${BASE_URL}/hostelRooms/getHostelRoomsList`,
           headers: {
             "Content-Type": "application/json",
           },

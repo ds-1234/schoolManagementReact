@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
 function DocsDets() {
-  const { id } = useUserContext();
+  const { id , userId} = useUserContext();
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
@@ -70,8 +70,10 @@ function DocsDets() {
       formData.append('files', files[key]);
     });
 
+    // formData.append('id' , userId) ;
+
     try {
-      const response = await axios.post(`${BASE_URL}/document/saveDocument/${id}`, formData, {
+      const response = await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
