@@ -88,7 +88,7 @@ import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/Tr
 import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
 import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
 import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
-
+import Profile from './Dashboard/Student_Dashboard/Profile/Profile'
 import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollection';
 
 import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
@@ -205,6 +205,7 @@ function App() {
             <Route path='stdnotice' element = {<StdNotice/>} />
             <Route path = 'attendance' element = {<StdAttendance/>}/>
             <Route path = 'StdFeeCollection' element = {<StdFeeCollection/>}/>
+            <Route path = 'profile' element = {<Profile/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}

@@ -3,7 +3,7 @@ import React from 'react';
 const StatusButton = ({ isActive }) => {
   return (
     <button 
-      className={`flex items-center px-3 py-1 rounded-full bg-[#f1f0f3] font-semibold ${isActive ? 'text-green-500' : 'text-red-500'}`}
+      className={`flex items-center justify-center px-3 py-1 rounded-full bg-[#f1f0f3] font-semibold ${isActive ? 'text-green-500' : 'text-red-500'}`}
       disabled
     >
       <span 
