@@ -5,17 +5,35 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import CategoryTiles from './CategoryTiles';
+import AddBtn from '../../../../Reusable_components/AddBtn';
+import AddEvent from './AddEvent';
 
 function Event() {
   const user = JSON.parse(sessionStorage.getItem('user'));
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null); // Ref to track the dropdown
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const searchOptions = ["Option 1", "Option 2", "Option 3"]; // Example dropdown options
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const openAddPopup = () => setIsAddPopupOpen(true);
+  const closeAddPopup = () => setIsAddPopupOpen(false);
+
+  useEffect(() => {
+    if (isAddPopupOpen ) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -92,6 +110,8 @@ function Event() {
         {/* Calendar section with 2/3 width */}
         <div className="w-2/3 bg-white rounded-xl">
           <Calendar attendanceMap={attendanceMap} />
+          <AddBtn onAddClick={openAddPopup}/>
+
         </div>
 
         {/* Section with 1/3 width and scrollable tiles */}
@@ -143,6 +163,13 @@ function Event() {
         </div>
         </div>
       </div>
+      <AddEvent
+          isOpen={isAddPopupOpen} 
+          onClose={() => {
+            closeAddPopup();
+            // fetchData(); // Refresh data when add popup closes
+          }} 
+          />
     </div>
   );
 }
