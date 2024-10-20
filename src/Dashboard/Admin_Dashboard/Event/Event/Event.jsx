@@ -90,13 +90,12 @@ function Event() {
       
       <div className="flex items-start bg-white mt-10">
         {/* Calendar section with 2/3 width */}
-        <div className="w-2/3 bg-white  rounded-xl">
+        <div className="w-2/3 bg-white rounded-xl">
           <Calendar attendanceMap={attendanceMap} />
         </div>
 
-        {/* Section with 1/3 width */}
-        <div className="w-1/3 bg-white rounded-xl p-4">
-        
+        {/* Section with 1/3 width and scrollable content */}
+        <div className="w-1/3 bg-white rounded-xl p-4 max-h-[calc(100vh-10rem)] overflow-y-auto">
           {/* Search Section */}
           <div className="flex justify-between items-center mb-4">
             {/* Event title aligned to the left */}
@@ -116,13 +115,11 @@ function Event() {
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
                 <div
                   className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-
                 >
                   Celebration
                 </div>
                 <div
                   className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-
                 >
                   Training
                 </div>
