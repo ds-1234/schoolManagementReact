@@ -635,11 +635,10 @@ const Sidebar = () => {
             )}
           </li>
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> e13707b3ea25ac86c8de7ffbbbdda2cd642cd286
+
+
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
@@ -684,7 +683,7 @@ const Sidebar = () => {
 
 
              {/* Events Section */}
-             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+             {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/Event"
               className={({ isActive }) =>
@@ -695,9 +694,49 @@ const Sidebar = () => {
                 Event
               
             </NavLink>
+          </li> */}
+
+          {/* Fees Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/event"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
+                Events
+              </div>
+              <FontAwesomeIcon icon={renderAngleIcon('events')} className="mr-3" onClick={() => toggleDropdown('events')} />
+            </NavLink>
+            {openDropdown=='events' && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/eventcategory"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Event Category
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/event"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Event
+                  </NavLink>
+                </li>
+              </ul>
+            )}
           </li>
-
-
 
 
         </ul>
