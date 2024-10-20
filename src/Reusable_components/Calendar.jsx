@@ -41,6 +41,7 @@ const Calendar = ({ attendanceMap }) => {
 
   return (
     <div className="max-w-md mx-auto p-4">
+      
       <div className="flex justify-between items-center mb-4">
         <button 
           onClick={handlePrevMonth} 

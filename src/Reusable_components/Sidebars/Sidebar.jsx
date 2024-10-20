@@ -171,6 +171,19 @@ const Sidebar = () => {
                Department
             </NavLink>
           </li>
+                 {/* event Collection Section */}
+                 <li className="">
+            <NavLink
+              to="/admin/eventcategory"
+              className={({ isActive }) =>
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+              }
+            >
+              {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
+               <FontAwesomeIcon icon={faAngleRight} />
+               Event Category
+            </NavLink>
+          </li>
               </ul>
             )}
           </li>
@@ -635,6 +648,10 @@ const Sidebar = () => {
             )}
           </li>
 
+
+
+
+
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
@@ -676,6 +693,23 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
+
+
+             {/* Events Section */}
+             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/Event"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
+                Event
+              
+            </NavLink>
+          </li>
+
+
 
 
         </ul>
