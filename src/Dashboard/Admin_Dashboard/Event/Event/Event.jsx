@@ -94,9 +94,10 @@ function Event() {
           <Calendar attendanceMap={attendanceMap} />
         </div>
 
-        {/* Section with 1/3 width and scrollable content */}
-        <div className="w-1/3 bg-white rounded-xl p-4 max-h-[calc(100vh-10rem)] overflow-y-auto">
-          {/* Search Section */}
+        {/* Section with 1/3 width and scrollable tiles */}
+        <div className="w-1/3 bg-white rounded-xl p-4">
+        
+          {/* Static Search Section */}
           <div className="flex justify-between items-center mb-4">
             {/* Event title aligned to the left */}
             <h2 className='text-lg md:text-xl font-semibold text-black'>Events</h2>
@@ -128,8 +129,8 @@ function Event() {
             </div>
           </div>
 
-        {/* category tiles list */}
-        <div>
+        {/* Scrollable category tiles list */}
+        <div className="max-h-[calc(100vh-18rem)] overflow-y-auto">
           {dummyEvents.map((event, index) => (
             <CategoryTiles
               key={event.id}
