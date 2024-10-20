@@ -184,9 +184,9 @@ const fetchData = () => {
           <button onClick={() => openEditPopup(row.id)}>
             <img src={edit} alt="Edit" className="h-8" />
           </button>
-          <button onClick={() => handleDelete(row.id)}>
+          {/* <button onClick={() => handleDelete(row.id)}>
             <img src={deleteIcon} alt="Delete" className="h-8" />
-          </button>
+          </button> */}
         </div>
       ),
     },
