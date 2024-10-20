@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../../conf/conf';
 import StatusButton from '../../../Reusable_components/StatusButton';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faEnvelope, faFilePdf, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 
-function StudentDetails() {
-  const {userId }= useLocation().state || {} ; 
-
+const Profile = () => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const [studentDetails, setStudentDetails] = useState(null);
   const [activeTab, setActiveTab] = useState('hostel'); 
   const [hostel , setHostel] = useState({}) 
@@ -19,12 +18,13 @@ function StudentDetails() {
     const fetchData = () => {
       axios({
         method: 'GET',
-        url: `${BASE_URL}/user/getStudentDetails/${userId}`,
+        url: `${BASE_URL}/user/getStudentDetails/${user.userId}`,
         headers: {
           'Content-Type': 'application/json',
         },
       })
         .then((response) => {
+          console.log('Data from API:', response.data);
           setStudentDetails(response.data.data);
         })
         .catch((error) => {
@@ -33,7 +33,7 @@ function StudentDetails() {
     };
 
     fetchData();
-  }, [userId]);
+  }, [user.userId]);
 
   useEffect(() => {
     if( studentDetails ){
@@ -46,6 +46,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setHostel(response.data.data);
           })
           .catch((error) => {
@@ -62,6 +63,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setHostelRoom(response.data.data);
           })
           .catch((error) => {
@@ -78,6 +80,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setTransport(response.data.data);
           })
           .catch((error) => {
@@ -97,14 +100,12 @@ function StudentDetails() {
 
   return (
     <div className="mb-6">
-      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Student Profile</h1>
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Profile</h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/admin"> Admin </NavLink>/
-        <NavLink to='/admin/allStudents'> Students </NavLink> /
+        <NavLink to="/studentDashboard"> Student </NavLink>/
         <span className="text-[#ffae01] font-semibold">Profile</span>
       </p>
-
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <div>
@@ -277,4 +278,4 @@ function StudentDetails() {
   );
 };
 
-export default StudentDetails
+export default Profile;
