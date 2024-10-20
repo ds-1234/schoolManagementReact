@@ -93,7 +93,7 @@ import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollectio
 
 import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
 import { UserProvider } from './hooks/UserContext';
-import Event from './Dashboard/Admin_Dashboard/Event/Event';
+import Event from './Dashboard/Admin_Dashboard/Event/Event/Event';
 import { StepProvider } from './hooks/StepContext';
 import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/EventCategory';
 

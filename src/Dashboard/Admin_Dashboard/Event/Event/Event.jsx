@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Calendar from '../../../Reusable_components/Calendar';
+import Calendar from '../../../../Reusable_components/Calendar';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import CategoryTiles from './CategoryTiles';
 
 function Event() {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -29,6 +30,15 @@ function Event() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isDropdownOpen]);
+
+  // Dummy event data for now, later to be replaced by API data
+  const dummyEvents = [
+    { id: 1, title: "Sports Day", date: "2024-11-15", time: "9:00 AM - 12:00 PM" },
+    { id: 2, title: "Annual Celebration", date: "2024-12-20", time: "10:00 AM - 1:00 PM" },
+    { id: 3, title: "Workshop", date: "2024-10-25", time: "2:00 PM - 5:00 PM" },
+    { id: 4, title: "Work", date: "2024-10-5", time: "2:00 PM - 4:00 PM" },
+    { id: 5, title: "Seminar", date: "2024-10-25", time: "2:00 PM - 5:00 PM" },
+  ];
 
   const fetchData = async () => {
     try {
@@ -121,6 +131,18 @@ function Event() {
             </div>
           </div>
 
+        {/* category tiles list */}
+        <div>
+          {dummyEvents.map((event, index) => (
+            <CategoryTiles
+              key={event.id}
+              title={event.title}
+              date={event.date}
+              time={event.time}
+              borderColor={index % 2 === 0 ? 'red' : 'blue'} // Alternate red and blue
+            />
+          ))}
+        </div>
         </div>
       </div>
     </div>
