@@ -1,14 +1,16 @@
 import React from "react";
+import { useStepContext } from "../../../../hooks/StepContext";
 
-const ProgressIndicator = ({ currentStep }) => {
+const ProgressIndicator = () => {
+  const { currentStep } = useStepContext();
   const steps = [
     { id: 1, label: "Basic Details", path: "/admin/basic" },
     { id: 2, label: "Academic Details", path: "/admin/academic" },
     { id: 3, label: "Office Details", path: "/admin/office" },
     { id: 4, label: "Transportation Details", path: "/admin/transportation" },
     { id: 5, label: "Hostel Details", path: "/admin/hostelDetails" },
-    { id: 6, label: "Documents Required", path: "/admin/uploadDocs" },
-    { id: 7, label: "Previous School Details", path: "/admin/prevSchool" },
+    { id: 6, label: "Previous School Details", path: "/admin/prevSchool" },
+    { id: 7, label: "Documents Required", path: "/admin/uploadDocs" },
   ];
 
   return (

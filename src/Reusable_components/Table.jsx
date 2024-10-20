@@ -4,7 +4,8 @@ import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
+
+const Table = ({ columns, data, searchOptions, onSearch, handleClear , className}) => {
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,6 +42,15 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
         backgroundColor: '#f3f4f6',
         fontWeight: 'bold',
         fontSize: '16px',
+
+        whiteSpace: 'normal', // Ensure the header can wrap
+        wordWrap: 'break-word', // Break long words if necessary
+      },
+    },
+    cells: {
+      style: {
+        whiteSpace: 'normal', // Allow cell content to wrap
+        wordWrap: 'break-word', // Break long words if necessary
       },
     },
     rows: {
@@ -83,6 +93,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear }) => {
           <div>
             {/* Search Section */}
             <div className="flex flex-wrap gap-4 mb-4 items-center">
+
               {/* Filter Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button

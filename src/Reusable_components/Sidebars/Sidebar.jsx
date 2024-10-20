@@ -2,44 +2,13 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
+import {useStepContext} from '../../hooks/StepContext'
 
 const Sidebar = () => {
 
-  // const [isStdDropdown , setIsStdDropdown] = useState(false) ;
-  // const [isExamDropdown , setIsExamDropdown] = useState(false) ;
-  // const [isIncomeDropdown , setIsIncomeDropdown] = useState(false) ;
-  // const [isSportsDropdown , setIsSportsDropdown] = useState(false) ;
-  // const [isHostelDropdown , setIsHostelDropdown] = useState(false) ;
-  // const [isUserDropdown , setIsUserDropdown] = useState(false) ;
-  // const [isConfOpen , setIsConfOpen] = useState(false) ;
-  // const userRole = sessionStorage.getItem('role') 
+
   const [openDropdown, setOpenDropdown] = useState(null)
-
-
-  // const toggleStdDropdown = () => {
-  //   setIsStdDropdown(!isStdDropdown);
-  // };
-
-  // const toggleExamDropdown = () => {
-  //   setIsExamDropdown(!isExamDropdown);
-  // };
-  // const toggleIncomeDropdown = () => {
-  //   setIsIncomeDropdown(!isIncomeDropdown);
-  // };
-  // const toggleSportsDropdown = () => {
-  //   setIsSportsDropdown(!isSportsDropdown);
-  // };
-  // const toggleHostelDropdown = () => {
-  //   setIsHostelDropdown(!isHostelDropdown);
-  // };
-
-  // const toggleUserDropdown = () => {
-  //   setIsUserDropdown(!isUserDropdown);
-  // };
-
-  // const toggleConf = () => {
-  //   setIsConfOpen(!isConfOpen) ;
-  // }
+  const {setCurrentStep} = useStepContext()
 
    const toggleDropdown = (dropdown) => {
     setOpenDropdown(prevDropdown => prevDropdown === dropdown ? null : dropdown);
@@ -256,6 +225,7 @@ const Sidebar = () => {
                     className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
+                    onClick={() => {setCurrentStep(1)}}
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
                     Admission Form
@@ -317,8 +287,8 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-    {/* Transport section */}
-    <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+          {/* Transport section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/transport"
               className={({ isActive }) =>
@@ -665,8 +635,11 @@ const Sidebar = () => {
             )}
           </li>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e13707b3ea25ac86c8de7ffbbbdda2cd642cd286
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
