@@ -17,10 +17,7 @@ function Registration() {
   const onSubmit = async (data) => {
     const result =  registerUser({
       ...data , 
-      role: {
-        id : 1 ,
-        name : "Guest"
-      },
+      role: 1 ,
       isActive: "false" 
     });
   };
