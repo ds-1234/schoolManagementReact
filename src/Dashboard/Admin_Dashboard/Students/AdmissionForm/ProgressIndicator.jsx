@@ -27,7 +27,7 @@ const ProgressIndicator = () => {
           }}
         >
           <div
-            className={`w-8 h-8 ml-2 flex justify-center items-center rounded-full border-2 
+            className={`w-8 h-8 ml-1 flex justify-center items-center rounded-full border-2 
               ${currentStep === step.id ? 'border-white bg-green-600 text-white' : 
               (step.id < currentStep ? 'border-green-400 bg-green-500 text-white' : 
               'border-gray-400 bg-white text-gray-600')}`}
