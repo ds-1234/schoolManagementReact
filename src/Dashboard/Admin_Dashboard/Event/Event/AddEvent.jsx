@@ -13,6 +13,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [subjectMap, setSubjectMap] = useState({});
   const [dropdownOpen2, setDropdownOpen2] = useState(false); // Event Category dropdown
   const [showClassAndSection, setShowClassAndSection] = useState(false); // To show/hide Class and Section dropdowns
+  const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false); // Show Role and Teachers for Staff
   const eventCategoryDropdownRef = useRef(null); // Ref for the Event Category dropdown
 
   const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -125,18 +126,18 @@ const AddEvent = ({ isOpen, onClose }) => {
 
           {/* Radio buttons for "Event For" */}
           <div className="col-span-2">
-            <label htmlFor="designationName" className="block text-gray-700 font-semibold mb-2">Event For</label>
+            <label htmlFor="noticeFor" className="block text-gray-700 font-semibold mb-2">Event For</label>
             <div className="mt-2 space-y-2">
               <div className='inline ml-4'>
-              <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => setShowClassAndSection(false)} defaultChecked />
-              <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
+                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(false); }} defaultChecked />
+                <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => setShowClassAndSection(true)} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true); setShowRoleAndTeachers(false); }} />
                 <label htmlFor="student" className="text-sm font-medium text-gray-700">Student</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Staff" id="staff" className="mr-2" onChange={() => setShowClassAndSection(false)} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Staff" id="staff" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(true); }} />
                 <label htmlFor="staff" className="text-sm font-medium text-gray-700">Staff</label>
               </div>
             </div>
@@ -155,17 +156,44 @@ const AddEvent = ({ isOpen, onClose }) => {
                 </select>
               </div>
 
+            </>
+          )}
+
+
+{showRoleAndTeachers && (
+            <>
               <div className="mb-4">
-                <label htmlFor="section" className="block text-gray-700 font-semibold mb-2">Section</label>
-                <select id="section" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('section', { required: 'Section is required' })}>
-                  {/* Dummy options for now */}
-                  <option value="">Select Section</option>
-                  <option value="A">A</option>
-                  <option value="B">B</option>
+                <label className="block text-gray-700 font-semibold mb-2">Role</label>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <input type="checkbox" value="Admin" {...register('roles')} className="mr-2" />
+                    <label className="text-sm font-medium text-gray-700">Admin</label>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" value="Teacher" {...register('roles')} className="mr-2" />
+                    <label className="text-sm font-medium text-gray-700">Teacher</label>
+                  </div>
+                  <div className="flex items-center">
+                    <input type="checkbox" value="Support" {...register('roles')} className="mr-2" />
+                    <label className="text-sm font-medium text-gray-700">Support Staff</label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="teacher" className="block text-gray-700 font-semibold mb-2">Select Teacher</label>
+                <select id="teacher" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('teacher')}>
+                  <option value="">Select Teacher</option>
+                  {teachers.map((teacher) => (
+                    <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
+                  ))}
                 </select>
               </div>
             </>
           )}
+
+
+
 
           {/* Event Title Input */}
           <div className="mb-4">
@@ -229,10 +257,10 @@ const AddEvent = ({ isOpen, onClose }) => {
           </div>
 
 {/* File attachment */}
-<div className="mb-4 mt-6 bg-gray-100">
-    <h1 className="mb-4 mt-6 ">Attachment</h1>
-    <p className="mb-4 mt-6 ">Upload Size of 4mb,Accepted Format PDF</p>
-    <Button type="submit" label="Upload" />
+<div className="mb-4 mt-6 bg-gray-200">
+    <h1 className="mb-4 mt-6 ml-4 tect-xl text-gray-700 font-semibold">Attachment</h1>
+    <p className="mb-4 ml-4 mt-6 ">Upload Size of 4mb,Accepted Format PDF</p>
+    <Button type="submit" label="Upload" className='ml-4 mb-4' />
 </div>
 
           {/* Message Input */}
