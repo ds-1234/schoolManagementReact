@@ -108,7 +108,7 @@ function Event() {
       
       <div className="flex items-start bg-white mt-10">
         {/* Calendar section with 2/3 width */}
-        <div className="w-2/3 bg-white rounded-xl">
+        <div className="w-2/3 bg-white rounded-xl p-4 border-l-4  shadow-md">
           <Calendar attendanceMap={attendanceMap} />
           <AddBtn onAddClick={openAddPopup}/>
 
