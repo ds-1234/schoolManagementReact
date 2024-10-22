@@ -7,27 +7,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
-
-
 const AddEvent = ({ isOpen, onClose }) => {
   const [subjectMap, setSubjectMap] = useState({});
-  const [dropdownOpen2, setDropdownOpen2] = useState(false); // Event Category dropdown
-  const [showClassAndSection, setShowClassAndSection] = useState(false); // To show/hide Class and Section dropdowns
-  const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false); // Show Role and Teachers for Staff
-  const eventCategoryDropdownRef = useRef(null); // Ref for the Event Category dropdown
-  const [role,setRole] = useState(null)
+  const [dropdownOpen2, setDropdownOpen2] = useState(false); 
+  const [showClassAndSection, setShowClassAndSection] = useState(false);
+  const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false);
+  const eventCategoryDropdownRef = useRef(null);
+  const [role, setRole] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
-        noticeFor: 'All', // Set "All" as the default selected value
-      days: {
-        Monday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Tuesday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Wednesday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Thursday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Friday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Saturday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-      },
+      noticeFor: 'All',
     },
   });
 
@@ -72,57 +64,58 @@ const AddEvent = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/user/getUserList', {
-          headers: { 'Content-Type': 'application/json' },
-        });
-        const filteredUsers = response.data.data.filter(user => user.role === 4);
-        setUserForDropdown(filteredUsers);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-
-    // const fetchSub = () => {
-    //   axios({
-    //     method: 'GET',
-    //     url: 'http://localhost:8080/subject/getSubjectList',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   })
-    //     .then((response) => {
-    //       const subjects = {};
-    //       response.data.data.forEach((sub) => {
-    //         subjects[sub.id] = sub.subject;
-    //       });
-    //       setSubjectMap(subjects);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error fetching subjects:', error);
-    //     });
-    // };
-
-    // fetchSub();
-    fetchUser();
-  }, []);
-  useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await axios.get('http://localhost:8080/role/getRoleList', {
           headers: { 'Content-Type': 'application/json' },
         });
-        const roles = response.data.data
-        
-        setRole(roles);
+        setRole(response.data.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching roles:', error);
       }
-    }
-      fetchRoles()
-    },[]);
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/user/getUserList', {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        setUserForDropdown(response.data.data);
+        console.log(userForDropdown,'user for drop down')
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchRoles();
+    fetchUsers();
+  }, []);
+
+    // Handle Role Selection and User Filtering
+    const handleRoleChange = (roleId) => {
+      setSelectedRoles((prevSelected) => {
+        const updatedRoles = prevSelected.includes(roleId) ? prevSelected.filter((id) => id !== roleId) : [...prevSelected, roleId];
+  
+        // Filter users based on selected role ids
+        if (updatedRoles.length > 0) {
+          const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId)
+          );
+          console.log(filtered,'filtered')
+          setFilteredUsers(filtered);
+        } else {
+          setFilteredUsers(userForDropdown);
+        }
+  
+        return updatedRoles;
+      });
+    };
+    const getDropdownLabel = () => {
+      if (selectedRoles.length === 1) {
+        const selectedRole = role.find((r) => r.id === selectedRoles[0]);
+        return `Select ${selectedRole?.name}`;
+      }
+      return 'Select User';
+    };
     
   const onSubmit = (data) => {
     // your form submit logic
@@ -141,8 +134,6 @@ const AddEvent = ({ isOpen, onClose }) => {
         <h2 className="text-2xl font-bold mb-6 text-[#042954]">New Event</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-
-          {/* Radio buttons for "Event For" */}
           <div className="col-span-2">
             <label htmlFor="noticeFor" className="block text-gray-700 font-semibold mb-2">Event For</label>
             <div className="mt-2 space-y-2">
@@ -161,8 +152,8 @@ const AddEvent = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Conditional Dropdowns for Class and Section */}
-          {showClassAndSection && (
+                    {/* Conditional Dropdowns for Class and Section */}
+                    {showClassAndSection && (
             <>
               <div className="mb-4">
                 <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
@@ -177,37 +168,40 @@ const AddEvent = ({ isOpen, onClose }) => {
             </>
           )}
 
+          {showRoleAndTeachers && (
+            <>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">Role</label>
+                <div className="grid grid-cols-2 gap-4">
+                  {role.map((role) => (
+                    <div key={role.id} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        value={role.id}
+                        onChange={() => handleRoleChange(role.id)}
+                        className="mr-2"
+                      />
+                      <label className="text-sm font-medium text-gray-700">{role.name}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-{showRoleAndTeachers && (
-  <>
-    <div className="mb-4">
-      <label className="block text-gray-700 font-semibold mb-2">Role</label>
-      <div className="grid grid-cols-2 gap-4">
-        {role.map((role, index) => (
-          <div key={role.id} className="flex items-center">
-            <input 
-              type="checkbox" 
-              value={role.name} 
-              {...register('roles')} 
-              className="mr-2" 
-            />
-            <label className="text-sm font-medium text-gray-700">{role.name}</label>
-          </div>
-        ))}
-      </div>
-    </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
+                <select
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register('user')}
+                >
+                  <option value="">Select User</option>
+                  {filteredUsers.map((user) => (
+                    <option key={user.id} value={user.id}>{user.name}</option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
 
-    <div className="mb-4">
-      <label htmlFor="teacher" className="block text-gray-700 font-semibold mb-2">Select Teacher</label>
-      <select id="teacher" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('teacher')}>
-        <option value="">Select Teacher</option>
-        {teachers.map((teacher) => (
-          <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
-        ))}
-      </select>
-    </div>
-  </>
-)}
 
 
 

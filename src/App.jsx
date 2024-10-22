@@ -96,6 +96,7 @@ import { UserProvider } from './hooks/UserContext';
 import Event from './Dashboard/Admin_Dashboard/Event/Event/Event';
 import { StepProvider } from './hooks/StepContext';
 import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/EventCategory';
+import StdEvent from './Dashboard/Student_Dashboard/Fees/Event/StdEvent';
 
 
 
@@ -205,6 +206,7 @@ function App() {
             <Route path='stdnotice' element = {<StdNotice/>} />
             <Route path = 'attendance' element = {<StdAttendance/>}/>
             <Route path = 'StdFeeCollection' element = {<StdFeeCollection/>}/>
+            <Route path = 'StdEvent' element = {<StdEvent/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
