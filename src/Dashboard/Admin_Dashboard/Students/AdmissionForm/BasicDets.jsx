@@ -33,7 +33,13 @@ const {
 
                 if (studentData) {
                     // If data exists, populate the form
-                    reset(studentData);
+                    const formattedData = {
+                        ...studentData,
+                        dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth).toLocaleString().split(',')[0] : ''
+                      };
+                    
+                      // Reset the form with the prefilled data
+                      reset(formattedData);
                 }
             } catch (error) {
                 console.error('Error fetching student details:', error);
