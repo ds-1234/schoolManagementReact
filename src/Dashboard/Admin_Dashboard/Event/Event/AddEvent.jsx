@@ -15,6 +15,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [showClassAndSection, setShowClassAndSection] = useState(false); // To show/hide Class and Section dropdowns
   const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false); // Show Role and Teachers for Staff
   const eventCategoryDropdownRef = useRef(null); // Ref for the Event Category dropdown
+  const [role,setRole] = useState(null)
 
   const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -51,6 +52,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setShowClassAndSection(false)
+      setShowRoleAndTeachers(false)
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -82,6 +84,7 @@ const AddEvent = ({ isOpen, onClose }) => {
       }
     };
 
+
     const fetchSub = () => {
       axios({
         method: 'GET',
@@ -105,7 +108,22 @@ const AddEvent = ({ isOpen, onClose }) => {
     fetchSub();
     fetchTeachers();
   }, []);
-
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/role/getRoleList', {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const roles = response.data.data
+        
+        setRole(roles);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+      fetchRoles()
+    },[]);
+    
   const onSubmit = (data) => {
     // your form submit logic
     console.log(data);
@@ -161,36 +179,36 @@ const AddEvent = ({ isOpen, onClose }) => {
 
 
 {showRoleAndTeachers && (
-            <>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2">Role</label>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <input type="checkbox" value="Admin" {...register('roles')} className="mr-2" />
-                    <label className="text-sm font-medium text-gray-700">Admin</label>
-                  </div>
-                  <div className="flex items-center">
-                    <input type="checkbox" value="Teacher" {...register('roles')} className="mr-2" />
-                    <label className="text-sm font-medium text-gray-700">Teacher</label>
-                  </div>
-                  <div className="flex items-center">
-                    <input type="checkbox" value="Support" {...register('roles')} className="mr-2" />
-                    <label className="text-sm font-medium text-gray-700">Support Staff</label>
-                  </div>
-                </div>
-              </div>
+  <>
+    <div className="mb-4">
+      <label className="block text-gray-700 font-semibold mb-2">Role</label>
+      <div className="grid grid-cols-2 gap-4">
+        {role.map((role, index) => (
+          <div key={role.id} className="flex items-center">
+            <input 
+              type="checkbox" 
+              value={role.name} 
+              {...register('roles')} 
+              className="mr-2" 
+            />
+            <label className="text-sm font-medium text-gray-700">{role.name}</label>
+          </div>
+        ))}
+      </div>
+    </div>
 
-              <div className="mb-4">
-                <label htmlFor="teacher" className="block text-gray-700 font-semibold mb-2">Select Teacher</label>
-                <select id="teacher" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('teacher')}>
-                  <option value="">Select Teacher</option>
-                  {teachers.map((teacher) => (
-                    <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
-                  ))}
-                </select>
-              </div>
-            </>
-          )}
+    <div className="mb-4">
+      <label htmlFor="teacher" className="block text-gray-700 font-semibold mb-2">Select Teacher</label>
+      <select id="teacher" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('teacher')}>
+        <option value="">Select Teacher</option>
+        {teachers.map((teacher) => (
+          <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
+        ))}
+      </select>
+    </div>
+  </>
+)}
+
 
 
 
@@ -239,19 +257,19 @@ const AddEvent = ({ isOpen, onClose }) => {
           {/* Date and Time Inputs */}
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-semibold mb-1">Date From</label>
+              <label className="block text-sm font-semibold mb-1">Start Date</label>
               <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
             </div>
             <div>
-              <label className="block text-sm font-semibold mb-1">Date To</label>
+              <label className="block text-sm font-semibold mb-1">End Date</label>
               <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
             </div>
             <div>
-              <label className="block text-sm font-semibold mb-1">Time From</label>
+              <label className="block text-sm font-semibold mb-1">Start Time</label>
               <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
             </div>
             <div>
-              <label className="block text-sm font-semibold mb-1">Time To</label>
+              <label className="block text-sm font-semibold mb-1">End Time</label>
               <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
             </div>
           </div>
@@ -260,7 +278,7 @@ const AddEvent = ({ isOpen, onClose }) => {
 <div className="mb-4 mt-6 bg-gray-200">
     <h1 className="mb-4 mt-6 ml-4 tect-xl text-gray-700 font-semibold">Attachment</h1>
     <p className="mb-4 ml-4 mt-6 ">Upload Size of 4mb,Accepted Format PDF</p>
-    <Button type="submit" label="Upload" className='ml-4 mb-4' />
+    <input type="file" label="Upload" className='ml-4 mb-4' />
 </div>
 
           {/* Message Input */}
@@ -285,6 +303,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 
 export default AddEvent;
 

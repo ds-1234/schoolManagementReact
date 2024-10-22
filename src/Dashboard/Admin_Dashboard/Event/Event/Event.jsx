@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar from '../../../../Reusable_components/Calendar';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import AddEvent from './AddEvent';
+import Button from '../../../../Reusable_components/Button';
 
 function Event() {
   const user = JSON.parse(sessionStorage.getItem('user'));
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [view, setView] = useState('month'); // Track the active view
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+  
   const searchOptions = ["Option 1", "Option 2", "Option 3"]; // Example dropdown options
 
   const toggleDropdown = () => {
@@ -98,20 +102,51 @@ function Event() {
     fetchData();
   }, [user.id]);
 
+  // Function to handle view change
+  const handleViewChange = (newView) => {
+    setView(newView);
+    // navigate(`/events/${newView}`); // Example of navigation based on the selected view
+  };
+
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Event</h1>
       <p className='mt-2'>
-        Dashboard / <NavLink to='/studentDashboard'> Student </NavLink> / 
+        Dashboard / <NavLink to='/admin'> Admin </NavLink> / 
         <span className='text-[#ffae01] font-semibold'> Event</span>
       </p> 
       
+      {/* View selection buttons (Month, Week, Day) */}
+
+
       <div className="flex items-start bg-white mt-10">
         {/* Calendar section with 2/3 width */}
-        <div className="w-2/3 bg-white rounded-xl p-4 border-l-4  shadow-md">
+        <div className="w-2/3 bg-white rounded-xl p-4 border-l-4 shadow-md">
+        <div className="flex space-x-2  mb-4 mt-4">
+        <Button
+        label='Month'
+          className={`py-2 px-4 rounded ${view === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black '}`}
+          onClick={() => handleViewChange('month')}
+        >
+          Month
+        </Button>
+        <Button
+                label='Week'
+          className={`py-2 px-4 rounded ${view === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleViewChange('week')}
+        >
+          Week
+        </Button>
+        <Button
+        label='day'
+          className={`py-2 px-4 rounded ${view === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleViewChange('day')}
+        >
+          Day
+        </Button>
+      </div>
           <Calendar attendanceMap={attendanceMap} />
-          <AddBtn onAddClick={openAddPopup}/>
-
+          <AddBtn onAddClick={openAddPopup} />
         </div>
 
         {/* Section with 1/3 width and scrollable tiles */}
@@ -149,27 +184,28 @@ function Event() {
             </div>
           </div>
 
-        {/* Scrollable category tiles list */}
-        <div className="max-h-[calc(100vh-18rem)] overflow-y-auto">
-          {dummyEvents.map((event, index) => (
-            <CategoryTiles
-              key={event.id}
-              title={event.title}
-              date={event.date}
-              time={event.time}
-              borderColor={index % 2 === 0 ? 'red' : 'blue'} // Alternate red and blue
-            />
-          ))}
-        </div>
+          {/* Scrollable category tiles list */}
+          <div className="max-h-[calc(100vh-18rem)] overflow-y-auto">
+            {dummyEvents.map((event, index) => (
+              <CategoryTiles
+                key={event.id}
+                title={event.title}
+                date={event.date}
+                time={event.time}
+                borderColor={index % 2 === 0 ? 'red' : 'blue'} // Alternate red and blue
+              />
+            ))}
+          </div>
         </div>
       </div>
+
       <AddEvent
-          isOpen={isAddPopupOpen} 
-          onClose={() => {
-            closeAddPopup();
-            // fetchData(); // Refresh data when add popup closes
-          }} 
-          />
+        isOpen={isAddPopupOpen} 
+        onClose={() => {
+          closeAddPopup();
+          // fetchData(); // Refresh data when add popup closes
+        }} 
+      />
     </div>
   );
 }
