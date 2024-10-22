@@ -31,7 +31,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     },
   });
 
-  const [teachers, setTeachers] = useState([]);
+  const [userForDropdown, setUserForDropdown] = useState([]);
 
   // Handle closing on clicking outside dropdown
   useEffect(() => {
@@ -72,41 +72,41 @@ const AddEvent = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchUser = async () => {
       try {
         const response = await axios.get('http://localhost:8080/user/getUserList', {
           headers: { 'Content-Type': 'application/json' },
         });
-        const filteredTeachers = response.data.data.filter(user => user.role === 4);
-        setTeachers(filteredTeachers);
+        const filteredUsers = response.data.data.filter(user => user.role === 4);
+        setUserForDropdown(filteredUsers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
 
-    const fetchSub = () => {
-      axios({
-        method: 'GET',
-        url: 'http://localhost:8080/subject/getSubjectList',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          const subjects = {};
-          response.data.data.forEach((sub) => {
-            subjects[sub.id] = sub.subject;
-          });
-          setSubjectMap(subjects);
-        })
-        .catch((error) => {
-          console.error('Error fetching subjects:', error);
-        });
-    };
+    // const fetchSub = () => {
+    //   axios({
+    //     method: 'GET',
+    //     url: 'http://localhost:8080/subject/getSubjectList',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   })
+    //     .then((response) => {
+    //       const subjects = {};
+    //       response.data.data.forEach((sub) => {
+    //         subjects[sub.id] = sub.subject;
+    //       });
+    //       setSubjectMap(subjects);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error fetching subjects:', error);
+    //     });
+    // };
 
-    fetchSub();
-    fetchTeachers();
+    // fetchSub();
+    fetchUser();
   }, []);
   useEffect(() => {
     const fetchRoles = async () => {
