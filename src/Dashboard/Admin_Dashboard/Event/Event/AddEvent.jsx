@@ -16,6 +16,8 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [role, setRole] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [eventCategories, setEventCategories] = useState([]);
+  const [selectedEventCategory, setSelectedEventCategory] = useState(null);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -52,6 +54,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
+        setSelectedEventCategory(null)
       }
     };
 
@@ -62,6 +65,22 @@ const AddEvent = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
+
+    // Fetch event categories from API
+    useEffect(() => {
+      const fetchEventCategories = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList', {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          setEventCategories(response.data.data); // Set the event categories from the response
+        } catch (error) {
+          console.error('Error fetching event categories:', error);
+        }
+      };
+  
+      fetchEventCategories();
+    }, []);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -98,8 +117,10 @@ const AddEvent = ({ isOpen, onClose }) => {
   
         // Filter users based on selected role ids
         if (updatedRoles.length > 0) {
-          const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId)
-          );
+          console.log(userForDropdown,'userForDropdown')
+          console.log(updatedRoles,'updatedRoles')
+          const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.role));
+          // const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId));
           console.log(filtered,'filtered')
           setFilteredUsers(filtered);
         } else {
@@ -119,7 +140,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     
   const onSubmit = (data) => {
     // your form submit logic
-    console.log(data);
+    console.log(data,'data');
   };
 
   if (!isOpen) return null;
@@ -195,7 +216,7 @@ const AddEvent = ({ isOpen, onClose }) => {
                 >
                   <option value="">Select User</option>
                   {filteredUsers.map((user) => (
-                    <option key={user.id} value={user.id}>{user.name}</option>
+                    <option key={user.id} value={user.id}>{user.firstName}</option>
                   ))}
                 </select>
               </div>
@@ -219,31 +240,30 @@ const AddEvent = ({ isOpen, onClose }) => {
             {errors.eventtitle && <p className="text-red-500 text-sm mt-1">{errors.eventtitle.message}</p>}
           </div>
 
-                              {/* Event Category Input */}
-                              <div className="mb-2 relative" ref={eventCategoryDropdownRef}>
-          <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Event Category</label>
+          {/* Event Category Input */}
+          <div className="mb-2 relative" ref={eventCategoryDropdownRef}>
+            <label htmlFor="eventCategory" className="block text-gray-700 font-semibold mb-2">Event Category</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
+              onClick={() => setDropdownOpen2(!dropdownOpen2)}
             >
-              {/* <p>{selectedFeesGrp ? selectedFeesGrp.feesGroupName : 'Select Event Category'}</p> */}
-              <p>{ 'Select Event Category'}</p>
+              <p>{selectedEventCategory ? selectedEventCategory.eventCategoryTitle : 'Select Event Category'}</p>
               <FontAwesomeIcon icon={faAngleDown} />
             </div>
             {dropdownOpen2 && (
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                {/* {feesGrp.map(feesGroup => (
+                {eventCategories.map(eventCategory => (
                   <div
-                    key={feesGroup.id}
+                    key={eventCategory.id}
                     className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
                     onClick={() => {
-                      setSelectedFeesGrp(feesGroup);
+                      setSelectedEventCategory(eventCategory);
                       setDropdownOpen2(false);
                     }}
                   >
-                    {feesGroup.feesGroupName}
+                    {eventCategory.eventCategoryTitle}
                   </div>
-                ))} */}
+                ))}
               </div>
             )}
           </div>
