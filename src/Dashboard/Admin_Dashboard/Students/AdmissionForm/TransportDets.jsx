@@ -14,12 +14,12 @@ import BASE_URL from '../../../../conf/conf';
 function TransportDets() {
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const {userId} = useUserContext() ;
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-      } = useForm();
+  const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      reset,
+    } = useForm();
     const [transports , setTransports] = useState([])
     const [vehicleNumber, setVehicleNumber] = useState('')
     const [selectedRoute, setSelectedRoute] = useState('')
@@ -67,7 +67,7 @@ function TransportDets() {
 
         await axios({
             method: "GET",
-            url: `http://localhost:8080/transport/getTransport/${routeId}`,
+            url: `${BASE_URL}/transport/getTransport/${routeId}`,
             headers: {
             "Content-Type": "application/json",
             },
