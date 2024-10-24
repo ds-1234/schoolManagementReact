@@ -208,6 +208,9 @@ const AddEvent = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
+
+              
+
               <div className="mb-4">
                 <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
                 <select
