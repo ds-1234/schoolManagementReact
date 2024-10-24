@@ -5,6 +5,8 @@ import StatusButton from '../../../Reusable_components/StatusButton';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faEnvelope, faFilePdf, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import maleImg from '../../../assets/man.png'
+import femaleImg from '../../../assets/woman.png'
 
 function StudentDetails() {
   const {userId }= useLocation().state || {} ; 
@@ -110,7 +112,11 @@ function StudentDetails() {
         <div>
           {/* Student Overview Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6 flex gap-5">
-            <img src="" alt="Student" className="w-24 h-24 rounded-full border-2 border-gray-300" />
+          <img 
+            src={studentDetails.gender === "Male" ? maleImg : femaleImg} 
+            alt="Student" 
+            className="w-24 h-24 rounded-full border-2 border-gray-300" 
+          />
             <div className=" flex flex-col gap-1">
                 <StatusButton isActive={studentDetails.isActive} />
               <h2 className="text-2xl font-bold text-gray-800">
