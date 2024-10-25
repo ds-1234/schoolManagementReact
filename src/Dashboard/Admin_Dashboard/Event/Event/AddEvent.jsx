@@ -18,10 +18,25 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [eventCategories, setEventCategories] = useState([]);
   const [selectedEventCategory, setSelectedEventCategory] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [eventTitle, setEventTitle] = useState("");
+  const [rolepay, setRolepay] = useState([0]);
+  const [users, setUsers] = useState([]);
+  const [eventCategory, setEventCategory] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [message, setMessage] = useState("");
+  const [isActive, setIsActive] = useState(true);
+  const [fetchedRoles, setFetchedRoles] = useState([]);
+  const [fetchedUsers, setFetchedUsers] = useState([]);
+  const [fetchedEventCategories, setFetchedEventCategories] = useState([]);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       noticeFor: 'All',
+      user: '', // Ensure default value for user
     },
   });
 
@@ -55,6 +70,7 @@ const AddEvent = ({ isOpen, onClose }) => {
       if (e.key === 'Escape') {
         onClose();
         setSelectedEventCategory(null)
+        setSelectedUser(null)
       }
     };
 
@@ -119,10 +135,12 @@ const AddEvent = ({ isOpen, onClose }) => {
         if (updatedRoles.length > 0) {
           console.log(userForDropdown,'userForDropdown')
           console.log(updatedRoles,'updatedRoles')
+          setRolepay(updatedRoles)
           const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.role));
           // const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId));
           console.log(filtered,'filtered')
           setFilteredUsers(filtered);
+          console.log(filteredUsers,'filtered users')
         } else {
           setFilteredUsers(userForDropdown);
         }
@@ -138,10 +156,41 @@ const AddEvent = ({ isOpen, onClose }) => {
       return 'Select User';
     };
     
-  const onSubmit = (data) => {
-    // your form submit logic
-    console.log(data,'data');
-  };
+    const onSubmit = async (data) => {
+      const selectedUserId = data.user; // This will get the selected user ID
+    
+      // Create the event data object to send to your API
+      const eventData = {
+        eventTitle: data.eventtitle,
+        eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
+        role:showClassAndSection?[3]:rolepay,
+        user: [2,3], // Add the selected user ID here
+        // user: selectedUserId, // Add the selected user ID here
+        message: data.message,
+        startDate: startDate, // Include start date
+        endDate: endDate, // Include end date
+        startTime: startTime, // Include start time
+        endTime: endTime, // Include end time
+        // message: data.message,
+        isActive : true
+                // Add other necessary fields like startDate, endDate, etc.
+      };
+    
+      // Example API call to save the event data
+      try {
+        const response = await axios.post('http://localhost:8080/events/saveEvent', eventData, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        
+        // Notify the user of success
+        toast.success('Event created successfully!');
+        reset(); // Reset the form if needed
+        onClose(); // Close the modal
+      } catch (error) {
+        console.error('Error creating event:', error);
+        toast.error('Failed to create event. Please try again.');
+      }
+    };
 
   if (!isOpen) return null;
 
@@ -225,6 +274,7 @@ const AddEvent = ({ isOpen, onClose }) => {
               </div>
             </>
           )}
+          {          console.log(filteredUsers,'filtered users')            }
 
 
 
@@ -270,27 +320,47 @@ const AddEvent = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
+          {console.log(selectedEventCategory,'selected event category')}
 
-          {/* Date and Time Inputs */}
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold mb-1">Start Date</label>
-              <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">End Date</label>
-              <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Start Time</label>
-              <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">End Time</label>
-              <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-          </div>
-
+          {/* // In your Date and Time Inputs, add onChange handlers to update state */}
+<div className="grid grid-cols-2 gap-6">
+  <div>
+    <label className="block text-sm font-semibold mb-1">Start Date</label>
+    <input 
+      type="date" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">End Date</label>
+    <input 
+      type="date" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">Start Time</label>
+    <input 
+      type="time" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={startTime}
+      onChange={(e) => setStartTime(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">End Time</label>
+    <input 
+      type="time" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={endTime}
+      onChange={(e) => setEndTime(e.target.value)} // Update state
+    />
+  </div>
+</div>
 {/* File attachment */}
 <div className="mb-4 mt-6 bg-gray-200">
     <h1 className="mb-4 mt-6 ml-4 tect-xl text-gray-700 font-semibold">Attachment</h1>
