@@ -89,7 +89,9 @@ const AddEvent = ({ isOpen, onClose }) => {
           const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList', {
             headers: { 'Content-Type': 'application/json' },
           });
-          setEventCategories(response.data.data); // Set the event categories from the response
+          const cat = response.data.data
+          let eventcat = cat.filter((cat) => cat.isActive==true); 
+          setEventCategories(eventcat); // Set the event categories from the response
         } catch (error) {
           console.error('Error fetching event categories:', error);
         }
