@@ -41,14 +41,27 @@ const AddEventCategory = ({ isOpen, onClose }) => {
     };
   }, [isOpen, onClose]);
 
+
+    // Function to generate random color
+    const generateRandomColor = () => {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    };
+
   // Handle form submission
   const onSubmit = (data) => {
+    const color = generateRandomColor(); // Generate random color for event tile border
+
     axios({
       method: 'POST',
       url: 'http://localhost:8080/eventCategory/saveEventCategory',
       data: {
         eventCategoryTitle: data.CategoryTitle,
-        // description: data.description,
+        eventCatColorCode:color,
         isActive:value
       },
       headers: {
