@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Calendar from '../../../../Reusable_components/Calendar';
+// import Calendar from '../../../../Reusable_components/Calendar';
+// import EventCalendar from './EventCalendar'; // Import EventCalendar
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import EventCalendar from '../../../../Reusable_components/EventCalendar';
 import AddEvent from './AddEvent';
 
 function Event() {
@@ -16,6 +18,7 @@ function Event() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryColor, setSelectedCategoryColor] = useState(null);
   const [events, setEvents] = useState([]);
+  const [eventDates, setEventDates] = useState([]); // New state for event dates
 
   const dropdownRef = useRef(null);
 
@@ -71,6 +74,9 @@ function Event() {
       
       if (response.data.success) {
         setEvents(response.data.data);
+        // Extract event dates for the calendar
+        const dates = response.data.data.map(event => event.startDate);
+        setEventDates(dates); // Set the event dates
       }
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -102,8 +108,9 @@ function Event() {
 
       <div className="flex items-start w-full mt-10">
         <div className="w-8/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md">
-          <Calendar attendanceMap={attendanceMap} />
+          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
+          <EventCalendar eventDates={eventDates} /> {/* Render EventCalendar */}
         </div>
 
         <div className="w-4/12 bg-white rounded-xl p-4">
