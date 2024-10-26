@@ -15,11 +15,11 @@ const EventCalendar = ({ eventDates }) => {
   };
 
   return (
-    <div className="mt-5 w-full">
-      {/* <h2 className="text-lg md:text-xl font-semibold text-black mb-4">Event Calendar</h2> */}
+    <div className="mt-5 h-full">
       <ReactCalendar
         tileClassName={tileClassName}
         view="month" // Set the initial view to month
+        className="h-full w-full" // Adjust height here (example: 500px)
       />
     </div>
   );

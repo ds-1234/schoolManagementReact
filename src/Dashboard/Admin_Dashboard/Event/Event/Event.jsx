@@ -107,13 +107,12 @@ function Event() {
       </p>
 
       <div className="flex items-start w-full mt-10">
-        <div className="w-8/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md">
-          {/* <Calendar attendanceMap={attendanceMap} /> */}
+      <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
           <EventCalendar eventDates={eventDates} /> {/* Render EventCalendar */}
         </div>
 
-        <div className="w-4/12 bg-white rounded-xl p-4">
+        <div className="w-5/12 bg-white rounded-xl p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className='text-lg md:text-xl font-semibold text-black'>Events</h2>
             <div className="relative" ref={dropdownRef}>
