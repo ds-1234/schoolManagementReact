@@ -41,32 +41,46 @@ const AddEventCategory = ({ isOpen, onClose }) => {
     };
   }, [isOpen, onClose]);
 
+
+  // Function to generate a neon random color
+  const generateRandomColor = () => {
+    const getRandomValue = () => Math.floor(Math.random() * 256);
+    const r = getRandomValue();
+    const g = getRandomValue();
+    const b = getRandomValue();
+    const max = Math.max(r, g, b);
+    const scale = 255 / max; // Ensure high brightness
+    return `rgb(${Math.round(r * scale)}, ${Math.round(g * scale)}, ${Math.round(b * scale)})`;
+  };
+
   // Handle form submission
-//   const onSubmit = (data) => {
-//     axios({
-//       method: 'POST',
-//       url: 'http://localhost:8080/roomType/saveRoomType',
-//       data: {
-//         roomTypeName: data.RoomType,
-//         description: data.description,
-//         isActive:value
-//       },
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => {
-//         console.log('response', response.data);
-//         toast.success('Successfully added Room Type');
-//         reset();
-//         onClose();
-//       })
-//       .catch((err) => {
-//         console.log(err, 'error:');
-//         toast.error('Error adding new Room Type');
-//         onClose();
-//       });
-//   };
+  const onSubmit = (data) => {
+    const color = generateRandomColor(); // Generate random color for event tile border
+
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8080/eventCategory/saveEventCategory',
+      data: {
+        eventCategoryTitle: data.CategoryTitle,
+        eventCatColorCode:color,
+        isActive:value
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        console.log('response', response.data);
+        toast.success('Successfully added Event Category');
+        reset();
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err, 'error:');
+        toast.error('Error adding new Event Category');
+        onClose();
+      });
+  };
 
   if (!isOpen) return null;
 
@@ -79,22 +93,22 @@ const AddEventCategory = ({ isOpen, onClose }) => {
         >
           &times;
         </button>
-        <form >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Event Category</h2>
 
           {/* Room Type Input */}
           <div className="mb-4">
-            <label htmlFor="RoomType" className="block text-gray-700 font-semibold mb-2">Event Category</label>
+            <label htmlFor="CategoryTitle" className="block text-gray-700 font-semibold mb-2">Event Category Title</label>
             <input
               type="text"
-              id="RoomType"
-              className={`w-full px-3 py-2 border ${errors.RoomType ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register('RoomType', { required: 'Room Type is required' })}
+              id="CategoryTitle"
+              className={`w-full px-3 py-2 border ${errors.CategoryTitle ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register('CategoryTitle', { required: 'Room Type is required' })}
             />
-            {errors.RoomType && <p className="text-red-500 text-sm mt-1">{errors.RoomType.message}</p>}
+            {errors.CategoryTitle && <p className="text-red-500 text-sm mt-1">{errors.CategoryTitle.message}</p>}
           </div>
 
-          {/* Description Input */}
+          {/* Description Input
           <div className="mb-4">
             <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
             <textarea
@@ -104,7 +118,7 @@ const AddEventCategory = ({ isOpen, onClose }) => {
               {...register('description', { required: 'Description is required' })}
             ></textarea>
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-          </div>
+          </div> */}
 
           <div className="mb-2">
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status *</label>

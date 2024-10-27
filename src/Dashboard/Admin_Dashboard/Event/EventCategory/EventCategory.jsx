@@ -8,14 +8,15 @@ import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2'
 import AddEventCategory from './AddEventCategory';
+import EditEventCategory from './EditEventCategory';
 
 
 function EventCategory() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editRoomTyId , setEditRoomTyId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editEventCatId , setEditEventCatId] = useState(null)
 
   useEffect(() => {
     if (isAddPopupOpen ) {
@@ -71,44 +72,44 @@ function EventCategory() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditRoomTyId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditEventCatId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditRoomTyId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditEventCatId(null);
+    setIsEditPopupOpen(false);
+  };
 
 
-//   const fetchData = () => {
-//     axios({
-//       method: "GET",
-//       url: `http://localhost:8080/roomType/getRoomTypeList`,
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       // withCredentials: true,
-//     })
-//       .then((response) => {
-//         console.log("Data from API:", response.data);
-//         setData(response.data.data);
-//         setFilterData(response.data.data) ;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching data:", error);
-//       });
-//   };
+  const fetchData = () => {
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/eventCategory/getEventCatList`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        setData(response.data.data);
+        setFilterData(response.data.data) ;
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
 
-//   useEffect(() => {
-//     fetchData() ;
-//   } , []);
+  useEffect(() => {
+    fetchData() ;
+  } , []);
 
-//   useEffect(() => {
-//     setData(data);  
-//     setFilterData(data); 
-//   }, []);
+  useEffect(() => {
+    setData(data);  
+    setFilterData(data); 
+  }, []);
   
   const column = [
     {
@@ -118,26 +119,26 @@ function EventCategory() {
     //   width: '300px', 
     },
     {
-      name: 'Room Type Id',
-      selector: (row) => row.roomTypeId,
+      name: 'Event Category Id',
+      selector: (row) => row.eventCategoryId,
       sortable: true,
       wrap: true, 
     //   width: '300px', 
     },
     {
-      name: 'Room Type',
-      selector: (row) => row.roomTypeName,
+      name: 'Title',
+      selector: (row) => row.eventCategoryTitle,
       sortable: true,
       wrap: true, 
     //   width: '300px', 
     },
-    {
-      name: 'Description',
-      selector: (row) => row.description,
-      sortable: true,
-      wrap: true,
-      width: '300px', 
-    },
+    // {
+    //   name: 'Description',
+    //   selector: (row) => row.description,
+    //   sortable: true,
+    //   wrap: true,
+    //   width: '300px', 
+    // },
     {
         name: 'Status',
         selector: row => (
@@ -194,8 +195,8 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'Event Category', value: 'roomTypeName' },
-  { label: 'Description', value: 'description' }
+  { label: 'Event Category Id', value: 'eventCategoryId' },
+  { label: 'Title', value: 'eventCategoryTitle' }
 ];
 
   return (
@@ -220,15 +221,15 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditRoomType
+      <EditEventCategory
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  // Only close the Edit popup here
           fetchData();       // Fetch data after the Edit popup is closed
         }}
-        roomtyId={editRoomTyId}
+        EventCatId={editEventCatId}
         onSuccess={fetchData} // Refresh data after editing
-      /> */}
+      />
     </div>
   );
 };

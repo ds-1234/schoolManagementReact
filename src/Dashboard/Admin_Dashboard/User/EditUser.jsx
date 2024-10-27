@@ -58,6 +58,26 @@ function EditUser() {
   const [transports , setTransports] = useState([])
   const [vehicleNumber, setVehicleNumber] = useState('')
   const [selectedRoute, setSelectedRoute] = useState('')
+  const [joiningDate, setJoiningDate] = useState(null);
+  const [relievingDate, setRelievingDate] = useState(null);
+  const [totalExp, setTotalExp] = useState('');
+
+  const calculateExperience = (joinDate, relieveDate) => {
+    if (joinDate && relieveDate) {
+      const startDate = new Date(joinDate);    // Ensure proper Date object
+      const endDate = new Date(relieveDate);
+
+      if (!isNaN(startDate) && !isNaN(endDate)) {  // Validate dates
+        const diffInMs = Math.abs(endDate - startDate);
+        const diffInYears = (diffInMs / (1000 * 60 * 60 * 24 * 365)).toFixed(1);  // Convert to years
+        setTotalExperience(diffInYears);
+      } else {
+        setTotalExperience('');  // Clear if invalid dates
+      }
+    } else {
+      setTotalExperience('');  // Clear if dates are missing
+    }
+  };
 
   useEffect(() => {
     const fetchRoles = async() =>{
@@ -598,7 +618,7 @@ const handleRouteChange = (e) => {
                 type="text"
                 {...register(`workExperiences[${index}].companyName`, { required: true })}
                 className="border p-2 rounded-lg"
-                placeholder="Enter Company Name"
+                placeholder="Enter Name"
               />
             </div>
             <div className='flex flex-col gap-1'>
@@ -616,6 +636,10 @@ const handleRouteChange = (e) => {
               label={'Joining'} 
               register={register}
               className={"border p-2 rounded-lg mt-1"}
+              onChange={(date) => {
+                setJoiningDate(date);
+                calculateExp(date, relievingDate);
+              }}
               />
             </div>
 
@@ -625,6 +649,10 @@ const handleRouteChange = (e) => {
               label={'Relieving'} 
               register={register}
               className={"border p-2 rounded-lg mt-1"}
+              onChange={(date) => {
+                setRelievingDate(date);
+                calculateExp(joiningDate , date);
+              }}
               />
             </div>
 
@@ -649,9 +677,12 @@ const handleRouteChange = (e) => {
           onClick={() => appendWorkExperience({ companyName: "", designation: "", duration: "" })}>
               + Add New
           </button>
-      </div>
 
-      <h3>Total Experience:</h3>
+          <div className='flex gap-1'>
+        <label className='text-gray-900'>Total Experience: </label>
+        <p> {totalExp ? `${totalExp} years` : ''} </p>
+      </div>
+      </div>
 
         {/*HR information*/}
       <div className='space-y-2 mb-5'>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse , faCalendarDay , faBookOpen,faChildren ,faFileLines , faClipboardUser} from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
 
 function StdSidebar() {
   return (
@@ -123,6 +123,19 @@ function StdSidebar() {
           
         </NavLink>
       </li>
+                   {/* Events Section */}
+                   <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/studentDashboard/StdEvent"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
+                Event
+              
+            </NavLink>
+          </li>
       </ul>
       </nav>
       </div>

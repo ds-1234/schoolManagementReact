@@ -8,7 +8,7 @@ import { faDownload, faEnvelope, faFilePdf, faPhoneAlt } from '@fortawesome/free
 import maleImg from '../../../assets/man.png'
 import femaleImg from '../../../assets/woman.png'
 
-const Profile = () => {
+const TchProfile = () => {
   const user = JSON.parse(sessionStorage.getItem('user'));
   const [studentDetails, setStudentDetails] = useState(null);
   const [activeTab, setActiveTab] = useState('hostel'); 
@@ -110,7 +110,6 @@ const Profile = () => {
       </p>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <div>
           {/* Student Overview Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6 flex gap-5">
           <img 
@@ -118,7 +117,6 @@ const Profile = () => {
             alt="Student" 
             className="w-24 h-24 rounded-full border-2 border-gray-300" 
           />
-
             <div className=" flex flex-col gap-1">
                 <StatusButton isActive={studentDetails.isActive} />
               <h2 className="text-2xl font-bold text-gray-800">
@@ -130,42 +128,42 @@ const Profile = () => {
 
           {/* Basic Information Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600">
-              <p><strong>Roll No:</strong></p> 
-              <p>{studentDetails.rollNumber}</p>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600">
+            <p><strong>Roll No:</strong></p> 
+            <p>{studentDetails.rollNumber}</p>
 
-              <p><strong>Gender:</strong></p> 
-              <p>{studentDetails.gender}</p>
+            <p><strong>Gender:</strong></p> 
+            <p>{studentDetails.gender}</p>
 
-              <p><strong>Date of Birth:</strong></p> 
-              <p>{formattedDate}</p>
+            <p><strong>Date of Birth:</strong></p> 
+            <p>{formattedDate}</p>
 
-              <p><strong>Blood Group:</strong></p> 
-              <p>{studentDetails.bloodGroup}</p>
+            <p><strong>Blood Group:</strong></p> 
+            <p>{studentDetails.bloodGroup}</p>
 
-              <p><strong>Religion:</strong></p> 
-              <p>{studentDetails.religion}</p>
+            <p><strong>Religion:</strong></p> 
+            <p>{studentDetails.religion}</p>
 
-              <p><strong>Caste:</strong></p> 
-              <p>{studentDetails.casteCategory}</p>
-            </div>
-          </div>
+            <p><strong>Caste:</strong></p> 
+            <p>{studentDetails.casteCategory}</p>
+        </div>
+        </div>
 
 
         {/* Primary Info Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Primary Contact Info</h3>
-        <ul className="space-y-2 text-gray-600">
-            <li className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faPhoneAlt} />
-            <span><strong>Phone Number:</strong> {studentDetails.phone}</span>
-            </li>
-            <li className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <span><strong>Email:</strong> {studentDetails.email}</span>
-            </li>
-        </ul>
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Primary Contact Info</h3>
+            <ul className="space-y-2 text-gray-600">
+              <li className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faPhoneAlt} />
+                <span><strong>Phone Number:</strong> {studentDetails.phone}</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <span><strong>Email:</strong> {studentDetails.email}</span>
+              </li>
+            </ul>
         </div>
 
 
@@ -201,27 +199,33 @@ const Profile = () => {
 
             {/* Conditional Rendering for Tabs */}
             {activeTab === 'hostel' ? (
-              <div className='space-y-2 text-gray-600'>
-                <p><strong>Hostel Name:</strong> {hostel.hostelName}</p>
-                <p> <strong>Room No:</strong> {hostelRoom.hostelRoomNumber}</p>
+              <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600'>
+                <p><strong>Hostel Name:</strong></p>
+                <p>{hostel.hostelName}</p>
+                <p><strong>Room No:</strong></p>
+                <p>{hostelRoom.hostelRoomNumber}</p>
               </div>
             ) : (
-              <div className='space-y-2 text-gray-600'>
-                <p><strong>Route Name:</strong> {transport.routeName}</p>
-                <p><strong>Vehicle Number:</strong> {transport.vehicleNumber}</p>
-                <p><strong>Driver Name:</strong> {transport.driverName}</p>
-                <p><strong>Driver Phone Number:</strong> {transport.phone}</p>
-                <p><strong>Pickup Point:</strong> {studentDetails.pickupPoint}</p>
+              <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600'>
+                <p><strong>Route Name:</strong></p>
+                <p>{transport.routeName}</p>
+                <p><strong>Vehicle Number:</strong></p>
+                <p>{transport.vehicleNumber}</p>
+                <p><strong>Driver Name:</strong></p>
+                <p>{transport.driverName}</p>
+                <p><strong>Driver Phone Number:</strong></p>
+                <p>{transport.phone}</p>
+                <p><strong>Pickup Point:</strong></p>
+                <p>{studentDetails.pickupPoint}</p>
               </div>
             )}
           </div>
         </div>
 
-        
         <div>
           {/* Parents Information Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Parents Information</h3>
+            <h3 className="text-lg font-semibold text-gray-700mb-4">Parents Information</h3>
             <div className="space-y-2 text-gray-600">
               <div>
                 <p><strong>Father Name:</strong> {studentDetails.fatherName}</p>
@@ -293,8 +297,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default Profile;
+export default TchProfile
