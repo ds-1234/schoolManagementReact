@@ -8,7 +8,6 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const AddEvent = ({ isOpen, onClose }) => {
-  const [subjectMap, setSubjectMap] = useState({});
   const [dropdownOpen2, setDropdownOpen2] = useState(false); 
   const [showClassAndSection, setShowClassAndSection] = useState(false);
   const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false);
@@ -19,10 +18,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [eventCategories, setEventCategories] = useState([]);
   const [selectedEventCategory, setSelectedEventCategory] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [eventTitle, setEventTitle] = useState("");
   const [rolepay, setRolepay] = useState([0]);
-  const [users, setUsers] = useState([]);
-  const [eventCategory, setEventCategory] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -117,6 +113,19 @@ const AddEvent = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Optional: You could also set default values or reset the form here if needed
+      reset(); // Reset the form when it opens
+      setStartTime('')
+      setEndTime('')
+      setStartDate('')
+      setEndDate('')
+    }
+  }, [isOpen, reset]);
+
+
 
     // Fetch event categories from API
     useEffect(() => {
@@ -227,6 +236,9 @@ const AddEvent = ({ isOpen, onClose }) => {
         toast.success('Event created successfully!');
         reset(); // Reset the form if needed
         onClose(); // Close the modal
+        setSelectedClasses([]) 
+        setSelectedUsers([])
+        setSelectedEventCategory(null) 
       } catch (error) {
         console.error('Error creating event:', error);
         toast.error('Failed to create event. Please try again.');
@@ -249,6 +261,21 @@ console.log("Filtered Class Names:", filteredClassNames);
     
     console.log("Mapped User Names:", selectedUsersNames);
     console.log("selectedUsers", selectedUsers);
+
+    const handleClose = () => {
+      reset(); // Reset the form when closing the modal
+      onClose(); // Call the original onClose function
+    };
+    const handleClear = () => {
+      reset(); // Reset the form when closing the modal
+      setStartTime('')
+      setEndTime('')
+      setStartDate('')
+      setEndDate('') 
+      setSelectedClasses([]) 
+      setSelectedUsers([])
+      setSelectedEventCategory(null) 
+     };
     
     if (!isOpen) return null;
     
@@ -256,7 +283,7 @@ console.log("Filtered Class Names:", filteredClassNames);
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
       <div className="bg-white p-4 rounded-xl w-full max-w-xl relative shadow-lg animate-fadeIn overflow-y-auto max-h-screen">
-        <button onClick={onClose} className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900 focus:outline-none">
+        <button onClick={handleClose} className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900 focus:outline-none">
           &times;
         </button>
 
@@ -471,7 +498,7 @@ console.log("Filtered Class Names:", filteredClassNames);
 
           <div className="mt-8 flex justify-center gap-2">
         <Button type="submit" />
-        <Button label="Cancel" className="bg-[#ffae01]" onClick={onClose} />
+        <Button label="Clear" className="bg-[#ffae01]" onClick={handleClear} />
       </div>
               </form>
       </div>
