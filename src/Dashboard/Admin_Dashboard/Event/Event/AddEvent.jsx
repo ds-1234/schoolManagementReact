@@ -161,21 +161,24 @@ const AddEvent = ({ isOpen, onClose }) => {
     const onSubmit = async (data) => {
       const selectedUserId = data.user; // This will get the selected user ID
     
+      // Function to capitalize the first letter of the event title
+      const capitalizeFirstLetter = (string) => {
+        if (!string) return ''; // Handle empty string
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+    
       // Create the event data object to send to your API
       const eventData = {
-        eventTitle: data.eventtitle,
+        eventTitle: capitalizeFirstLetter(data.eventtitle), // Capitalize first letter
         eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
-        role:showClassAndSection?[3]:rolepay,
-        user: [2,3], // Add the selected user ID here
-        // user: selectedUserId, // Add the selected user ID here
+        role: showClassAndSection ? [3] : rolepay,
+        user: [2, 3], // Add the selected user ID here
         message: data.message,
         startDate: startDate, // Include start date
         endDate: endDate, // Include end date
         startTime: startTime, // Include start time
         endTime: endTime, // Include end time
-        // message: data.message,
-        isActive : true
-                // Add other necessary fields like startDate, endDate, etc.
+        isActive: true // Add other necessary fields like isActive
       };
     
       // Example API call to save the event data
@@ -193,8 +196,9 @@ const AddEvent = ({ isOpen, onClose }) => {
         toast.error('Failed to create event. Please try again.');
       }
     };
-
-  if (!isOpen) return null;
+    
+    if (!isOpen) return null;
+    
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">

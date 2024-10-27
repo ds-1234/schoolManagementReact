@@ -1,9 +1,10 @@
 import React from 'react';
 
 function CategoryTiles({ title, date, time, borderColor, message }) {
-  // Function to truncate the message to 15 words
+  // Function to truncate the message to 30 characters
   const truncateMessage = (msg) => {
-    return msg.split(' ').slice(0, 15).join(' ') + (msg.split(' ').length > 15 ? '...' : '');
+    if (!msg) return ''; // Handle case where msg is undefined or null
+    return msg.length > 30 ? msg.slice(0, 30) + '...' : msg; // Truncate to 30 characters
   };
 
   return (
