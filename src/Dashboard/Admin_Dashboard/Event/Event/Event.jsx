@@ -117,35 +117,39 @@ function Event() {
           <div className="flex justify-between items-center mb-4">
             <h2 className='text-lg md:text-xl font-semibold text-black'>Events</h2>
             <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={toggleDropdown}
-                className="p-2 border border-gray-300 rounded-lg focus:outline-none flex items-center gap-2 bg-gray-100"
-              >
-                {selectedCategoryId === null ? 'All Categories' : eventCategories.find(cat => cat.id === selectedCategoryId)?.eventCategoryTitle}
-                <FontAwesomeIcon icon={faAngleDown} />
-              </button>
+  <button
+    onClick={toggleDropdown}
+    className="p-2 border border-gray-300 rounded-lg focus:outline-none flex items-center justify-between w-48 bg-gray-100" // Use justify-between for space between items
+  >
+    <span>
+      {selectedCategoryId === null ? 'All Categories' : eventCategories.find(cat => cat.id === selectedCategoryId)?.eventCategoryTitle}
+    </span>
+    <FontAwesomeIcon icon={faAngleDown} />
+  </button>
 
-              {isDropdownOpen && (
-                <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                  <div
-                    className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                    onClick={() => handleCategorySelect(null, '#000')}
-                  >
-                    All Categories
-                  </div>
-                  {eventCategories.map(category => (
-                    <div
-                      key={category.id}
-                      className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                      onClick={() => handleCategorySelect(category.id, category.eventCatColorCode)}
-                      style={{ color: category.eventCatColorCode }}
-                    >
-                      {category.eventCategoryTitle}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+  {isDropdownOpen && (
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-48 z-10"> {/* Set a fixed width */}
+      <div
+        className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+        onClick={() => handleCategorySelect(null, '#000')}
+      >
+        All Categories
+      </div>
+      {eventCategories.map(category => (
+        <div
+          key={category.id}
+          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+          onClick={() => handleCategorySelect(category.id, category.eventCatColorCode)}
+          style={{ color: category.eventCatColorCode }}
+        >
+          {category.eventCategoryTitle}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
           </div>
 
           <div className="max-h-[calc(100vh-18rem)] overflow-y-auto">
@@ -157,7 +161,7 @@ function Event() {
                   <CategoryTiles
                     key={event.id}
                     title={event.eventTitle}
-                    date={event.startDate}
+                    date={`${event.startDate} - ${event.endDate}`}
                     time={`${event.startTime} - ${event.endTime}`}
                     borderColor={categoryColor} // Pass color to CategoryTiles
                   />
