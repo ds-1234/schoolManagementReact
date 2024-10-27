@@ -42,16 +42,19 @@ const AddEventCategory = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
 
-  // Function to generate a neon random color
   const generateRandomColor = () => {
-    const getRandomValue = () => Math.floor(Math.random() * 256);
-    const r = getRandomValue();
-    const g = getRandomValue();
-    const b = getRandomValue();
-    const max = Math.max(r, g, b);
-    const scale = 255 / max; // Ensure high brightness
-    return `rgb(${Math.round(r * scale)}, ${Math.round(g * scale)}, ${Math.round(b * scale)})`;
+    // Hue: Random value between 0 and 360 degrees for variety of colors
+    const hue = Math.floor(Math.random() * 360);
+    
+    // Saturation: High (90-100%) for neon-like vibrancy
+    const saturation = 100;
+    
+    // Lightness: Adjusted to 50-60% for brightness without washing out the color
+    const lightness = Math.floor(Math.random() * 20) + 50; // Random value between 50 and 70
+  
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   };
+  
 
   // Handle form submission
   const onSubmit = (data) => {
