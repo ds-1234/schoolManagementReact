@@ -9,11 +9,8 @@ import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
 import AddEvent from './AddEvent';
-<<<<<<< Updated upstream
-=======
 import Button from '../../../../Reusable_components/Button';
 import BASE_URL from '../../../../conf/conf';
->>>>>>> Stashed changes
 
 function Event() {
   const [attendanceMap, setAttendanceMap] = useState({});
@@ -58,16 +55,6 @@ function Event() {
     };
   }, [isDropdownOpen]);
 
-<<<<<<< Updated upstream
-  // Dummy event data for now, later to be replaced by API data
-  const dummyEvents = [
-    { id: 1, title: "Sports Day", date: "2024-11-15", time: "9:00 AM - 12:00 PM" },
-    { id: 2, title: "Annual Celebration", date: "2024-12-20", time: "10:00 AM - 1:00 PM" },
-    { id: 3, title: "Workshop", date: "2024-10-25", time: "2:00 PM - 5:00 PM" },
-    { id: 4, title: "Work", date: "2024-10-5", time: "2:00 PM - 4:00 PM" },
-    { id: 5, title: "Seminar", date: "2024-10-25", time: "2:00 PM - 5:00 PM" },
-  ];
-=======
   // Fetch event categories
   
   const fetchEventCategories = async () => {
@@ -81,41 +68,9 @@ function Event() {
       console.error("Error fetching event categories:", error);
     }
   };
->>>>>>> Stashed changes
 
   const fetchData = async () => {
     try {
-<<<<<<< Updated upstream
-      const response = await axios({
-        method: 'GET',
-        url: 'http://localhost:8080/attendance/getAttendanceList',
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      const filterClass = response.data.data.filter(data => data.className === user.className[0]);
-      console.log(filterClass);
-
-      const newAttendanceMap = {};
-
-      filterClass.forEach((data) => {
-        const attendanceStatus = data.attendenceStatus
-          .replace(/(\d+)=/g, '"$1":')  
-          .replace(/([a-zA-Z]+)/g, '"$1"'); 
-
-        const attendanceObject = JSON.parse(attendanceStatus);
-        const formattedDate = new Date(data.attendanceDate).toLocaleDateString();
-
-        if (attendanceObject[user.id]) {
-          newAttendanceMap[formattedDate] = attendanceObject[user.id];
-        }
-      });
-
-      setAttendanceMap(newAttendanceMap);
-      console.log(newAttendanceMap);
-
-=======
       const response = categoryId 
         ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
         : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
@@ -126,7 +81,6 @@ function Event() {
         const dates = response.data.data.map(event => event.startDate);
         setEventDates(dates); // Set the event dates
       }
->>>>>>> Stashed changes
     } catch (error) {
       console.error("Error fetching events:", error);
     }

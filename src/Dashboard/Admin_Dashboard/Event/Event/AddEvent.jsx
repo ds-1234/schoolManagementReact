@@ -45,7 +45,7 @@ const AddEvent = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     // Fetch classes from API
-    axios.get('http://localhost:8080/class/getClassList')
+    axios.get(`${BASE_URL}/class/getClassList`)
       .then(response => {
         setClasses(response.data.data); // Assume response data is an array of class objects
       })
@@ -136,7 +136,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     useEffect(() => {
       const fetchEventCategories = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList', {
+          const response = await axios.get(`${BASE_URL}/eventCategory/getEventCatList`, {
             headers: { 'Content-Type': 'application/json' },
           });
           const cat = response.data.data
@@ -153,7 +153,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/role/getRoleList', {
+        const response = await axios.get(`${BASE_URL}/role/getRoleList`, {
           headers: { 'Content-Type': 'application/json' },
         });
         setRole(response.data.data);
@@ -164,7 +164,7 @@ const AddEvent = ({ isOpen, onClose }) => {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/getUserList', {
+        const response = await axios.get(`${BASE_URL}/user/getUserList`, {
           headers: { 'Content-Type': 'application/json' },
         });
         setUserForDropdown(response.data.data);
@@ -233,7 +233,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     
       // Example API call to save the event data
       try {
-        const response = await axios.post('http://localhost:8080/events/saveEvent', eventData, {
+        const response = await axios.post(`${BASE_URL}/events/saveEvent`, eventData, {
           headers: { 'Content-Type': 'application/json' },
         });
         
