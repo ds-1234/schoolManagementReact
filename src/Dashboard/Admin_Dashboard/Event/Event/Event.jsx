@@ -163,6 +163,7 @@ function Event() {
                     title={event.eventTitle}
                     date={`${event.startDate} - ${event.endDate}`}
                     time={`${event.startTime} - ${event.endTime}`}
+                    message = {event.message}
                     borderColor={categoryColor} // Pass color to CategoryTiles
                   />
                 );
