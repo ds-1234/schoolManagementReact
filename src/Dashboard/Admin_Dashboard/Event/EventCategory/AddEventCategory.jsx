@@ -42,15 +42,16 @@ const AddEventCategory = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
 
-    // Function to generate random color
-    const generateRandomColor = () => {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    };
+  // Function to generate a neon random color
+  const generateRandomColor = () => {
+    const getRandomValue = () => Math.floor(Math.random() * 256);
+    const r = getRandomValue();
+    const g = getRandomValue();
+    const b = getRandomValue();
+    const max = Math.max(r, g, b);
+    const scale = 255 / max; // Ensure high brightness
+    return `rgb(${Math.round(r * scale)}, ${Math.round(g * scale)}, ${Math.round(b * scale)})`;
+  };
 
   // Handle form submission
   const onSubmit = (data) => {
