@@ -29,6 +29,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [endTime, setEndTime] = useState("");
   const [classes, setClasses] = useState([]); // Assuming this is fetched from API
   const [selectedClasses, setSelectedClasses] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
 
 
@@ -60,6 +61,17 @@ const AddEvent = ({ isOpen, onClose }) => {
       } else {
         // Add the class if it's not selected
         return [...prevSelected, classId];
+      }
+    });
+  };
+  const handleUserSelect = (userId, userName) => {
+    setSelectedUsers(prevSelected => {
+      if (prevSelected.includes(userId)) {
+        // Remove the class if it's already selected
+        return prevSelected.filter(id => id !== userId);
+      } else {
+        // Add the class if it's not selected
+        return [...prevSelected, userId];
       }
     });
   };
@@ -195,7 +207,7 @@ const AddEvent = ({ isOpen, onClose }) => {
         eventTitle: capitalizeFirstLetter(data.eventtitle), // Capitalize first letter
         eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
         role: showClassAndSection ? [3] : rolepay,
-        user: [2, 3], // Add the selected user ID here
+        user: selectedUsers.length > 0 ? selectedUsers : undefined, // Add the selected user ID here
         classes: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
         message: data.message,
         startDate: startDate, // Include start date
@@ -232,7 +244,11 @@ const AddEvent = ({ isOpen, onClose }) => {
 const filteredClassNames = selectedClassNames.filter(name => name);
 console.log("Filtered Class Names:", filteredClassNames);
 
-  
+    // Create a string of selected class names for the placeholder
+    const selectedUsersNames = selectedUsers.map(userId =>filteredUsers.find(user => user.id === Number(userId))?.firstName);
+    
+    console.log("Mapped User Names:", selectedUsersNames);
+    console.log("selectedUsers", selectedUsers);
     
     if (!isOpen) return null;
     
@@ -269,31 +285,6 @@ console.log("Filtered Class Names:", filteredClassNames);
                     {showClassAndSection && (
             <>
               <div className="mb-4">
-                {/* <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
-                <select id="class" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })}>
-                  <option value="">Select Class</option>
-                  <option value="1">Class 1</option>
-                  <option value="2">Class 2</option>
-                </select> */}
-                {/* <label htmlFor="class-select" className="block text-gray-700 font-semibold mb-2">Select Class:</label>
-      <select id="class-select" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })} value={selectedClasses} onChange={handleClassChange} >
-        {classList.map((cls) => (
-          <option key={cls.id} value={cls.id}>
-            {cls.name} 
-          </option>
-        ))}
-      </select> */}
-
-      {/* <label className="block text-gray-700 font-semibold mb-2">{selectedClasses.name}</label> */}
-                {/* <select
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  {...register('classes')}  onChange={handleClassChange}
-                >
-                  <option value="">Select Classes</option>
-                  {classList.map((cls) => (
-                    <option key={cls.id} value={cls.id}>{cls.name}</option>
-                  ))}
-                </select> */}
         <label className="block text-gray-700 font-semibold mb-2">Select Classes:</label>
         <select
           value=""
@@ -340,7 +331,7 @@ console.log("Filtered Class Names:", filteredClassNames);
               
 
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
+                {/* <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
                 <select
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   {...register('user')}
@@ -349,7 +340,25 @@ console.log("Filtered Class Names:", filteredClassNames);
                   {filteredUsers.map((user) => (
                     <option key={user.id} value={user.id}>{user.firstName}</option>
                   ))}
-                </select>
+                </select> */}
+
+      <label className="block text-gray-700 font-semibold mb-2">Select Users:</label>
+        <select
+          value=""
+          onChange={e => handleUserSelect(e.target.value, e.target.options[e.target.selectedIndex].text)}
+          className="w-full p-3 border border-gray-300 rounded"
+        >
+          <option value="" disabled>
+            {selectedUsersNames.join(',') || 'Select Users'}
+          </option>
+          {filteredUsers.map(users => (
+            <option key={users.id} value={users.id}>
+              {users.firstName}
+            </option>
+          ))}
+        </select>
+
+
               </div>
             </>
           )}
