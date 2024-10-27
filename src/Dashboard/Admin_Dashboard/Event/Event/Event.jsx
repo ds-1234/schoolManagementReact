@@ -9,6 +9,7 @@ import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
 import AddEvent from './AddEvent';
+import Button from '../../../../Reusable_components/Button';
 
 function Event() {
   const [attendanceMap, setAttendanceMap] = useState({});
@@ -19,6 +20,7 @@ function Event() {
   const [selectedCategoryColor, setSelectedCategoryColor] = useState(null);
   const [events, setEvents] = useState([]);
   const [eventDates, setEventDates] = useState([]); // New state for event dates
+  const [view, setView] = useState('month'); // Track the active view
 
   const dropdownRef = useRef(null);
 
@@ -98,6 +100,12 @@ function Event() {
     setIsDropdownOpen(false);
   };
 
+    // Function to handle view change
+    const handleViewChange = (newView) => {
+      setView(newView);
+      // navigate(`/events/${newView}`); // Example of navigation based on the selected view
+    };
+
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Event</h1>
@@ -109,6 +117,29 @@ function Event() {
       <div className="flex items-start w-full mt-10">
       <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
+          <div className="flex space-x-2  mb-4 mt-4">
+        <Button
+        label='Month'
+          className={`py-2 px-4 rounded ${view === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black '}`}
+          onClick={() => handleViewChange('month')}
+        >
+          Month
+        </Button>
+        <Button
+                label='Week'
+          className={`py-2 px-4 rounded ${view === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleViewChange('week')}
+        >
+          Week
+        </Button>
+        <Button
+        label='day'
+          className={`py-2 px-4 rounded ${view === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+          onClick={() => handleViewChange('day')}
+        >
+          Day
+        </Button>
+      </div>
           <EventCalendar events={events} /> {/* Render EventCalendar */}
         </div>
         {console.log(eventDates,'events date')}
