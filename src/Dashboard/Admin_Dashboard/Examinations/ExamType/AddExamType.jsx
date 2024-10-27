@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import BASE_URL from '../../../../conf/conf';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
@@ -45,7 +44,7 @@ const AddExamType = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
         method:"POST",
-        url : `http://localhost:8080/examType/createExamType`,
+        url : `${BASE_URL}/examType/createExamType`,
         data: {
           examTypeName : data.ExamName ,
           examTypeDescription : data.description 

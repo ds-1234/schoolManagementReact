@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -37,7 +38,7 @@ function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
 
   useEffect(() => {
     if (departmentId) {
-      axios.get(`http://localhost:8080/department/getDepartmentById/${departmentId}`)
+      axios.get(`${BASE_URL}/department/getDepartmentById/${departmentId}`)
         .then((response) => {
           const department = response.data.data;
           setDepartment(department);
@@ -69,7 +70,7 @@ const handleSubmit = (e) => {
     // Send only the selected coach ID
     axios({
       method: 'post',
-      url: `http://localhost:8080/department/saveDepartment`,
+      url:`${BASE_URL}/department/saveDepartment`,
       headers: {
         'Content-Type': 'application/json',
       },

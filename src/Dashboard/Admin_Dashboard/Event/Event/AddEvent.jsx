@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import BASE_URL from '../../../../conf/conf';
 
 
 
@@ -29,7 +30,47 @@ const AddEvent = ({ isOpen, onClose }) => {
     },
   });
 
+<<<<<<< Updated upstream
   const [teachers, setTeachers] = useState([]);
+=======
+  const [userForDropdown, setUserForDropdown] = useState([]);
+
+  useEffect(() => {
+    // Fetch classes from API
+    axios.get(`${BASE_URL}/class/getClassList`)
+      .then(response => {
+        setClasses(response.data.data); // Assume response data is an array of class objects
+      })
+      .catch(error => {
+        console.error("Error fetching classes:", error);
+      });
+  }, []);
+
+  const handleClassSelect = (classId, className) => {
+    setSelectedClasses(prevSelected => {
+      if (prevSelected.includes(classId)) {
+        // Remove the class if it's already selected
+        return prevSelected.filter(id => id !== classId);
+      } else {
+        // Add the class if it's not selected
+        return [...prevSelected, classId];
+      }
+    });
+  };
+  const handleUserSelect = (userId, userName) => {
+    setSelectedUsers(prevSelected => {
+      if (prevSelected.includes(userId)) {
+        // Remove the class if it's already selected
+        return prevSelected.filter(id => id !== userId);
+      } else {
+        // Add the class if it's not selected
+        return [...prevSelected, userId];
+      }
+    });
+  };
+
+  console.log(selectedClasses, 'selectedClasses')
+>>>>>>> Stashed changes
 
   // Handle closing on clicking outside dropdown
   useEffect(() => {
@@ -69,9 +110,55 @@ const AddEvent = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   useEffect(() => {
+<<<<<<< Updated upstream
     const fetchTeachers = async () => {
+=======
+    if (isOpen) {
+      // Optional: You could also set default values or reset the form here if needed
+      reset(); // Reset the form when it opens
+      setStartTime('')
+      setEndTime('')
+      setStartDate('')
+      setEndDate('')
+    }
+  }, [isOpen, reset]);
+
+
+
+    // Fetch event categories from API
+    useEffect(() => {
+      const fetchEventCategories = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/eventCategory/getEventCatList`, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const cat = response.data.data
+          let eventcat = cat.filter((cat) => cat.isActive==true); 
+          setEventCategories(eventcat); // Set the event categories from the response
+        } catch (error) {
+          console.error('Error fetching event categories:', error);
+        }
+      };
+  
+      fetchEventCategories();
+    }, []);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/getUserList', {
+        const response = await axios.get(`${BASE_URL}/role/getRoleList`, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        setRole(response.data.data);
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    };
+
+    const fetchUsers = async () => {
+>>>>>>> Stashed changes
+      try {
+        const response = await axios.get(`${BASE_URL}/user/getUserList`, {
           headers: { 'Content-Type': 'application/json' },
         });
         const filteredTeachers = response.data.data.filter(user => user.role === 4);
@@ -105,10 +192,84 @@ const AddEvent = ({ isOpen, onClose }) => {
     fetchTeachers();
   }, []);
 
+<<<<<<< Updated upstream
   const onSubmit = (data) => {
     // your form submit logic
     console.log(data);
   };
+=======
+    // Handle Role Selection and User Filtering
+    const handleRoleChange = (roleId) => {
+      setSelectedRoles((prevSelected) => {
+        const updatedRoles = prevSelected.includes(roleId) ? prevSelected.filter((id) => id !== roleId) : [...prevSelected, roleId];
+  
+        // Filter users based on selected role ids
+        if (updatedRoles.length > 0) {
+          console.log(userForDropdown,'userForDropdown')
+          console.log(updatedRoles,'updatedRoles')
+          setRolepay(updatedRoles)
+          const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.role));
+          // const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId));
+          console.log(filtered,'filtered')
+          setFilteredUsers(filtered);
+          console.log(filteredUsers,'filtered users')
+        } else {
+          setFilteredUsers(userForDropdown);
+        }
+  
+        return updatedRoles;
+      });
+    };
+    const getDropdownLabel = () => {
+      if (selectedRoles.length === 1) {
+        const selectedRole = role.find((r) => r.id === selectedRoles[0]);
+        return `Select ${selectedRole?.name}`;
+      }
+      return 'Select User';
+    };
+    
+    const onSubmit = async (data) => {
+      const selectedUserId = data.user; // This will get the selected user ID
+    
+      // Function to capitalize the first letter of the event title
+      const capitalizeFirstLetter = (string) => {
+        if (!string) return ''; // Handle empty string
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+      // Create the event data object to send to your API
+      const eventData = {
+        eventTitle: capitalizeFirstLetter(data.eventtitle), // Capitalize first letter
+        eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
+        role: showClassAndSection ? [3] : rolepay,
+        user: selectedUsers.length > 0 ? selectedUsers : undefined, // Add the selected user ID here
+        classes: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
+        message: data.message,
+        startDate: startDate, // Include start date
+        endDate: endDate, // Include end date
+        startTime: startTime, // Include start time
+        endTime: endTime, // Include end time
+        isActive: true // Add other necessary fields like isActive
+      };
+    
+      // Example API call to save the event data
+      try {
+        const response = await axios.post(`${BASE_URL}/events/saveEvent`, eventData, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        
+        // Notify the user of success
+        toast.success('Event created successfully!');
+        reset(); // Reset the form if needed
+        onClose(); // Close the modal
+        setSelectedClasses([]) 
+        setSelectedUsers([])
+        setSelectedEventCategory(null) 
+      } catch (error) {
+        console.error('Error creating event:', error);
+        toast.error('Failed to create event. Please try again.');
+      }
+    };
+>>>>>>> Stashed changes
 
   if (!isOpen) return null;
 

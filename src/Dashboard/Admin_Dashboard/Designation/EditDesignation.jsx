@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -37,7 +38,7 @@ function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
 
   useEffect(() => {
     if (designationId) {
-      axios.get(`http://localhost:8080/designation/getDesignationById/${designationId}`)
+      axios.get(`${BASE_URL}/designation/getDesignationById/${designationId}`)
         .then((response) => {
           const designation = response.data.data;
           setDesignation(designation);
@@ -68,7 +69,7 @@ const handleSubmit = (e) => {
     // Send only the selected coach ID
     axios({
       method: 'post',
-      url: `http://localhost:8080/designation/saveDesignation`,
+      url: `${BASE_URL}/designation/saveDesignation`,
       headers: {
         'Content-Type': 'application/json',
       },

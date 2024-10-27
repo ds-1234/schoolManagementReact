@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import classroom from '../../../assets/class.png';
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 const ClassAttendance = () => {
   const [classes, setClasses] = useState([]);
@@ -14,7 +15,7 @@ const ClassAttendance = () => {
     // Fetch class data from API
     const fetchClasses = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/class/getClassList');
+        const response = await axios.get(`${BASE_URL}/class/getClassList`);
         console.log(response.data.data);
         
         setClasses(response.data.data);

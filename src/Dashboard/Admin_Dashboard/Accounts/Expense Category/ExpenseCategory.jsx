@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import AddExpenseCategory from './AddExpenseCategory';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function ExpenseCategory() {
   const [data, setData] = useState([]);
@@ -44,7 +45,7 @@ function ExpenseCategory() {
 const handleDelete = (id)=>{
     axios({
         method: "post",
-        url: `http://localhost:8080/expenseCat/deleteExpenseCat/${id}`,
+        url: `${BASE_URL}/expenseCat/deleteExpenseCat/${id}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -64,7 +65,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/expenseCat/getExpenseCatList`,
+      url: `${BASE_URL}/expenseCat/getExpenseCatList`,
       headers: {
         "Content-Type": "application/json",
       },

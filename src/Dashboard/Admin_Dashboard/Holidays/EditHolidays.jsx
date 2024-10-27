@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
   const [holiday, setHoliday] = useState({ title: '',holidayDate: '', description: '' });
@@ -19,7 +20,7 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/holidays/getHolidayById/${holidayId}`,
+      url: `${BASE_URL}/holidays/getHolidayById/${holidayId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -63,7 +64,7 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
     // e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/holidays/saveholidays`,
+      url: `${BASE_URL}/holidays/saveholidays`,
       headers: {
         'Content-Type': 'application/json',
       },

@@ -9,6 +9,7 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 import AddRoomType from './AddRoomType';
 import Swal from 'sweetalert2'
 import EditRoomType from './EditRoomType';
+import BASE_URL from '../../../../conf/conf';
 
 
 function RoomType() {
@@ -44,7 +45,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/roomType/deleteRoomType/${id}`,
+                url: `${BASE_URL}/roomType/deleteRoomType/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -86,7 +87,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/roomType/getRoomTypeList`,
+      url: `${BASE_URL}/roomType/getRoomTypeList`,
       headers: {
         "Content-Type": "application/json",
       },

@@ -9,6 +9,7 @@ import AddHolidays from './AddHolidays';
 import EditHolidays from './EditHolidays';
 import Swal from 'sweetalert2'
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 function Holidays() {
@@ -58,7 +59,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/holidays/deleteholidays/${id}`,
+                url: `${BASE_URL}/holidays/deleteholidays/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -87,7 +88,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/holidays/getHolidaysList`,
+      url: `${BASE_URL}/holidays/getHolidaysList`,
       headers: {
         "Content-Type": "application/json",
       },

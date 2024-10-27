@@ -7,6 +7,7 @@ import AddExamType from './AddExamType';
 import { NavLink } from 'react-router-dom';
 import EditExamType from './EditExamType';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function ExamType() {
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ function ExamType() {
 const onDelete = (id) => {
   axios({
     method: "DELETE",
-    url: `http://localhost:8080/examType/deleteExamType/${id}`,
+    url:`${BASE_URL}/examType/deleteExamType/${id}`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -54,7 +55,7 @@ const onDelete = (id) => {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/examType/getExamTypeList`,
+      url: `${BASE_URL}/examType/getExamTypeList`,
       headers: {
         "Content-Type": "application/json",
       },

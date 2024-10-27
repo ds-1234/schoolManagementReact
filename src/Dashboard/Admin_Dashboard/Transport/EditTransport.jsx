@@ -4,6 +4,7 @@ import { toast , ToastContainer} from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../conf/conf';
 
 function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
   const [value, setValue] = useState(true);
@@ -43,7 +44,7 @@ useEffect(() => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/transport/getTransport/${transportId}`, 
+      url: `${BASE_URL}/transport/getTransport/${transportId}`, 
       headers: {
         "Content-Type": "application/json",
       },
@@ -70,7 +71,7 @@ useEffect(() => {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/transport/createTransport`,
+      url: `${BASE_URL}/transport/createTransport`,
       headers: {
         "Content-Type": "application/json",
       },

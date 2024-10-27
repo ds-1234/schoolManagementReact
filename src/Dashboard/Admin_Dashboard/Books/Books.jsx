@@ -8,6 +8,7 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 function Books() {
@@ -118,7 +119,7 @@ function Books() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/book/getBookList',
+      url: `${BASE_URL}/book/getBookList`,
       headers: {
         'Content-Type': 'application/json',
       },

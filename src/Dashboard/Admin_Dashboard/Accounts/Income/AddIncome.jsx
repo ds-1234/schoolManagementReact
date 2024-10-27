@@ -7,6 +7,7 @@ import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../../conf/conf';
 
 
 function AddIncome() {
@@ -52,7 +53,7 @@ const handleSelectPaymentMethod = (method) => {
     // if (selectedExpenseCategory) {
       axios({
         method: "POST",
-        url: `http://localhost:8080/income/saveIncome`,
+        url: `${BASE_URL}/income/saveIncome`,
         data: {
             incomeName: data.incomeName,
             incomeSource: data.source,
@@ -185,7 +186,7 @@ const handleSelectPaymentMethod = (method) => {
     Payment Method *
   </label>
   <div
-    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+    className="h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
     onClick={() => setPayDropdownOpen(!payDropdownOpen)}
   >
     <p>{selectedPaymentMethod || 'Select Payment Method'}</p>

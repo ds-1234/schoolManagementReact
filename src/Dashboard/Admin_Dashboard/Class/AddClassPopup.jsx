@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from "../../../conf/conf";
 
 const AddClassPopup = ({ isOpen, onClose }) => {
   const { register, handleSubmit, reset , formState: { errors } } = useForm();
@@ -36,7 +37,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/subject/getSubjectList');
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
       setSubjects(response.data.data);
     } catch (error) {
       toast.error("Error fetching subjects");
@@ -62,7 +63,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
     });
 
     try {
-      await axios.post('http://localhost:8080/class/createClass', {
+      await axios.post(`${BASE_URL}/class/createClass`, {
         name: data.name,
         section: data.section,
         subject: subjectDetails,

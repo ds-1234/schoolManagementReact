@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 const AddSubject = ({ isOpen, onClose }) => {
   const [value , setValue] = useState(true)
@@ -41,7 +42,7 @@ const AddSubject = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/subject/createSubject',
+      url: `${BASE_URL}/subject/createSubject`,
       data: {
         subject: data.subject,
         description: data.description,

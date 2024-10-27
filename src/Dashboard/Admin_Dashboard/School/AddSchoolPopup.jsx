@@ -4,6 +4,7 @@ import { Input } from '@nextui-org/react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import BASE_URL from '../../../conf/conf';
 
 const AddSchoolPopup = ({ isOpen, onClose }) => {
   const {
@@ -44,7 +45,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
 
     axios({
       method: 'post',
-      url: 'http://localhost:8080/school/createSchool',
+      url: `${BASE_URL}/school/createSchool`,
       data: {
         name: data.name,
         houseNumber: data.houseNumber,

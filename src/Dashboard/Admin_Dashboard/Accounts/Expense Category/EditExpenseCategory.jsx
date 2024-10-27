@@ -7,6 +7,7 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 // import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
 
 const EditBookPopup = ({ isOpen, onClose, expensecatId, onSuccess }) => {
 
@@ -32,7 +33,7 @@ const EditBookPopup = ({ isOpen, onClose, expensecatId, onSuccess }) => {
     if (bookId) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/book/getBook/${bookId}`,
+        url: `${BASE_URL}/book/getBook/${bookId}`,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -96,7 +97,7 @@ const EditBookPopup = ({ isOpen, onClose, expensecatId, onSuccess }) => {
   const submitBook = (data) => {
     axios({
       method: 'POST',
-      url: `http://localhost:8080/book/createBook`,
+      url: `${BASE_URL}/book/createBook`,
       data: {
         id: "${bookId}",
         ...book,

@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import BASE_URL from '../../../conf/conf';
 
 function Homework() {
   const [classMap , setClassMap] = useState({}) 
@@ -90,7 +91,7 @@ function Homework() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/homework/getHomeworkList',
+      url: `${BASE_URL}/homework/getHomeworkList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -109,7 +110,7 @@ function Homework() {
   const fetchCls = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/class/getClassList',
+      url: `${BASE_URL}/class/getClassList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -131,7 +132,7 @@ function Homework() {
   const fetchSub = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/subject/getSubjectList',
+      url: `${BASE_URL}/subject/getSubjectList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -153,7 +154,7 @@ function Homework() {
   const fetchUsers = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/user/getUserList',
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },

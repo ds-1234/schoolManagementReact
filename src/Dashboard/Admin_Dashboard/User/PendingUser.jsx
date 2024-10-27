@@ -7,6 +7,7 @@ import deleteIcon from '../../../assets/delete.png'
 // import EditUser from './EditUser';
 import { NavLink, useNavigate } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 function PendingUser() {
 const navigate = useNavigate()
@@ -66,7 +67,7 @@ const column = [
   const fetchData = async() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/user/getUserList',
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -116,8 +117,7 @@ const column = [
       return;
     }
   
-    const selectedFields = Object.keys(checkboxRefs)
-      .filter((key) => checkboxRefs[key].checked);
+    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
   
       const filteredData = filterUser.filter((row) =>
         selectedFields.some((field) => {

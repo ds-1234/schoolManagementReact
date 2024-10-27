@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import EditPlayers from './EditPlayers';
 import AddPlayers from './AddPlayers';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function Players() {
   const [data, setData] = useState([]);
@@ -55,7 +56,7 @@ function Players() {
       if (result.isConfirmed) {
         axios({
           method: 'post',
-          url: `http://localhost:8080/players/deletePlayers/${id}`,
+          url: `${BASE_URL}/players/deletePlayers/${id}`,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -81,7 +82,7 @@ function Players() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/players/getPlayersList`,
+      url: `${BASE_URL}/players/getPlayersList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -100,7 +101,7 @@ function Players() {
   const fetchUsers = (playersData) => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/user/getUserList`,
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },

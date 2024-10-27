@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 const AddLeave = ({ isOpen, onClose }) => {
 
@@ -44,7 +45,7 @@ const AddLeave = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/leaves/saveLeaves',
+      url: `${BASE_URL}/leaves/saveLeaves`,
       data: {
         leaveType: data.leave,
         leaveDescription: data.description,

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
 
 const AddExpenseCategory = ({ isOpen, onClose }) => {
 
@@ -44,7 +45,7 @@ const AddExpenseCategory = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/expenseCat/saveExpenseCat',
+      url: `${BASE_URL}/expenseCat/saveExpenseCat`,
       data: {
         expenseCategoryName: data.category,
         expenseCategoryDescription: data.description,

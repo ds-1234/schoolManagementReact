@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import AddSports from './AddSports';
 import EditSports from './EditSports';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function Sports() {
   const [data, setData] = useState([]);
@@ -55,7 +56,7 @@ function Sports() {
       if (result.isConfirmed) {
         axios({
           method: 'post',
-          url: `http://localhost:8080/sports/deleteSport/${id}`,
+          url: `${BASE_URL}/sports/deleteSport/${id}`,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -81,7 +82,7 @@ function Sports() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/sports/getSportsList`,
+      url: `${BASE_URL}/sports/getSportsList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -101,7 +102,7 @@ function Sports() {
   const fetchCoachData = (coachData) => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/user/getUserList`,
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -126,7 +127,7 @@ function Sports() {
 
   // Map coach name to the sports data
   const getCoachName = (userId) => {
-    const coach = coaches.find((c) => c.id === userId);
+    const coach = updatedCoaches.find((c) => c.id === userId);
     return coach ? coach.firstName : 'Unknown Coach';
   };
 

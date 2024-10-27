@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
 
 function AddPlayers({ isOpen, onClose }) {
   const [value, setValue] = useState(true); // Toggle button state
@@ -26,7 +27,7 @@ function AddPlayers({ isOpen, onClose }) {
   // Fetch players (students)
   // debugger
   useEffect(() => {
-    axios.get('http://localhost:8080/user/getUserList')
+    axios.get(`${BASE_URL}/user/getUserList`)
       .then((response) => {
         console.log(response.data)
         const filteredPlayers = response.data.data.filter(user => user.role === 3);
@@ -41,7 +42,7 @@ function AddPlayers({ isOpen, onClose }) {
 
   // Fetch sports
   useEffect(() => {
-    axios.get('http://localhost:8080/sports/getSportsList')
+    axios.get(`${BASE_URL}/sports/getSportsList`)
       .then((response) => {
         setSports(response.data.data);
       })
@@ -63,7 +64,7 @@ function AddPlayers({ isOpen, onClose }) {
     // Submit the form data to the server
     axios({
       method: 'post',
-      url: 'http://localhost:8080/players/savePlayers',
+      url: `${BASE_URL}/players/savePlayers`,
       headers: {
         'Content-Type': 'application/json',
       },

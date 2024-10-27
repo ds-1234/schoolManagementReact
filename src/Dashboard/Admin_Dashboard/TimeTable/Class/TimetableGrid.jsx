@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
 
 const TimetableGrid = ({timetableData}) => {
   const [classMap, setClassMap] = useState({});
@@ -11,7 +12,7 @@ const TimetableGrid = ({timetableData}) => {
 
   // Fetch class data
   const fetchCls = async() => {
-    await axios.get('http://localhost:8080/class/getClassList')
+    await axios.get(`${BASE_URL}/class/getClassList`)
       .then((response) => {
         const classes = {};
         response.data.data.forEach((cls) => {

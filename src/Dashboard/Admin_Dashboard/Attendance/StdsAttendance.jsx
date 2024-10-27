@@ -4,6 +4,7 @@ import Table from '../../../Reusable_components/Table';
 import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import Labels from '../../../Reusable_components/Labels';
+import BASE_URL from '../../../conf/conf';
 
 const StdsAttendance = () => {
   const { classItem } = useLocation().state; 
@@ -14,7 +15,7 @@ const StdsAttendance = () => {
   // Fetch students based on classItem
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/user/getUserList', {
+      const response = await axios.get(`${BASE_URL}/user/getUserList`, {
         headers: { 'Content-Type': 'application/json' },
       });
       const filteredStds = response.data.data.filter(user => user.role === 3);
@@ -30,7 +31,7 @@ const StdsAttendance = () => {
     try {
       const response = await axios({
         method: 'GET',
-        url: 'http://localhost:8080/attendance/getAttendanceList',
+        url: `${BASE_URL}/attendance/getAttendanceList`,
         headers: { "Content-Type": "application/json" }
       });
 

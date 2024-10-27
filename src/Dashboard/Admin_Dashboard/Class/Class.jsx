@@ -7,6 +7,7 @@ import edit from '../../../assets/edit.png'
 import EditClass from './EditClass';
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 function Class() {
@@ -45,7 +46,7 @@ function Class() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `http://localhost:8080/class/getClassList`,
+        url: `${BASE_URL}/class/getClassList`,
         headers: {
           "Content-Type": "application/json",
         },

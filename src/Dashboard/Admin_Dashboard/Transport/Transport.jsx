@@ -7,6 +7,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import EditTransport from './EditTransport';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 function Transport() {
@@ -97,7 +98,7 @@ const column = [
   const deleteData = () => {
     axios({
       method: 'DELETE' , 
-      url: `http://localhost:8080/transport/deleteTransport}`,
+      url: `${BASE_URL}/transport/deleteTransport}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -113,7 +114,7 @@ const column = [
   const fetchData = async() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/transport/getTransportList',
+      url: `${BASE_URL}/transport/getTransportList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -163,8 +164,7 @@ const column = [
       return;
     }
   
-    const selectedFields = Object.keys(checkboxRefs)
-      .filter((key) => checkboxRefs[key].checked);
+    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
   
     const filteredData = filterTransport.filter((row) =>
       selectedFields.some((field) =>

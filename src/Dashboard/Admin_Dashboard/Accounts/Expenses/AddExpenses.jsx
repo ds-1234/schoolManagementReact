@@ -7,6 +7,7 @@ import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../../conf/conf';
 
 function AddExpenses() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -28,7 +29,7 @@ const handleSelectPaymentMethod = (method) => {
 
   const fetchExpenseCat = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/expenseCat/getExpenseCatList');
+      const response = await axios.get(`${BASE_URL}/expenseCat/getExpenseCatList`);
       setExpenseCat(response.data.data);
     } catch (error) {
       toast.error("Error fetching Expense Category");
@@ -50,7 +51,7 @@ const handleSelectPaymentMethod = (method) => {
     if (selectedExpenseCategory) {
       axios({
         method: "POST",
-        url: `http://localhost:8080/expenses/createExpenses`,
+        url: `${BASE_URL}/expenses/createExpenses`,
         data: {
           name: data.expenseName,
           expenseType: {
@@ -113,7 +114,7 @@ const handleSelectPaymentMethod = (method) => {
             <div className="relative">
               <label htmlFor="category" className="block text-sm font-medium mb-2 text-black">Category *</label>
               <div
-                className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+                className=" h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <p>{selectedCategory || 'Select a category'}</p>
@@ -210,7 +211,7 @@ const handleSelectPaymentMethod = (method) => {
     Payment Method *
   </label>
   <div
-    className="block h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
+    className="h-9 w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-2 px-3 cursor-pointer flex justify-between items-center"
     onClick={() => setPayDropdownOpen(!payDropdownOpen)}
   >
     <p>{selectedPaymentMethod || 'Select Payment Method'}</p>

@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditGrade from './EditGrade';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function Grade() {
   const [data, setData] = useState([]);
@@ -33,7 +34,7 @@ function Grade() {
 const onDelete = (id) => {
   axios({
     method: "DELETE",
-    url: `http://localhost:8080/gradePoints/deleteGradePoints/${id}`,
+    url: `${BASE_URL}/gradePoints/deleteGradePoints/${id}`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -55,7 +56,7 @@ const onDelete = (id) => {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/gradePoints/getGradePointsList`,
+      url: `${BASE_URL}/gradePoints/getGradePointsList`,
       headers: {
         "Content-Type": "application/json",
       },

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
 
 function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
   const [roomTy, setRoomTy] = useState({ roomTypeName: '', description: '' });
@@ -12,7 +13,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/roomType/getRoomTypeById/${roomtyId}`,
+      url: `${BASE_URL}/roomType/getRoomTypeById/${roomtyId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -51,7 +52,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/roomType/saveRoomType`,
+      url: `${BASE_URL}/roomType/saveRoomType`,
       headers: {
         'Content-Type': 'application/json',
       },

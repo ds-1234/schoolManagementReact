@@ -5,6 +5,7 @@ import TimetableGrid from './TimetableGrid';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import AddTimeTable from '../AddTimeTable';
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../../conf/conf';
 
 const TimetablePage = () => {
   const { classItem } = useLocation().state;
@@ -18,7 +19,7 @@ const TimetablePage = () => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
+        const response = await axios.get(`${BASE_URL}/timeTable/getTimeTable`);
         setTimetableData(response.data.data.filter((tt) => tt.className === classItem.id))
          console.log(response.data.data);
       } catch (error) {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
 
 const TeacherPage = () => {
   const [teachers, setTeachers] = useState([]);
@@ -15,7 +16,7 @@ const TeacherPage = () => {
     // Fetch teachers data from API
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/getUserList', {
+        const response = await axios.get(`${BASE_URL}/user/getUserList`, {
           headers: { 'Content-Type': 'application/json' },
         });
         const filteredTeachers = response.data.data.filter(user => user.role === 4);
