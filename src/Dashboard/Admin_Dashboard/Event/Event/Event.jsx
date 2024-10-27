@@ -151,16 +151,21 @@ function Event() {
             <div className="relative" ref={dropdownRef}>
   <button
     onClick={toggleDropdown}
-    className="p-2 border border-gray-300 rounded-lg focus:outline-none flex items-center justify-between w-48 bg-gray-100" // Use justify-between for space between items
+    className="p-2 border border-gray-300 rounded-lg focus:outline-none flex items-center justify-between w-48 bg-gray-100"
+    style={{
+      color: selectedCategoryId === null ? '#000' : selectedCategoryColor || '#000', // Apply selected color or default to black
+    }}
   >
     <span>
-      {selectedCategoryId === null ? 'All Categories' : eventCategories.find(cat => cat.id === selectedCategoryId)?.eventCategoryTitle}
+      {selectedCategoryId === null
+        ? 'All Categories'
+        : eventCategories.find(cat => cat.id === selectedCategoryId)?.eventCategoryTitle}
     </span>
     <FontAwesomeIcon icon={faAngleDown} />
   </button>
 
   {isDropdownOpen && (
-    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-48 z-10"> {/* Set a fixed width */}
+    <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-48 z-10">
       <div
         className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
         onClick={() => handleCategorySelect(null, '#000')}
