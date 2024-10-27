@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../../conf/conf';
 import StatusButton from '../../../Reusable_components/StatusButton';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faEnvelope, faFilePdf, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 import maleImg from '../../../assets/man.png'
 import femaleImg from '../../../assets/woman.png'
 
-function StudentDetails() {
-  const {userId }= useLocation().state || {} ; 
-
+const TchProfile = () => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const [studentDetails, setStudentDetails] = useState(null);
   const [activeTab, setActiveTab] = useState('hostel'); 
   const [hostel , setHostel] = useState({}) 
@@ -21,12 +20,13 @@ function StudentDetails() {
     const fetchData = () => {
       axios({
         method: 'GET',
-        url: `${BASE_URL}/user/getStudentDetails/${userId}`,
+        url: `${BASE_URL}/user/getStudentDetails/${user.userId}`,
         headers: {
           'Content-Type': 'application/json',
         },
       })
         .then((response) => {
+          console.log('Data from API:', response.data);
           setStudentDetails(response.data.data);
         })
         .catch((error) => {
@@ -35,7 +35,7 @@ function StudentDetails() {
     };
 
     fetchData();
-  }, [userId]);
+  }, [user.userId]);
 
   useEffect(() => {
     if( studentDetails ){
@@ -48,6 +48,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setHostel(response.data.data);
           })
           .catch((error) => {
@@ -64,6 +65,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setHostelRoom(response.data.data);
           })
           .catch((error) => {
@@ -80,6 +82,7 @@ function StudentDetails() {
           },
         })
           .then((response) => {
+            console.log('Data from API:', response.data);
             setTransport(response.data.data);
           })
           .catch((error) => {
@@ -99,17 +102,14 @@ function StudentDetails() {
 
   return (
     <div className="mb-6">
-      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Student Profile</h1>
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Profile</h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/admin"> Admin </NavLink>/
-        <NavLink to='/admin/allStudents'> Students </NavLink> /
+        <NavLink to="/studentDashboard"> Student </NavLink>/
         <span className="text-[#ffae01] font-semibold">Profile</span>
       </p>
-
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <div>
           {/* Student Overview Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6 flex gap-5">
           <img 
@@ -128,30 +128,42 @@ function StudentDetails() {
 
           {/* Basic Information Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li><strong>Roll No:</strong> {studentDetails.rollNumber}</li>
-              <li><strong>Gender:</strong> {studentDetails.gender}</li>
-              <li><strong>Date of Birth:</strong> {formattedDate}</li>
-              <li><strong>Blood Group:</strong> {studentDetails.bloodGroup}</li>
-              <li><strong>Religion:</strong> {studentDetails.religion}</li>
-              <li><strong>Caste:</strong> {studentDetails.casteCategory}</li>
-            </ul>
-          </div>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600">
+            <p><strong>Roll No:</strong></p> 
+            <p>{studentDetails.rollNumber}</p>
+
+            <p><strong>Gender:</strong></p> 
+            <p>{studentDetails.gender}</p>
+
+            <p><strong>Date of Birth:</strong></p> 
+            <p>{formattedDate}</p>
+
+            <p><strong>Blood Group:</strong></p> 
+            <p>{studentDetails.bloodGroup}</p>
+
+            <p><strong>Religion:</strong></p> 
+            <p>{studentDetails.religion}</p>
+
+            <p><strong>Caste:</strong></p> 
+            <p>{studentDetails.casteCategory}</p>
+        </div>
+        </div>
+
 
         {/* Primary Info Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Primary Contact Info</h3>
-        <ul className="space-y-2 text-gray-600">
-            <li className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faPhoneAlt} />
-            <span><strong>Phone Number:</strong> {studentDetails.phone}</span>
-            </li>
-            <li className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <span><strong>Email:</strong> {studentDetails.email}</span>
-            </li>
-        </ul>
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Primary Contact Info</h3>
+            <ul className="space-y-2 text-gray-600">
+              <li className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faPhoneAlt} />
+                <span><strong>Phone Number:</strong> {studentDetails.phone}</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <span><strong>Email:</strong> {studentDetails.email}</span>
+              </li>
+            </ul>
         </div>
 
 
@@ -187,27 +199,33 @@ function StudentDetails() {
 
             {/* Conditional Rendering for Tabs */}
             {activeTab === 'hostel' ? (
-              <div className='space-y-2 text-gray-600'>
-                <p><strong>Hostel Name:</strong> {hostel.hostelName}</p>
-                <p> <strong>Room No:</strong> {hostelRoom.hostelRoomNumber}</p>
+              <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600'>
+                <p><strong>Hostel Name:</strong></p>
+                <p>{hostel.hostelName}</p>
+                <p><strong>Room No:</strong></p>
+                <p>{hostelRoom.hostelRoomNumber}</p>
               </div>
             ) : (
-              <div className='space-y-2 text-gray-600'>
-                <p><strong>Route Name:</strong> {transport.routeName}</p>
-                <p><strong>Vehicle Number:</strong> {transport.vehicleNumber}</p>
-                <p><strong>Driver Name:</strong> {transport.driverName}</p>
-                <p><strong>Driver Phone Number:</strong> {transport.phone}</p>
-                <p><strong>Pickup Point:</strong> {studentDetails.pickupPoint}</p>
+              <div className='grid grid-cols-2 gap-x-4 gap-y-2 text-gray-600'>
+                <p><strong>Route Name:</strong></p>
+                <p>{transport.routeName}</p>
+                <p><strong>Vehicle Number:</strong></p>
+                <p>{transport.vehicleNumber}</p>
+                <p><strong>Driver Name:</strong></p>
+                <p>{transport.driverName}</p>
+                <p><strong>Driver Phone Number:</strong></p>
+                <p>{transport.phone}</p>
+                <p><strong>Pickup Point:</strong></p>
+                <p>{studentDetails.pickupPoint}</p>
               </div>
             )}
           </div>
         </div>
 
-        
         <div>
           {/* Parents Information Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Parents Information</h3>
+            <h3 className="text-lg font-semibold text-gray-700mb-4">Parents Information</h3>
             <div className="space-y-2 text-gray-600">
               <div>
                 <p><strong>Father Name:</strong> {studentDetails.fatherName}</p>
@@ -279,8 +297,7 @@ function StudentDetails() {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default StudentDetails
+export default TchProfile

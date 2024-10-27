@@ -88,7 +88,7 @@ import TransportDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/Tr
 import HostelDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/HostelDets';
 import DocsDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/DocsDets';
 import PrevSchlDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/PrevSchlDets';
-
+import Profile from './Dashboard/Student_Dashboard/Profile/Profile'
 import StdFeeCollection from './Dashboard/Student_Dashboard/Fees/StdFeeCollection';
 
 import PendingAdmForm from './Dashboard/Admin_Dashboard/Students/PendingAdmForm';
@@ -97,6 +97,7 @@ import Event from './Dashboard/Admin_Dashboard/Event/Event/Event';
 import { StepProvider } from './hooks/StepContext';
 import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/EventCategory';
 import StdEvent from './Dashboard/Student_Dashboard/Fees/Event/StdEvent';
+import TchProfile from './Dashboard/Teacher_Dashboard/Teacher Profile/TchProfile';
 
 
 
@@ -207,6 +208,7 @@ function App() {
             <Route path = 'attendance' element = {<StdAttendance/>}/>
             <Route path = 'StdFeeCollection' element = {<StdFeeCollection/>}/>
             <Route path = 'StdEvent' element = {<StdEvent/>}/>
+            <Route path = 'profile' element = {<Profile/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
@@ -226,6 +228,7 @@ function App() {
             <Route path='teanotice' element = {<TeaNotice/>} />
             <Route path='classSelect' element = {<ClassSelect/>}/>
             <Route path='attendance/:className/:section' element={<Attendance/>}/>
+            <Route path='profile' element={<TchProfile/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

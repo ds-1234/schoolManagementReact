@@ -23,6 +23,7 @@ function AcademicDets() {
 
     const [classes , setClasses] = useState([]) ;
     const [schools , setSchools] = useState([]) ;
+    const [initialData ,setInitialData] = useState({});
     const navigate = useNavigate()
 
     const fetchClassOptions = () => {
@@ -59,6 +60,12 @@ function AcademicDets() {
           });
       };
 
+      
+      useEffect(() => {
+        fetchClassOptions() ;
+        fetchSchoolOptions() ;
+      } , [userId])
+
       useEffect(() => {
         // Fetch the existing student details if available
         const fetchStudentDetails = async () => {
@@ -69,7 +76,7 @@ function AcademicDets() {
                 if (studentData) {
                     // If data exists, populate the form
                     console.log(studentData);
-                    
+                    setInitialData(studentData)
                     reset(studentData);
                 }
             } catch (error) {
@@ -80,13 +87,15 @@ function AcademicDets() {
           fetchStudentDetails();
     }, [reset , userId]);
 
-      useEffect(() => {
-        fetchClassOptions() ;
-        fetchSchoolOptions() ;
-      } , [])
 
       const onSubmit = async (data) => {
         console.log(data);
+
+        if (JSON.stringify(data) === JSON.stringify(initialData)) {
+          // If no changes were made, just move forward
+          handleNextStep();
+          return;
+      }
         
         const userData = {
             ...data , 
@@ -126,7 +135,7 @@ function AcademicDets() {
             <select
             id="school"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            {...register('schoolBranch')}
+            {...register('school')}
             placeholder = "Select School Branch "
             >
             <option value="" hidden>Select Branch </option>

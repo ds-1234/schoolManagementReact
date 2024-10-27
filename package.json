@@ -29,6 +29,8 @@
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.1",
     "react-sweetalert2": "^0.6.0",
+    "react-select": "^5.8.1",
+
     "react-toastify": "^10.0.5",
     "rsuite": "^5.70.2"
   },

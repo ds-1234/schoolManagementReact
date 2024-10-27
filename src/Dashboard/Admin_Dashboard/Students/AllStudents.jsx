@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import edit from '../../../assets/edit.png';
+import view from '../../../assets/file.png'
+import edit from '../../../assets/edit.png'
 import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 
 function AllStudents() {
@@ -13,16 +15,19 @@ const column = [
     name: 'SR.No',
     selector: (row , idx) => idx+1,
     sortable: false,
+    width: '100px'
   }, 
   {
     name: 'First Name',
     selector: row => row.firstName,
     sortable: true,
+    width: '140px'
   },
   {
     name: 'Last Name',
     selector: row => row.lastName,
     sortable: true,
+    width: '140px' 
   },
   {
     name: 'Email',
@@ -37,6 +42,7 @@ const column = [
   {
     name: 'Gender',
     selector: row => row.gender,
+    width : '150px' ,
     sortable: true,
   },
   {
@@ -44,8 +50,12 @@ const column = [
     cell: row => (
       <div className='flex gap-2'>
         <button
-        onClick={() => openEditPopup(row.id)}
+        onClick={() => navigate('/admin/studentDetails' , {state: {userId : row.userId}})}
       >
+        <img src={view} alt="view" className='h-8' />
+      </button>
+
+      <button>
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
@@ -59,11 +69,12 @@ const column = [
 
   const [user, setUser] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
+  const navigate = useNavigate()
 
   const fetchData = async() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/user/getUserList',
+      url: `${BASE_URL}/user/getUserList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -103,13 +114,14 @@ const column = [
     }
   
     const selectedFields = Object.keys(checkboxRefs)
-      .filter((key) => checkboxRefs[key].checked);
-  
-    const filteredData = filterUser.filter((row) =>
-      selectedFields.some((field) =>
-        row[field]?.toLowerCase().includes(query.toLowerCase())
-      )
-    );
+    .filter((key) => checkboxRefs[key].checked);
+
+  const filteredData = filterUser.filter((row) =>
+    selectedFields.some((field) => { 
+      return row[field]?.toLowerCase().includes(query.toLowerCase())
+    }
+    )
+  );
   
     setUser(filteredData);
   };
