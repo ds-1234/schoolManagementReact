@@ -7,29 +7,64 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
-
-
 const AddEvent = ({ isOpen, onClose }) => {
   const [subjectMap, setSubjectMap] = useState({});
-  const [dropdownOpen2, setDropdownOpen2] = useState(false); // Event Category dropdown
-  const [showClassAndSection, setShowClassAndSection] = useState(false); // To show/hide Class and Section dropdowns
-  const eventCategoryDropdownRef = useRef(null); // Ref for the Event Category dropdown
+  const [dropdownOpen2, setDropdownOpen2] = useState(false); 
+  const [showClassAndSection, setShowClassAndSection] = useState(false);
+  const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false);
+  const eventCategoryDropdownRef = useRef(null);
+  const [role, setRole] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [eventCategories, setEventCategories] = useState([]);
+  const [selectedEventCategory, setSelectedEventCategory] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [eventTitle, setEventTitle] = useState("");
+  const [rolepay, setRolepay] = useState([0]);
+  const [users, setUsers] = useState([]);
+  const [eventCategory, setEventCategory] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [classes, setClasses] = useState([]); // Assuming this is fetched from API
+  const [selectedClasses, setSelectedClasses] = useState([]);
 
-  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+
+
+  const { register, handleSubmit, formState: { errors },setValue , reset } = useForm({
     defaultValues: {
-        noticeFor: 'All', // Set "All" as the default selected value
-      days: {
-        Monday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Tuesday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Wednesday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Thursday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Friday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-        Saturday: [{ subject: '', teacher: '', timeFrom: '', timeTo: '' }],
-      },
+      noticeFor: 'All',
+      user: '', // Ensure default value for user
     },
   });
 
-  const [teachers, setTeachers] = useState([]);
+  const [userForDropdown, setUserForDropdown] = useState([]);
+
+  useEffect(() => {
+    // Fetch classes from API
+    axios.get('http://localhost:8080/class/getClassList')
+      .then(response => {
+        setClasses(response.data.data); // Assume response data is an array of class objects
+      })
+      .catch(error => {
+        console.error("Error fetching classes:", error);
+      });
+  }, []);
+
+  const handleClassSelect = (classId, className) => {
+    setSelectedClasses(prevSelected => {
+      if (prevSelected.includes(classId)) {
+        // Remove the class if it's already selected
+        return prevSelected.filter(id => id !== classId);
+      } else {
+        // Add the class if it's not selected
+        return [...prevSelected, classId];
+      }
+    });
+  };
+
+  console.log(selectedClasses, 'selectedClasses')
 
   // Handle closing on clicking outside dropdown
   useEffect(() => {
@@ -50,6 +85,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setShowClassAndSection(false)
+      setShowRoleAndTeachers(false)
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -57,6 +93,8 @@ const AddEvent = ({ isOpen, onClose }) => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
+        setSelectedEventCategory(null)
+        setSelectedUser(null)
       }
     };
 
@@ -68,49 +106,136 @@ const AddEvent = ({ isOpen, onClose }) => {
     };
   }, [isOpen, onClose]);
 
+    // Fetch event categories from API
+    useEffect(() => {
+      const fetchEventCategories = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList', {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const cat = response.data.data
+          let eventcat = cat.filter((cat) => cat.isActive==true); 
+          setEventCategories(eventcat); // Set the event categories from the response
+        } catch (error) {
+          console.error('Error fetching event categories:', error);
+        }
+      };
+  
+      fetchEventCategories();
+    }, []);
+
   useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/role/getRoleList', {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        setRole(response.data.data);
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    };
+
+    const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:8080/user/getUserList', {
           headers: { 'Content-Type': 'application/json' },
         });
-        const filteredTeachers = response.data.data.filter(user => user.role === 4);
-        setTeachers(filteredTeachers);
+        setUserForDropdown(response.data.data);
+        console.log(userForDropdown,'user for drop down')
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching users:', error);
       }
     };
 
-    const fetchSub = () => {
-      axios({
-        method: 'GET',
-        url: 'http://localhost:8080/subject/getSubjectList',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          const subjects = {};
-          response.data.data.forEach((sub) => {
-            subjects[sub.id] = sub.subject;
-          });
-          setSubjectMap(subjects);
-        })
-        .catch((error) => {
-          console.error('Error fetching subjects:', error);
-        });
-    };
-
-    fetchSub();
-    fetchTeachers();
+    fetchRoles();
+    fetchUsers();
   }, []);
 
-  const onSubmit = (data) => {
-    // your form submit logic
-    console.log(data);
-  };
+    // Handle Role Selection and User Filtering
+    const handleRoleChange = (roleId) => {
+      setSelectedRoles((prevSelected) => {
+        const updatedRoles = prevSelected.includes(roleId) ? prevSelected.filter((id) => id !== roleId) : [...prevSelected, roleId];
+  
+        // Filter users based on selected role ids
+        if (updatedRoles.length > 0) {
+          console.log(userForDropdown,'userForDropdown')
+          console.log(updatedRoles,'updatedRoles')
+          setRolepay(updatedRoles)
+          const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.role));
+          // const filtered = userForDropdown.filter((user) => updatedRoles.includes(user.roleId));
+          console.log(filtered,'filtered')
+          setFilteredUsers(filtered);
+          console.log(filteredUsers,'filtered users')
+        } else {
+          setFilteredUsers(userForDropdown);
+        }
+  
+        return updatedRoles;
+      });
+    };
+    const getDropdownLabel = () => {
+      if (selectedRoles.length === 1) {
+        const selectedRole = role.find((r) => r.id === selectedRoles[0]);
+        return `Select ${selectedRole?.name}`;
+      }
+      return 'Select User';
+    };
+    
+    const onSubmit = async (data) => {
+      const selectedUserId = data.user; // This will get the selected user ID
+    
+      // Function to capitalize the first letter of the event title
+      const capitalizeFirstLetter = (string) => {
+        if (!string) return ''; // Handle empty string
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+      // Create the event data object to send to your API
+      const eventData = {
+        eventTitle: capitalizeFirstLetter(data.eventtitle), // Capitalize first letter
+        eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
+        role: showClassAndSection ? [3] : rolepay,
+        user: [2, 3], // Add the selected user ID here
+        classes: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
+        message: data.message,
+        startDate: startDate, // Include start date
+        endDate: endDate, // Include end date
+        startTime: startTime, // Include start time
+        endTime: endTime, // Include end time
+        isActive: true // Add other necessary fields like isActive
+      };
+    
+      // Example API call to save the event data
+      try {
+        const response = await axios.post('http://localhost:8080/events/saveEvent', eventData, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        
+        // Notify the user of success
+        toast.success('Event created successfully!');
+        reset(); // Reset the form if needed
+        onClose(); // Close the modal
+      } catch (error) {
+        console.error('Error creating event:', error);
+        toast.error('Failed to create event. Please try again.');
+      }
+    };
 
-  if (!isOpen) return null;
+  // Create a string of selected class names for the placeholder
+  const selectedClassNames = selectedClasses.map(classId => 
+    classes.find(cls => cls.id === Number(classId))?.name
+  );
+  
+  console.log("Mapped Class Names:", selectedClassNames);
+
+// Filter out any undefined names
+const filteredClassNames = selectedClassNames.filter(name => name);
+console.log("Filtered Class Names:", filteredClassNames);
+
+  
+    
+    if (!isOpen) return null;
+    
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
@@ -122,50 +247,118 @@ const AddEvent = ({ isOpen, onClose }) => {
         <h2 className="text-2xl font-bold mb-6 text-[#042954]">New Event</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-
-          {/* Radio buttons for "Event For" */}
           <div className="col-span-2">
-            <label htmlFor="designationName" className="block text-gray-700 font-semibold mb-2">Event For</label>
+            <label htmlFor="noticeFor" className="block text-gray-700 font-semibold mb-2">Event For</label>
             <div className="mt-2 space-y-2">
               <div className='inline ml-4'>
-              <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => setShowClassAndSection(false)} defaultChecked />
-              <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
+                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(false); }} defaultChecked />
+                <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => setShowClassAndSection(true)} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true); setShowRoleAndTeachers(false); }} />
                 <label htmlFor="student" className="text-sm font-medium text-gray-700">Student</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Staff" id="staff" className="mr-2" onChange={() => setShowClassAndSection(false)} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Staff" id="staff" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(true); }} />
                 <label htmlFor="staff" className="text-sm font-medium text-gray-700">Staff</label>
               </div>
             </div>
           </div>
 
-          {/* Conditional Dropdowns for Class and Section */}
-          {showClassAndSection && (
+                    {/* Conditional Dropdowns for Class and Section */}
+                    {showClassAndSection && (
             <>
               <div className="mb-4">
-                <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
+                {/* <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
                 <select id="class" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })}>
-                  {/* Dummy options for now */}
                   <option value="">Select Class</option>
                   <option value="1">Class 1</option>
                   <option value="2">Class 2</option>
-                </select>
+                </select> */}
+                {/* <label htmlFor="class-select" className="block text-gray-700 font-semibold mb-2">Select Class:</label>
+      <select id="class-select" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })} value={selectedClasses} onChange={handleClassChange} >
+        {classList.map((cls) => (
+          <option key={cls.id} value={cls.id}>
+            {cls.name} 
+          </option>
+        ))}
+      </select> */}
+
+      {/* <label className="block text-gray-700 font-semibold mb-2">{selectedClasses.name}</label> */}
+                {/* <select
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register('classes')}  onChange={handleClassChange}
+                >
+                  <option value="">Select Classes</option>
+                  {classList.map((cls) => (
+                    <option key={cls.id} value={cls.id}>{cls.name}</option>
+                  ))}
+                </select> */}
+        <label className="block text-gray-700 font-semibold mb-2">Select Classes:</label>
+        <select
+          value=""
+          onChange={e => handleClassSelect(e.target.value, e.target.options[e.target.selectedIndex].text)}
+          className="w-full p-3 border border-gray-300 rounded"
+        >
+          <option value="" disabled>
+            {selectedClassNames.join(',') || 'Select Classes'}
+          </option>
+          {classes.map(cls => (
+            <option key={cls.id} value={cls.id}>
+              {cls.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+
+              {/* </div> */}
+
+            </>
+          )}
+
+          {showRoleAndTeachers && (
+            <>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">Role</label>
+                <div className="grid grid-cols-2 gap-4">
+                  {role.map((role) => (
+                    <div key={role.id} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        value={role.id}
+                        onChange={() => handleRoleChange(role.id)}
+                        className="mr-2"
+                      />
+                      <label className="text-sm font-medium text-gray-700">{role.name}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
 
+
+              
+
               <div className="mb-4">
-                <label htmlFor="section" className="block text-gray-700 font-semibold mb-2">Section</label>
-                <select id="section" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('section', { required: 'Section is required' })}>
-                  {/* Dummy options for now */}
-                  <option value="">Select Section</option>
-                  <option value="A">A</option>
-                  <option value="B">B</option>
+                <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
+                <select
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register('user')}
+                >
+                  <option value="">Select User</option>
+                  {filteredUsers.map((user) => (
+                    <option key={user.id} value={user.id}>{user.firstName}</option>
+                  ))}
                 </select>
               </div>
             </>
           )}
+          {          console.log(filteredUsers,'filtered users')            }
+
+
+
+
+
 
           {/* Event Title Input */}
           <div className="mb-4">
@@ -179,54 +372,93 @@ const AddEvent = ({ isOpen, onClose }) => {
             {errors.eventtitle && <p className="text-red-500 text-sm mt-1">{errors.eventtitle.message}</p>}
           </div>
 
-          {/* Date and Time Inputs */}
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold mb-1">Date From</label>
-              <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Date To</label>
-              <input type="date" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Time From</label>
-              <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Time To</label>
-              <input type="time" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
-            </div>
-          </div>
-
-                    {/* Event Category Input */}
-                    <div className="mb-2 relative" ref={eventCategoryDropdownRef}>
-          <label htmlFor="feesGroup" className="block text-gray-700 font-semibold mb-2">Event Category</label>
+          {/* Event Category Input */}
+          <div className="mb-2 relative" ref={eventCategoryDropdownRef}>
+            <label htmlFor="eventCategory" className="block text-gray-700 font-semibold mb-2">Event Category</label>
             <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-              onClick={() => setDropdownOpen2(!dropdownOpen2)} // Toggle dropdown for Fees Group
+              onClick={() => setDropdownOpen2(!dropdownOpen2)}
             >
-              {/* <p>{selectedFeesGrp ? selectedFeesGrp.feesGroupName : 'Select Event Category'}</p> */}
-              <p>{ 'Select Event Category'}</p>
+              <p>{selectedEventCategory ? selectedEventCategory.eventCategoryTitle : 'Select Event Category'}</p>
               <FontAwesomeIcon icon={faAngleDown} />
             </div>
             {dropdownOpen2 && (
               <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full z-10">
-                {/* {feesGrp.map(feesGroup => (
+                {eventCategories.map(eventCategory => (
                   <div
-                    key={feesGroup.id}
+                    key={eventCategory.id}
                     className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
                     onClick={() => {
-                      setSelectedFeesGrp(feesGroup);
+                      setSelectedEventCategory(eventCategory);
                       setDropdownOpen2(false);
                     }}
                   >
-                    {feesGroup.feesGroupName}
+                    {eventCategory.eventCategoryTitle}
                   </div>
-                ))} */}
+                ))}
               </div>
             )}
           </div>
+          {console.log(selectedEventCategory,'selected event category')}
+
+          {/* // In your Date and Time Inputs, add onChange handlers to update state */}
+<div className="grid grid-cols-2 gap-6">
+  <div>
+    <label className="block text-sm font-semibold mb-1">Start Date</label>
+    <input 
+      type="date" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">End Date</label>
+    <input 
+      type="date" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">Start Time</label>
+    <input 
+      type="time" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={startTime}
+      onChange={(e) => setStartTime(e.target.value)} // Update state
+    />
+  </div>
+  <div>
+    <label className="block text-sm font-semibold mb-1">End Time</label>
+    <input 
+      type="time" 
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" 
+      value={endTime}
+      onChange={(e) => setEndTime(e.target.value)} // Update state
+    />
+  </div>
+</div>
+{/* File attachment */}
+<div className="mb-4 mt-6 bg-gray-200">
+    <h1 className="mb-4 mt-6 ml-4 tect-xl text-gray-700 font-semibold">Attachment</h1>
+    <p className="mb-4 ml-4 mt-6 ">Upload Size of 4mb,Accepted Format PDF</p>
+    <input type="file" label="Upload" className='ml-4 mb-4' />
+</div>
+
+          {/* Message Input */}
+          <div className="mb-4">
+            <label htmlFor="message" className="block text-gray-700 font-semibold mb-2">Message</label>
+            <textarea
+              type="text"
+              id="message"
+              className={`w-full px-3 py-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              {...register('message', { required: 'Message is required' })}
+            />
+            {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
+          </div>
+
 
           <div className="mt-8 flex justify-center gap-2">
         <Button type="submit" />
@@ -237,6 +469,7 @@ const AddEvent = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 
 export default AddEvent;
 
