@@ -39,47 +39,8 @@ const AddEvent = ({ isOpen, onClose }) => {
     },
   });
 
-<<<<<<< Updated upstream
-  const [teachers, setTeachers] = useState([]);
-=======
-  const [userForDropdown, setUserForDropdown] = useState([]);
-
-  useEffect(() => {
-    // Fetch classes from API
-    axios.get(`${BASE_URL}/class/getClassList`)
-      .then(response => {
-        setClasses(response.data.data); // Assume response data is an array of class objects
-      })
-      .catch(error => {
-        console.error("Error fetching classes:", error);
-      });
-  }, []);
-
-  const handleClassSelect = (classId, className) => {
-    setSelectedClasses(prevSelected => {
-      if (prevSelected.includes(classId)) {
-        // Remove the class if it's already selected
-        return prevSelected.filter(id => id !== classId);
-      } else {
-        // Add the class if it's not selected
-        return [...prevSelected, classId];
-      }
-    });
-  };
-  const handleUserSelect = (userId, userName) => {
-    setSelectedUsers(prevSelected => {
-      if (prevSelected.includes(userId)) {
-        // Remove the class if it's already selected
-        return prevSelected.filter(id => id !== userId);
-      } else {
-        // Add the class if it's not selected
-        return [...prevSelected, userId];
-      }
-    });
-  };
 
   console.log(selectedClasses, 'selectedClasses')
->>>>>>> Stashed changes
   const [userForDropdown, setUserForDropdown] = useState([]);
 
   useEffect(() => {
