@@ -27,13 +27,12 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [endDate, setEndDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [message, setMessage] = useState("");
-  const [isActive, setIsActive] = useState(true);
-  const [fetchedRoles, setFetchedRoles] = useState([]);
-  const [fetchedUsers, setFetchedUsers] = useState([]);
-  const [fetchedEventCategories, setFetchedEventCategories] = useState([]);
+  const [classes, setClasses] = useState([]); // Assuming this is fetched from API
+  const [selectedClasses, setSelectedClasses] = useState([]);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+
+
+  const { register, handleSubmit, formState: { errors },setValue , reset } = useForm({
     defaultValues: {
       noticeFor: 'All',
       user: '', // Ensure default value for user
@@ -41,6 +40,31 @@ const AddEvent = ({ isOpen, onClose }) => {
   });
 
   const [userForDropdown, setUserForDropdown] = useState([]);
+
+  useEffect(() => {
+    // Fetch classes from API
+    axios.get('http://localhost:8080/class/getClassList')
+      .then(response => {
+        setClasses(response.data.data); // Assume response data is an array of class objects
+      })
+      .catch(error => {
+        console.error("Error fetching classes:", error);
+      });
+  }, []);
+
+  const handleClassSelect = (classId, className) => {
+    setSelectedClasses(prevSelected => {
+      if (prevSelected.includes(classId)) {
+        // Remove the class if it's already selected
+        return prevSelected.filter(id => id !== classId);
+      } else {
+        // Add the class if it's not selected
+        return [...prevSelected, classId];
+      }
+    });
+  };
+
+  console.log(selectedClasses, 'selectedClasses')
 
   // Handle closing on clicking outside dropdown
   useEffect(() => {
@@ -166,13 +190,13 @@ const AddEvent = ({ isOpen, onClose }) => {
         if (!string) return ''; // Handle empty string
         return string.charAt(0).toUpperCase() + string.slice(1);
       };
-    
       // Create the event data object to send to your API
       const eventData = {
         eventTitle: capitalizeFirstLetter(data.eventtitle), // Capitalize first letter
         eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
         role: showClassAndSection ? [3] : rolepay,
         user: [2, 3], // Add the selected user ID here
+        classes: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
         message: data.message,
         startDate: startDate, // Include start date
         endDate: endDate, // Include end date
@@ -196,6 +220,19 @@ const AddEvent = ({ isOpen, onClose }) => {
         toast.error('Failed to create event. Please try again.');
       }
     };
+
+  // Create a string of selected class names for the placeholder
+  const selectedClassNames = selectedClasses.map(classId => 
+    classes.find(cls => cls.id === Number(classId))?.name
+  );
+  
+  console.log("Mapped Class Names:", selectedClassNames);
+
+// Filter out any undefined names
+const filteredClassNames = selectedClassNames.filter(name => name);
+console.log("Filtered Class Names:", filteredClassNames);
+
+  
     
     if (!isOpen) return null;
     
@@ -232,14 +269,50 @@ const AddEvent = ({ isOpen, onClose }) => {
                     {showClassAndSection && (
             <>
               <div className="mb-4">
-                <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
+                {/* <label htmlFor="class" className="block text-gray-700 font-semibold mb-2">Class</label>
                 <select id="class" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })}>
-                  {/* Dummy options for now */}
                   <option value="">Select Class</option>
                   <option value="1">Class 1</option>
                   <option value="2">Class 2</option>
-                </select>
-              </div>
+                </select> */}
+                {/* <label htmlFor="class-select" className="block text-gray-700 font-semibold mb-2">Select Class:</label>
+      <select id="class-select" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('class', { required: 'Class is required' })} value={selectedClasses} onChange={handleClassChange} >
+        {classList.map((cls) => (
+          <option key={cls.id} value={cls.id}>
+            {cls.name} 
+          </option>
+        ))}
+      </select> */}
+
+      {/* <label className="block text-gray-700 font-semibold mb-2">{selectedClasses.name}</label> */}
+                {/* <select
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register('classes')}  onChange={handleClassChange}
+                >
+                  <option value="">Select Classes</option>
+                  {classList.map((cls) => (
+                    <option key={cls.id} value={cls.id}>{cls.name}</option>
+                  ))}
+                </select> */}
+        <label className="block text-gray-700 font-semibold mb-2">Select Classes:</label>
+        <select
+          value=""
+          onChange={e => handleClassSelect(e.target.value, e.target.options[e.target.selectedIndex].text)}
+          className="w-full p-3 border border-gray-300 rounded"
+        >
+          <option value="" disabled>
+            {selectedClassNames.join(',') || 'Select Classes'}
+          </option>
+          {classes.map(cls => (
+            <option key={cls.id} value={cls.id}>
+              {cls.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+
+              {/* </div> */}
 
             </>
           )}
