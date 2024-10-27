@@ -1,27 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import axios from 'axios';
 
-const EventCalendar = ({ eventDates, initialView = "month" }) => {
-  // Create a map to count the number of events per date
-  const eventCountMap = eventDates.reduce((map, date) => {
-    const dateStr = new Date(date).toDateString();
-    map[dateStr] = (map[dateStr] || 0) + 1;
+const EventCalendar = ({ events, initialView = "month" }) => {
+  const [eventCategories, setEventCategories] = useState({});
+
+  // Fetch event categories only
+  useEffect(() => {
+    const fetchEventCategories = async () => {
+      try {
+        const categoryRes = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
+        if (categoryRes.data.success) {
+          // Create a lookup map for category colors
+          const categoryColorMap = categoryRes.data.data.reduce((map, category) => {
+            map[category.id] = category.eventCatColorCode;
+            return map;
+          }, {});
+          setEventCategories(categoryColorMap);
+        }
+      } catch (error) {
+        console.error("Error fetching event categories:", error);
+      }
+    };
+    fetchEventCategories();
+  }, []);
+
+  console.log(eventCategories,'eventCategories')
+  console.log(events,'events')
+
+  // Create a map to store events by date, including their color codes
+  const eventMap = events.reduce((map, event) => {
+    const dateStr = new Date(event.startDate).toDateString(); // Assuming events use startDate for the calendar
+    const color = eventCategories[event.eventCategory]; // Get the color code using the event's category ID
+    if (color) {
+      if (!map[dateStr]) map[dateStr] = [];
+      map[dateStr].push(color);
+    }
     return map;
   }, {});
 
-  // Function to tile the events with background for event dates
+  // Function to add background for event dates
   const tileClassName = ({ date }) => {
-    return eventCountMap[date.toDateString()] ? 'bg-blue-300 rounded-full' : null;
+    return eventMap[date.toDateString()] ? 'bg-blue-300 rounded-full' : null;
   };
 
-  // Function to render larger dots based on the number of events on that date
+  // Function to render colored dots based on events per date
   const tileContent = ({ date }) => {
-    const eventCount = eventCountMap[date.toDateString()] || 0;
+    const colors = eventMap[date.toDateString()] || [];
     return (
       <div className="flex justify-center mt-1">
-        {Array.from({ length: eventCount }).map((_, i) => (
-          <span key={i} className="w-2 h-2 bg-blue-500 rounded-full mx-0.5"></span> // Increased dot size
+        {colors.map((color, i) => (
+          <span
+            key={i}
+            style={{ backgroundColor: color }}
+            className="w-2 h-2 rounded-full mx-0.5"
+          ></span>
         ))}
       </div>
     );

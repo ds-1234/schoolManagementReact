@@ -109,8 +109,9 @@ function Event() {
       <div className="flex items-start w-full mt-10">
       <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
-          <EventCalendar eventDates={eventDates} /> {/* Render EventCalendar */}
+          <EventCalendar events={events} /> {/* Render EventCalendar */}
         </div>
+        {console.log(eventDates,'events date')}
 
         <div className="w-5/12 bg-white rounded-xl p-4">
           <div className="flex justify-between items-center mb-4">
