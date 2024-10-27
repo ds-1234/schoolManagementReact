@@ -55,6 +55,7 @@ function Event() {
   }, [isDropdownOpen]);
 
   // Fetch event categories
+  
   const fetchEventCategories = async () => {
     try {
       const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
@@ -87,12 +88,12 @@ function Event() {
 
   useEffect(() => {
     fetchEventCategories();
-  }, []);
+  }, [isAddPopupOpen]);
 
   useEffect(() => {
     // Fetch events when selected category changes
     fetchEventsByCategoryId(selectedCategoryId);
-  }, [selectedCategoryId]);
+  }, [selectedCategoryId,isAddPopupOpen]);
 
   const handleCategorySelect = (categoryId, colorCode) => {
     setSelectedCategoryId(categoryId);
