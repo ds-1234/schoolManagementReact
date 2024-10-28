@@ -58,7 +58,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
   if (!event) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 transform transition-all duration-300 border-4" >
         <h2 className="text-4xl font-bold mb-4" style={{ color: catColor }}>{event.eventTitle}</h2>
         
