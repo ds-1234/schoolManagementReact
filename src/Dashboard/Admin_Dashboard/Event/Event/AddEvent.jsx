@@ -217,7 +217,7 @@ const AddEvent = ({ isOpen, onClose }) => {
         eventCategory: selectedEventCategory?.id, // assuming selectedEventCategory holds the ID
         role: showClassAndSection ? [3] : rolepay,
         user: selectedUsers.length > 0 ? selectedUsers : undefined, // Add the selected user ID here
-        classes: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
+        className: selectedClasses.length > 0 ? selectedClasses : undefined, // Send classes only if selected
         message: data.message,
         startDate: startDate, // Include start date
         endDate: endDate, // Include end date

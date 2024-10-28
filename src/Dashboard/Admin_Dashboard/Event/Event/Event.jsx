@@ -10,6 +10,7 @@ import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
 import AddEvent from './AddEvent';
 import Button from '../../../../Reusable_components/Button';
+import EventDetailPopup from './EventDetailPopup';
 
 function Event() {
   const [attendanceMap, setAttendanceMap] = useState({});
@@ -21,8 +22,17 @@ function Event() {
   const [events, setEvents] = useState([]);
   const [eventDates, setEventDates] = useState([]); // New state for event dates
   const [view, setView] = useState('month'); // Track the active view
-
+  const [selectedEvent, setSelectedEvent] = useState(null); // State to track selected event
   const dropdownRef = useRef(null);
+
+  const openEventPopup = (event) => {
+    setSelectedEvent(event); // Set the selected event
+  };
+
+  const closeEventPopup = () => {
+    setSelectedEvent(null); // Clear the selected event
+  };
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -202,6 +212,8 @@ function Event() {
                     time={`${event.startTime} - ${event.endTime}`}
                     message = {event.message}
                     borderColor={categoryColor} // Pass color to CategoryTiles
+                    onClick={() => openEventPopup(event)} // Pass click handler
+
                   />
                 );
               })
@@ -216,6 +228,8 @@ function Event() {
         isOpen={isAddPopupOpen} 
         onClose={closeAddPopup}
       />
+            {/* Event Detail Popup */}
+            <EventDetailPopup event={selectedEvent} onClose={closeEventPopup} />
     </div>
   );
 }
