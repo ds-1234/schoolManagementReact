@@ -198,7 +198,7 @@ function Event() {
                 todaysEvents.map((event) => {
                   const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
                   return (
-                    <div key={event.id} className="flex items-center p-2 my-2" style={{ borderLeft: `4px solid ${categoryColor}` }}>
+                    <div key={event.id} className="flex items-center p-2 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
                       <span className="flex-grow">{event.eventTitle}</span>
                     </div>
                   );

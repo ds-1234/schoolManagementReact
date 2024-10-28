@@ -42,7 +42,7 @@ const EventCalendar = ({ events, initialView = "month" }) => {
 
   // Function to add background for event dates
   const tileClassName = ({ date }) => {
-    return eventMap[date.toDateString()] ? 'bg-blue-300 rounded-full' : null;
+    return eventMap[date.toDateString()] ? 'border border-black' : null;
   };
 
   // Function to render colored dots based on events per date
