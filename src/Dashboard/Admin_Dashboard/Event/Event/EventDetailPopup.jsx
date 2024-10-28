@@ -3,39 +3,35 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 
-function EventDetailPopup({ event, onClose ,catColor }) {
+function EventDetailPopup({ event, onClose, catColor }) {
   const [users, setUsers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [eventCategoryTitle, setEventCategoryTitle] = useState('');
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user data
         const userResponse = await axios.get('http://localhost:8080/user/getUserList');
         const usersData = userResponse.data.data;
 
-        // Filter users based on event.UserName IDs
         const filteredUsers = event.user ? 
           usersData.filter(user => event.user.includes(user.id)).map(user => user.firstName) : [];
 
         setUsers(filteredUsers);
 
-        // Fetch class data
         const classResponse = await axios.get('http://localhost:8080/class/getClassList');
         const classesData = classResponse.data.data;
 
-        // Filter classes based on event.className IDs
         const filteredClasses = event.className ? 
           classesData.filter(cls => event.className.includes(cls.id)).map(cls => cls.name) : [];
 
         setClasses(filteredClasses);
 
-        // Fetch event category data
         const eventCategoryResponse = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
         const eventCategoriesData = eventCategoryResponse.data.data;
 
-        // Filter event category based on event.eventCategory ID
         const filteredEventCategory = eventCategoriesData.find(category => category.id === event.eventCategory);
         setEventCategoryTitle(filteredEventCategory ? filteredEventCategory.eventCategoryTitle : '');
       } catch (error) {
@@ -54,57 +50,67 @@ function EventDetailPopup({ event, onClose ,catColor }) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
 
-  console.log(catColor,'catecolornv')
-
   if (!event) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 transform transition-all duration-300">
-      <h2 className="text-3xl font-semibold" style={{ color: catColor }}>{event.eventTitle}</h2>
-      <div className="mt-4">
-        <p className="text-gray-800 font-semibold text-xl">Date: </p>
-        <p className="text-gray-600">{event.startDate} - {event.endDate}</p>
-
-        </div>
-
-        <div className="mt-4">
-        <p className="text-gray-800 font-semibold text-xl">Time:</p>
-        <p className="text-gray-600"> {event.startTime} - {event.endTime}</p>
-
-        </div>
-
-        <div className="mt-4">
-        <p className="text-gray-800 font-semibold text-xl">Message:</p>
-        <p className="text-gray-600"> {event.message}</p>
-
-        </div>
-
-        <div className="mt-4">
-          <p className="text-gray-800 font-semibold text-xl">User Names:</p>
-          <p className="text-gray-600">{users.length > 0 ? users.join(', ') : 'No data for you'}</p>
-        </div>
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 transform transition-all duration-300 border-4" >
+        <h2 className="text-4xl font-bold mb-4" style={{ color: catColor }}>{event.eventTitle}</h2>
         
-        <div className="mt-4">
-          <p className="text-gray-800 font-semibold text-xl">Class Names:</p>
-          <p className="text-gray-600">{classes.length > 0 ? classes.join(', ') : 'No data for you'}</p>
-        </div>
+        <div className="overflow-y-auto max-h-80"> {/* Make this div scrollable */}
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Date:</p>
+              <p className="text-gray-700">{event.startDate} - {event.endDate}</p>
+            </div>
+          </div>
 
-        <div className="mt-4">
-          <p className="text-gray-800 font-semibold text-xl">Event Category:</p>
-          <p className="text-gray-600">{eventCategoryTitle || 'No data for you'}</p>
-        </div>
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Time:</p>
+              <p className="text-gray-700">{event.startTime} - {event.endTime}</p>
+            </div>
+          </div>
 
-        <div className="mt-4">
-          <p className="text-gray-800 font-semibold text-xl">Status</p>
-          <StatusButton isActive={event.isActive} />  
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Message:</p>
+              <p className="text-gray-700">{event.message}</p>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">User Names:</p>
+              <p className="text-gray-700">{users.length > 0 ? users.join(', ') : 'No data for you'}</p>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Class Names:</p>
+              <p className="text-gray-700">{classes.length > 0 ? classes.join(', ') : 'No data for you'}</p>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Event Category:</p>
+              <p className="text-gray-700">{eventCategoryTitle || 'No data for you'}</p>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>
+              <p className="text-gray-800 font-semibold">Status:</p>
+              <StatusButton isActive={event.isActive} />
+            </div>
+          </div>
         </div>
 
         <button 
