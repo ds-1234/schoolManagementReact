@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import ToggleButton from '../../../../Reusable_components/ToggleButton';
 
 const AddEvent = ({ isOpen, onClose }) => {
   const [dropdownOpen2, setDropdownOpen2] = useState(false); 
@@ -26,6 +27,8 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [classes, setClasses] = useState([]); // Assuming this is fetched from API
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [active, setActive] = useState([]);
+  
 
 
 
@@ -223,7 +226,7 @@ const AddEvent = ({ isOpen, onClose }) => {
         endDate: endDate, // Include end date
         startTime: startTime, // Include start time
         endTime: endTime, // Include end time
-        isActive: true // Add other necessary fields like isActive
+        isActive: active // Add other necessary fields like isActive
       };
     
       // Example API call to save the event data
@@ -494,6 +497,14 @@ console.log("Filtered Class Names:", filteredClassNames);
             />
             {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
           </div>
+          <div className="mb-2">
+              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">Status *</label>
+              <ToggleButton
+                isOn={active}
+                handleToggle={() => setActive(!active)}
+                id="active"
+              />
+            </div>
 
 
           <div className="mt-8 flex justify-center gap-2">

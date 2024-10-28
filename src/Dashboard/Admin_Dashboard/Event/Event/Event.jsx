@@ -23,14 +23,17 @@ function Event() {
   const [eventDates, setEventDates] = useState([]); // New state for event dates
   const [view, setView] = useState('month'); // Track the active view
   const [selectedEvent, setSelectedEvent] = useState(null); // State to track selected event
+  const [popupColor, setPopupColor] = useState(null); // State to track selected event
   const dropdownRef = useRef(null);
 
-  const openEventPopup = (event) => {
+  const openEventPopup = (event,categoryColor) => {
     setSelectedEvent(event); // Set the selected event
+    setPopupColor(categoryColor)
   };
 
   const closeEventPopup = () => {
     setSelectedEvent(null); // Clear the selected event
+    setPopupColor(null)
   };
 
 
@@ -212,7 +215,7 @@ function Event() {
                     time={`${event.startTime} - ${event.endTime}`}
                     message = {event.message}
                     borderColor={categoryColor} // Pass color to CategoryTiles
-                    onClick={() => openEventPopup(event)} // Pass click handler
+                    onClick={() => openEventPopup(event,categoryColor)} // Pass click handler
 
                   />
                 );
@@ -229,7 +232,7 @@ function Event() {
         onClose={closeAddPopup}
       />
             {/* Event Detail Popup */}
-            <EventDetailPopup event={selectedEvent} onClose={closeEventPopup} />
+            <EventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
     </div>
   );
 }
