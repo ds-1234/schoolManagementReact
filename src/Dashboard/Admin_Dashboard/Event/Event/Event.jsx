@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
@@ -20,10 +20,14 @@ function Event() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryColor, setSelectedCategoryColor] = useState(null);
   const [events, setEvents] = useState([]);
-  const [eventDates, setEventDates] = useState([]); // New state for event dates
-  const [view, setView] = useState('month'); // Track the active view
-  const [selectedEvent, setSelectedEvent] = useState(null); // State to track selected event
-  const [popupColor, setPopupColor] = useState(null); // State to track selected event
+  const [eventDates, setEventDates] = useState([]);
+  const [view, setView] = useState('month');
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [popupColor, setPopupColor] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(true);
+  const [todaysEvents, setTodaysEvents] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  
   const dropdownRef = useRef(null);
 
   const openEventPopup = (event,categoryColor) => {
@@ -67,7 +71,22 @@ function Event() {
     };
   }, [isDropdownOpen]);
 
-  // Fetch event categories
+  const fetchEventsByDate = async (date) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=date&date=${date}`);
+      if (response.data.success) {
+        setTodaysEvents(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching today's events:", error);
+    }
+  };
+
+  const handleDayClick = (date) => {
+    setShowCalendar(false);
+    setSelectedDate(date);
+    fetchEventsByDate(date);
+  };
   
   const fetchEventCategories = async () => {
     try {
@@ -114,11 +133,23 @@ function Event() {
     setIsDropdownOpen(false);
   };
 
-    // Function to handle view change
-    const handleViewChange = (newView) => {
-      setView(newView);
-      // navigate(`/events/${newView}`); // Example of navigation based on the selected view
-    };
+  const handleViewChange = (newView) => {
+    setView(newView);
+    if (newView === 'day') {
+      setShowCalendar(false);
+      fetchEventsByDate(selectedDate);
+    } else {
+      setShowCalendar(true);
+    }
+  };
+
+  const handleDateChange = (direction) => {
+    const currentDate = new Date(selectedDate);
+    const newDate = new Date(currentDate.setDate(currentDate.getDate() + (direction === 'next' ? 1 : -1)));
+    const formattedDate = newDate.toISOString().split('T')[0];
+    setSelectedDate(formattedDate);
+    fetchEventsByDate(formattedDate);
+  };
 
   return (
     <div>
@@ -132,30 +163,52 @@ function Event() {
       <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
           <div className="flex space-x-2  mb-4 mt-4">
-        <Button
-        label='Month'
-          className={`py-2 px-4 rounded ${view === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black '}`}
-          onClick={() => handleViewChange('month')}
-        >
-          Month
-        </Button>
-        <Button
-                label='Week'
-          className={`py-2 px-4 rounded ${view === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
-          onClick={() => handleViewChange('week')}
-        >
-          Week
-        </Button>
-        <Button
-        label='day'
-          className={`py-2 px-4 rounded ${view === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
-          onClick={() => handleViewChange('day')}
-        >
-          Day
-        </Button>
-      </div>
-          <EventCalendar events={events} /> {/* Render EventCalendar */}
-        </div>
+          <Button
+              label='Month'
+              className={`py-2 px-4 rounded ${view === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => handleViewChange('month')}
+            />
+            <Button
+              label='Week'
+              className={`py-2 px-4 rounded ${view === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => handleViewChange('week')}
+            />
+            <Button
+              label='Day'
+              className={`py-2 px-4 rounded ${view === 'day' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+              onClick={() => handleViewChange('day')}
+            />
+          </div>
+          {showCalendar ? (
+            <EventCalendar events={events} onDayClick={handleDayClick} />
+          ) : (
+            <div className="text-center">
+              <div className="flex justify-between items-center mb-4">
+                <button onClick={() => handleDateChange('prev')}>
+                  <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
+                </button>
+                <h2 className="text-xl font-semibold">
+                  Events on {new Date(selectedDate).toLocaleDateString()}
+                </h2>
+                <button onClick={() => handleDateChange('next')}>
+                  <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
+                </button>
+              </div>
+              {todaysEvents.length > 0 ? (
+                todaysEvents.map((event) => {
+                  const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
+                  return (
+                    <div key={event.id} className="flex items-center p-2 my-2" style={{ borderLeft: `4px solid ${categoryColor}` }}>
+                      <span className="flex-grow">{event.eventTitle}</span>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>No events found for this date.</p>
+              )}
+            </div>
+          )}
+       </div>
         {console.log(eventDates,'events date')}
 
         <div className="w-5/12 bg-white rounded-xl p-4">
