@@ -158,14 +158,46 @@ const handleViewChange = (newView) => {
 };
 
 const fetchEventsByWeek = async (start, end) => {
+  // Check if start and end are valid Date objects
+  if (!(start instanceof Date) || !(end instanceof Date)) {
+    // console.error("Start and end must be valid Date objects.");
+    // return;
+    const formattedStart = start;
+    const formattedEnd = end;
+    try {
+      const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
+      
+      if (response.data.success) {
+        console.log(response.data.data, 'weekly events');
+        setWeeklyEvents(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching weekly events:", error);
+    }
+  }
+ else{
+  // Format dates as yyyy-mm-dd
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   try {
-    const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${start}:${end}`);
+    const formattedStart = formatDate(start);
+    const formattedEnd = formatDate(end);
+    
+    const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
+    
     if (response.data.success) {
+      console.log(response.data, 'weekly events');
       setWeeklyEvents(response.data.data);
     }
   } catch (error) {
     console.error("Error fetching weekly events:", error);
   }
+}
 };
 
 const handleWeekChange = (direction) => {
@@ -178,6 +210,7 @@ const handleWeekChange = (direction) => {
   const newEnd = endOfWeek.toISOString().split('T')[0];
   setWeekRange({ start: newStart, end: newEnd });
   fetchEventsByWeek(newStart, newEnd);
+  console.log(weekRange,'Week RAnge')
 };
 
 
