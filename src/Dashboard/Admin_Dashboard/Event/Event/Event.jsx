@@ -27,6 +27,8 @@ function Event() {
   const [showCalendar, setShowCalendar] = useState(true);
   const [todaysEvents, setTodaysEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [weeklyEvents, setWeeklyEvents] = useState([]);
+  const [weekRange, setWeekRange] = useState({ start: '', end: '' });
   
   const dropdownRef = useRef(null);
 
@@ -136,15 +138,46 @@ function Event() {
 // Updated handleViewChange function
 const handleViewChange = (newView) => {
   setView(newView);
-  const today = new Date().toISOString().split('T')[0];
-  
+  const today = new Date();
+
   if (newView === 'day') {
-    setSelectedDate(today);  // Set selectedDate to today's date
-    fetchEventsByDate(today); // Fetch events for today's date
+    setSelectedDate(today.toISOString().split('T')[0]);
+    setShowCalendar(false);
+  } else if (newView === 'week') {
+    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6));
+    setWeekRange({
+      start: startOfWeek.toISOString().split('T')[0],
+      end: endOfWeek.toISOString().split('T')[0],
+    });
+    fetchEventsByWeek(startOfWeek, endOfWeek);
     setShowCalendar(false);
   } else {
     setShowCalendar(true);
   }
+};
+
+const fetchEventsByWeek = async (start, end) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${start}:${end}`);
+    if (response.data.success) {
+      setWeeklyEvents(response.data.data);
+    }
+  } catch (error) {
+    console.error("Error fetching weekly events:", error);
+  }
+};
+
+const handleWeekChange = (direction) => {
+  const startOfWeek = new Date(weekRange.start);
+  const endOfWeek = new Date(weekRange.end);
+  startOfWeek.setDate(startOfWeek.getDate() + (direction === 'next' ? 7 : -7));
+  endOfWeek.setDate(endOfWeek.getDate() + (direction === 'next' ? 7 : -7));
+
+  const newStart = startOfWeek.toISOString().split('T')[0];
+  const newEnd = endOfWeek.toISOString().split('T')[0];
+  setWeekRange({ start: newStart, end: newEnd });
+  fetchEventsByWeek(newStart, newEnd);
 };
 
 
@@ -185,31 +218,61 @@ const handleViewChange = (newView) => {
             />
           </div>
           {showCalendar ? (
-            <EventCalendar events={events} onDayClick={handleDayClick} />
+            <EventCalendar events={events} />
           ) : (
             <div className="text-center">
-              <div className="flex justify-between items-center mb-4">
-                <button onClick={() => handleDateChange('prev')}>
-                  <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
-                </button>
-                <h2 className="text-xl font-semibold">
-                  {new Date(selectedDate).toLocaleDateString()}
-                </h2>
-                <button onClick={() => handleDateChange('next')}>
-                  <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
-                </button>
-              </div>
-              {todaysEvents.length > 0 ? (
-                todaysEvents.map((event) => {
-                  const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
-                  return (
-                    <div key={event.id} className="flex items-center bg-gray-100 rounded-lg p-4 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
-                      <span className="flex-grow">{event.eventTitle}</span>
-                    </div>
-                  );
-                })
+              {view === 'week' ? (
+                <>
+                  <div className="flex justify-between items-center mb-4">
+                    <button onClick={() => handleWeekChange('prev')}>
+                      <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
+                    </button>
+                    <h2 className="text-xl font-semibold">
+                      {`${weekRange.start} - ${weekRange.end}`}
+                    </h2>
+                    <button onClick={() => handleWeekChange('next')}>
+                      <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
+                    </button>
+                  </div>
+                  {weeklyEvents.length > 0 ? (
+                    weeklyEvents.map((event) => {
+                      const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
+                      return (
+                        <div key={event.id} className="flex items-center bg-gray-100 rounded-lg p-4 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
+                          <span className="flex-grow">{event.eventTitle}</span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No events found for this week.</p>
+                  )}
+                </>
               ) : (
-                <p>No events found for this date.</p>
+                <div className="text-center">
+                  <div className="flex justify-between items-center mb-4">
+                    <button onClick={() => handleDateChange('prev')}>
+                      <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
+                    </button>
+                    <h2 className="text-xl font-semibold">
+                      {new Date(selectedDate).toLocaleDateString()}
+                    </h2>
+                    <button onClick={() => handleDateChange('next')}>
+                      <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
+                    </button>
+                  </div>
+                  {todaysEvents.length > 0 ? (
+                    todaysEvents.map((event) => {
+                      const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
+                      return (
+                        <div key={event.id} className="flex items-center bg-gray-100 rounded-lg p-4 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
+                          <span className="flex-grow">{event.eventTitle}</span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No events found for this date.</p>
+                  )}
+                </div>
               )}
             </div>
           )}

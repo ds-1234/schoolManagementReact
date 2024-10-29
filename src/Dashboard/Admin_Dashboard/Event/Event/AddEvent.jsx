@@ -27,7 +27,7 @@ const AddEvent = ({ isOpen, onClose }) => {
   const [classes, setClasses] = useState([]); // Assuming this is fetched from API
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [active, setActive] = useState([]);
+  const [active, setActive] = useState(true);
   
 
 
