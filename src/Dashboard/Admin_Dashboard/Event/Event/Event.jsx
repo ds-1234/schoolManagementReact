@@ -319,9 +319,9 @@ const handleWeekChange = (direction) => {
   <button
     onClick={toggleDropdown}
     className="p-2 border border-gray-300 rounded-lg focus:outline-none flex items-center justify-between w-48 bg-gray-100"
-    style={{
-      color: selectedCategoryId === null ? '#000' : selectedCategoryColor || '#000', // Apply selected color or default to black
-    }}
+    // style={{
+    //   color: selectedCategoryId === null ? '#000' : selectedCategoryColor || '#000', 
+    // }}
   >
     <span>
       {selectedCategoryId === null
@@ -344,9 +344,19 @@ const handleWeekChange = (direction) => {
           key={category.id}
           className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
           onClick={() => handleCategorySelect(category.id, category.eventCatColorCode)}
-          style={{ color: category.eventCatColorCode }}
+          // style={{ color: category.eventCatColorCode }}
         >
-          {category.eventCategoryTitle}
+                  <div className="flex items-center mb-4">
+          {/* Dot */}
+          <span 
+            className="inline-block w-2 h-2 rounded-full " 
+            style={{ backgroundColor: category.eventCatColorCode }} 
+          ></span>
+          
+          {/* Event Category Title */}
+          <h2 className=""> {""} {category.eventCategoryTitle}</h2>
+        </div>
+          {/* {category.eventCategoryTitle} */}
         </div>
       ))}
     </div>
