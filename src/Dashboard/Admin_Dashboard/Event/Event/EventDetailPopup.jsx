@@ -8,8 +8,6 @@ function EventDetailPopup({ event, onClose, catColor }) {
   const [classes, setClasses] = useState([]);
   const [eventCategoryTitle, setEventCategoryTitle] = useState('');
 
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,9 +57,17 @@ function EventDetailPopup({ event, onClose, catColor }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 transform transition-all duration-300 border-4" >
+      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 transform transition-all duration-300 border-4 relative">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
+        >
+          &times; {/* This represents the "X" */}
+        </button>
+
         <h2 className="text-4xl font-bold mb-4" style={{ color: catColor }}>{event.eventTitle}</h2>
-        
+
         <div className="overflow-y-auto max-h-80"> {/* Make this div scrollable */}
           <div className="mt-4">
             <div className="bg-gray-100 p-3 rounded-lg shadow-sm" style={{ borderLeft: `5px solid ${catColor}` }}>

@@ -107,6 +107,13 @@ const EventCalendar = ({ events, initialView = "month" }) => {
       {/* Popup to display events on the selected date */}
       {selectedDate && (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+
+        <button
+          onClick={closeDatePopup}
+          className="absolute top-4 right-4 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
+        >
+          &times; {/* This represents the "X" */}
+        </button>
           <div className="bg-white p-4 rounded shadow-lg w-80">
             <h2 className="text-xl font-bold mb-4">Events on {selectedDate}</h2>
             <ul>
