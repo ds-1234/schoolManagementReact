@@ -133,15 +133,20 @@ function Event() {
     setIsDropdownOpen(false);
   };
 
-  const handleViewChange = (newView) => {
-    setView(newView);
-    if (newView === 'day') {
-      setShowCalendar(false);
-      fetchEventsByDate(selectedDate);
-    } else {
-      setShowCalendar(true);
-    }
-  };
+// Updated handleViewChange function
+const handleViewChange = (newView) => {
+  setView(newView);
+  const today = new Date().toISOString().split('T')[0];
+  
+  if (newView === 'day') {
+    setSelectedDate(today);  // Set selectedDate to today's date
+    fetchEventsByDate(today); // Fetch events for today's date
+    setShowCalendar(false);
+  } else {
+    setShowCalendar(true);
+  }
+};
+
 
   const handleDateChange = (direction) => {
     const currentDate = new Date(selectedDate);
@@ -188,7 +193,7 @@ function Event() {
                   <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
                 </button>
                 <h2 className="text-xl font-semibold">
-                  Events on {new Date(selectedDate).toLocaleDateString()}
+                  {new Date(selectedDate).toLocaleDateString()}
                 </h2>
                 <button onClick={() => handleDateChange('next')}>
                   <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
@@ -198,7 +203,7 @@ function Event() {
                 todaysEvents.map((event) => {
                   const categoryColor = eventCategories.find(cat => cat.id === event.eventCategory)?.eventCatColorCode || "#000";
                   return (
-                    <div key={event.id} className="flex items-center p-2 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
+                    <div key={event.id} className="flex items-center bg-gray-100 rounded-lg p-4 my-2 cursor-pointer" onClick={() => openEventPopup(event, categoryColor)} style={{ borderLeft: `4px solid ${categoryColor}` }}>
                       <span className="flex-grow">{event.eventTitle}</span>
                     </div>
                   );
