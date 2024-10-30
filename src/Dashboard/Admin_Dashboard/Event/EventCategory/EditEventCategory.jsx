@@ -3,6 +3,8 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
+
 
 function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
   const [eventCat, setEventCat] = useState({ eventCategoryTitle: ''});
@@ -12,7 +14,7 @@ function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/eventCategory/getEventCatById/${EventCatId}`,
+      url: `${BASE_URL}/eventCategory/getEventCatById/${EventCatId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -52,7 +54,7 @@ function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/eventCategory/saveEventCategory`,
+      url: `${BASE_URL}/eventCategory/saveEventCategory`,
       headers: {
         'Content-Type': 'application/json',
       },

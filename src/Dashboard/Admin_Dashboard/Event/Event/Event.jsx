@@ -76,7 +76,7 @@ function Event() {
 
   const fetchEventsByDate = async (date) => {
     try {
-      const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=date&date=${date}`);
+      const response = await axios.get(`${BASE_URL}/events/getEventByCalandarType?type=date&date=${date}`);
       if (response.data.success) {
         setTodaysEvents(response.data.data);
       }
@@ -165,7 +165,7 @@ const fetchEventsByWeek = async (start, end) => {
     const formattedStart = start;
     const formattedEnd = end;
     try {
-      const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
+      const response = await axios.get(`${BASE_URL}/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
       
       if (response.data.success) {
         console.log(response.data.data, 'weekly events');
@@ -188,7 +188,7 @@ const fetchEventsByWeek = async (start, end) => {
     const formattedStart = formatDate(start);
     const formattedEnd = formatDate(end);
     
-    const response = await axios.get(`http://localhost:8080/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
+    const response = await axios.get(`${BASE_URL}/events/getEventByCalandarType?type=week&dateRange=${formattedStart} : ${formattedEnd}`);
     
     if (response.data.success) {
       console.log(response.data, 'weekly events');

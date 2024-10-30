@@ -4,6 +4,8 @@ import axios from 'axios';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the download and times icons
+import BASE_URL from '../../../../conf/conf';
+
 
 function EventDetailPopup({ event, onClose, catColor }) {
   const [users, setUsers] = useState([]);
@@ -14,7 +16,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await axios.get('http://localhost:8080/user/getUserList');
+        const userResponse = await axios.get('${BASE_URL}/user/getUserList');
         const usersData = userResponse.data.data;
 
         const filteredUsers = event.user ? 
@@ -22,7 +24,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
 
         setUsers(filteredUsers);
 
-        const classResponse = await axios.get('http://localhost:8080/class/getClassList');
+        const classResponse = await axios.get('${BASE_URL}/class/getClassList');
         const classesData = classResponse.data.data;
 
         const filteredClasses = event.className ? 
@@ -30,14 +32,14 @@ function EventDetailPopup({ event, onClose, catColor }) {
 
         setClasses(filteredClasses);
 
-        const eventCategoryResponse = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
+        const eventCategoryResponse = await axios.get('${BASE_URL}/eventCategory/getEventCatList');
         const eventCategoriesData = eventCategoryResponse.data.data;
 
         const filteredEventCategory = eventCategoriesData.find(category => category.id === event.eventCategory);
         setEventCategoryTitle(filteredEventCategory ? filteredEventCategory.eventCategoryTitle : '');
 
         // Fetch roles
-        const roleResponse = await axios.get('http://localhost:8080/role/getRoleList');
+        const roleResponse = await axios.get('${BASE_URL}/role/getRoleList');
         const rolesData = roleResponse.data.data;
         const filteredRoles = event.role 
         ? event.role.includes(0) ? ['All']: rolesData.filter(role => event.role.includes(role.id)).map(role => role.name) : [];                
