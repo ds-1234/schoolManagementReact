@@ -10,6 +10,7 @@ import AddBtn from '../../../Reusable_components/AddBtn'
 import Swal from 'sweetalert2'
 import AddLeave from './AddLeave';
 import EditLeave from './EditLeave';
+import BASE_URL from '../../../conf/conf';
 
 
 function Leave() {
@@ -59,7 +60,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/leaves/deleteLeaveById/${id}`,
+                url: `${BASE_URL}/leaves/deleteLeaveById/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -88,7 +89,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/leaves/getLeavesList`,
+      url: `${BASE_URL}/leaves/getLeavesList`,
       headers: {
         "Content-Type": "application/json",
       },

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
 
 function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -38,7 +39,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
   }, [onClose]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/user/getUserList')
+    axios.get(`${BASE_URL}/user/getUserList`)
       .then((response) => {
         const filteredPlayers = response.data.data.filter(user => user.role === 3);
         setPlayers(filteredPlayers);
@@ -48,7 +49,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
       });
   }, []);
   useEffect(() => {
-    axios.get('http://localhost:8080/sports/getSportsList')
+    axios.get(`${BASE_URL}/sports/getSportsList`)
       .then((response) => {
         // const filteredPlayers = response.data.data.filter(user => user.role.name === 'Student');
         // setPlayers(filteredPlayers);
@@ -61,7 +62,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
 
   useEffect(() => {
     if (playersId) {
-      axios.get(`http://localhost:8080/players/getPlayersById/${playersId}`)
+      axios.get(`${BASE_URL}/players/getPlayersById/${playersId}`)
         .then((response) => {
           const playerData = response.data.data;
           setPlayerData(playerData);
@@ -98,7 +99,7 @@ function EditPlayers({ isOpen, onClose, playersId, onSuccess }) {
 
     axios({
       method: 'post',
-      url: `http://localhost:8080/players/savePlayers`,
+      url: `${BASE_URL}/players/savePlayers`,
       headers: {
         'Content-Type': 'application/json',
       },

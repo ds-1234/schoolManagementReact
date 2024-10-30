@@ -7,6 +7,7 @@ import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 function Subject() {
   const [data, setData] = useState([]);
@@ -44,7 +45,7 @@ function Subject() {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/subject/getSubjectList`,
+      url: `${BASE_URL}/subject/getSubjectList`,
       headers: {
         "Content-Type": "application/json",
       },

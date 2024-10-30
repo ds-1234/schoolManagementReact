@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
   const [leave, setLeave] = useState({ leaveType: '', leaveDescription: '' });
@@ -19,7 +20,7 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/leaves/getLeaveById/${leaveId}`,
+      url: `${BASE_URL}/leaves/getLeaveById/${leaveId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -61,7 +62,7 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
     // e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/leaves/saveLeaves`,
+      url: `${BASE_URL}/leaves/saveLeaves`,
       headers: {
         'Content-Type': 'application/json',
       },

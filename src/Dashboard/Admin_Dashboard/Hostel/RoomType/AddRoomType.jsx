@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useState } from 'react';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
 
 const AddRoomType = ({ isOpen, onClose }) => {
 
@@ -45,7 +46,7 @@ const AddRoomType = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/roomType/saveRoomType',
+      url: `${BASE_URL}/roomType/saveRoomType`,
       data: {
         roomTypeName: data.RoomType,
         description: data.description,

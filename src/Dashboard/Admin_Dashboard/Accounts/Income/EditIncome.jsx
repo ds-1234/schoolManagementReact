@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
 
 function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
   const [income, setIncome] = useState({ Income: '', source: '', date: '', amount: '',invoice: '',payment: '', description: '' });
@@ -15,7 +16,7 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
     if (isOpen) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/income/getIncomeById/${incomeId}`,
+        url: `${BASE_URL}/income/getIncomeById/${incomeId}`,
         headers: {
           'Content-Type': 'application/json',
         },

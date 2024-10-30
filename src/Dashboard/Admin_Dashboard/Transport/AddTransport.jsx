@@ -5,6 +5,7 @@ import axios from 'axios';
 import {toast , ToastContainer } from 'react-toastify';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 function AddTransport() {
 
@@ -16,7 +17,7 @@ function AddTransport() {
   const onSubmit = (data) => {
     axios({
         method:"POST",
-        url : `http://localhost:8080/transport/createTransport`,
+        url : `${BASE_URL}/transport/createTransport`,
         data: {
             routeName : data.routeName ,
             vehicleNumber : data.vehicleNumber ,

@@ -11,6 +11,7 @@ import EventCalendar from '../../../../Reusable_components/EventCalendar';
 import AddEvent from './AddEvent';
 import Button from '../../../../Reusable_components/Button';
 import EventDetailPopup from './EventDetailPopup';
+import BASE_URL from '../../../../conf/conf';
 
 function Event() {
   const [attendanceMap, setAttendanceMap] = useState({});
@@ -92,7 +93,7 @@ function Event() {
   
   const fetchEventCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
+      const response = await axios.get(`${BASE_URL}/eventCategory/getEventCatList`);
       if (response.data.success) {
         const activeCategories = response.data.data.filter((cat) => cat.isActive === true);
         setEventCategories(activeCategories);
@@ -102,12 +103,11 @@ function Event() {
     }
   };
 
-  // Fetch events based on selected category ID or all events
-  const fetchEventsByCategoryId = async (categoryId) => {
+  const fetchData = async () => {
     try {
       const response = categoryId 
-        ? await axios.get(`http://localhost:8080/events/getEventListByCatId/${categoryId}`)
-        : await axios.get('http://localhost:8080/events/getEventList'); // Fetch all events
+        ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
+        : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
       
       if (response.data.success) {
         setEvents(response.data.data);

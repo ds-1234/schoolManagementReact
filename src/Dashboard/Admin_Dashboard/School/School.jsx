@@ -10,6 +10,7 @@ import Table from '../../../Reusable_components/Table';
 import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 function School() {
 
@@ -111,7 +112,7 @@ const column = [
   const fetchData = async() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/school/getSchoolList',
+      url: `${BASE_URL}/school/getSchoolList`,
       headers: {
         'Content-Type': 'application/json',
       },

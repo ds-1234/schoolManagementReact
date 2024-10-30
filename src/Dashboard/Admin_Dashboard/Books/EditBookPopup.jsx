@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../conf/conf';
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
   const formatDateToDDMMYYYY = (dateString) => {
@@ -35,7 +36,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     if (bookId) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/book/getBook/${bookId}`,
+        url: `${BASE_URL}/book/getBook/${bookId}`,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -98,7 +99,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
   const submitBook = (data) => {
     axios({
       method: 'POST',
-      url: `http://localhost:8080/book/createBook`,
+      url: `${BASE_URL}/book/createBook`,
       data: {
         id: "${bookId}",
         ...book,

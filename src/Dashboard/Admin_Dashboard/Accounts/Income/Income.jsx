@@ -7,6 +7,7 @@ import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditIncome from './EditIncome';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 function Income() {
   const navigate = useNavigate();
@@ -140,7 +141,7 @@ function Income() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/income/getIncomeList',
+      url: `${BASE_URL}/income/getIncomeList`,
       headers: {
         'Content-Type': 'application/json',
       },

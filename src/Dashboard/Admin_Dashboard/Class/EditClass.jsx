@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import BASE_URL from '../../../conf/conf';
 
 function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   const [grade, setGrade] = useState({ name: '', section: '', subject: [] });
@@ -26,7 +27,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   }, [onClose]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/subject/getSubjectList')
+    axios.get(`${BASE_URL}/subject/getSubjectList`)
       .then((response) => {
         setSubjects(response.data.data);
       })
@@ -37,7 +38,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
 
   useEffect(() => {
     if (GradeId) {
-      axios.get(`http://localhost:8080/class/getClass/${GradeId}`)
+      axios.get(`${BASE_URL}/class/getClass/${GradeId}`)
         .then((response) => {
           const classData = response.data.data;
           setGrade(classData);
@@ -80,7 +81,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
 
     axios({
       method: 'post',
-      url: `http://localhost:8080/class/createClass`,
+      url: `${BASE_URL}/class/createClass`,
       headers: {
         'Content-Type': 'application/json',
       },

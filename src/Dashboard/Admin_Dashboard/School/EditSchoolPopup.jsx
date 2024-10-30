@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import BASE_URL from '../../../conf/conf';
 
 const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   const [school, setSchool] = useState({
@@ -33,7 +34,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
 
   useEffect(() => {
     if (schoolId) {
-      axios.get(`http://localhost:8080/school/getSchool/${schoolId}`, {
+      axios.get(`${BASE_URL}/school/getSchool/${schoolId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -57,7 +58,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
     e.preventDefault();
     axios({
       method: 'POST', 
-      url: `http://localhost:8080/school/createSchool`,
+      url: `${BASE_URL}/school/createSchool`,
       data: {id : '${schoolId}', ...school},
       headers: {
         'Content-Type': 'application/json',

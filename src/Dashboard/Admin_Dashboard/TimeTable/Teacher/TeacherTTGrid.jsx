@@ -1,5 +1,6 @@
 import React, { useEffect , useState } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
 
 const TeacherTTGrid = ({ timetableData }) => {
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -9,7 +10,7 @@ const TeacherTTGrid = ({ timetableData }) => {
 
     // Fetch class data
     const fetchCls = () => {
-      axios.get('http://localhost:8080/class/getClassList')
+      axios.get(`${BASE_URL}/class/getClassList`)
         .then((response) => {
           const classes = {};
           response.data.data.forEach((cls) => {
@@ -24,7 +25,7 @@ const TeacherTTGrid = ({ timetableData }) => {
   
     // Fetch subject data
     const fetchSub = () => {
-      axios.get('http://localhost:8080/subject/getSubjectList')
+      axios.get(`${BASE_URL}/subject/getSubjectList`)
         .then((response) => {
           const subjects = {};
           response.data.data.forEach((sub) => {

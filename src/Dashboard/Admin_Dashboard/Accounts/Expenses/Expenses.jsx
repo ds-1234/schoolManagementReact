@@ -9,6 +9,7 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 import EditExpenses from './EditExpenses';
 // import StatusButton from '../../../Reusable_components/StatusButton';
 import AddBtn from '../../../../Reusable_components/AddBtn';
+import BASE_URL from '../../../../conf/conf';
 
 
 function Expenses() {
@@ -114,7 +115,7 @@ const closeEditPopup = () => {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/expenses/getExpensesList',
+      url: `${BASE_URL}/expenses/getExpensesList`,
       headers: {
         'Content-Type': 'application/json',
       },

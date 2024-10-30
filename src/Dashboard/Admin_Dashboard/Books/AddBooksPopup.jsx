@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 // import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import dayjs from 'dayjs';
@@ -64,7 +65,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
 
     axios({
       method: 'post',
-      url: 'http://localhost:8080/book/createBook',
+      url: `${BASE_URL}/book/createBook`,
       data: {
         name: data.name,
         description: data.description,

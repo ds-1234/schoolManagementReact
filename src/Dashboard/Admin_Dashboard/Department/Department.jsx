@@ -10,6 +10,7 @@ import StatusButton from '../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2'
 import AddDepartment from './AddDepartment';
 import EditDepartment from './EditDepartment';
+import BASE_URL from '../../../conf/conf';
 
 
 
@@ -61,7 +62,7 @@ function Department() {
     
                 axios({
                     method: "post",
-                    url: `http://localhost:8080/department/deleteDepartment/${id}`,
+                    url: `${BASE_URL}/department/deleteDepartment/${id}`,
                     headers: {
                       "Content-Type": "application/json",
                     },
@@ -90,7 +91,7 @@ function Department() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `http://localhost:8080/department/getDepartmentList`,
+        url: `${BASE_URL}/department/getDepartmentList`,
         headers: {
           "Content-Type": "application/json",
         },

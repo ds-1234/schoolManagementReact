@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import TodayDate from '../../../Reusable_components/TodayDate';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 // import DatePicker from '../../../Reusable_components/DatePicker';
 
 function AddNotice() {
@@ -36,7 +37,7 @@ function AddNotice() {
 
     axios({
       method: 'post', 
-      url: 'http://localhost:8080/notice/createNotice',
+      url: `${BASE_URL}/notice/createNotice`,
       data: {
         noticeTitle: data.title,
         noticeDetails: data.details,

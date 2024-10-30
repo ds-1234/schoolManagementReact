@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Button from '../../../Reusable_components/Button';
 import Tile from './Tile';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 
@@ -23,7 +24,7 @@ function NoticeBoard() {
 
   const fetchNotices = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/notice/getNoticeList');
+      const response = await axios.get(`${BASE_URL}/notice/getNoticeList`);
       setNotices(response.data.data);
     } catch (error) {
       console.error('Error fetching notices:', error);

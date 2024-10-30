@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
 
 function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
   const [grade, setGrade] = useState({ grade: '', percentageFrom: '', percentageUpto: '', gradePoints: '', description: '',isActive:true });
@@ -14,7 +15,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
     if (isOpen) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/gradePoints/getGradePoints/${gradeId}`,
+        url: `${BASE_URL}/gradePoints/getGradePoints/${gradeId}`,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -67,7 +68,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
 
     axios({
       method: 'PUT',
-      url: `http://localhost:8080/gradePoints/updateGradePoints`,
+      url: `${BASE_URL}/gradePoints/updateGradePoints`,
       headers: {
         'Content-Type': 'application/json',
       },

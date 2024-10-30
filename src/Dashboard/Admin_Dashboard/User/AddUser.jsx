@@ -8,6 +8,7 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 import DatePicker from '../../../Reusable_components/DatePicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../conf/conf';
 
 
 const AddUser = () => {
@@ -30,7 +31,7 @@ const AddUser = () => {
     const fetchRoles = async() =>{
       await axios({
         method:"GET" , 
-        url:'http://localhost:8080/role/getRoleList' , 
+        url: `${BASE_URL}/role/getRoleList` , 
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,7 +48,7 @@ const AddUser = () => {
     const fetchStds = async() =>{
       await axios({
         method:"GET" , 
-        url:'http://localhost:8080/user/getUserList' , 
+        url: `${BASE_URL}/user/getUserList` , 
         headers: {
           "Content-Type": "application/json",
         },
@@ -74,7 +75,7 @@ const AddUser = () => {
     }
     axios({
         method:"post",
-        url : `http://localhost:8080/user/createUser`,
+        url : `${BASE_URL}/user/createUser`,
         data: userData ,
         headers: {
           "Content-Type": "application/json",

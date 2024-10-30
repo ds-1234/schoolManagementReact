@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
 
 function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
   const [examType, setExamType] = useState({ ExamName: '', description: '', });
@@ -12,7 +13,7 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
     if (isOpen) {
       axios({
         method: 'GET',
-        url: `http://localhost:8080/examType/getExamType/${examtypeId}`,
+        url: `${BASE_URL}/examType/getExamType/${examtypeId}`,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -53,7 +54,7 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
 
     axios({
       method: 'PUT',
-      url: `http://localhost:8080/examType/updateExamType`,
+      url: `${BASE_URL}/examType/updateExamType`,
       headers: {
         'Content-Type': 'application/json',
       },

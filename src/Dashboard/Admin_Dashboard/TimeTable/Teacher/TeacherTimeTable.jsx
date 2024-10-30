@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import TeacherTTGrid from './TeacherTTGrid';
+import BASE_URL from '../../../../conf/conf';
 
 const TimetablePage = () => {
   const { teacherId } = useParams(); // Get teacherId from the route
@@ -12,7 +13,7 @@ const TimetablePage = () => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
+        const response = await axios.get(`${BASE_URL}/timeTable/getTimeTable`);
         console.log(response.data.data);
         
         // Filter timetable for specific teacher based on teacherId

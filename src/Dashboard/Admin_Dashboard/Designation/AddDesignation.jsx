@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 const AddDesignation = ({ isOpen, onClose }) => {
   const {
@@ -43,7 +44,7 @@ const AddDesignation = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/designation/saveDesignation',
+      url: `${BASE_URL}/designation/saveDesignation`,
       data: {
         designationName: data.designationName,
         isActive: value,

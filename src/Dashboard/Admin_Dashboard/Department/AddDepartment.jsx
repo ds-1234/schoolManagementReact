@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../conf/conf';
 
 const AddDepartment = ({ isOpen, onClose }) => {
   const {
@@ -43,7 +44,7 @@ const AddDepartment = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/department/saveDepartment',
+      url: `${BASE_URL}/department/saveDepartment`,
       data: {
         departmentName: data.departmentName,
         isActive: value,

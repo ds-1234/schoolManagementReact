@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
 
 function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
   const [hostel, setHostel] = useState({ hostelName: '',hostelType: '',intakeBedCount: '',hostelAddress: '', description: '' });
@@ -9,7 +10,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/hostel/getHostelById/${hostelId}`,
+      url: `${BASE_URL}/hostel/getHostelById/${hostelId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -46,7 +47,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/hostel/saveHostel`,
+      url: `${BASE_URL}/hostel/saveHostel`,
       headers: {
         'Content-Type': 'application/json',
       },

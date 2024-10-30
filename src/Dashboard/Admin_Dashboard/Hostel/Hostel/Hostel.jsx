@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import AddHostel from './AddHostel';
 import EditHostel from './EditHostel';
+import BASE_URL from '../../../../conf/conf';
 
 function Hostel() {
   const [data, setData] = useState([]);
@@ -57,7 +58,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/hostel/deleteHostel/${id}`,
+                url: `${BASE_URL}/hostel/deleteHostel/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -86,7 +87,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/hostel/getHostelList`,
+      url: `${BASE_URL}/hostel/getHostelList`,
       headers: {
         "Content-Type": "application/json",
       },

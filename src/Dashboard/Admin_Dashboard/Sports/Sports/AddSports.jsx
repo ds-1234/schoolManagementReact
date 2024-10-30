@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../../conf/conf';
 
 const AddSports = ({ isOpen, onClose }) => {
 
@@ -25,7 +26,7 @@ const AddSports = ({ isOpen, onClose }) => {
 
   const fetchCoach = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/user/getUserList');
+        const response = await axios.get(`${BASE_URL}/user/getUserList`);
         const filteredCoaches = response.data.data.filter(user => user.role === 4);
         setCoach(filteredCoaches);
     } catch (error) {
@@ -63,7 +64,7 @@ const AddSports = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/sports/saveSports',
+      url: `${BASE_URL}/sports/saveSports`,
       data: {
         sportsName: data.sportsName,
         // coachName: {id: selectedCoach?.id },
@@ -119,31 +120,31 @@ const AddSports = ({ isOpen, onClose }) => {
 
        {/* Coach Input */}
        <div className="mb-4 relative">
-                        <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
-                        <div 
-                            className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                        >
-                            <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                        </div>
-                        {dropdownOpen && (
-                            <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
-                                {coach.map(coach => (
-                                    <label
-                                        key={coach.id}
-                                        className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                                        onClick={() => {
-                                            setSelectedCoach(coach); // Set selected coach
-                                            setDropdownOpen(false); // Close dropdown after selection
-                                        }}
-                                    >
-                                        {coach.firstName}
-                                    </label>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+          <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
+          <div 
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+              <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
+              <FontAwesomeIcon icon={faAngleDown} />
+          </div>
+          {dropdownOpen && (
+              <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
+                  {coach.map(coach => (
+                      <label
+                          key={coach.id}
+                          className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                          onClick={() => {
+                              setSelectedCoach(coach); // Set selected coach
+                              setDropdownOpen(false); // Close dropdown after selection
+                          }}
+                      >
+                          {coach.firstName}
+                      </label>
+                  ))}
+              </div>
+          )}
+      </div>
 
 
           {/* Started Year  Input */}

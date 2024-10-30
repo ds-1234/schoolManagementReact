@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
+import BASE_URL from '../../../../conf/conf';
 
 
 function HostelRooms() {
@@ -57,7 +58,7 @@ const handleDelete = (id)=>{
 
             axios({
                 method: "post",
-                url: `http://localhost:8080/hostelRooms/deleteHostelRooms/${id}`,
+                url: `${BASE_URL}/hostelRooms/deleteHostelRooms/${id}`,
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -86,7 +87,7 @@ const handleDelete = (id)=>{
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/hostelRooms/getHostelRoomsList`,
+      url: `${BASE_URL}/hostelRooms/getHostelRoomsList`,
       headers: {
         "Content-Type": "application/json",
       },

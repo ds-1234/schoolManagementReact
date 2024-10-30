@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import BASE_URL from '../../../conf/conf';
 
 const AddTimeTable = ({ isOpen, onClose, classItem }) => {  
   const [subjectMap , setSubjectMap] = useState({}) 
@@ -47,7 +48,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/getUserList', {
+        const response = await axios.get(`${BASE_URL}/user/getUserList`, {
           headers: { 'Content-Type': 'application/json' },
         });
         const filteredTeachers = response.data.data.filter(user => user.role === 4 )
@@ -63,7 +64,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
     const fetchSub = () => {
       axios({
         method: 'GET',
-        url: 'http://localhost:8080/subject/getSubjectList',
+        url: `${BASE_URL}/subject/getSubjectList`,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -110,7 +111,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
     // Send the payload directly to the API
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/timeTable/addTimeTable',
+      url: `${BASE_URL}/timeTable/addTimeTable`,
       data: payload,
     })
     .then((response) => {

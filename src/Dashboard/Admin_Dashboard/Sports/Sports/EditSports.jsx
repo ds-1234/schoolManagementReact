@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
 
 function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -38,7 +39,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
   useEffect(() => {
     const fetchCoach = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/user/getUserList');
+            const response = await axios.get(`${BASE_URL}/user/getUserList`);
             const filteredCoaches = response.data.data.filter(user => user.role === 3);
             setCoach(filteredCoaches);
         } catch (error) {
@@ -50,7 +51,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
 
   useEffect(() => {
     if (sportsId) {
-      axios.get(`http://localhost:8080/sports/getSportsById/${sportsId}`)
+      axios.get(`${BASE_URL}/sports/getSportsById/${sportsId}`)
         .then((response) => {
           const sportsData = response.data.data;
           setSports(sportsData);
@@ -83,7 +84,7 @@ const handleSubmit = (e) => {
     // Send only the selected coach ID
     axios({
       method: 'post',
-      url: `http://localhost:8080/sports/saveSports`,
+      url: `${BASE_URL}/sports/saveSports`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -140,31 +141,31 @@ const handleSubmit = (e) => {
 
       {/* Coach Input */}
       <div className="mb-4 relative">
-                        <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
-                        <div 
-                            className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                        >
-                            <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
-                            <FontAwesomeIcon icon={faAngleDown} />
-                        </div>
-                        {dropdownOpen && (
-                            <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
-                                {coach.map(coach => (
-                                    <label
-                                        key={coach.id}
-                                        className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-                                        onClick={() => {
-                                            setSelectedCoach(coach); // Set selected coach
-                                            setDropdownOpen(false); // Close dropdown after selection
-                                        }}
-                                    >
-                                        {coach.firstName}
-                                    </label>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+        <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
+        <div 
+            className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+            <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
+            <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+        {dropdownOpen && (
+            <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
+                {coach.map(coach => (
+                    <label
+                        key={coach.id}
+                        className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
+                        onClick={() => {
+                            setSelectedCoach(coach); // Set selected coach
+                            setDropdownOpen(false); // Close dropdown after selection
+                        }}
+                    >
+                        {coach.firstName}
+                    </label>
+                ))}
+            </div>
+        )}
+      </div>
 
           {/* Started Year  Input */}
           <div className="mb-4">

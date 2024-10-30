@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
+import BASE_URL from '../../../conf/conf';
 
 function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   const [subject, setSubject] = useState({ subject: '', description: '' });
@@ -9,7 +10,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/subject/getSubject/${subjectId}`,
+      url: `${BASE_URL}/subject/getSubject/${subjectId}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -46,7 +47,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: `http://localhost:8080/subject/createSubject`,
+      url: `${BASE_URL}/subject/createSubject`,
       headers: {
         'Content-Type': 'application/json',
       },

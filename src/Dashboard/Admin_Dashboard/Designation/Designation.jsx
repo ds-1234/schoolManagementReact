@@ -9,6 +9,7 @@ import StatusButton from '../../../Reusable_components/StatusButton';
 import AddDesignation from './AddDesignation';
 import EditDesignation from './EditDesignation';
 import Swal from 'sweetalert2'
+import BASE_URL from '../../../conf/conf';
 
 
 
@@ -60,7 +61,7 @@ function Designation() {
     
                 axios({
                     method: "post",
-                    url: `http://localhost:8080/designation/deleteDesignation/${id}`,
+                    url: `${BASE_URL}/designation/deleteDesignation/${id}`,
                     headers: {
                       "Content-Type": "application/json",
                     },
@@ -89,7 +90,7 @@ function Designation() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `http://localhost:8080/designation/getDesignationList`,
+        url: `${BASE_URL}/designation/getDesignationList`,
         headers: {
           "Content-Type": "application/json",
         },

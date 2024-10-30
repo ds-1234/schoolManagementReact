@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
 
 const AddHostel = ({ isOpen, onClose }) => {
   const {
@@ -39,7 +40,7 @@ const AddHostel = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/hostel/saveHostel',
+      url: `${BASE_URL}/hostel/saveHostel`,
       data: {
         hostelName: data.hostelName,
         hostelType: data.hostelType,
