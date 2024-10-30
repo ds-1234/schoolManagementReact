@@ -5,14 +5,15 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import EventCalendar from '../../../../Reusable_components/EventCalendar';
+// import EventCalendar from '../../../../Reusable_components/EventCalendar';
 // import AddEvent from './AddEvent';
-import Button from '../../../../Reusable_components/Button';
-import BASE_URL from '../../../../conf/conf';
-import StdCategoryTiles from './StdCategoryTiles';
-import StdEventDetailPopup from './StdEventDetailPopup';
+import Button from '../../../Reusable_components/Button';
+import BASE_URL from '../../../conf/conf';
+import TeaEventDetailPopup from './TeaEventDetailPopup';
+import TeaCategoryTiles from './TeaCategoryTiles';
+import EventCalendar from '../../../Reusable_components/EventCalendar';
 
-function StdEvent() {
+function TeaEvent() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -400,7 +401,7 @@ const handleWeekChange = (direction) => {
                 const categoryColor = eventCategories.find((cat) => cat.id === event.eventCategory)?.eventCatColorCode || "#000"; // Fallback color
 
                 return (
-                  <StdCategoryTiles
+                  <TeaCategoryTiles
                     key={event.id}
                     title={event.eventTitle}
                     date={`${event.startDate} - ${event.endDate}`}
@@ -421,9 +422,9 @@ const handleWeekChange = (direction) => {
 
 
             {/* Event Detail Popup */}
-            <StdEventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
+            <TeaEventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
     </div>
   );
 }
 
-export default StdEvent;
+export default TeaEvent;
