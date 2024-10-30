@@ -287,7 +287,7 @@ const handleWeekChange = (direction) => {
                       <FontAwesomeIcon icon={faChevronLeft} className="text-lg text-gray-500" />
                     </button>
                     <h2 className="text-xl font-semibold">
-                      {new Date(selectedDate).toLocaleDateString()}
+                    {new Date(selectedDate).toLocaleDateString('en-CA')}
                     </h2>
                     <button onClick={() => handleDateChange('next')}>
                       <FontAwesomeIcon icon={faChevronRight} className="text-lg text-gray-500" />
