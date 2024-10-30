@@ -25,9 +25,7 @@ function StdNotice() {
   const fetchNotices = async () => {
     try {
       const response = await axios.get('http://localhost:8080/notice/getNoticeList');
-      const filteredData = response.data.data.filter(item => 
-        item.role === user.role  || item.role === 0      
-      );
+      const filteredData = response.data.data.filter(item =>item.role === user.role  || item.role === 0);
       setNotices(filteredData);
     } catch (error) {
       console.error('Error fetching notices:', error);

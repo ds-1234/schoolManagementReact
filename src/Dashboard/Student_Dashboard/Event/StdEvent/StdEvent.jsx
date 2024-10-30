@@ -14,6 +14,7 @@ import StdCategoryTiles from './StdCategoryTiles';
 import StdEventDetailPopup from './StdEventDetailPopup';
 
 function StdEvent() {
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -108,17 +109,32 @@ function StdEvent() {
       const response = categoryId 
         ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
         : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
-      
+  
       if (response.data.success) {
-        setEvents(response.data.data);
+        const reqevents = response.data.data.filter(item => 
+          item.role.includes(0) || item.role.includes(user.role)
+        );
+        console.log(reqevents,'reqevents')
+  
+      // Then filter based on className and user arrays
+      const filteredEvents = reqevents.filter(item => {
+        const hasClassMatch = Array.isArray(item.className) && item.className.some(classId => user.className.includes(classId));
+        const hasUserMatch = Array.isArray(item.user) && item.user.includes(user.id);
+        
+        return hasClassMatch || hasUserMatch;
+      });
+        console.log(filteredEvents,'filteredEvents') 
+        setEvents(filteredEvents);
+  
         // Extract event dates for the calendar
-        const dates = response.data.data.map(event => event.startDate);
+        const dates = filteredEvents.map(event => event.startDate);
         setEventDates(dates); // Set the event dates
       }
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchEventCategories();
@@ -310,7 +326,7 @@ const handleWeekChange = (direction) => {
             </div>
           )}
        </div>
-        {console.log(eventDates,'events date')}
+        {/* {console.log(eventDates,'events date')} */}
 
         <div className="w-5/12 bg-white rounded-xl p-4">
           <div className="flex justify-between items-center mb-4">

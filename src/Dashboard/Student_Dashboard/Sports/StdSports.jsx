@@ -31,10 +31,7 @@ const StdSports = () => {
         console.log(response.data.data,'dataresponse')
 
         // Filter the response data based on user className and section
-        const filteredData = response.data.data.filter(item => 
-          item.userId === user.id
-
-        );
+        const filteredData = response.data.data.filter(item => item.userId === user.id );
 
         // Set the filtered sports data
         setPlayer(filteredData); 
