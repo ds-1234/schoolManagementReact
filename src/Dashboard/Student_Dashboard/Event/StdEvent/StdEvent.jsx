@@ -5,18 +5,18 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
-import AddEvent from './AddEvent';
+// import AddEvent from './AddEvent';
 import Button from '../../../../Reusable_components/Button';
-import EventDetailPopup from './EventDetailPopup';
 import BASE_URL from '../../../../conf/conf';
+import StdCategoryTiles from './StdCategoryTiles';
+import StdEventDetailPopup from './StdEventDetailPopup';
 
 function Event() {
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [eventCategories, setEventCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryColor, setSelectedCategoryColor] = useState(null);
@@ -48,19 +48,19 @@ function Event() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+  // const openAddPopup = () => setIsAddPopupOpen(true);
+  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  useEffect(() => {
-    if (isAddPopupOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isAddPopupOpen]);
+  // useEffect(() => {
+  //   if (isAddPopupOpen) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, [isAddPopupOpen]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -85,11 +85,11 @@ function Event() {
     }
   };
 
-  const handleDayClick = (date) => {
-    setShowCalendar(false);
-    setSelectedDate(date);
-    fetchEventsByDate(date);
-  };
+  // const handleDayClick = (date) => {
+  //   setShowCalendar(false);
+  //   setSelectedDate(date);
+  //   fetchEventsByDate(date);
+  // };
   
   const fetchEventCategories = async () => {
     try {
@@ -103,31 +103,31 @@ function Event() {
     }
   };
 
-  const fetchEventsByCategoryId = async (categoryId) => {
-    try {
-      const response = categoryId 
-        ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
-        : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
+  // const fetchData = async () => {
+  //   try {
+  //     const response = categoryId 
+  //       ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
+  //       : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
       
-      if (response.data.success) {
-        setEvents(response.data.data);
-        // Extract event dates for the calendar
-        const dates = response.data.data.map(event => event.startDate);
-        setEventDates(dates); // Set the event dates
-      }
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
-  };
+  //     if (response.data.success) {
+  //       setEvents(response.data.data);
+  //       // Extract event dates for the calendar
+  //       const dates = response.data.data.map(event => event.startDate);
+  //       setEventDates(dates); // Set the event dates
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching events:", error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchEventCategories();
-  }, [isAddPopupOpen]);
+  }, []);
 
-  useEffect(() => {
-    // Fetch events when selected category changes
-    fetchEventsByCategoryId(selectedCategoryId);
-  }, [selectedCategoryId,isAddPopupOpen]);
+  // useEffect(() => {
+  //   // Fetch events when selected category changes
+  //   fetchEventsByCategoryId(selectedCategoryId);
+  // }, [selectedCategoryId,isAddPopupOpen]);
 
   const handleCategorySelect = (categoryId, colorCode) => {
     setSelectedCategoryId(categoryId);
@@ -377,7 +377,7 @@ const handleWeekChange = (direction) => {
                 const categoryColor = eventCategories.find((cat) => cat.id === event.eventCategory)?.eventCatColorCode || "#000"; // Fallback color
 
                 return (
-                  <CategoryTiles
+                  <StdCategoryTiles
                     key={event.id}
                     title={event.eventTitle}
                     date={`${event.startDate} - ${event.endDate}`}
@@ -396,12 +396,12 @@ const handleWeekChange = (direction) => {
         </div>
       </div>
 
-      <AddEvent
+      {/* <AddEvent
         isOpen={isAddPopupOpen} 
         onClose={closeAddPopup}
-      />
+      /> */}
             {/* Event Detail Popup */}
-            <EventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
+            <StdEventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
     </div>
   );
 }
