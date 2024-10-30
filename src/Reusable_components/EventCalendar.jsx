@@ -127,6 +127,7 @@ console.log(events,'events in calendar')
                   style={{ borderLeft: `4px solid ${event.color}` }}
                 >
                   {event.eventTitle}
+                  {console.log(event,'Selected Event from calendar')}
                 </div>
               ))}
             </ul>

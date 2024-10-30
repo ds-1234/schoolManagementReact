@@ -13,6 +13,9 @@ function TeaEventDetailPopup({ event, onClose, catColor }) {
   const [eventCategoryTitle, setEventCategoryTitle] = useState('');
   const [roleNames, setRoleNames] = useState([]);
 
+
+  console.log(event,'eventdetailpopup')
+
   useEffect(() => {
     const fetchData = async () => {
       try {
