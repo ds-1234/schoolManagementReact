@@ -12,6 +12,7 @@ import BASE_URL from '../../../conf/conf';
 import TeaEventDetailPopup from './TeaEventDetailPopup';
 import TeaCategoryTiles from './TeaCategoryTiles';
 import EventCalendar from '../../../Reusable_components/EventCalendar';
+import TeaEventCalendar from '../../../Reusable_components/TeaEventCalendar';
 
 function TeaEvent() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -275,7 +276,7 @@ const handleWeekChange = (direction) => {
             />
           </div>
           {showCalendar ? (
-            <EventCalendar events={events} />
+            <TeaEventCalendar events={events} />
           ) : (
             <div className="text-center">
               {view === 'week' ? (

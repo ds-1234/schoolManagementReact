@@ -11,6 +11,7 @@ import Button from '../../../../Reusable_components/Button';
 import BASE_URL from '../../../../conf/conf';
 import StdCategoryTiles from './StdCategoryTiles';
 import StdEventDetailPopup from './StdEventDetailPopup';
+import StdEventCalendar from '../../../../Reusable_components/StdEventCalendar';
 
 function StdEvent() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -274,7 +275,7 @@ const handleWeekChange = (direction) => {
             />
           </div>
           {showCalendar ? (
-            <EventCalendar events={events} />
+            <StdEventCalendar events={events} />
           ) : (
             <div className="text-center">
               {view === 'week' ? (
