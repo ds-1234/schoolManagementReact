@@ -67,7 +67,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full p-6 transform transition-all duration-300 border-4 relative">
+      <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 transform transition-all duration-300 border-4 relative">
         {/* Download button */}
         <button
           className="absolute top-5 right-14 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
@@ -119,7 +119,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
               ></path>
             </svg>
 
-            <span className="mr-4">{event.startDate}</span>
+            <span className="mr-4">{event.startDate}-{event.endDate}</span>
             <svg
               className="w-4 h-4 mr-1 text-gray-500"
               fill="none"
@@ -138,7 +138,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
           </div>
         </div>
 
-        <div className="mt-4 mb-40 bg-gray-200  p-3 rounded-lg shadow-sm">
+        <div className="mt-4 h-20 mb-40 bg-gray-200  p-3 rounded-lg shadow-sm">
           <p className="text-gray-800 mt-2">{event.message}</p>
         </div>
 

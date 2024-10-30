@@ -337,8 +337,13 @@ const handleWeekChange = (direction) => {
         className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
         onClick={() => handleCategorySelect(null, '#000')}
       >
-        All Categories
-      </div>
+          {/* Dot */}
+                  <span 
+            className="inline-block w-2 h-2 rounded-full " 
+            style={{ backgroundColor: 'black' }} 
+          ></span>
+          <h2 className="ml-2"> All Categories</h2>
+          </div>
       {eventCategories.map(category => (
         <div
           key={category.id}
@@ -354,7 +359,7 @@ const handleWeekChange = (direction) => {
           ></span>
           
           {/* Event Category Title */}
-          <h2 className=""> {""} {category.eventCategoryTitle}</h2>
+          <h2 className="ml-2"> { category.eventCategoryTitle}</h2>
         </div>
           {/* {category.eventCategoryTitle} */}
         </div>
