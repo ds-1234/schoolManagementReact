@@ -96,8 +96,8 @@ import { UserProvider } from './hooks/UserContext';
 import Event from './Dashboard/Admin_Dashboard/Event/Event/Event';
 import { StepProvider } from './hooks/StepContext';
 import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/EventCategory';
-import StdEvent from './Dashboard/Student_Dashboard/Fees/Event/StdEvent';
 import TchProfile from './Dashboard/Teacher_Dashboard/Teacher Profile/TchProfile';
+import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 
 
 

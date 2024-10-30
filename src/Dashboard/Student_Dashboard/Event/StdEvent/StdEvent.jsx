@@ -13,10 +13,10 @@ import BASE_URL from '../../../../conf/conf';
 import StdCategoryTiles from './StdCategoryTiles';
 import StdEventDetailPopup from './StdEventDetailPopup';
 
-function Event() {
+function StdEvent() {
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [eventCategories, setEventCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [selectedCategoryColor, setSelectedCategoryColor] = useState(null);
@@ -51,16 +51,16 @@ function Event() {
   // const openAddPopup = () => setIsAddPopupOpen(true);
   // const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  // useEffect(() => {
-  //   if (isAddPopupOpen) {
-  //     document.body.style.overflow = 'hidden';
-  //   } else {
-  //     document.body.style.overflow = 'auto';
-  //   }
-  //   return () => {
-  //     document.body.style.overflow = 'auto';
-  //   };
-  // }, [isAddPopupOpen]);
+  useEffect(() => {
+    if (isAddPopupOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isAddPopupOpen]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -85,11 +85,11 @@ function Event() {
     }
   };
 
-  // const handleDayClick = (date) => {
-  //   setShowCalendar(false);
-  //   setSelectedDate(date);
-  //   fetchEventsByDate(date);
-  // };
+  const handleDayClick = (date) => {
+    setShowCalendar(false);
+    setSelectedDate(date);
+    fetchEventsByDate(date);
+  };
   
   const fetchEventCategories = async () => {
     try {
@@ -103,31 +103,31 @@ function Event() {
     }
   };
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = categoryId 
-  //       ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
-  //       : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
+  const fetchEventsByCategoryId = async (categoryId) => {
+    try {
+      const response = categoryId 
+        ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
+        : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
       
-  //     if (response.data.success) {
-  //       setEvents(response.data.data);
-  //       // Extract event dates for the calendar
-  //       const dates = response.data.data.map(event => event.startDate);
-  //       setEventDates(dates); // Set the event dates
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching events:", error);
-  //   }
-  // };
+      if (response.data.success) {
+        setEvents(response.data.data);
+        // Extract event dates for the calendar
+        const dates = response.data.data.map(event => event.startDate);
+        setEventDates(dates); // Set the event dates
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
 
   useEffect(() => {
     fetchEventCategories();
-  }, []);
+  }, [isAddPopupOpen]);
 
-  // useEffect(() => {
-  //   // Fetch events when selected category changes
-  //   fetchEventsByCategoryId(selectedCategoryId);
-  // }, [selectedCategoryId,isAddPopupOpen]);
+  useEffect(() => {
+    // Fetch events when selected category changes
+    fetchEventsByCategoryId(selectedCategoryId);
+  }, [selectedCategoryId,isAddPopupOpen]);
 
   const handleCategorySelect = (categoryId, colorCode) => {
     setSelectedCategoryId(categoryId);
@@ -232,7 +232,7 @@ const handleWeekChange = (direction) => {
 
       <div className="flex items-start w-full mt-10">
       <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
-          <AddBtn onAddClick={openAddPopup} />
+          {/* <AddBtn onAddClick={openAddPopup} /> */}
           <div className="flex space-x-2  mb-4 mt-4">
           <Button
               label='Month'
@@ -396,14 +396,11 @@ const handleWeekChange = (direction) => {
         </div>
       </div>
 
-      {/* <AddEvent
-        isOpen={isAddPopupOpen} 
-        onClose={closeAddPopup}
-      /> */}
+
             {/* Event Detail Popup */}
             <StdEventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
     </div>
   );
 }
 
-export default Event;
+export default StdEvent;
