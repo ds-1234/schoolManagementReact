@@ -9,6 +9,8 @@ const EventCalendar = ({ events, initialView = "month" }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+console.log(events,'events in calendar')
+
   // Fetch event categories only
   useEffect(() => {
     const fetchEventCategories = async () => {

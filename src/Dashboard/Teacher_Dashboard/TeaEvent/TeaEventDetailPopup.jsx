@@ -72,14 +72,15 @@ function TeaEventDetailPopup({ event, onClose, catColor }) {
       <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 transform transition-all duration-300 border-4 relative">
         {/* Download button */}
         <button
-          className="absolute top-5 right-14 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
-          onClick={() => {
-            // Implement download functionality here
-            console.log("Download event details");
-          }}
-        >
-          <FontAwesomeIcon icon={faDownload} className="w-5 h-5" />
-        </button>
+  className="absolute top-5 right-14 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none flex items-center"
+  onClick={() => {
+    // Implement download functionality here
+    console.log("Download event details");
+  }}
+>
+  <span className="mr-2">Download</span> {/* Add this line for the text */}
+  <FontAwesomeIcon icon={faDownload} className="w-5 h-5" />
+</button>
 
         {/* Close button */}
         <button
