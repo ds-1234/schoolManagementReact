@@ -72,10 +72,10 @@ function EditUser() {
         const diffInYears = (diffInMs / (1000 * 60 * 60 * 24 * 365)).toFixed(1);  // Convert to years
         setTotalExperience(diffInYears);
       } else {
-        setTotalExperience('');  // Clear if invalid dates
+        setTotalExp('');  // Clear if invalid dates
       }
     } else {
-      setTotalExperience('');  // Clear if dates are missing
+      setTotalExp('');  // Clear if dates are missing
     }
   };
 
@@ -638,7 +638,7 @@ const handleRouteChange = (e) => {
               className={"border p-2 rounded-lg mt-1"}
               onChange={(date) => {
                 setJoiningDate(date);
-                calculateExp(date, relievingDate);
+                calculateExperience(date, relievingDate);
               }}
               />
             </div>
@@ -651,7 +651,7 @@ const handleRouteChange = (e) => {
               className={"border p-2 rounded-lg mt-1"}
               onChange={(date) => {
                 setRelievingDate(date);
-                calculateExp(joiningDate , date);
+                calculateExperience(joiningDate , date);
               }}
               />
             </div>
