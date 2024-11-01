@@ -15,6 +15,7 @@ const Profile = () => {
   const [hostel , setHostel] = useState({}) 
   const [transport , setTransport] = useState({})
   const [hostelRoom , setHostelRoom] = useState({}) 
+  const [documents , setDocuments] = useState({})
 
   useEffect(() => {
     const fetchData = () => {
@@ -34,7 +35,17 @@ const Profile = () => {
         });
     };
 
+    const fetchDocuments = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/document/getDocument/${id}`);
+        setDocuments(response.data.data);
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+      }
+    };
+
     fetchData();
+    fetchDocuments();
   }, [user.userId]);
 
   useEffect(() => {
@@ -95,6 +106,16 @@ const Profile = () => {
       fetchHostelRooms()
     }
   } , [studentDetails])
+
+  const handleDownload = (attachmentName) => {
+    const fullPath = `${attachmentName}`; 
+    const link = document.createElement('a');
+    link.href = fullPath;  
+    link.setAttribute('download', attachmentName); 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (!studentDetails) return <div>Loading...</div>;
 
@@ -232,24 +253,27 @@ const Profile = () => {
             </div>
           </div>
 
-        {/* Documents Section */}
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+       {/* Documents Section */}
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Documents</h3>
         <div className="space-y-4">
-            {/* {studentDetails.documents.map((doc, index) => ( */}
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
+          {documents.map((doc) => (
+            <div key={doc.id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+              <div className="flex items-center space-x-3">
                 <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}Transfer Certificate</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
+                <span className="text-gray-700 font-semibold">{doc.documentName}</span>
+              </div>
+              <button
+                onClick={() => handleDownload(doc.attachmentName)}
+                className="text-blue-500 font-semibold flex items-center space-x-2"
+              >
                 <FontAwesomeIcon icon={faDownload} />
-                </a>
+                <span>Download</span>
+              </button>
             </div>
-            {/* ))} */}
+          ))}
         </div>
-        </div>
-
+      </div>
 
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Previous School Details</h3>

@@ -40,7 +40,9 @@ function OfficeDets() {
             }
         };
 
-          fetchStudentDetails();
+          if(userId){
+            fetchStudentDetails();
+          }
     }, [reset , userId]);
 
       const onSubmit = async(data) => {
@@ -51,7 +53,7 @@ function OfficeDets() {
             userId : userId ,
           }
           await axios({
-              method:"Post",
+              method:"POST",
               url : `${BASE_URL}/user/updateOfficeDetails`,
               data: userData ,
               headers: {
@@ -84,6 +86,7 @@ function OfficeDets() {
             label={"Admission Date"}
             register={register}
             className={`py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none`}
+            {...register('admissionDate')}
             />
         </div>
 

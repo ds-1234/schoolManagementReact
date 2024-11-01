@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from '../conf/conf';
 // import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +18,7 @@ const useRegister = () => {
   
     axios({
       method:"post",
-      url : `http://localhost:8080/user/createUser`,
+      url : `${BASE_URL}/user/createUser`,
       data: userData,
       headers: {
         "Content-Type": "application/json",

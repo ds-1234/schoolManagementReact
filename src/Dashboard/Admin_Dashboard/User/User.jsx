@@ -73,8 +73,6 @@ const column = [
       .then((response) => {
         const activeUsers = response.data.data.filter(user => user.isActive === true) 
         setUser(activeUsers);
-        console.log('Data from API:', response.data.data);
-        console.log('Data from active userData', activeUsers);
         setFilterUser(activeUsers)
       })
       .catch((error) => {
