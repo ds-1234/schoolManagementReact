@@ -46,7 +46,9 @@ const {
             }
         };
 
+        if(userId){
             fetchStudentDetails();
+        }
     }, [reset , userId]);
 
     const onSubmit = async (data) => {
@@ -194,8 +196,9 @@ const {
             register={register}
             required={true}
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('dateOfBirth' , {required: 'Date of birth is required'})}
             />
-    {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
+            {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
             </div>
 
             <div className="flex flex-col  px-1">

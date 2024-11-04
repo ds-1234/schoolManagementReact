@@ -99,6 +99,7 @@ import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/Event
 import TchProfile from './Dashboard/Teacher_Dashboard/Teacher Profile/TchProfile';
 import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
+import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 
 
 
@@ -130,7 +131,7 @@ function App() {
             <Route path="activeUser" element={<User />} />
             <Route path="pendingUser" element={<PendingUser />} />
             <Route path="addUser" element={<AddUser />} />
-            <Route path="editUser" element={<EditUser />} />
+            <Route path="editUser" element={<Edit/>} />
             <Route path="role" element={<Role />} />
             <Route path="class" element={<Class />} />
             <Route path="allStudents" element={<AllStudents />} />
