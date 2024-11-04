@@ -302,11 +302,11 @@ console.log("Filtered Class Names:", filteredClassNames);
             <label htmlFor="noticeFor" className="block text-gray-700 font-semibold mb-2">Event For</label>
             <div className="mt-2 space-y-2">
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(false); }} defaultChecked />
+                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false);setSelectedClasses([]);setSelectedUsers([]);setSelectedRoles([]);setRolepay([0]); setShowRoleAndTeachers(false); }} defaultChecked />
                 <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true); setShowRoleAndTeachers(false); }} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true);setSelectedUsers([]);setSelectedRoles([]);setRolepay([]); setShowRoleAndTeachers(false); }} />
                 <label htmlFor="student" className="text-sm font-medium text-gray-700">Student</label>
               </div>
               <div className='inline ml-4'>
