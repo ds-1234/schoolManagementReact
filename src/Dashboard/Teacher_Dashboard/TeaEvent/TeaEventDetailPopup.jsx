@@ -151,15 +151,20 @@ function TeaEventDetailPopup({ event, onClose, catColor }) {
         {/* Event For: Roles, Classes, and Users */}
         <div className="absolute mt-10 bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md" style={{ width: '200px' }}>
           <p className="text-gray-800 font-semibold">Event For:</p>
-          <p className="text-gray-700">
-            {roleNames.length > 0 ? roleNames.join(', ') : ''}
-          </p>
-          <p className="text-gray-700">
-            {classes.length > 0 ? `Classes: ${classes.join(', ')}` : ''}
-          </p>
-          <p className="text-gray-700">
-            {users.length > 0 ? `Users: ${users.join(', ')}` : ''}
-          </p>
+          {classes.length > 0 || users.length > 0 ? (
+            <>
+              <p className="text-gray-700">
+                {classes.length > 0 ? `Classes: ${classes.join(', ')}` : ''}
+              </p>
+              <p className="text-gray-700">
+                {users.length > 0 ? `Users: ${users.join(', ')}` : ''}
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-700">
+              {roleNames.length > 0 ? roleNames.join(', ') : ''}
+            </p>
+          )}
         </div>
       </div>
     </div>
