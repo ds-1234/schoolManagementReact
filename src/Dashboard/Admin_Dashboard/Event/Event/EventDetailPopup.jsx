@@ -141,7 +141,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
           </div>
         </div>
 
-        <div className="mt-4 h-20 mb-40 bg-gray-200  p-3 rounded-lg shadow-sm">
+        <div className="mt-4 h-[110px] mb-40 bg-gray-200  p-3 rounded-lg shadow-sm">
           <p className="text-gray-800 mt-2">{event.message}</p>
         </div>
 
