@@ -5,15 +5,16 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import CategoryTiles from './CategoryTiles';
-import AddBtn from '../../../../Reusable_components/AddBtn';
 import EventCalendar from '../../../../Reusable_components/EventCalendar';
-import AddEvent from './AddEvent';
+// import AddEvent from './AddEvent';
 import Button from '../../../../Reusable_components/Button';
-import EventDetailPopup from './EventDetailPopup';
 import BASE_URL from '../../../../conf/conf';
+import StdCategoryTiles from './StdCategoryTiles';
+import StdEventDetailPopup from './StdEventDetailPopup';
+import StdEventCalendar from '../../../../Reusable_components/StdEventCalendar';
 
-function Event() {
+function StdEvent() {
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [attendanceMap, setAttendanceMap] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -48,8 +49,8 @@ function Event() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+  // const openAddPopup = () => setIsAddPopupOpen(true);
+  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
   useEffect(() => {
     if (isAddPopupOpen) {
@@ -108,17 +109,40 @@ function Event() {
       const response = categoryId 
         ? await axios.get(`${BASE_URL}/events/getEventListByCatId/${categoryId}`)
         : await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
-      
+  
       if (response.data.success) {
-        setEvents(response.data.data);
+        // Step 1: Filter events that include role 0
+        const eventsWithRole0 = response.data.data.filter(item => 
+          item.role.includes(0)
+        );
+        console.log(eventsWithRole0, 'eventsWithRole0');
+        
+        // Step 2: Set events that contain role 0
+        setEvents(eventsWithRole0);
+  
+        // Step 3: Filter events that do not contain role 0 based on user.id and className
+        const filteredEvents = response.data.data.filter(item => 
+          !item.role.includes(0) && 
+          (Array.isArray(item.className) && item.className.some(classId => user.className.includes(classId)) || 
+          Array.isArray(item.user) && item.user.includes(user.id))
+        );
+  
+        console.log(filteredEvents, 'filteredEvents');
+  
+        // Merge the two sets of events if you want both to be displayed together
+        const allFilteredEvents = [...eventsWithRole0, ...filteredEvents];
+        setEvents(allFilteredEvents);
+  
         // Extract event dates for the calendar
-        const dates = response.data.data.map(event => event.startDate);
+        const dates = allFilteredEvents.map(event => event.startDate);
         setEventDates(dates); // Set the event dates
       }
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
+  
+  
 
   useEffect(() => {
     fetchEventCategories();
@@ -141,7 +165,6 @@ const handleViewChange = (newView) => {
   const today = new Date();
 
   if (newView === 'day') {
-    fetchEventsByDate(today.toISOString().split('T')[0])
     setSelectedDate(today.toISOString().split('T')[0]);
     setShowCalendar(false);
   } else if (newView === 'week') {
@@ -227,13 +250,13 @@ const handleWeekChange = (direction) => {
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Event</h1>
       <p className='mt-2'>
-        Dashboard / <NavLink to='/admin'> Admin </NavLink> /
+        Dashboard / <NavLink to='/studentdashboard'> Student Dashboard </NavLink> /
         <span className='text-[#ffae01] font-semibold'> Event</span>
       </p>
 
       <div className="flex items-start w-full mt-10">
       <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
-          <AddBtn onAddClick={openAddPopup} />
+          {/* <AddBtn onAddClick={openAddPopup} /> */}
           <div className="flex space-x-2  mb-4 mt-4">
           <Button
               label='Month'
@@ -252,7 +275,7 @@ const handleWeekChange = (direction) => {
             />
           </div>
           {showCalendar ? (
-            <EventCalendar events={events} />
+            <StdEventCalendar events={events} />
           ) : (
             <div className="text-center">
               {view === 'week' ? (
@@ -311,7 +334,7 @@ const handleWeekChange = (direction) => {
             </div>
           )}
        </div>
-        {console.log(eventDates,'events date')}
+        {/* {console.log(eventDates,'events date')} */}
 
         <div className="w-5/12 bg-white rounded-xl p-4">
           <div className="flex justify-between items-center mb-4">
@@ -378,7 +401,7 @@ const handleWeekChange = (direction) => {
                 const categoryColor = eventCategories.find((cat) => cat.id === event.eventCategory)?.eventCatColorCode || "#000"; // Fallback color
 
                 return (
-                  <CategoryTiles
+                  <StdCategoryTiles
                     key={event.id}
                     title={event.eventTitle}
                     date={`${event.startDate} - ${event.endDate}`}
@@ -397,14 +420,11 @@ const handleWeekChange = (direction) => {
         </div>
       </div>
 
-      <AddEvent
-        isOpen={isAddPopupOpen} 
-        onClose={closeAddPopup}
-      />
+
             {/* Event Detail Popup */}
-            <EventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
+            <StdEventDetailPopup event={selectedEvent} catColor={popupColor} onClose={closeEventPopup} />
     </div>
   );
 }
 
-export default Event;
+export default StdEvent;

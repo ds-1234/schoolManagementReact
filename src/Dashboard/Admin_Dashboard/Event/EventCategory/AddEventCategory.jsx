@@ -62,7 +62,7 @@ const AddEventCategory = ({ isOpen, onClose }) => {
 
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/eventCategory/saveEventCategory',
+      url: `${BASE_URL}/eventCategory/saveEventCategory`,
       data: {
         eventCategoryTitle: data.CategoryTitle,
         eventCatColorCode:color,

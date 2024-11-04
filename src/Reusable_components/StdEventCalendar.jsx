@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
-import EventDetailPopup from '../Dashboard/Admin_Dashboard/Event/Event/EventDetailPopup';
+import StdEventDetailPopup from '../Dashboard/Student_Dashboard/Event/StdEvent/StdEventDetailPopup';
 
-const EventCalendar = ({ events, initialView = "month" }) => {
+const StdEventCalendar = ({ events, initialView = "month" }) => {
   const [eventCategories, setEventCategories] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -140,7 +140,7 @@ console.log(events,'events in calendar')
 
       {/* EventDetailPopup for the selected event */}
       {selectedEvent && (
-        <EventDetailPopup
+        <StdEventDetailPopup
           event={selectedEvent}
           onClose={() => setSelectedEvent(null)}
           catColor={eventCategories[selectedEvent.eventCategory]}
@@ -150,4 +150,4 @@ console.log(events,'events in calendar')
   );
 };
 
-export default EventCalendar;
+export default StdEventCalendar;

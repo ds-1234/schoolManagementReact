@@ -9,6 +9,8 @@ import StatusButton from '../../../../Reusable_components/StatusButton';
 import Swal from 'sweetalert2'
 import AddEventCategory from './AddEventCategory';
 import EditEventCategory from './EditEventCategory';
+import BASE_URL from '../../../../conf/conf';
+
 
 
 function EventCategory() {
@@ -86,7 +88,7 @@ function EventCategory() {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/eventCategory/getEventCatList`,
+      url: `${BASE_URL}/eventCategory/getEventCatList`,
       headers: {
         "Content-Type": "application/json",
       },

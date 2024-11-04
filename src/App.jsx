@@ -96,8 +96,9 @@ import { UserProvider } from './hooks/UserContext';
 import Event from './Dashboard/Admin_Dashboard/Event/Event/Event';
 import { StepProvider } from './hooks/StepContext';
 import EventCategory from './Dashboard/Admin_Dashboard/Event/EventCategory/EventCategory';
-import StdEvent from './Dashboard/Student_Dashboard/Fees/Event/StdEvent';
 import TchProfile from './Dashboard/Teacher_Dashboard/Teacher Profile/TchProfile';
+import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
+import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 
 
@@ -230,6 +231,7 @@ function App() {
             <Route path='classSelect' element = {<ClassSelect/>}/>
             <Route path='attendance/:className/:section' element={<Attendance/>}/>
             <Route path='profile' element={<TchProfile/>} />
+            <Route path='TeaEvent' element={<TeaEvent/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

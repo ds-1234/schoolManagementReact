@@ -13,9 +13,11 @@ import BASE_URL from '../../../../conf/conf';
 
 const AddEvent = ({ isOpen, onClose }) => {
   const [dropdownOpen2, setDropdownOpen2] = useState(false); 
+  const [dropdownOpen1, setDropdownOpen1] = useState(false); 
   const [showClassAndSection, setShowClassAndSection] = useState(false);
   const [showRoleAndTeachers, setShowRoleAndTeachers] = useState(false);
   const eventCategoryDropdownRef = useRef(null);
+  const userDropdownRef = useRef(null);
   const [role, setRole] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -88,6 +90,9 @@ const AddEvent = ({ isOpen, onClose }) => {
       if (dropdownOpen2 && eventCategoryDropdownRef.current && !eventCategoryDropdownRef.current.contains(e.target)) {
         setDropdownOpen2(false);
       }
+      if (dropdownOpen1 && userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setDropdownOpen1(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -102,6 +107,7 @@ const AddEvent = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'hidden';
       setShowClassAndSection(false)
       setShowRoleAndTeachers(false)
+      setSelectedClasses([]);setSelectedUsers([]);setSelectedRoles([]);setRolepay([0]),setFilteredUsers([])
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -245,6 +251,7 @@ const AddEvent = ({ isOpen, onClose }) => {
         reset(); // Reset the form if needed
         onClose(); // Close the modal
         setSelectedClasses([]) 
+        setFilteredUsers([])
         setSelectedUsers([])
         setSelectedEventCategory(null) 
       } catch (error) {
@@ -281,6 +288,7 @@ console.log("Filtered Class Names:", filteredClassNames);
       setStartDate('')
       setEndDate('') 
       setSelectedClasses([]) 
+      setFilteredUsers([])
       setSelectedUsers([])
       setSelectedEventCategory(null) 
      };
@@ -302,11 +310,11 @@ console.log("Filtered Class Names:", filteredClassNames);
             <label htmlFor="noticeFor" className="block text-gray-700 font-semibold mb-2">Event For</label>
             <div className="mt-2 space-y-2">
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false); setShowRoleAndTeachers(false); }} defaultChecked />
+                <input {...register('noticeFor', { required: true })} type="radio" value="All" id="all" className="mr-2" onChange={() => { setShowClassAndSection(false);setFilteredUsers([]), setSelectedClasses([]);setSelectedUsers([]);setSelectedRoles([]);setRolepay([0]); setShowRoleAndTeachers(false); }} defaultChecked />
                 <label htmlFor="all" className="text-sm font-medium text-gray-700">All</label>
               </div>
               <div className='inline ml-4'>
-                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true); setShowRoleAndTeachers(false); }} />
+                <input {...register('noticeFor', { required: true })} type="radio" value="Student" id="student" className="mr-2" onChange={() => { setShowClassAndSection(true);setFilteredUsers([]) , setSelectedUsers([]);setSelectedRoles([]);setRolepay([]); setShowRoleAndTeachers(false); }} />
                 <label htmlFor="student" className="text-sm font-medium text-gray-700">Student</label>
               </div>
               <div className='inline ml-4'>
@@ -365,18 +373,7 @@ console.log("Filtered Class Names:", filteredClassNames);
 
               
 
-              <div className="mb-4">
-                {/* <label className="block text-gray-700 font-semibold mb-2">{getDropdownLabel()}</label>
-                <select
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  {...register('user')}
-                >
-                  <option value="">Select User</option>
-                  {filteredUsers.map((user) => (
-                    <option key={user.id} value={user.id}>{user.firstName}</option>
-                  ))}
-                </select> */}
-
+              {/* <div className="mb-4">
       <label className="block text-gray-700 font-semibold mb-2">Select Users:</label>
         <select
           value=""
@@ -394,7 +391,52 @@ console.log("Filtered Class Names:", filteredClassNames);
         </select>
 
 
+              </div> */}
+
+
+
+
+
+<div className="mt-4 " ref={userDropdownRef}>
+              <label className="block text-gray-700 font-semibold mb-2">Select Users</label>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen1(!dropdownOpen1)}
+                  className="w-full bg-gray-100 border border-gray-300 px-4 py-2 rounded-md text-left flex justify-between items-center"
+                >
+  <span>
+    {selectedUsers.length > 0
+      ? selectedUsers
+          .map((userId) => {
+            const user = userForDropdown.find((user) => user.id === userId);
+            return user ? user.firstName : '';
+          })
+          .join(', ')
+      : 'Select Users'}
+  </span>
+                  <FontAwesomeIcon icon={faAngleDown} className="ml-2" />
+                </button>
+                {dropdownOpen1 && (
+                  <div  className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+                    {filteredUsers.map((user) => (
+                      <label key={user.id} className="flex items-center p-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedUsers.includes(user.id)}
+                          onChange={() => handleUserSelect(user.id)}
+                          className="mr-2"
+                        />
+                        {user.firstName}
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
+            </div>
+              
+
+
             </>
           )}
           {          console.log(filteredUsers,'filtered users')            }
