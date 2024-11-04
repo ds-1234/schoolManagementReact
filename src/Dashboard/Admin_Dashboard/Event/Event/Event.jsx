@@ -141,6 +141,7 @@ const handleViewChange = (newView) => {
   const today = new Date();
 
   if (newView === 'day') {
+    fetchEventsByDate(today.toISOString().split('T')[0])
     setSelectedDate(today.toISOString().split('T')[0]);
     setShowCalendar(false);
   } else if (newView === 'week') {
