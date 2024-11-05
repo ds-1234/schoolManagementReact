@@ -102,7 +102,7 @@ console.log(events,'events in calendar')
         onClickDay={handleDateClick}
         view={initialView}
         minDate={new Date(new Date().getFullYear(), 3)}
-        maxDate={new Date()}
+        // maxDate={new Date()}
         className="h-full w-full"
       />
 {console.log(selectedDate,'selectedDate')}
