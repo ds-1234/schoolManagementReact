@@ -105,9 +105,9 @@ console.log(events,'events in calendar')
         maxDate={new Date()}
         className="h-full w-full"
       />
-
+{console.log(selectedDate,'selectedDate')}
       {/* Popup to display events on the selected date */}
-      {selectedDate && (
+      {selectedDate && eventMap[selectedDate].length>1 &&(
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
 
         <button
@@ -118,6 +118,7 @@ console.log(events,'events in calendar')
         </button>
           <div className="bg-white p-4 rounded shadow-lg w-80">
             <h2 className="text-xl font-bold mb-4">Events on {selectedDate}</h2>
+            {console.log(eventMap[selectedDate],'event on date')}
             <ul>
               {eventMap[selectedDate].map((event, i) => (
                 <div
@@ -135,6 +136,43 @@ console.log(events,'events in calendar')
               Close
             </button>
           </div>
+        </div>
+      )}
+
+{console.log(selectedDate,'selectedDate')}
+      {/* Popup to display events on the selected date */}
+      {selectedDate && eventMap[selectedDate].length === 1 &&(
+    // <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+    <div>
+          
+        <button
+          // onClick={closeDatePopup}
+          onClick={ openEventDetail(eventMap[selectedDate][0])}
+          className="absolute top-4 right-4 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
+        >
+          &times; {/* This represents the "X" */}
+        </button>
+        {console.log(eventMap[selectedDate][0],'eventMap[selectedDate]')}
+          {/* <div className="bg-white p-4 rounded shadow-lg w-80">
+            <h2 className="text-xl font-bold mb-4">Events on {selectedDate}</h2>
+            {console.log(eventMap[selectedDate],'event on date')}
+            <ul>
+              {eventMap[selectedDate].map((event, i) => (
+                <div
+                  key={i}
+                  onClick={() => openEventDetail(event)}
+                  className="flex items-center bg-gray-100 rounded-lg p-4 my-2 cursor-pointer"
+                  style={{ borderLeft: `4px solid ${event.color}` }}
+                >
+                  {event.eventTitle}
+                  {console.log(event,'Selected Event from calendar')}
+                </div>
+              ))}
+            </ul>
+            <button onClick={closeDatePopup} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+              Close
+            </button>
+          </div> */}
         </div>
       )}
 
