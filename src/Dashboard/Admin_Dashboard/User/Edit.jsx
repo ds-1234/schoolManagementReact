@@ -22,6 +22,7 @@ function EditUser() {
   const [selectedRole, setSelectedRole] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userName , setUserName] = useState('') ;
   
 useEffect(() => {
     axios.get(`${BASE_URL}/role/getRoleList`)
@@ -30,38 +31,36 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${BASE_URL}/user/getUser/${userId}`, // API to get specific user by ID
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        const userData = response.data.data ;
-        setSelectedRole(userData.role)
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/user/getUser/${userId}`);
+        const userData = response.data.data;
+        setSelectedRole(userData.role);
+        setUserName(userData.userId) ;
 
-        if(userData.fatherName == null){
-          setCurrentStep(0) ;
-        }else if(userData.martialStatus == null){
-          setCurrentStep(1) ;
-        }else if(userData.qualificationList.course == null){
-          setCurrentStep(2) ;
-        }else if(userData.aadhar == null){
-          setCurrentStep(3) ;
-        }else if(userData.bankName == null){
-          setCurrentStep(4) ;
-        }else if(userData.buildingName == null){
-          setCurrentStep(5) ;
-        }else if(userData.routeName == null){
-          setCurrentStep(6) ;
-        }else{
-          setCurrentStep(7) ;
+        if (userData.dateOfBirth === null) setCurrentStep(0);
+
+        // Additional check for teacher info if role is 4
+        if (userData.role == 4) {
+          const res = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
+          const teacherInfo = res.data.data ;
+          if (teacherInfo.maritalStatus === null) setCurrentStep(1);
+          else if (teacherInfo.qualificationList.length === 0) setCurrentStep(2);
+          else if (teacherInfo.aadhar === null) setCurrentStep(3);
+          else if (teacherInfo.bankName === null) setCurrentStep(4);
+          else if (userData.buildingName === null) setCurrentStep(5);
+          else if (userData.routeName === null) setCurrentStep(6);
+          else setCurrentStep(7);
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching user:", error);
-      });
+
+        if(userData.isActive === true){
+          setCurrentStep(0) ;
+        }
+      } catch (error) {
+        console.error("Error fetching user or teacher info:", error);
+      }
+    };
+    fetchUserData();
   }, [userId]);
 
   const handleChange = (role) => {
@@ -90,8 +89,8 @@ useEffect(() => {
     { component: <Qualifications  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole}  /> },
     { component: <HRDets  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} /> },
     { component: <BankDets  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} /> } ,
-    {component : <HostelInfo handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} />},
-    {component: <TransportInfo handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} />} ,
+    {component : <HostelInfo handleNext={handleNext} handlePrevious={handlePrevious}  userName = {userName} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} />},
+    {component: <TransportInfo handleNext={handleNext} handlePrevious={handlePrevious}  userName = {userName} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} />} ,
     {component: <Documents  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} />}
   ];
 

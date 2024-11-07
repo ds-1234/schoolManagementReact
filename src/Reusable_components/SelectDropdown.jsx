@@ -1,4 +1,3 @@
-// SelectDropdown.js
 import React from 'react';
 import Select from 'react-select';
 import { Controller } from 'react-hook-form';
@@ -23,6 +22,8 @@ const SelectDropdown = ({
             placeholder={placeholder}
             className="basic-multi-select"
             classNamePrefix="select"
+            onChange={(selectedOption) => field.onChange(selectedOption)}
+            value={field.value || (isMulti ? [] : null)}
           />
         )}
       />

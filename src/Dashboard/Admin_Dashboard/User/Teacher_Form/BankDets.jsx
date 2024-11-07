@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 function BankDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
   const {
@@ -38,6 +39,25 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
   }
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Fetch the existing teacher details if available
+    const fetchDetails = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
+            const data = response.data.data;
+
+            if (data) {
+                // If data exists, populate the form
+                reset(data);
+            }
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    };
+
+      fetchDetails();
+}, [reset , userId]);
 
   return (
     <div className="space-y-2 mb-5">
@@ -72,11 +92,11 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           />
         </div>
         <div  className='flex flex-col gap-1'>
-          <label htmlFor="ifscCode" className=" text-sm font-medium">IFSC Code</label>
+          <label htmlFor="ifsc" className=" text-sm font-medium">IFSC Code</label>
           <input
             type="text"
-            id="ifscCode"
-            {...register('ifscCode', { required: 'IFSC Code is required' })}
+            id="ifsc"
+            {...register('ifsc', { required: 'IFSC Code is required' })}
             className="border border-gray-300 p-2 rounded-lg"
           />
         </div>
@@ -115,6 +135,8 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
             label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
+
+      <ToastContainer/>
       </div>
   )
 }
