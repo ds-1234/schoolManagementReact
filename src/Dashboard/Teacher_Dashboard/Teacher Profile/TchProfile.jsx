@@ -401,6 +401,42 @@ console.log(filteredClasses,'classes')
                 <FontAwesomeIcon icon={faDownload} />
                 </a>
             </div>
+            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+                <div className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faFilePdf} />
+                <span className="text-gray-700 font-semibold">{/*doc.name*/}Adhaar Card</span>
+                </div>
+                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
+                <FontAwesomeIcon icon={faDownload} />
+                </a>
+            </div>
+            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+                <div className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faFilePdf} />
+                <span className="text-gray-700 font-semibold">{/*doc.name*/}PAN</span>
+                </div>
+                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
+                <FontAwesomeIcon icon={faDownload} />
+                </a>
+            </div>
+            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+                <div className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faFilePdf} />
+                <span className="text-gray-700 font-semibold">{/*doc.name*/}Resume</span>
+                </div>
+                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
+                <FontAwesomeIcon icon={faDownload} />
+                </a>
+            </div>
+            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+                <div className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faFilePdf} />
+                <span className="text-gray-700 font-semibold">{/*doc.name*/}Experience Letter</span>
+                </div>
+                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
+                <FontAwesomeIcon icon={faDownload} />
+                </a>
+            </div>
             {/* ))} */}
         </div>
         </div>
