@@ -4,7 +4,7 @@ import {faTrashCan , faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons'
 import Button from '../../../../Reusable_components/Button';
 import DatePicker from '../../../../Reusable_components/DatePicker';
 import BASE_URL from '../../../../conf/conf';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useForm , useFieldArray} from 'react-hook-form';
 import {differenceInMonths , differenceInYears} from 'date-fns'
@@ -47,7 +47,6 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     const [totalExp, setTotalExp] = useState('');
   
     const calculateExperience = (joinDate, relieveDate) => {
-      console.log('clicked');
       if (joinDate && relieveDate) {
         const years = differenceInYears(new Date(relieveDate), new Date(joinDate));
         const months = differenceInMonths(new Date(relieveDate), new Date(joinDate)) % 12;
@@ -291,7 +290,6 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         </div>
       </div>
 
-      <ToastContainer/>
     </div>
   );
 }
