@@ -7,7 +7,7 @@ import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
 
-function HostelInfo({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
+function HostelInfo({ handlePrevious , handleNext , userId , userName , currentStep , selectedRole}) {
 
     const {
         register,
@@ -58,13 +58,38 @@ function HostelInfo({ handlePrevious , handleNext , userId , currentStep , selec
         fetchData() ;
       } , [])
 
+      useEffect(() => {
+        fetchHostelOptions() ;
+        fetchData() ;
+      } , [])
+
+      useEffect(() => {
+        // Fetch the existing teacher details if available
+        const fetchDetails = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/user/getUser/${userId}`);
+                const data = response.data.data;
+
+                if (data) {
+                    // If data exists, populate the form
+                    reset(data);
+                }
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
+        };
+
+          fetchDetails();
+    }, [reset , userId]);
+
 
       const onSubmit = async (data) => {
         console.log(data);
         
         const userData = {
-            ...data , 
-            userId : userId ,
+            buildingName : parseInt(data.buildingName) ,
+            roomNumber : parseInt(data.roomNumber) , 
+            userId : userName ,
           }
           await axios({
               method:"Post",
@@ -96,7 +121,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , currentStep , selec
             <select
               id="buildingName"
               className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-              {...register('buildingName')}
+              {...register('buildingName' )}
             >
               <option value="" hidden>Select Hostel </option>
               {hostels.map(option => (
@@ -116,7 +141,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , currentStep , selec
             >
               <option value="" hidden>Select Room </option>
               {hostelRoom.map(option => (
-                <option key={option.hostelRoomId} value={option.id}>{option.hostelRoomNumber}</option>
+                <option key={option.hostelRoomNumber} value={option.hostelRoomNumber}>{option.hostelRoomNumber}</option>
               ))}
             </select>
           </div>

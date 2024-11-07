@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DatePicker = ({ labelClass , name, label, register, required = false , className , onChange }) => {
+const DatePicker = ({ labelClass , name, label,register , required ,  className , onChange }) => {
 
   // Function to format the date to dd/mm/yyyy
   const formatDateToDDMMYYYY = (dateString) => {
@@ -36,13 +36,13 @@ const DatePicker = ({ labelClass , name, label, register, required = false , cla
     <div className='flex flex-col'>
       <label className={labelClass} >{label} *</label>
       <input
-        {...register(name, { required })}
         className={className}
         placeholder="Select Date"
         onFocus={handleFocus}
         onBlur={handleBlur}
         max={getCurrentDate()} // Restrict future dates
         onChange={onChange}
+        {...register(name, { required })}
       />
     </div>
   );

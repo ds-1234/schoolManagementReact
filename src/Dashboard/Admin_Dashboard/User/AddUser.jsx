@@ -71,11 +71,8 @@ const AddUser = () => {
     const userData = {
       ...data , 
       role: selectedRoles.id,
-      isActive: data.active = value ? 'True' : 'False',
-      dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toLocaleString().split(',')[0] : ''  
+      isActive: data.active = value ? 'True' : 'False', 
     }
-
-    console.log(userData);
     
     axios({
         method:"post",
@@ -251,9 +248,10 @@ const AddUser = () => {
                 name={'dateOfBirth'}
                 label={"Date of Birth"}
                 register={register}
+                required={true}
                 className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                // {...register('dateOfBirth' , {required: 'Date of birth is required'})}
                 />
-                {...register('dateOfBirth' , {required:true})}
         {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
               </div>
 

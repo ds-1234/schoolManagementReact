@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons';
@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 function HRDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -37,6 +38,25 @@ function HRDets({ handlePrevious , handleNext , userId , currentStep , selectedR
         console.error("Error updating user:", error);
       });
   }
+
+  useEffect(() => {
+    // Fetch the existing teacher details if available
+    const fetchDetails = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
+            const data = response.data.data;
+
+            if (data) {
+                // If data exists, populate the form
+                reset(data);
+            }
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    };
+
+      fetchDetails();
+}, [reset , userId]);
 
   const navigate = useNavigate()
 
@@ -105,6 +125,7 @@ function HRDets({ handlePrevious , handleNext , userId , currentStep , selectedR
             label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
+      <ToastContainer/>
       </div>
   )
 }

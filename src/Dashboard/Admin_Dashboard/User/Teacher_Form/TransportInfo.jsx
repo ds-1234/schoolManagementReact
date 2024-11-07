@@ -7,7 +7,7 @@ import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
 
-function TransportInfo({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
+function TransportInfo({ handlePrevious , handleNext , userId , userName , currentStep , selectedRole}) {
 
   const {
       register,
@@ -79,8 +79,9 @@ function TransportInfo({ handlePrevious , handleNext , userId , currentStep , se
     console.log(data);
     
     const userData = {
-        ...data , 
-        userId : userId ,
+        ...data ,
+        routeName : parseInt(data.routeName) , 
+        userId : userName ,
       }
       await axios({
           method:"Post",
@@ -100,6 +101,25 @@ function TransportInfo({ handlePrevious , handleNext , userId , currentStep , se
           console.log(err,'error:')
       })
 }
+
+useEffect(() => {
+  // Fetch the existing teacher details if available
+  const fetchDetails = async () => {
+      try {
+          const response = await axios.get(`${BASE_URL}/user/getUser/${userId}`);
+          const data = response.data.data;
+
+          if (data) {
+              // If data exists, populate the form
+              reset(data);
+          }
+      } catch (error) {
+          console.error('Error fetching user details:', error);
+      }
+  };
+
+    fetchDetails();
+}, [reset , userId]);
 
 const navigate = useNavigate()
   return (
