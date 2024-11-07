@@ -48,7 +48,7 @@ useEffect(() => {
           else if (teacherInfo.qualificationList.length === 0) setCurrentStep(2);
           else if (teacherInfo.aadhar === null) setCurrentStep(3);
           else if (teacherInfo.bankName === null) setCurrentStep(4);
-          else if (userData.buildingName === null) setCurrentStep(5);
+          else if (userData.roomNumber === null) setCurrentStep(5);
           else if (userData.routeName === null) setCurrentStep(6);
           else setCurrentStep(7);
         }

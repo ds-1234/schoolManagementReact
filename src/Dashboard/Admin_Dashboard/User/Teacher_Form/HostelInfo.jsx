@@ -84,11 +84,13 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
 
 
       const onSubmit = async (data) => {
-        console.log(data);
+        console.log(data.roomNumber);
+        console.log(parseInt(data.roomNumber));
+        
         
         const userData = {
             buildingName : parseInt(data.buildingName) ,
-            roomNumber : parseInt(data.roomNumber) , 
+            roomNumber : data.roomNumber ? parseInt(data.roomNumber) : null , 
             userId : userName ,
           }
           await axios({
