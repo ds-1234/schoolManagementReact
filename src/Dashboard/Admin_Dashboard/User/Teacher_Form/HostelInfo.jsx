@@ -90,7 +90,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
         
         const userData = {
             buildingName : parseInt(data.buildingName) ,
-            roomNumber : data.roomNumber ? parseInt(data.roomNumber) : null , 
+            roomNumber :  parseInt(data.roomNumber) , 
             userId : userName ,
           }
           await axios({
@@ -143,7 +143,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
             >
               <option value="" hidden>Select Room </option>
               {hostelRoom.map(option => (
-                <option key={option.hostelRoomNumber} value={option.hostelRoomNumber}>{option.hostelRoomNumber}</option>
+                <option key={option.id} value={option.id}>{option.hostelRoomNumber}</option>
               ))}
             </select>
           </div>
