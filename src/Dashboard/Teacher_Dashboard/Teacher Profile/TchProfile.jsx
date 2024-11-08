@@ -83,7 +83,7 @@ console.log(filteredClasses,'classes')
 
   // Filter classes based on the teacher's className array
   useEffect(() => {
-    if (teacherDetails && classList.length > 0) {
+    if (teacherDetails && Array.isArray(teacherDetails.className) && classList.length > 0) {
       const teacherClassIds = teacherDetails.className;  // Array of class IDs from teacher details
       const filtered = classList.filter(classItem =>
         teacherClassIds.includes(classItem.id)
@@ -442,14 +442,14 @@ console.log(filteredClasses,'classes')
         </div>
 
 
-        <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+        {/* <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Previous School Details</h3>
         <ul className=" text-gray-600 flex justify-between ">
             <li className='flex flex-col'><strong>School Name</strong> {teacherBasicDetails?.previousSchool}</li>
             <li className='flex flex-col'><strong>Address</strong> {teacherDetails.preSchoolAddress}</li>
             <li className='flex flex-col'><strong>Leaving Year</strong> {teacherDetails.preSchoolLeavingSession}</li>
         </ul>
-        </div>
+        </div> */}
 
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Address</h3>
@@ -477,13 +477,13 @@ console.log(filteredClasses,'classes')
           </div>
 
           {/* Medical History */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+          {/* <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Medical History</h3>
             <ul className="space-y-2 text-gray-600">
               <li><strong>Known Allergies:</strong> Rashes</li>
               <li><strong>Medications:</strong> -</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
   );
