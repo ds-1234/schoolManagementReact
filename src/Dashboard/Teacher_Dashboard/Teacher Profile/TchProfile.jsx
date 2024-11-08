@@ -299,8 +299,8 @@ console.log(filteredClasses,'classes')
             {/* Work Experience Section */}
             <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Work Experience</h3>
-                <table>
-                    <thead>
+            <table className="w-full border-collapse">
+            <thead>
                         <tr>
                             <th className="text-left px-4 py-2">From Year</th>
                             <th className="text-left px-4 py-2">To Year</th>
@@ -311,7 +311,7 @@ console.log(filteredClasses,'classes')
                     <tbody>
                         {teacherBasicDetails?.workExperience && teacherBasicDetails.workExperience.length > 0 ? (
                             teacherBasicDetails.workExperience.map((work) => (
-                                <tr key={work.id}>
+                                <tr key={work.id} className="border-t">
                                     <td className="px-4 py-2">{work.fromYear}</td>
                                     <td className="px-4 py-2">{work.toYear}</td>
                                     <td className="px-4 py-2">{work.insitutue}</td>
@@ -375,7 +375,7 @@ console.log(filteredClasses,'classes')
 
         <div>
           {/* Parents Information Section */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+          {/* <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700mb-4">Parents Information</h3>
             <div className="space-y-2 text-gray-600">
               <div>
@@ -385,7 +385,7 @@ console.log(filteredClasses,'classes')
                 <p><strong>Mother Name:</strong> {teacherDetails.motherName}</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
         {/* Documents Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
