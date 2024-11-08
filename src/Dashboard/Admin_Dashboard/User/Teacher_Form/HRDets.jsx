@@ -6,7 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function HRDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -126,6 +126,7 @@ function HRDets({ handlePrevious , handleNext , userId , currentStep , selectedR
         </div>
       </div>
       {/* <ToastContainer/> */}
+
       </div>
   )
 }
