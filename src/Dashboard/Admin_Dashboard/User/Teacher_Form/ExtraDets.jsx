@@ -8,7 +8,7 @@ import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function ExtraDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -133,6 +133,7 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
         </div>
       </div>
       {/* <ToastContainer/> */}
+
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons';
 import Button from '../../../../Reusable_components/Button';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer , toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 
@@ -119,8 +119,6 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
           <Button onClick={() => navigate('/admin/pendingUser')} label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
-
-      <ToastContainer />
     </div>
   );
 }
