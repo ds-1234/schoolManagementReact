@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPenRuler, faBookAtlas, faChildren,  faFileLines, faBus, faCalendarDay, faSliders, faHotel, faVolleyball, faFile, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
 import {useStepContext} from '../../hooks/StepContext'
+import { useUserContext } from '../../hooks/UserContext';
 
 const Sidebar = () => {
 
-
+  const {setUserId} = useUserContext()
   const [openDropdown, setOpenDropdown] = useState(null)
   const {setCurrentStep} = useStepContext()
 
@@ -208,7 +209,7 @@ const Sidebar = () => {
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/allStudents'}
+            to={'/admin/admissionForm'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -221,7 +222,7 @@ const Sidebar = () => {
             </NavLink>
             {openDropdown == 'students' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                <li>
+                {/* <li>
                   <NavLink
                     to="/admin/AllStudents"
                     className={({ isActive }) =>
@@ -231,14 +232,17 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faAngleRight} />
                     All Students
                   </NavLink>
-                </li>
+                </li> */}
                 <li>
                   <NavLink
                     to="/admin/AdmissionForm"
                     className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
-                    onClick={() => {setCurrentStep(1)}}
+                    onClick={() => {
+                      setUserId(null)
+                      setCurrentStep(1)
+                    }}
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
                     Admission Form
@@ -260,7 +264,7 @@ const Sidebar = () => {
                     </span>
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink
                     to="/admin/studentDetails"
                     className={({ isActive }) =>
@@ -270,7 +274,7 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faAngleRight}  />
                     Student Details 
                   </NavLink>
-                </li>
+                </li> */}
                 <li>
                   <NavLink
                     to="/admin/studentPromotion"

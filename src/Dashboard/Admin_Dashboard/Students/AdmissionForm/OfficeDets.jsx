@@ -33,7 +33,11 @@ function OfficeDets() {
 
                 if (studentData) {
                     // If data exists, populate the form
-                    reset(studentData);
+                    const formattedData = {
+                      ...studentData ,
+                      admissionDate : studentData.admissionDate ? new Date(studentData.admissionDate).toLocaleString().split(',')[0] : ''
+                    }
+                    reset(formattedData);
                 }
             } catch (error) {
                 console.error('Error fetching student details:', error);
@@ -55,7 +59,10 @@ function OfficeDets() {
           await axios({
               method:"POST",
               url : `${BASE_URL}/user/updateOfficeDetails`,
-              data: userData ,
+              data: {
+                ...userData ,
+                admissionDate: data.admissionDate ? new Date(data.admissionDate).toISOString().split("T")[0] : null
+              } ,
               headers: {
                 "Content-Type": "application/json",
               },

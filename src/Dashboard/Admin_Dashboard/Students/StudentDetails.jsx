@@ -35,17 +35,7 @@ function StudentDetails() {
         });
     };
 
-    const fetchDocuments = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/document/getDocument/${id}`);
-        setDocuments(response.data.data);
-      } catch (error) {
-        console.error('Error fetching documents:', error);
-      }
-    };
-
     fetchData();
-    fetchDocuments() ;
   }, [userId]);
 
   useEffect(() => {
@@ -98,9 +88,19 @@ function StudentDetails() {
           });
       };
 
+      const fetchDocuments = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/document/getDocument/${studentDetails.id}`);
+          setDocuments(response.data.data);
+        } catch (error) {
+          console.error('Error fetching documents:', error);
+        }
+      };
+
       fetchHostel() ;
       fetchTransport() ;
       fetchHostelRooms()
+      fetchDocuments()
     }
   } , [studentDetails])
 
@@ -134,7 +134,7 @@ function StudentDetails() {
           {/* Student Overview Section */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6 flex gap-5">
           <img 
-            src={studentDetails.gender === "Male" ? maleImg : femaleImg} 
+            src= { studentDetails.gender === "Male" ? maleImg : femaleImg} 
             alt="Student" 
             className="w-24 h-24 rounded-full border-2 border-gray-300" 
           />
@@ -243,7 +243,8 @@ function StudentDetails() {
       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Documents</h3>
         <div className="space-y-4">
-          {documents.map((doc) => (
+        {documents.length > 0 ? (
+          documents.map((doc) => (
             <div key={doc.id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
               <div className="flex items-center space-x-3">
                 <FontAwesomeIcon icon={faFilePdf} />
@@ -257,7 +258,10 @@ function StudentDetails() {
                 <span>Download</span>
               </button>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>No documents available.</p>
+        )}
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink , useNavigate} from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../conf/conf';
+import view from '../../../assets/file.png'
 
 function User() {
 
@@ -44,6 +45,17 @@ const column = [
     name: 'Action',
     cell: row => (
       <div className='flex gap-2'>
+      {
+        row.role == 3 || row.role == 4 ?   
+        <button
+        onClick={() => navigate('/admin/studentDetails' , {state: {userId : row.userId}})}
+        >
+        <img src={view} alt="view" className='h-8' />
+        </button>
+        :
+        ''
+      }
+
         <button
         onClick={() => (handleEditClick(row.id))}
       >
@@ -99,11 +111,11 @@ const column = [
   ];
 
   const roleMapping = {
-    1: 'Guest' ,
-    2: 'Admin',
-    3: 'Student',
-    4: 'Teacher',
-    5: 'Parents'
+    1: 'guest' ,
+    2: 'admin',
+    3: 'student',
+    4: 'teacher',
+    5: 'parents'
   }
 
   // Handle Search Logic
@@ -114,17 +126,16 @@ const column = [
     }
   
     const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
-  
+
     const filteredData = filterUser.filter((row) =>
       selectedFields.some((field) => {
-        if (field === 'role') {
+        if (field == 'role') {
           const roleName = roleMapping[row.role];
           return roleName?.toLowerCase().includes(query.toLowerCase());
-        }else{
-        return row[field]?.toLowerCase().includes(query.toLowerCase())
+        } else {
+          return row[field]?.toString().toLowerCase().includes(query.toLowerCase());
         }
-      }
-      )
+      })
     );
   
     setUser(filteredData);
