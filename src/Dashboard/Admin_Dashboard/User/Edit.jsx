@@ -12,6 +12,7 @@ import BankDets from './Teacher_Form/BankDets';
 import HostelInfo from './Teacher_Form/HostelInfo';
 import TransportInfo from './Teacher_Form/TransportInfo';
 import Documents from './Teacher_Form/Documents';
+import Button from '../../../Reusable_components/Button';
 
 function EditUser() {
   const location = useLocation();

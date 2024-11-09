@@ -76,8 +76,8 @@ const column = [
     })
       .then((response) => {
         const users = response.data.data.filter((user) => user.role === 3) ;
-        setUser(users.filter((user) => user.isActive == null));
-        setFilterUser(users.filter((user) => user.isActive == null))
+        setUser(users.filter((user) => (user.isActive == null || user.isActive == false)));
+        setFilterUser(users.filter((user) => (user.isActive == null || user.isActive == false)))
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -110,7 +110,7 @@ const column = [
         setCurrentStep(5);
       } else if (details.previousSchoolName === null) {
         setCurrentStep(6);
-      }else if (details.isActive === null) {
+      }else if (details.isActive === null || details.isActive === false) {
         setCurrentStep(7);
       } else {
         console.log("All details are filled");
