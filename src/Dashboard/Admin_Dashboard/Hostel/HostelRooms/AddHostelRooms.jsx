@@ -20,7 +20,9 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
   const fetchHostels = async () => {
     try {
       const response = await axios.get('http://localhost:8080/hostel/getHostelList');
-      setHostels(response.data.data);
+      const data = response.data.data.filter(data => data.isActive === true);
+      
+      setHostels(data);
     } catch (error) {
       toast.error("Error fetching hostels");
     }
@@ -29,7 +31,9 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
   const fetchRoomTypes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/roomType/getRoomTypeList');
-      setRoomTypes(response.data.data);
+      const data = response.data.data.filter(data => data.isActive === true);
+
+      setRoomTypes(data);
     } catch (error) {
       toast.error("Error fetching room types");
     }
@@ -38,6 +42,12 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setValue(true)
+      setHostels([])
+      setRoomTypes([])
+      setSelectedRoomType(null)
+      setSelectedHostel(null)
+      reset();
       fetchHostels();
       fetchRoomTypes();
     } else {
