@@ -134,7 +134,7 @@ console.log(hostelroomId,'hostelroomId')
             // defaultValue = {selectedRoomnum}
               {...register('hostelRoomNumber', { required: 'Hostel room number is required' })}
               type="text"
-              className="border p-2 w-full"
+              className="w-full border border-gray-300 p-2 rounded"
             />
             {errors.hostelRoomNumber && <p className="text-red-500">{errors.hostelRoomNumber.message}</p>}
           </div>
@@ -147,7 +147,7 @@ console.log(hostelroomId,'hostelroomId')
                 const hostel = hostels.find(h => h.id === parseInt(e.target.value));
                 setSelectedHostel(hostel);
               }}
-              className="border p-2 w-full"
+              className="w-full border border-gray-300 p-2 rounded"
             >
               <option value="" disabled>Select a hostel</option>
               {hostels.map(hostel => (
@@ -164,7 +164,7 @@ console.log(hostelroomId,'hostelroomId')
                 const roomType = roomTypes.find(rt => rt.id === parseInt(e.target.value));
                 setSelectedRoomType(roomType);
               }}
-              className="border p-2 w-full"
+              className="w-full border border-gray-300 p-2 rounded"
             >
               <option value="" disabled>Select a room type</option>
               {roomTypes.map(rt => (
@@ -179,7 +179,7 @@ console.log(hostelroomId,'hostelroomId')
             // defaultValue = {selectednumofbed}
               {...register('numOfBeds', { required: 'Number of beds is required' })}
               type="number"
-              className="border p-2 w-full"
+              className="w-full border border-gray-300 p-2 rounded"
             />
             {errors.numOfBeds && <p className="text-red-500">{errors.numOfBeds.message}</p>}
           </div>
@@ -192,7 +192,7 @@ console.log(hostelroomId,'hostelroomId')
             // defaultValue={selectedcostofbed}
               {...register('costPerBed', { required: 'Cost per bed is required' })}
               type="number"
-              className="border p-2 w-full"
+              className="w-full border border-gray-300 p-2 rounded"
             />
             {errors.costPerBed && <p className="text-red-500">{errors.costPerBed.message}</p>}
           </div>
