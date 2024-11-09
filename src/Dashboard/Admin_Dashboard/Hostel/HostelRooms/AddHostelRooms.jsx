@@ -1,184 +1,171 @@
-// import React, { useEffect, useState } from 'react';
-// import { useForm } from 'react-hook-form';
-// import axios from 'axios';
-// import { toast, ToastContainer } from 'react-toastify';
-// import Button from '../../../../Reusable_components/Button';
-// import ToggleButton from '../../../../Reusable_components/ToggleButton';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import Button from '../../../../Reusable_components/Button';
+import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-// const AddHostelRooms = ({ isOpen, onClose }) => {
+const AddHostelRooms = ({ isOpen, onClose }) => {
+  const [value, setValue] = useState(true);
+  const [hostels, setHostels] = useState([]);
+  const [roomTypes, setRoomTypes] = useState([]);
+  const [selectedHostel, setSelectedHostel] = useState(null);
+  const [selectedRoomType, setSelectedRoomType] = useState(null);
 
-//     const [value, setValue] = useState(true);
-//     const [coach, setCoach] = useState([]);
-//     const [dropdownOpen, setDropdownOpen] = useState(false);
-//     const [selectedCoach, setSelectedCoach] = useState(null);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
+  // Fetch hostels and room types
+  const fetchHostels = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/hostel/getHostelList');
+      setHostels(response.data.data);
+    } catch (error) {
+      toast.error("Error fetching hostels");
+    }
+  };
 
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//     reset
-//   } = useForm();
+  const fetchRoomTypes = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/roomType/getRoomTypeList');
+      setRoomTypes(response.data.data);
+    } catch (error) {
+      toast.error("Error fetching room types");
+    }
+  };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      fetchHostels();
+      fetchRoomTypes();
+    } else {
+      document.body.style.overflow = 'auto';
+    }
 
-//   const fetchCoach = async () => {
-//     try {
-//         const response = await axios.get('http://localhost:8080/user/getUserList');
-//         const filteredCoaches = response.data.data.filter(user => user.role.name === 'Teacher');
-//         setCoach(filteredCoaches);
-//     } catch (error) {
-//         toast.error("Error fetching coaches");
-//     }
-// };
-  
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
 
-//   useEffect(() => {
-//     // Disable scrolling on background when the popup is open
-//     if (isOpen) {
-//       document.body.style.overflow = 'hidden';
-//       fetchCoach();
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen, onClose]);
 
-//     } else {
-//       document.body.style.overflow = 'auto';
-//     }
+  // Handle form submission
+  const onSubmit = (data) => {
+    const postData = {
+      hostelRoomNumber: data.hostelRoomNumber,
+      hostelName: { id: selectedHostel?.id },
+      roomType: { id: selectedRoomType?.id },
+      numOfBeds: data.numOfBeds,
+      costPerBed: data.costPerBed,
+      isActive: value,
+    };
 
-//     // Add event listener for ESC key press
-//     const handleKeyDown = (e) => {
-//       if (e.key === 'Escape') {
-//         onClose();
-//       }
-//     };
+    axios.post('http://localhost:8080/hostelRooms/saveHostelRooms', postData, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        toast.success('Successfully added hostel room');
+        reset();
+        onClose();
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        toast.error('Error adding new hostel room');
+      });
+  };
 
-//     document.addEventListener('keydown', handleKeyDown);
+  if (!isOpen) return null;
 
-//     return () => {
-//       document.removeEventListener('keydown', handleKeyDown);
-//       document.body.style.overflow = 'auto'; // Clean up scrolling style
-//     };
-//   }, [isOpen, onClose]);
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+        <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
+        <h2 className="text-2xl font-bold mb-4">Add Hostel Room</h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Hostel Room Number */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Hostel Room Number</label>
+            <input
+              type="text"
+              {...register('hostelRoomNumber', { required: true })}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+            {errors.hostelRoomNumber && <p className="text-red-500 text-sm">This field is required</p>}
+          </div>
 
-//   // Handle form submission
-//   const onSubmit = (data) => {
-//     axios({
-//       method: 'POST',
-//       url: 'http://localhost:8080/sports/saveSports',
-//       data: {
-//         sportsName: data.sportsName,
-//         coachName: {id: selectedCoach?.id },
-//         startedYear: data.startedYear,
-//         isActive:value
-//       },
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-//       .then((response) => {
-//         console.log('response', response.data);
-//         toast.success('Successfully added Sport');
-//         reset();
-//         onClose();
-//       })
-//       .catch((err) => {
-//         console.log(err, 'error:');
-//         toast.error('Error adding new Sport');
-//         onClose();
-//       });
-//   };
+          {/* Hostel Name Dropdown */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Hostel Name</label>
+            <select
+              onChange={e => setSelectedHostel(hostels.find(h => h.id === parseInt(e.target.value)))}
+              className="w-full border border-gray-300 p-2 rounded"
+            >
+              <option value="">Select Hostel</option>
+              {hostels.map(hostel => (
+                <option key={hostel.id} value={hostel.id}>{hostel.hostelName}</option>
+              ))}
+            </select>
+          </div>
 
-//   if (!isOpen) return null;
+          {/* Room Type Dropdown */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Room Type</label>
+            <select
+              onChange={e => setSelectedRoomType(roomTypes.find(rt => rt.id === parseInt(e.target.value)))}
+              className="w-full border border-gray-300 p-2 rounded"
+            >
+              <option value="">Select Room Type</option>
+              {roomTypes.map(room => (
+                <option key={room.id} value={room.id}>{room.roomTypeName}</option>
+              ))}
+            </select>
+          </div>
 
-//   return (
-//     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-//       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-//         <button
-//           onClick={onClose}
-//           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
-//         >
-//           &times;
-//         </button>
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//           <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add Sport</h2>
+          {/* Number of Beds */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Number of Beds</label>
+            <input
+              type="number"
+              {...register('numOfBeds', { required: true, min: 1 })}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+            {errors.numOfBeds && <p className="text-red-500 text-sm">This field is required</p>}
+          </div>
 
-//           {/* Sport name Input */}
-//           <div className="mb-4">
-//             <label htmlFor="sportsName" className="block text-gray-700 font-semibold mb-2">Name</label>
-//             <input
-//               type="text"
-//               id="sportsName"
-//               className={`w-full px-3 py-2 border ${errors.sportsName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-//               {...register('sportsName', { required: 'sportsName is required' })}
-//             />
-//             {errors.sportsName && <p className="text-red-500 text-sm mt-1">{errors.sportsName.message}</p>}
-//           </div>
+          {/* Cost Per Bed */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Cost Per Bed</label>
+            <input
+              type="number"
+              {...register('costPerBed', { required: true, min: 0 })}
+              className="w-full border border-gray-300 p-2 rounded"
+            />
+            {errors.costPerBed && <p className="text-red-500 text-sm">This field is required</p>}
+          </div>
 
+          {/* Active Toggle */}
+          <div className="mb-4 flex items-center">
+            <label className="text-sm font-medium mr-2">Active</label>
+            <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+              />          </div>
 
-//        {/* Coach Input */}
-//        <div className="mb-4 relative">
-//                         <label htmlFor="coach" className="block text-gray-700 font-semibold mb-2">Coach</label>
-//                         <div 
-//                             className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
-//                             onClick={() => setDropdownOpen(!dropdownOpen)}
-//                         >
-//                             <p>{selectedCoach ? selectedCoach.firstName : 'Select Coach'}</p>
-//                             <FontAwesomeIcon icon={faAngleDown} />
-//                         </div>
-//                         {dropdownOpen && (
-//                             <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
-//                                 {coach.map(coach => (
-//                                     <label
-//                                         key={coach.id}
-//                                         className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-//                                         onClick={() => {
-//                                             setSelectedCoach(coach); // Set selected coach
-//                                             setDropdownOpen(false); // Close dropdown after selection
-//                                         }}
-//                                     >
-//                                         {coach.firstName}
-//                                     </label>
-//                                 ))}
-//                             </div>
-//                         )}
-//                     </div>
+          <Button type="submit" className="w-full mt-4">Submit</Button>
+        </form>
+        <ToastContainer />
+      </div>
+    </div>
+  );
+};
 
-
-//           {/* Started Year  Input */}
-//                     <div className="mb-4">
-//             <label htmlFor="startedYear" className="block text-gray-700 font-semibold mb-2">Started Year</label>
-//             <input
-//               type="number"
-//               id="startedYear"
-//               className={`w-full px-3 py-2 border ${errors.startedYear ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-//               {...register('startedYear', { required: 'startedYear is required' })}
-//             />
-//             {errors.startedYear && <p className="text-red-500 text-sm mt-1">{errors.startedYear.message}</p>}
-//           </div>
-
-//           <div className="mb-2">
-//               <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-//                 Status 
-//               </label>
-//               <ToggleButton
-//                 isOn={value}
-//                 handleToggle={() => setValue(!value)}
-//                 id="active"
-//                 // label="Active"
-//                 register={register}
-//               />
-//             </div>
-
-//           {/* Submit Button */}
-//           <Button
-//             type="submit"
-//             className="w-full text-center" 
-//           />
-
-//         </form>
-//       </div>
-//       <ToastContainer />
-//     </div>
-//   );
-// };
-
-// export default AddHostelRooms;
+export default AddHostelRooms;
