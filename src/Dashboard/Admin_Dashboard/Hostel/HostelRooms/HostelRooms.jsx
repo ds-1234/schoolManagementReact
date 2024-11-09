@@ -9,17 +9,18 @@ import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import BASE_URL from '../../../../conf/conf';
 import AddHostelRooms from './AddHostelRooms';
+import EditHostelRooms from './EditHostelRooms';
 
 
 function HostelRooms() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editHostelId , setEditHostelId] = useState(null)
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editHostelId , setEditHostelId] = useState(null)
 
   useEffect(() => {
-    if (isAddPopupOpen ) {
+    if (isAddPopupOpen || isEditPopupOpen ) {
       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
     } else {
       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
@@ -28,20 +29,20 @@ function HostelRooms() {
     return () => {
       document.body.style.overflow = 'auto';  // Cleanup on unmount
     };
-  }, [isAddPopupOpen]);
+  }, [isAddPopupOpen,isEditPopupOpen]);
   
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditHostelId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditHostelId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditHostelId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditHostelId(null);
+    setIsEditPopupOpen(false);
+  };
 
 
 
@@ -247,15 +248,15 @@ const searchOptions = [
         }} 
         />
 
-      {/* <EditHostel
+      <EditHostelRooms
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  
           fetchData();       
         }}
-        hostelId={editHostelId}
+        hostelroomId={editHostelId}
         onSuccess={fetchData} 
-      /> */}
+      />
     </div>
   );
 };
