@@ -154,7 +154,7 @@ useEffect(() => {
     // Filter students by selected class
     useEffect(() => {
         if (selectedClass) {
-          const filtered = students.filter(student => student.className.includes(selectedClass.id));
+          const filtered = students.filter(student => student.className?.includes(selectedClass.id));
           setFilteredStudents(filtered);
         } else {
         //   setFilteredStudents(students);

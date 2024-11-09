@@ -102,7 +102,7 @@ function AddFeesCollection({ isOpen, onClose }) {
   // Filter students by selected class
   useEffect(() => {
     if (selectedClass) {
-      const filtered = students.filter(student => student.className.includes(selectedClass.id));
+      const filtered = students.filter(student => student.className?.includes(selectedClass.id));
       setFilteredStudents(filtered);
     } else {
     //   setFilteredStudents(students);
@@ -234,7 +234,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
 {/* Student List Input */}
 <div className="mb-2 relative" ref={studentDropdownRef}>
-<label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student List</label>
+<label htmlFor="studentsName" className="block text-gray-700 font-semibold mb-2">Student Name</label>
   <div
     className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
     onClick={() => setDropdownOpen1(!dropdownOpen1)}  // Toggle dropdown for Student
