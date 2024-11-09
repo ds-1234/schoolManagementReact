@@ -100,6 +100,7 @@ import TchProfile from './Dashboard/Teacher_Dashboard/Teacher Profile/TchProfile
 import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
+import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails';
 
 
 
@@ -190,6 +191,7 @@ function App() {
             <Route path='eventcategory' element={<EventCategory/>}/> 
             
             <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
+            <Route path='TchDetails' element={<TchDetails/>}/>
           </Route>
 
           {/* Student Dashboard Routes */}
