@@ -46,9 +46,16 @@ const column = [
     cell: row => (
       <div className='flex gap-2'>
       {
-        row.role == 3 || row.role == 4 ?   
+        row.role == 3 ?   
         <button
         onClick={() => navigate('/admin/studentDetails' , {state: {userId : row.userId}})}
+        >
+        <img src={view} alt="view" className='h-8' />
+        </button>
+        :
+        row.role == 4?
+        <button
+        onClick={() => navigate('/admin/TchDetails' , {state: {userId : row.id}})}
         >
         <img src={view} alt="view" className='h-8' />
         </button>

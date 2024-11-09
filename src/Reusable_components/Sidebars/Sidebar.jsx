@@ -637,7 +637,7 @@ const Sidebar = () => {
                      Room Type
                   </NavLink>
                 </li>
-                <li>
+                {/* <li>
                   <NavLink
                     to="/admin/hostelallocation"
                     className={({ isActive }) =>
@@ -647,7 +647,7 @@ const Sidebar = () => {
                     <FontAwesomeIcon icon={faAngleRight}  />
                     Hostel Allocation 
                   </NavLink>
-                </li>
+                </li> */}
               </ul>
             )}
           </li>

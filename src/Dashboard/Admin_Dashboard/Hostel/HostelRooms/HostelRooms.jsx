@@ -8,39 +8,41 @@ import Swal from 'sweetalert2'
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import BASE_URL from '../../../../conf/conf';
+import AddHostelRooms from './AddHostelRooms';
+import EditHostelRooms from './EditHostelRooms';
 
 
 function HostelRooms() {
   const [data, setData] = useState([]);
   const [filterData , setFilterData] = useState([])
-//   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-//   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-//   const [editHostelId , setEditHostelId] = useState(null)
+  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [editHostelId , setEditHostelId] = useState(null)
 
-//   useEffect(() => {
-//     if (isAddPopupOpen ) {
-//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-//     } else {
-//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-//     }
+  useEffect(() => {
+    if (isAddPopupOpen || isEditPopupOpen ) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
 
-//     return () => {
-//       document.body.style.overflow = 'auto';  // Cleanup on unmount
-//     };
-//   }, [isAddPopupOpen]);
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen,isEditPopupOpen]);
   
-//   const openAddPopup = () => setIsAddPopupOpen(true);
-//   const closeAddPopup = () => setIsAddPopupOpen(false);
+  const openAddPopup = () => setIsAddPopupOpen(true);
+  const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditHostelId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    setEditHostelId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditHostelId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditHostelId(null);
+    setIsEditPopupOpen(false);
+  };
 
 
 
@@ -228,33 +230,33 @@ const searchOptions = [
     <div className=' h-full mb-10 mr-2'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Hostel Rooms</h1>
       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/hostel'> Hostel </NavLink>/ <span className='text-[#ffae01] font-semibold'>Hostel Rooms</span> </p>
-      {/* <AddBtn onAddClick={openAddPopup}/> */}
+      <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
       data={data}
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
-    //   onAddClick={openAddPopup}
+      onAddClick={openAddPopup}
       />
 
-      {/* <AddHostel
+      <AddHostelRooms
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
           fetchData(); // Refresh data when add popup closes
         }} 
-        /> */}
+        />
 
-      {/* <EditHostel
+      <EditHostelRooms
         isOpen={isEditPopupOpen}
         onClose={() => {
           closeEditPopup();  
           fetchData();       
         }}
-        hostelId={editHostelId}
+        hostelroomId={editHostelId}
         onSuccess={fetchData} 
-      /> */}
+      />
     </div>
   );
 };
