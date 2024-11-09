@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import image from './assets/images/register.png';
 import { Link} from 'react-router-dom';
@@ -6,6 +6,7 @@ import useRegister from './hooks/useRegister.jsx'
 import Layout from './Reusable_components/Layout.jsx';
 import Button from './Reusable_components/Button.jsx';
 import DatePicker from './Reusable_components/DatePicker.jsx';
+import axios from 'axios';
 
 
 function Registration() {
@@ -13,6 +14,47 @@ function Registration() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { registerUser, loading, error } = useRegister(); // Destructure values from the custom hook
   // const navigate = useNavigate();
+
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity , setSelectedCity] = useState('') ;
+
+      // Fetch countries
+      useEffect(() => {
+        axios.get('https://countriesnow.space/api/v0.1/countries/positions')
+          .then((response) => {
+            console.log(response.data.data);
+            setCountries(response.data.data)
+          })
+          .catch((error) => console.error("Error fetching countries:", error));
+      }, []);
+  
+      // Fetch states when country changes
+      useEffect(() => {
+        if (selectedCountry) {
+          axios.post('https://countriesnow.space/api/v0.1/countries/states', { country: selectedCountry })
+            .then((response) => {
+              console.log(response.data.data);
+              setStates(response.data.data.states)
+            })
+            .catch((error) => console.error("Error fetching states:", error));
+        }
+      }, [selectedCountry]);
+    
+      // Fetch cities when state changes
+      useEffect(() => {
+        if (selectedState) {
+          axios.post('https://countriesnow.space/api/v0.1/countries/state/cities', { country: selectedCountry, state: selectedState })
+            .then((response) => {
+              console.log(response.data.data);
+              setCities(response.data.data)
+            })
+            .catch((error) => console.error("Error fetching cities:", error));
+        }
+      }, [selectedCountry, selectedState]);
 
   const onSubmit = async (data) => {
     const result =  registerUser({
@@ -166,6 +208,60 @@ function Registration() {
               {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
             </div>
 
+        {/* Country dropdown */}
+        <div className="flex flex-col pt-2 px-1 md:w-1/2">
+          <label htmlFor="country">Country *</label>
+          <select
+            id="country"
+            className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('country', { required: 'Country is required' })}
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+          >
+            <option value="">Select Country</option>
+            {countries.map((country) => (
+              <option key={country.iso2} value={country.name}>{country.name}</option>
+            ))}
+          </select>
+          {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
+        </div>
+
+        {/* State dropdown */}
+        <div className="flex flex-col pt-2 px-1 md:w-1/2">
+          <label htmlFor="state">State *</label>
+          <select
+            id="state"
+            className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('state', { required: 'State is required' })}
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+          >
+            <option value="">Select State</option>
+            {states.map((option) => (
+              <option key={option.name} value={option.name}>{option.name}</option>
+            ))}
+          </select>
+          {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
+        </div>
+
+        {/* City dropdown */}
+        <div className="flex flex-col pt-2 px-1 md:w-1/2">
+          <label htmlFor="city">City/Village *</label>
+          <select
+            id="city"
+            className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('city', { required: 'City is required' })}
+            value={selectedCity}
+            onChange={(e) => setSelectedCity(e.target.value)}
+          >
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city} value={city}>{city}</option>
+            ))}
+          </select>
+          {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
+        </div>
+
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="houseNumber">House Number <span className='text-red-700 font-bold'>*</span></label>
               <input
@@ -190,7 +286,7 @@ function Registration() {
               {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+            {/* <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="city">City <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="text"
@@ -211,7 +307,7 @@ function Registration() {
                 {...register('state', { required: 'State is required' })}
               />
               {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
-            </div>
+            </div> */}
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="pinCode">Pincode <span className='text-red-700 font-bold'>*</span></label>
@@ -231,7 +327,7 @@ function Registration() {
               {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
             </div>
 
-            <div className="flex flex-col pt-2 px-1 md:w-1/2">
+            {/* <div className="flex flex-col pt-2 px-1 md:w-1/2">
               <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
               <input
                 type="text"
@@ -241,7 +337,7 @@ function Registration() {
                 {...register('country', { required: 'Country is required' })}
               />
               {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
-            </div>
+            </div> */}
 
            
 

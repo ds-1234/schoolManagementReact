@@ -19,7 +19,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     formState: { errors },
   } = useForm({
     defaultValues: {
-      qualifications: [{ course: "", institute: "", passoutYear: "" }],
+      qualifications: [{ course: "", institute: "", passoutYear: "" , cgpa: ""}],
       workExperiences: [{ institute: "", designation: "", joining: "" , relieving: ""  }],
     },
   });
@@ -66,6 +66,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           course: qualification.course,
           institute: qualification.institute,
           passoutYear: qualification.passoutYear,
+          cgpa : qualification.cgpa
         })),
         workExperience: data.workExperiences.map((experience) => ({
           teacherId: userId,
@@ -108,7 +109,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
               if (data) {
                 // Mapping the fetched data to match the form structure
                 const formattedData = {
-                  qualifications: data.qualificationList || [{ course: "", institute: "", passoutYear: "" }],
+                  qualifications: data.qualificationList || [{ course: "", institute: "", passoutYear: "" , cgpa : ""}],
                   workExperiences: data.workExperience ? data.workExperience.map(exp => ({
                     institute: exp.insitutue || "", 
                     designation: exp.designation || "",  
@@ -131,60 +132,68 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
   return (
     <div>
     {/* Qualifications Section */}
-    <div className="space-y-2 mb-7 ">
-      <h3 className=" font-semibold text-gray-900 text-xl">Qualifications</h3>
-      {qualificationFields.map((item, index) => (
-        <div key={item.id} className="grid grid-cols-5 gap-2">
-          <div className='flex flex-col gap-1'>
-            <label htmlFor={`qualifications[${index}].course`}>Degree</label>
-            <input
-              type="text"
-              {...register(`qualifications[${index}].course`, { required: true })}
-              className="border p-2 rounded-lg"
-              placeholder="Enter Degree"
-            />
-          </div>
-          <div className='flex flex-col gap-1'>
-            <label htmlFor={`qualifications[${index}].institute`}>Institution</label>
-            <input
-              type="text"
-              {...register(`qualifications[${index}].institute`, { required: true })}
-              className="border p-2 rounded-lg"
-              placeholder="Enter Institution"
-            />
-          </div>
-          <div className='flex flex-col gap-1'>
-            <label htmlFor={`qualifications[${index}].passoutYear`}>Year of Passing</label>
-            <input
-              type="text"
-              {...register(`qualifications[${index}].passoutYear`, { required: true })}
-              className="border p-2 rounded-lg"
-              placeholder="Enter Year"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-          <label htmlFor="file">Upload Marksheets/Degree</label>
-          <input
-            type="file"
-            id="file"
-            className={`p-1 rounded-lg border  ${errors.pan ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            {...register('file')}
-          />
-          </div>
-
-        <div className='flex items-center justify-center mt-7'>
+<div className="space-y-2 mb-7 ">
+  <h3 className=" font-semibold text-gray-900 text-xl">Qualifications</h3>
+  {qualificationFields.map((item, index) => (
+    <div key={item.id} className="grid grid-cols-6 gap-2">
+      <div className='flex flex-col gap-1'>
+        <label htmlFor={`qualifications[${index}].course`}>Degree</label>
+        <input
+          type="text"
+          {...register(`qualifications[${index}].course`, { required: true })}
+          className="border p-2 rounded-lg"
+          placeholder="Enter Degree"
+        />
+      </div>
+      <div className='flex flex-col gap-1'>
+        <label htmlFor={`qualifications[${index}].institute`}>Institution</label>
+        <input
+          type="text"
+          {...register(`qualifications[${index}].institute`, { required: true })}
+          className="border p-2 rounded-lg"
+          placeholder="Enter Institution"
+        />
+      </div>
+      <div className='flex flex-col gap-1'>
+        <label htmlFor={`qualifications[${index}].passoutYear`}>Year of Passing</label>
+        <input
+          type="text"
+          {...register(`qualifications[${index}].passoutYear`, { required: true })}
+          className="border p-2 rounded-lg"
+          placeholder="Enter Year"
+        />
+      </div>
+      <div className='flex flex-col gap-1'>
+        <label htmlFor={`qualifications[${index}].cgpa`}>Marks (%) / CGPA</label>
+        <input
+          type="text"
+          {...register(`qualifications[${index}].cgpa`, { required: true })}
+          className="border p-2 rounded-lg"
+          placeholder="Enter Marks (%) or CGPA"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <label htmlFor="file">Upload Marksheets/Degree</label>
+        <input
+          type="file"
+          id="file"
+          className={`p-1 rounded-lg border ${errors.pan ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+          {...register('file')}
+        />
+      </div>
+      <div className='flex items-center justify-center mt-7'>
         <Button onClick={() => removeQualification(index)} 
         label={<FontAwesomeIcon icon={faTrashCan} />} 
         className="bg-red-500 text-white hover:bg-white hover:text-red-700 h-10 w-20" />
-        </div>
       </div>
-      ))}
-        <button type="button" className="text-blue-500 hover:text-blue-700 transition-colors duration-150" 
-        onClick={() => appendQualification({ course: "", institute: "", passoutYear: "" })}>
-            + Add New
-        </button>
     </div>
+  ))}
+  <button type="button" className="text-blue-500 hover:text-blue-700 transition-colors duration-150" 
+  onClick={() => appendQualification({ course: "", institute: "", passoutYear: "", cgpa: "" })}>
+      + Add New
+  </button>
+</div>
+
 
     {/* Work Experience Section */}
       <div className="space-y-2 mb-7">

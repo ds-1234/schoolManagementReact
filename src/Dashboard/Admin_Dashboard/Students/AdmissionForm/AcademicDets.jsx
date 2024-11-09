@@ -24,6 +24,8 @@ function AcademicDets() {
     const [classes , setClasses] = useState([]) ;
     const [schools , setSchools] = useState([]) ;
     const [initialData ,setInitialData] = useState({});
+    const [selectedSchl , setSelectedSchl] = useState('') ;
+    const [selectedCls , setSelectedCls] = useState('') ;
     const navigate = useNavigate()
 
     const fetchClassOptions = () => {
@@ -77,6 +79,8 @@ function AcademicDets() {
                     // If data exists, populate the form
                     console.log(studentData);
                     setInitialData(studentData)
+                    setSelectedCls(studentData.className)
+                    setSelectedSchl(studentData.school) 
                     reset(studentData);
                 }
             } catch (error) {
@@ -136,6 +140,8 @@ function AcademicDets() {
             id="school"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
             {...register('school')}
+            value={selectedSchl}
+            onChange={(e) => e.target.value}
             placeholder = "Select School Branch "
             >
             <option value="" hidden>Select Branch </option>
@@ -151,6 +157,8 @@ function AcademicDets() {
             id="class"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
             {...register('className')}
+            value={selectedCls}
+            onChange={(e) => e.target.value}
             >
             <option value="" hidden>Select Class </option>
             {classes.map(option => (
