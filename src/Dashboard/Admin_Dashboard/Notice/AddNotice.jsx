@@ -25,7 +25,9 @@ function AddNotice() {
         const response = await axios.get(`${BASE_URL}/role/getRoleList`, {
           headers: { 'Content-Type': 'application/json' },
         });
-        setRole(response.data.data);
+        const data = response.data.data.filter(data => data.id != 3);
+
+        setRole(data);
       } catch (error) {
         console.error('Error fetching roles:', error);
       }
