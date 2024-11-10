@@ -101,6 +101,7 @@ import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails';
+import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
 
 
 
@@ -192,6 +193,7 @@ function App() {
             
             <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
             <Route path='TchDetails' element={<TchDetails/>}/>
+            <Route path='bookissue' element={<BookIssue/>}/>
           </Route>
 
           {/* Student Dashboard Routes */}
