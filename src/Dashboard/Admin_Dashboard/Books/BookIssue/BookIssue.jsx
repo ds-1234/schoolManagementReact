@@ -9,6 +9,7 @@ import AddBtn from '../../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../../conf/conf';
 import AddBooksPopup from '../AddBooksPopup';
 import AddBookIssue from './AddBookIssue';
+import EditBookIssue from './EditBookIssue';
 
 
 function BookIssue() {
@@ -99,27 +100,28 @@ function BookIssue() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditBookId(id);
-//     setIsEditPopupOpen(true);
-//   };
+  const openEditPopup = (id) => {
+    console.log('editpopup',id)
+    setEditBookId(id);
+    setIsEditPopupOpen(true);
+  };
 
-//   const closeEditPopup = () => {
-//     setEditBookId(null);
-//     setIsEditPopupOpen(false);
-//   };
+  const closeEditPopup = () => {
+    setEditBookId(null);
+    setIsEditPopupOpen(false);
+  };
 
-//   useEffect(() => {
-//     if (isAddPopupOpen || isEditPopupOpen) {
-//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-//     } else {
-//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-//     }
+  useEffect(() => {
+    if (isAddPopupOpen || isEditPopupOpen) {
+      document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
+    } else {
+      document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+    }
 
-//     return () => {
-//       document.body.style.overflow = 'auto';  // Cleanup on unmount
-//     };
-//   }, [isAddPopupOpen, isEditPopupOpen]);
+    return () => {
+      document.body.style.overflow = 'auto';  // Cleanup on unmount
+    };
+  }, [isAddPopupOpen, isEditPopupOpen]);
 
     const fetchBooks = async () => {
       try {
@@ -211,12 +213,12 @@ const searchOptions = [
         }} 
       />
 
-      {/* <EditBookPopup
+      <EditBookIssue
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
-        bookId={editBookId}
-        onSuccess={fetchData} // Refresh data after editing
-      /> */}
+        BookIssueId={editBookId}
+        onSuccess={fetchBooks} // Refresh data after editing
+      />
     </div>
   );
 }

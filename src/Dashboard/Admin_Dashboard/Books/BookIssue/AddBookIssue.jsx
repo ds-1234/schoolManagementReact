@@ -109,85 +109,92 @@ function AddBookIssue({ isOpen, onClose }) {
     }
   };
 
-  return (
-    isOpen && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div className="bg-white p-8 rounded-lg max-w-lg w-full">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Issue Book</h2>
-              <button
-                type="button"
-                className="text-2xl font-bold text-gray-500 hover:text-gray-700"
-                onClick={onClose}
-              >
-                &times;
-              </button>
-            </div>
+return (
+  isOpen && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+      <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
+        >
+          &times;
+        </button>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Issue Book</h2>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Book Name</label>
-              <select
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                onChange={(e) => setSelectedBook(books.find(book => book.id === parseInt(e.target.value)))}
-              >
-                <option value="">Select a Book</option>
-                {books.map(book => (
-                  <option key={book.id} value={book.id}>{book.name}</option>
-                ))}
-              </select>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Book Issued To</label>
-              <select
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                onChange={(e) => setSelectedUser(users.find(user => user.id === parseInt(e.target.value)))}
-              >
-                <option value="">Select a User</option>
-                {users.map(user => (
-                  <option key={user.id} value={user.id}>
-                    {user.firstName} 
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* Book Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Book Name</label>
+            <select
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setSelectedBook(books.find(book => book.id === parseInt(e.target.value)))}
+              disabled // Disable the input (readonly)
+            >
+              <option value="">Select a Book</option>
+              {books.map((book) => (
+                <option key={book.id} value={book.id}>
+                  {book.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Book Number</label>
-              <input
-                type="text"
-                value={bookNumber}
-                onChange={(e) => setBookNumber(e.target.value)} // Handle Book Number input
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
+          {/* User Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Book Issued To</label>
+            <select
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setSelectedUser(users.find(user => user.id === parseInt(e.target.value)))}
+              disabled // Disable the input (readonly)
+            >
+              <option value="">Select a User</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.firstName}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Issued Date</label>
-              <input
-                type="date"
-                value={issuedDate}
-                readOnly
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
+          {/* Book Number */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Book Number</label>
+            <input
+              type="text"
+              value={bookNumber}
+              readOnly // Make input readonly
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Return Date</label>
-              <input
-                type="date"
-                value={returnDate}
-                onChange={(e) => setReturnDate(e.target.value)}
-                min={issuedDate}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
+          {/* Issued Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Issued Date</label>
+            <input
+              type="date"
+              value={issuedDate}
+              readOnly // Make input readonly
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
 
-            <div className="mb-2">
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status
-              </label>
+          {/* Return Date */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Return Date</label>
+            <input
+              type="date"
+              value={returnDate}
+              onChange={(e) => setReturnDate(e.target.value)}
+              min={issuedDate}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Status Toggle */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <div className="flex items-center">
               <ToggleButton
                 isOn={status}
                 handleToggle={() => setStatus(!status)}
@@ -195,13 +202,21 @@ function AddBookIssue({ isOpen, onClose }) {
                 register={register}
               />
             </div>
+          </div>
 
-            <Button type="submit" className="w-full text-center">Submit</Button>
-          </form>
-        </div>
+          {/* Submit Button */}
+          <div className="flex justify-end mt-4">
+          <Button
+            type="submit"
+            className="w-full text-center" 
+          />
+          </div>
+        </form>
       </div>
-    )
-  );
+    </div>
+  )
+);
+
 }
 
 export default AddBookIssue;
