@@ -87,7 +87,7 @@ function AddBookIssue({ isOpen, onClose }) {
       issuedDate,
       returnDate,
       bookNumber: bookNumber || (selectedBook ? selectedBook.bookNumber : null), // Use bookNumber input value or selectedBook
-      isActive: status, // toggle active/inactive status
+      isActive: true, // toggle active/inactive status
     };
 
     console.log("Form submission data:", formData);
@@ -192,7 +192,7 @@ return (
           </div>
 
           {/* Status Toggle */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700">Status</label>
             <div className="flex items-center">
               <ToggleButton
@@ -202,7 +202,7 @@ return (
                 register={register}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Submit Button */}
           <div className="flex justify-end mt-4">

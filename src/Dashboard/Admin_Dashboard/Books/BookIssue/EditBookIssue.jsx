@@ -179,18 +179,31 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
               />
             </div>
   
-            {/* Status Toggle */}
-            <div>
-            <label className="block text-sm font-medium text-gray-700">Status</label>
-            <div className="flex items-center">
-              <ToggleButton
-                isOn={status}
-                handleToggle={() => setStatus(!status)}
-                id="active"
-                register={register}
-              />
-            </div>
-          </div>
+            <label className="block text-sm font-medium mb-2 text-black">Issue Status *</label>
+  <div className="flex items-center">
+    {/* Issued Checkbox */}
+    <label className="mr-4">
+      <input
+        type="checkbox"
+        checked={status === true}
+        onChange={() => setStatus(true)} // Set status to true when "Issued" is selected
+        className="mr-2"
+      />
+      Issued
+    </label>
+    
+    {/* Returned Checkbox */}
+    <label>
+      <input
+        type="checkbox"
+        checked={status === false}
+        onChange={() => setStatus(false)} // Set status to false when "Returned" is selected
+        className="mr-2"
+      />
+      Returned
+    </label>
+    </div>
+
   
             {/* Submit Button */}
             <div className="flex justify-end mt-4">
