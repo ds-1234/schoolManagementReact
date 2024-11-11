@@ -59,6 +59,7 @@ function AddBookIssue({ isOpen, onClose }) {
         console.error("Error fetching books:", error);
         toast.error("Failed to fetch books.");
       }
+      console.log(selectedBook,'selectedbook')
     };
 
     const fetchUsers = async () => {
@@ -86,7 +87,8 @@ function AddBookIssue({ isOpen, onClose }) {
       userId: selectedUser ? selectedUser.id : null,
       issuedDate,
       returnDate,
-      bookNumber: bookNumber || (selectedBook ? selectedBook.bookNumber : null), // Use bookNumber input value or selectedBook
+      bookMapping: selectedBook ? selectedBook.id : null, // Add the bookMapping (id of selected book)
+      bookNumber: bookNumber , // Use bookNumber input value or selectedBook
       isActive: true, // toggle active/inactive status
     };
 
@@ -129,7 +131,7 @@ return (
             <select
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               onChange={(e) => setSelectedBook(books.find(book => book.id === parseInt(e.target.value)))}
-              disabled // Disable the input (readonly)
+            //   disabled // Disable the input (readonly)
             >
               <option value="">Select a Book</option>
               {books.map((book) => (
@@ -146,7 +148,7 @@ return (
             <select
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               onChange={(e) => setSelectedUser(users.find(user => user.id === parseInt(e.target.value)))}
-              disabled // Disable the input (readonly)
+            //   disabled // Disable the input (readonly)
             >
               <option value="">Select a User</option>
               {users.map((user) => (
@@ -162,8 +164,10 @@ return (
             <label className="block text-sm font-medium text-gray-700">Book Number</label>
             <input
               type="text"
-              value={bookNumber}
-              readOnly // Make input readonly
+            //   value={bookNumber}
+            //   readOnly // Make input readonly
+            onChange={(e) => setBookNumber(e.target.value)}
+
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
@@ -184,7 +188,7 @@ return (
             <label className="block text-sm font-medium text-gray-700">Return Date</label>
             <input
               type="date"
-              value={returnDate}
+            //   value={returnDate}
               onChange={(e) => setReturnDate(e.target.value)}
               min={issuedDate}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"

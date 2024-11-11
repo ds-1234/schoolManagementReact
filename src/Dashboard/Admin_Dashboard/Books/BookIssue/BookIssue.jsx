@@ -34,8 +34,8 @@ function BookIssue() {
         sortable: true,
       },
     {
-      name: 'Book Id',
-      selector: row => row.bookId,
+      name: 'Issue Id',
+      selector: row => row.issueId,
       sortable: true,
     },
     {
@@ -212,8 +212,8 @@ const handleClear = () => {
 };
 
 const searchOptions = [
-  { label: 'User Id', value: 'userId' },
-  { label: 'Book Id', value: 'bookId' },
+  { label: 'User Name', value: 'userId' },
+  { label: 'Issue Id', value: 'issueId' },
   { label: 'Issue Date', value: 'issuedDate' },
   { label: 'Return Date', value: 'returnDate' },
   { label: 'Book Number', value: 'bookNumber' },
