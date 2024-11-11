@@ -1,17 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import edit from '../../../../assets/edit.png';
-import Table from '../../../../Reusable_components/Table';
-import deleteIcon from '../../../../assets/delete.png'
+import edit from '../../../assets/edit.png';
+import Table from '../../../Reusable_components/Table';
+import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
-import StatusButton from '../../../../Reusable_components/StatusButton';
-import AddBtn from '../../../../Reusable_components/AddBtn'
-import BASE_URL from '../../../../conf/conf';
-import AddBooksPopup from '../AddBooksPopup';
-import AddBookIssue from './AddBookIssue';
+import BASE_URL from '../../../conf/conf';
+import LibraryStatusButton from '../../../Reusable_components/LibraryStatusButton';
 
 
-function BookIssue() {
+
+function StdBookIssue() {
     const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
 
@@ -21,11 +19,11 @@ function BookIssue() {
       selector: (row,idx) => idx+1 ,
       sortable: false,
     },
-    {
-      name: 'User Id',
-      selector: row => row.userId,
-      sortable: true,
-    },
+    // {
+    //   name: 'User Id',
+    //   selector: row => row.userId,
+    //   sortable: true,
+    // },
     {
       name: 'Book Id',
       selector: row => row.bookId,
@@ -69,7 +67,7 @@ function BookIssue() {
     {
       name: 'Status',
       selector: row => (
-        <StatusButton isActive={row.isActive}/>
+        <LibraryStatusButton isActive={row.isActive}/>
       ),
       sortable: true,
     },
@@ -124,22 +122,35 @@ function BookIssue() {
 //   }, [isAddPopupOpen, isEditPopupOpen]);
 
 useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
-        if (response.data && response.data.success) {
-          // Extract the array of books from the `data` object
-          const booksArray = Object.values(response.data.data).flat();
-          const filteredData = response.data.data.filter(item => item.userId === user.id ); 
-          setBook(booksArray);
-          setFilterBook(booksArray); // Set filterBook if you intend to use filtered data
-        } else {
-          console.error("Unexpected response structure:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching books:", error);
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
+      if (response.data && response.data.success) {
+        // Log response data to check structure
+        console.log('Response data:', response.data);
+  
+        // Extract the array of books from the `data` object
+        const booksArray = Object.values(response.data.data).flat();
+        console.log(booksArray, 'booksarray');
+        console.log('User:', user);
+  
+        // Ensure user.id exists and is comparable with item.userId
+        const filteredData = booksArray.filter(item => {
+          console.log('Item userId:', item.userId, 'User id:', user.id);
+          return item.userId == user.id;
+        });
+        console.log(filteredData, 'filtereddata');
+  
+        setBook(filteredData);
+        setFilterBook(filteredData); // Set filterBook if you intend to use filtered data
+      } else {
+        console.error("Unexpected response structure:", response.data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
+  
   
     fetchBooks();
   }, []);
@@ -194,8 +205,8 @@ const searchOptions = [
   return (
     <div className=' h-full mb-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Book Issue</h1>
-      <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Book Issue</span> </p>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Book Issue List</h1>
+      <p className='mt-2'>Dashboard /<NavLink to = '/studentdashboard'> Teacher Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Book Issue</span> </p>
 
       <Table
       columns={column}
@@ -204,7 +215,7 @@ const searchOptions = [
       onSearch={handleSearch}
       handleClear={handleClear}
        />
-        <AddBtn onAddClick={openAddPopup}/>
+        {/* <AddBtn onAddClick={openAddPopup}/>
 
       <AddBookIssue
         isOpen={isAddPopupOpen} 
@@ -212,7 +223,7 @@ const searchOptions = [
           closeAddPopup();
           fetchBooks(); // Refresh data when add popup closes
         }} 
-      />
+      /> */}
 
       {/* <EditBookPopup
         isOpen={isEditPopupOpen}
@@ -224,5 +235,5 @@ const searchOptions = [
   );
 }
 
-export default BookIssue;
+export default StdBookIssue;
 
