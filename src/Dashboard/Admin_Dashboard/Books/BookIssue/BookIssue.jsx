@@ -10,9 +10,12 @@ import BASE_URL from '../../../../conf/conf';
 import AddBooksPopup from '../AddBooksPopup';
 import AddBookIssue from './AddBookIssue';
 import EditBookIssue from './EditBookIssue';
+import LibraryStatusButton from '../../../../Reusable_components/LibraryStatusButton';
 
 
 function BookIssue() {
+    const [userMap, setUserMap] = useState({}); // Map userId to userName
+
 
   const column = [
     {
@@ -20,11 +23,16 @@ function BookIssue() {
       selector: (row,idx) => idx+1 ,
       sortable: false,
     },
+    // {
+    //   name: 'Name',
+    //   selector: row => row.userId,
+    //   sortable: true,
+    // },
     {
-      name: 'User Id',
-      selector: row => row.userId,
-      sortable: true,
-    },
+        name: 'Name',
+        selector: row => userMap[row.userId] || row.userId, // Display userName if found, otherwise show userId
+        sortable: true,
+      },
     {
       name: 'Book Id',
       selector: row => row.bookId,
@@ -68,7 +76,7 @@ function BookIssue() {
     {
       name: 'Status',
       selector: row => (
-        <StatusButton isActive={row.isActive}/>
+        <LibraryStatusButton isActive={row.isActive}/>
       ),
       sortable: true,
     },
@@ -110,6 +118,31 @@ function BookIssue() {
     setEditBookId(null);
     setIsEditPopupOpen(false);
   };
+
+  useEffect(() => {
+    fetchBooks();
+    fetchUserData();
+  }, []);
+
+    // Fetch user data and create a userId-to-userName map
+    const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/user/getUserList`);
+          if (response.data && response.data.success) {
+            const users = response.data.data;
+            const userMapTemp = users.reduce((map, user) => {
+              map[user.id] = user.firstName;
+              return map;
+            }, {});
+            setUserMap(userMapTemp);
+            console.log(userMapTemp,'userMapTemp')
+          } else {
+            console.error('Error fetching user data:', response.data);
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
 
   useEffect(() => {
     if (isAddPopupOpen || isEditPopupOpen) {
@@ -193,7 +226,7 @@ const searchOptions = [
   return (
     <div className=' h-full mb-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Book Issue</h1>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Book Issue List</h1>
       <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Book Issue</span> </p>
 
       <Table
