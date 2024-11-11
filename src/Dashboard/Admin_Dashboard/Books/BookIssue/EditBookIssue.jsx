@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   const [bookIssueData, setBookIssueData] = useState(null); // Store the fetched data
   const [userData, setUserData] = useState(null); // Store the fetched user data
+  const [bookData, setBookData] = useState(null); // Store the fetched Book data
   const [status, setStatus] = useState(true); // Active/Inactive status
 
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
@@ -50,6 +51,8 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
         
         // Fetch user data based on the userId from book issue data
         fetchUserById(data.userId);
+        fetchBookById(data.bookMapping)
+        console.log(data.bookMapping,'data.bookMapping')
         
         // Populate the form with the fetched book issue data
         setValue('userId', data.userId);
@@ -82,12 +85,27 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
       toast.error("Failed to fetch user data.");
     }
   };
+  // Fetch user data by userId
+  const fetchBookById = async (bookMapping) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/book/getBook/${bookMapping}`);
+      if (response.data && response.data.success) {
+        setBookData(response.data.data); // Store user data
+      } else {
+        console.error("Unexpected response structure for Book:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching Book data:", error);
+      toast.error("Failed to fetch Book data.");
+    }
+  };
 
   const onSubmit = async (formData) => {
     const payload = {
         // ...bookIssueData,
       id: BookIssueId,
-      userId:formData.userId,
+      userId:userData.id,
+      bookMapping:bookData.id,
       bookNumber:formData.bookNumber,
       issuedDate:formData.issuedDate,
       returnDate: formData.returnDate,
@@ -128,7 +146,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
               <label className="block text-sm font-medium text-gray-700">Book Name</label>
               <input
                 type="text"
-                value={bookIssueData?.bookName || ''}
+                value={bookData ? `${bookData.name}` : 'Loading...'}
                 readOnly
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
@@ -172,7 +190,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
               <label className="block text-sm font-medium text-gray-700">Return Date</label>
               <input
                 type="date"
-                defaultValue={bookIssueData?.returnDate || ''}
+                value={bookIssueData?.returnDate || ''}
                 onChange={(e) => setValue('returnDate', e.target.value)}
                 min={bookIssueData?.issuedDate}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
