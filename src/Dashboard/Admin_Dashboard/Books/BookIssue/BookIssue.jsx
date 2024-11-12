@@ -113,11 +113,13 @@ function BookIssue() {
 
   const openEditPopup = (userId) => {
     // Set the list of book issues for the selected `userId`
+    fetchBooks()
     setSelectedUserIssues(allBookIssues[userId] || []);
   };
 
   const closeEditPopup = () => {
     setSelectedUserIssues(null);
+    fetchBooks()
   };
 
   useEffect(() => {

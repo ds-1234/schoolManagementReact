@@ -4,10 +4,32 @@ import LibraryStatusButton from '../../../../Reusable_components/LibraryStatusBu
 import EditBookIssue from './EditBookIssue'; // Import EditBookIssue component
 import edit from '../../../../assets/edit.png';
 import deleteIcon from '../../../../assets/delete.png'
+import { useEffect } from 'react';
 
 function EditBookIssueListPopup({ issues, onClose, isOpen }) {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen, onClose]);
 
   // Function to handle opening the edit popup and setting the issue ID
   const openEditPopup = (id) => {
