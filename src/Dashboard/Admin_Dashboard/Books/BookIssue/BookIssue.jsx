@@ -11,10 +11,14 @@ import AddBooksPopup from '../AddBooksPopup';
 import AddBookIssue from './AddBookIssue';
 import EditBookIssue from './EditBookIssue';
 import LibraryStatusButton from '../../../../Reusable_components/LibraryStatusButton';
+import EditBookIssueListPopup from './EditBookIssueListPopup';
 
 
 function BookIssue() {
     const [userMap, setUserMap] = useState({}); // Map userId to userName
+    const [bookIssues, setBookIssues] = useState({}); // Map userId to userName
+    const [allBookIssues, setAllBookIssues] = useState({});
+    const [selectedUserIssues, setSelectedUserIssues] = useState(null);
 
 
   const column = [
@@ -84,9 +88,8 @@ function BookIssue() {
       name: 'Action',
       cell: row => (
         <div className='flex gap-2'>
-        <button
-        onClick={() => openEditPopup(row.id)}
-      >
+          <button onClick={() => openEditPopup(row.userId)}>
+
         <img src={edit} alt="Edit" className='h-8' />
       </button>
 
@@ -108,15 +111,13 @@ function BookIssue() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  const openEditPopup = (id) => {
-    console.log('editpopup',id)
-    setEditBookId(id);
-    setIsEditPopupOpen(true);
+  const openEditPopup = (userId) => {
+    // Set the list of book issues for the selected `userId`
+    setSelectedUserIssues(allBookIssues[userId] || []);
   };
 
   const closeEditPopup = () => {
-    setEditBookId(null);
-    setIsEditPopupOpen(false);
+    setSelectedUserIssues(null);
   };
 
   useEffect(() => {
@@ -124,25 +125,24 @@ function BookIssue() {
     fetchUserData();
   }, []);
 
-    // Fetch user data and create a userId-to-userName map
-    const fetchUserData = async () => {
-        try {
-          const response = await axios.get(`${BASE_URL}/user/getUserList`);
-          if (response.data && response.data.success) {
-            const users = response.data.data;
-            const userMapTemp = users.reduce((map, user) => {
-              map[user.id] = user.firstName;
-              return map;
-            }, {});
-            setUserMap(userMapTemp);
-            console.log(userMapTemp,'userMapTemp')
-          } else {
-            console.error('Error fetching user data:', response.data);
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      };
+  // Fetch user data and create a userId-to-userName map
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/getUserList`);
+      if (response.data && response.data.success) {
+        const users = response.data.data;
+        const userMapTemp = users.reduce((map, user) => {
+          map[user.id] = user.firstName;
+          return map;
+        }, {});
+        setUserMap(userMapTemp);
+      } else {
+        console.error('Error fetching user data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   useEffect(() => {
     if (isAddPopupOpen || isEditPopupOpen) {
@@ -160,10 +160,17 @@ function BookIssue() {
       try {
         const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
         if (response.data && response.data.success) {
-          // Extract the array of books from the `data` object
-          const booksArray = Object.values(response.data.data).flat();
-          setBook(booksArray);
-          setFilterBook(booksArray); // Set filterBook if you intend to use filtered data
+            const data = response.data.data;
+
+            setAllBookIssues(data); // Store all data
+
+        // Filter data to only show the first entry for each `userId`
+        const firstEntries = Object.keys(data).map(userId => data[userId][0]);
+        setBookIssues(firstEntries);
+        setFilterBook(firstEntries); // Set filterBook for search
+
+        console.log(firstEntries,'firstentries')
+        //   setFilterBook(booksArray); // Set filterBook if you intend to use filtered data
         } else {
           console.error("Unexpected response structure:", response.data);
         }
@@ -188,6 +195,12 @@ function BookIssue() {
 //  }
 
   // Handle Search Logic
+  useEffect(() => {
+    if (bookIssues.length > 0) {
+      setBook(bookIssues);
+    }
+  }, [bookIssues]);
+
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
       setBook(filterBook);
@@ -246,12 +259,22 @@ const searchOptions = [
         }} 
       />
 
-      <EditBookIssue
+      {/* <EditBookIssue
         isOpen={isEditPopupOpen}
         onClose={closeEditPopup}
         BookIssueId={editBookId}
         onSuccess={fetchBooks} // Refresh data after editing
-      />
+      /> */}
+      
+            {selectedUserIssues && (
+        <EditBookIssueListPopup
+          issues={selectedUserIssues}
+          isOpen={openEditPopup}
+          fetchBooks={fetchBooks} // Passing fetchBooks to refresh the data
+
+          onClose={closeEditPopup}
+        />
+      )}
     </div>
   );
 }
