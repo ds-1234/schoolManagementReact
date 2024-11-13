@@ -190,8 +190,50 @@ const Sidebar = () => {
           </li>
 
 
+          {/* Library Section */}
+          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/books"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+                Library
+              </div>
+              <FontAwesomeIcon icon={renderAngleIcon('exam')} className="mr-3" onClick={() => toggleDropdown('exam')} />
+            </NavLink>
+            {openDropdown=='exam' && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/admin/books"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Library
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/admin/bookissue"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Book Issue
+                  </NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
 
-          {/* Books Section */}
+
+          {/* Books Section
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/books"
@@ -202,7 +244,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faBookAtlas} className="mr-4 text-[#ffae01]" />
               Library
             </NavLink>
-          </li>
+          </li> */}
 
           
 

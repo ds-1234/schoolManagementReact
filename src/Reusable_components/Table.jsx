@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear , className}) => {
+const Table = ({ columns, data, searchOptions, onSearch, handleClear , className,conditionalRowStyles=''}) => {
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -141,7 +141,8 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
               pagination
               highlightOnHover
               customStyles={customTableStyles}
-            />
+              conditionalRowStyles={conditionalRowStyles}
+              />
           </div>
         </div>
       </div>
