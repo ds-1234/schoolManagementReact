@@ -209,6 +209,21 @@ function BookIssue() {
     }
   }, [bookIssues]);
 
+  const conditionalRowStyles = [
+    {
+      when: row => !row.isActive,
+      style: {
+        backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background
+      },
+    },
+    {
+        when:row=> row.isActive,
+        style:{
+            backgroundColor: 'rgba(0, 255, 0, 0.1)', // Light green background when isActive is true
+        }
+    }
+  ];
+
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {
       setBook(filterBook);
@@ -256,6 +271,7 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
+      conditionalRowStyles={conditionalRowStyles}
        />
         <AddBtn onAddClick={openAddPopup}/>
 
@@ -266,15 +282,7 @@ const searchOptions = [
           fetchBooks(); // Refresh data when add popup closes
         }} 
       />
-
-      {/* <EditBookIssue
-        isOpen={isEditPopupOpen}
-        onClose={closeEditPopup}
-        BookIssueId={editBookId}
-        onSuccess={fetchBooks} // Refresh data after editing
-      /> */}
-      
-            {selectedUserIssues && (
+                  {selectedUserIssues && (
         <EditBookIssueListPopup
           issues={selectedUserIssues}
           isOpen={openEditPopup}
