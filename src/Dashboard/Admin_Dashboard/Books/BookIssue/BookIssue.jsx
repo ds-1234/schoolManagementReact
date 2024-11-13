@@ -19,6 +19,7 @@ function BookIssue() {
     const [bookIssues, setBookIssues] = useState({}); // Map userId to userName
     const [allBookIssues, setAllBookIssues] = useState({});
     const [selectedUserIssues, setSelectedUserIssues] = useState(null);
+    const [userName, setUserName] = useState(null);
 
 
   const column = [
@@ -33,15 +34,21 @@ function BookIssue() {
     //   sortable: true,
     // },
     {
+        name: 'Issue Id',
+        selector: row => row.issueId,
+        sortable: true,
+      },
+    {
         name: 'Name',
         selector: row => userMap[row.userId] || row.userId, // Display userName if found, otherwise show userId
         sortable: true,
       },
-    {
-      name: 'Issue Id',
-      selector: row => row.issueId,
-      sortable: true,
-    },
+      {
+        name: 'Book Number',
+        selector: row => row.bookNumber,
+        sortable: true,
+      },
+
     {
       name: 'Issued Date',
       selector: row => row.issuedDate,
@@ -52,11 +59,7 @@ function BookIssue() {
       selector: row => row.returnDate,
       sortable: true,
     },
-    {
-      name: 'Book Number',
-      selector: row => row.bookNumber,
-      sortable: true,
-    },
+
     // {
     //   name: 'Book unique Id',
     //   selector: row => row.bookUniqueId,
@@ -88,7 +91,7 @@ function BookIssue() {
       name: 'Action',
       cell: row => (
         <div className='flex gap-2'>
-          <button onClick={() => openEditPopup(row.userId)}>
+          <button onClick={() => openEditPopup(row.userId,userMap[row.userId])}>
 
         <img src={edit} alt="Edit" className='h-8' />
       </button>
@@ -111,14 +114,17 @@ function BookIssue() {
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
-  const openEditPopup = (userId) => {
+  const openEditPopup = (userId,userName) => {
     // Set the list of book issues for the selected `userId`
     fetchBooks()
     setSelectedUserIssues(allBookIssues[userId] || []);
+    setUserName(userName)
   };
 
   const closeEditPopup = () => {
     setSelectedUserIssues(null);
+    setUserName(null)
+
     fetchBooks()
   };
 
@@ -273,7 +279,7 @@ const searchOptions = [
           issues={selectedUserIssues}
           isOpen={openEditPopup}
           fetchBooks={fetchBooks} // Passing fetchBooks to refresh the data
-
+          userName = {userName}
           onClose={closeEditPopup}
         />
       )}

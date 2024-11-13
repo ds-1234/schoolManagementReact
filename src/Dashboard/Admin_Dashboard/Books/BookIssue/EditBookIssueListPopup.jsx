@@ -6,7 +6,7 @@ import edit from '../../../../assets/edit.png';
 import deleteIcon from '../../../../assets/delete.png'
 import { useEffect } from 'react';
 
-function EditBookIssueListPopup({ issues, onClose, isOpen }) {
+function EditBookIssueListPopup({ issues, onClose, isOpen,userName }) {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editBookId, setEditBookId] = useState(null);
 
@@ -101,7 +101,7 @@ function EditBookIssueListPopup({ issues, onClose, isOpen }) {
             >
               &times;
             </button>
-            <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">User List</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">{userName}'s Book Issues</h2>
             <Table columns={columns} data={issues} />
           </div>
         </div>
