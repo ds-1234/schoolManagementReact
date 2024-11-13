@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import DatePicker from '../../../../Reusable_components/DatePicker'
 import { useForm } from 'react-hook-form';
 import Button from '../../../../Reusable_components/Button';
@@ -10,11 +10,15 @@ import ProgressIndicator from './ProgressIndicator';
 import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleLeft , faAngleDown} from '@fortawesome/free-solid-svg-icons';
 
 function OfficeDets() {
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const {userId} = useUserContext()
+  const [selectedStds , setSelectedStds] = useState([]) ;
+  const [stds , setStds] = useState([]);
+  const [dropdown , setDropdown] = useState(false)
+
     const {
         register,
         handleSubmit,
@@ -49,19 +53,37 @@ function OfficeDets() {
           }
     }, [reset , userId]);
 
+    useEffect(() => {
+      const fetchStds = async() =>{
+        await axios({
+          method:"GET" , 
+          url: `${BASE_URL}/user/getUserList` , 
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          setStds(res.data.data.filter((std) => (std.role === 3 && std.isActive === true && std.siblings == null))) ;
+        })
+        .catch(err => {
+          console.log(err , 'error:');
+        })
+      }
+     fetchStds()
+    } , []);
+
       const onSubmit = async(data) => {
-        console.log(data);
         
-        const userData = {
-            ...data , 
-            userId : userId ,
-          }
           await axios({
               method:"POST",
               url : `${BASE_URL}/user/updateOfficeDetails`,
               data: {
-                ...userData ,
-                admissionDate: data.admissionDate ? new Date(data.admissionDate).toISOString().split("T")[0] : null
+                admissionNumber : data.admissionNumber ,
+                admissionDate: data.admissionDate ? new Date(data.admissionDate).toISOString().split("T")[0] : null,
+                siblings: selectedStds? selectedStds : null ,
+                userId : userId ,
+                knownAllergies: [data.knownAllergies] ,
+                medications: [data.medications]
               } ,
               headers: {
                 "Content-Type": "application/json",
@@ -79,6 +101,16 @@ function OfficeDets() {
           })
     }
 
+    const handleCheckboxChange = (stdId) => {
+      setSelectedStds((prevSelected) => {
+        if (prevSelected.includes(stdId)) {
+          return prevSelected.filter(id => id !== stdId);
+        } else {
+          return [...prevSelected, stdId];
+        }
+      });
+    };
+
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
@@ -86,7 +118,7 @@ function OfficeDets() {
        <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Office Details</h2>
-    <form className="grid grid-cols-4 mt-5 gap-6">
+    <form className="grid grid-cols-3 mt-5 gap-6">
         <div className="flex flex-col px-1">
             <DatePicker 
             name={'admissionDate'}
@@ -105,6 +137,54 @@ function OfficeDets() {
             placeholder=""
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
             {...register('admissionNumber')}
+            />
+        </div>
+
+        <div className="relative">
+          <label htmlFor="student" className="block font-semibold">Sibling Mapping</label>
+          <div 
+            className="border rounded-lg cursor-pointer p-2 flex justify-between items-center "
+            onClick={() => setDropdown(!dropdown)}
+          >
+            <p>{selectedStds.length === 0 ? 'Select Siblings' : selectedStds.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
+            <FontAwesomeIcon icon={faAngleDown} />
+          </div>
+          {dropdown && (
+            <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-full">
+              {stds.map(std => (
+                <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedStds.includes(std.id)}
+                    onChange={() => handleCheckboxChange(std.id)}
+                    className="mr-2"
+                  />
+                  {std.firstName} {std.lastName}
+                </label>
+              ))}
+            </div>
+          )}
+          </div>
+
+          <div className="flex flex-col px-1">
+            <label htmlFor="knownAllergies">Allergies</label>
+            <input
+            type="text"
+            id="knownAllergies"
+            placeholder=""
+            className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
+            {...register('knownAllergies')}
+            />
+        </div>
+
+        <div className="flex flex-col px-1">
+            <label htmlFor="medications">Medications</label>
+            <input
+            type="text"
+            id="medications"
+            placeholder=""
+            className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
+            {...register('medications')}
             />
         </div>
     </form>

@@ -1,7 +1,7 @@
 import React , {useEffect , useState} from 'react';
 import DatePicker from '../../../../Reusable_components/DatePicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons';
+import {faAngleDoubleLeft , faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
@@ -18,6 +18,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
     formState: { errors },
     reset,
   } = useForm();
+
   const navigate = useNavigate()
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -25,9 +26,13 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity , setSelectedCity] = useState('') ;
+  const [stdDropdown , setStdDropdown] = useState(false) ;
+  const [selectedStds , setSelectedStds] = useState([]) ;
+  const [stds , setStds] = useState([]) ;
 
   useEffect(() => {
-    axios({
+    const fetchData = async() =>
+    await axios({
       method: "GET",
       url: `${BASE_URL}/user/getUser/${userId}`,
       headers: {
@@ -50,6 +55,22 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       .catch((error) => {
         console.error("Error fetching user:", error);
       });
+
+      fetchData() ;
+
+      const fetchStds = async() =>{
+        await axios({
+          method: "GET" ,
+          url: `${BASE_URL}/user/getUserList` ,
+          headers: {'Content-Type' : 'application/json'}
+        })
+        .then((res) => {
+          setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true)) ;
+        })
+        .catch((err) => console.log(err)) ;
+      }
+  
+      fetchStds() ;
   }, [userId, reset]);
 
     // Fetch countries
@@ -96,16 +117,40 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       data: { 
         ...data,
         role :  selectedRole,
+        isParent : selectedRole === 5 ? selectedStds : null ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
       }
     })
     .then((response) => {
-      toast.success("User Updated Successfully !")
-      handleNext() ;
+      const updatePromises = selectedStds.map(async(stdId) => {
+        const {data : stdData} = await axios.get(`${BASE_URL}/user/getUser/${stdId}`) ;
+        await axios.post(`${BASE_URL}/user/updateUser`, { ...stdData , isParent: [userId] } , {
+          headers: {'Content-Type' : 'application/json'} 
+        })
+      });
+  
+      // Execute all student updates in parallel
+      Promise.all(updatePromises)
+      .then(() => {
+        toast.success("User Updated Successfully !")
+        setSelectedStds([]) ;
+        reset() ;
+        handleNext() ;
+      })
     })
     .catch((error) => {
         console.error("Error updating user:", error);
       });
+  };
+
+  const handleCheckboxChange = (stdId) => {
+    setSelectedStds((prevSelected) => {
+      if (prevSelected.includes(stdId)) {
+        return prevSelected.filter(id => id !== stdId);
+      } else {
+        return [...prevSelected, stdId];
+      }
+    });
   };
 
   return (
@@ -386,6 +431,38 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
+
+      {/* Map Parent to Children */}
+      {selectedRole == 5 && (
+        <div className="mb-4 mt-4 relative">
+        <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
+        <div 
+          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
+          onClick={() => {
+            setStdDropdown(!stdDropdown)
+          }}
+        >
+          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+        {stdDropdown && (
+          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
+            {stds.map(std => (
+              <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectedStds?.includes(std.id)}
+                  onChange={() => handleCheckboxChange(std.id)}
+                  className="mr-2"
+                />
+                {std.firstName} {std.lastName}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+      )}
+
     </div>
   );
 }

@@ -12,7 +12,7 @@ import BankDets from './Teacher_Form/BankDets';
 import HostelInfo from './Teacher_Form/HostelInfo';
 import TransportInfo from './Teacher_Form/TransportInfo';
 import Documents from './Teacher_Form/Documents';
-import Button from '../../../Reusable_components/Button';
+// import Button from '../../../Reusable_components/Button';
 
 function EditUser() {
   const location = useLocation();
@@ -24,7 +24,8 @@ function EditUser() {
   const [currentStep, setCurrentStep] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userName , setUserName] = useState('') ;
-  
+  const [stds , setStds] = useState([]) ;
+
 useEffect(() => {
     axios.get(`${BASE_URL}/role/getRoleList`)
       .then((res) => setRoles(res.data.data))
@@ -38,7 +39,6 @@ useEffect(() => {
         const userData = response.data.data;
         setSelectedRole(userData.role);
         setUserName(userData.userId) ;
-
         if (userData.dateOfBirth === null) setCurrentStep(0);
 
         // Additional check for teacher info if role is 4

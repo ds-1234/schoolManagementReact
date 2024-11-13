@@ -60,6 +60,13 @@ const column = [
         <img src={view} alt="view" className='h-8' />
         </button>
         :
+        row.role == 5?
+        <button
+        onClick={() => navigate('/admin/ViewParent' , {state: {userId : row.id}})}
+        >
+        <img src={view} alt="view" className='h-8' />
+        </button>
+        :
         ''
       }
 
