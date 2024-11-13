@@ -104,6 +104,21 @@ function BookIssue() {
     },
   ]
 
+  const conditionalRowStyles = [
+    {
+      when: row => !row.isActive,
+      style: {
+        backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background
+      },
+    },
+    {
+        when:row=> row.isActive,
+        style:{
+            backgroundColor: 'rgba(0, 255, 0, 0.1)', // Light green background when isActive is true
+        }
+    }
+  ];
+
   const [book, setBook] = useState([]);
   const [filterBook, setFilterBook] = useState([]);
 
@@ -209,20 +224,7 @@ function BookIssue() {
     }
   }, [bookIssues]);
 
-  const conditionalRowStyles = [
-    {
-      when: row => !row.isActive,
-      style: {
-        backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background
-      },
-    },
-    {
-        when:row=> row.isActive,
-        style:{
-            backgroundColor: 'rgba(0, 255, 0, 0.1)', // Light green background when isActive is true
-        }
-    }
-  ];
+
 
   const handleSearch = (query, checkboxRefs) => {
     if (!query) {

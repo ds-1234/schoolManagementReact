@@ -19,11 +19,11 @@ function TchBookIssue() {
       selector: (row,idx) => idx+1 ,
       sortable: false,
     },
-    // {
-    //   name: 'User Id',
-    //   selector: row => row.userId,
-    //   sortable: true,
-    // },
+    {
+      name: 'Book Number',
+      selector: row => row.bookNumber,
+      sortable: true,
+    },
     {
       name: 'Issue Id',
       selector: row => row.issueId,
@@ -89,15 +89,30 @@ function TchBookIssue() {
     },
   ]
 
+  const conditionalRowStyles = [
+    {
+      when: row => !row.isActive,
+      style: {
+        backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background
+      },
+    },
+    {
+        when:row=> row.isActive,
+        style:{
+            backgroundColor: 'rgba(0, 255, 0, 0.1)', // Light green background when isActive is true
+        }
+    }
+  ];
+
   const [book, setBook] = useState([]);
   const [filterBook, setFilterBook] = useState([]);
 
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [editBookId, setEditBookId] = useState(null);
+  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  // const [editBookId, setEditBookId] = useState(null);
 
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+  // const openAddPopup = () => setIsAddPopupOpen(true);
+  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
 //   const openEditPopup = (id) => {
 //     setEditBookId(id);
@@ -214,6 +229,8 @@ const searchOptions = [
       searchOptions={searchOptions}
       onSearch={handleSearch}
       handleClear={handleClear}
+      conditionalRowStyles={conditionalRowStyles}
+
        />
         {/* <AddBtn onAddClick={openAddPopup}/>
 
