@@ -4,8 +4,8 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../../conf/conf';
+
 
 const EditHostelRooms = ({ isOpen, onClose, hostelroomId, onSuccess }) => {
   const [value, setValue] = useState(true);
@@ -22,7 +22,7 @@ const EditHostelRooms = ({ isOpen, onClose, hostelroomId, onSuccess }) => {
   // Fetch hostels and room types
   const fetchHostels = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/hostel/getHostelList');
+      const response = await axios.get(`${BASE_URL}/hostel/getHostelList`);
       const data = response.data.data.filter(data => data.isActive === true);
       setHostels(data);
     } catch (error) {
@@ -32,7 +32,7 @@ const EditHostelRooms = ({ isOpen, onClose, hostelroomId, onSuccess }) => {
 
   const fetchRoomTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/roomType/getRoomTypeList');
+      const response = await axios.get(`${BASE_URL}/roomType/getRoomTypeList`);
       const data = response.data.data.filter(data => data.isActive === true);
       setRoomTypes(data);
     } catch (error) {
@@ -44,7 +44,7 @@ console.log(hostelroomId,'hostelroomId')
   const fetchHostelRoomDetails = async () => {
     if (hostelroomId) {
       try {
-        const response = await axios.get(`http://localhost:8080/hostelRooms/getHostelRoomsById/${hostelroomId}`);
+        const response = await axios.get(`${BASE_URL}/hostelRooms/getHostelRoomsById/${hostelroomId}`);
         const roomData = response.data.data;
         
         // Pre-fill form fields
