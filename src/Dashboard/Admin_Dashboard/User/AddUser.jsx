@@ -60,7 +60,7 @@ const AddUser = () => {
         },
       })
       .then((res) => {
-        setStds(res.data.data.filter((std) => (std.role === 3 && std.isActive === true))) ;
+        setStds(res.data.data.filter((std) => (std.role === 3 && std.isActive === true && std.isParent == null))) ;
       })
       .catch(err => {
         console.log(err , 'error:');
@@ -71,20 +71,21 @@ const AddUser = () => {
   } , []);
   
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     const selectedRoles = roles.find(role => role.id === parseInt(data.role));
 
     const userData = {
       ...data , 
       role: selectedRoles.id,
-      isActive: data.active = value ? 'True' : 'False', 
+      isParent : selectedRoles.id === 5 ? selectedStds : null ,
+      isActive: data.active = value, 
     }
-
+  
     setSelectedCountry(userData.country || '');
     setSelectedState(userData.state || '');
     setSelectedCity(userData.city || '') ;
     
-    axios({
+    await axios({
         method:"post",
         url : `${BASE_URL}/user/createUser`,
         data: userData,
@@ -94,8 +95,15 @@ const AddUser = () => {
     
       })
       .then((response)=>{
+        if(response.data.success){
+             Promise.all(selectedStds.map(async (stdId) => {
+             const studentData =  (await axios.get(`${BASE_URL}/user/getUser/${stdId}`)).data.data ;
+             await axios.put(`${BASE_URL}/user/updateUser`, {...studentData , isParent: [response.data.data.id]}, {
+              headers: { "Content-Type": "application/json" }
+            });
+          }));
+        }
         reset()
-        console.log('response' , response.data)
         toast.success("Successfully Add User");
         setValue(true)
     })
@@ -464,6 +472,7 @@ const AddUser = () => {
             {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
           </div>
 
+          {/* Map Parent to Children */}
           {dropdownIsVisible && (
             <div className="mb-4 mt-4 relative">
             <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
@@ -483,6 +492,7 @@ const AddUser = () => {
                       checked={selectedStds.includes(std.id)}
                       onChange={() => handleCheckboxChange(std.id)}
                       className="mr-2"
+                      
                     />
                     {std.firstName} {std.lastName}
                   </label>

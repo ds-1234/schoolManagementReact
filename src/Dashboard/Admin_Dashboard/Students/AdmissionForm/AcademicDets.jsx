@@ -79,7 +79,7 @@ function AcademicDets() {
                     // If data exists, populate the form
                     console.log(studentData);
                     setInitialData(studentData)
-                    setSelectedCls(studentData.className)
+                    setSelectedCls(studentData.className[0])
                     setSelectedSchl(studentData.school) 
                     reset(studentData);
                 }
@@ -162,7 +162,7 @@ function AcademicDets() {
             >
             <option value="" hidden>Select Class </option>
             {classes.map(option => (
-            <option key={option.id} value={option.id}>{option.name}</option>
+            <option key={option.id} value={option.id}>{option.name}-{option.section}</option>
             ))}
             </select>
         </div>

@@ -294,19 +294,6 @@ const Profile = () => {
         </ul>
         </div>
 
-
-
-
-          {/* Bank Details */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Bank Details</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li><strong>Bank Name:</strong> Bank of America</li>
-              <li><strong>Branch:</strong> Cincinnati</li>
-              <li><strong>IFSC:</strong> BOA83209832</li>
-            </ul>
-          </div>
-
           {/* Medical History */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Medical History</h3>

@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react'
+import React , {useEffect, useState} from 'react'
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,8 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
     reset,
   } = useForm();
 
+  const [teacherData , setTeacherData] = useState(null) ;
+
   const onSubmit = (data) => {
     axios({
       method: "post",
@@ -26,6 +28,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
       },
       data: { 
         ...data,
+        ...teacherData ,
         teacherId : userId,
       }
     })
@@ -46,7 +49,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
         try {
             const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
             const data = response.data.data;
-
+            setTeacherData(data) ;
             if (data) {
                 // If data exists, populate the form
                 reset(data);

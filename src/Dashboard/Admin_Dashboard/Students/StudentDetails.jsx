@@ -17,6 +17,7 @@ function StudentDetails() {
   const [transport , setTransport] = useState({})
   const [hostelRoom , setHostelRoom] = useState({}) 
   const [documents , setDocuments] = useState({})
+  const [user , setUser] = useState(null) ;
 
   useEffect(() => {
     const fetchData = () => {
@@ -104,6 +105,15 @@ function StudentDetails() {
     }
   } , [studentDetails])
 
+  const fetchUsers = async (id) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/getUser/${id}`);
+      setUser(response.data.data);
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+    }
+  };
+
   const handleDownload = (attachmentName) => {
     const fullPath = `${attachmentName}`; 
     const link = document.createElement('a');
@@ -181,8 +191,11 @@ function StudentDetails() {
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Sibling Information</h3>
             <ul className="space-y-2 text-gray-600">
-              <li><strong>Ralph Claudia:</strong> III, B</li>
-              <li><strong>Julie Scott:</strong> V, A</li>
+              {studentDetails.siblings?.map((child , index) => {
+              // fetchUsers(child)  
+              (
+                <li><strong>{user?.firstName} {user?.lastName} : </strong>{user?.className[0]}</li>
+              )})}
             </ul>
           </div>
 
@@ -285,24 +298,12 @@ function StudentDetails() {
         </div>
 
 
-
-
-          {/* Bank Details */}
-          <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Bank Details</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li><strong>Bank Name:</strong> Bank of America</li>
-              <li><strong>Branch:</strong> Cincinnati</li>
-              <li><strong>IFSC:</strong> BOA83209832</li>
-            </ul>
-          </div>
-
           {/* Medical History */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Medical History</h3>
             <ul className="space-y-2 text-gray-600">
-              <li><strong>Known Allergies:</strong> Rashes</li>
-              <li><strong>Medications:</strong> -</li>
+              <li><strong>Known Allergies : </strong>{studentDetails.knownAllergies ? studentDetails.knownAllergies : '-'}</li>
+              <li><strong>Medications : </strong>{studentDetails.medications }</li>
             </ul>
           </div>
         </div>
