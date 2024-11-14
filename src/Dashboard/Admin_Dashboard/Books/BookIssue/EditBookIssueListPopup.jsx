@@ -90,6 +90,21 @@ function EditBookIssueListPopup({ issues, onClose, isOpen,userName }) {
     },
   ];
 
+  const conditionalRowStyles = [
+    {
+      when: row => !row.isActive,
+      style: {
+        backgroundColor: 'rgba(255, 0, 0, 0.1)', // Light red background
+      },
+    },
+    {
+        when:row=> row.isActive,
+        style:{
+            backgroundColor: 'rgba(0, 255, 0, 0.1)', // Light green background when isActive is true
+        }
+    }
+  ];
+
   return (
     <>
       {isOpen && (
@@ -102,7 +117,7 @@ function EditBookIssueListPopup({ issues, onClose, isOpen,userName }) {
               &times;
             </button>
             <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">{userName}'s Book Issues</h2>
-            <Table columns={columns} data={issues} />
+            <Table columns={columns} data={issues}       conditionalRowStyles={conditionalRowStyles} />
           </div>
         </div>
       )}
