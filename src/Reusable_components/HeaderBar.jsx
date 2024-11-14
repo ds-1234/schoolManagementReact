@@ -7,21 +7,19 @@ const HeaderBar = () => {
 
     const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
-useEffect(() => {
-    if(user.role == 4){
-        setAtt(true)
-    }
-  }, [user.role]);
-    return (
-        <>
-        <header className="flex items-center w-full justify-end border-b border-gray-300">
-            {/* <div className='flex items-center w-full justify-end  border-b border-gray-300'> */}
-            <Logout/>
+    useEffect(() => {
+        if (user.role === 4) {
+            setAtt(true);
+        }
+    }, [user.role]);
 
-            {att?<Attendance/>:''}
-            
+    return (
+        <header className="flex items-center w-full justify-between border-b border-gray-300">
+            {/* Move Attendance to the start */}
+            {att ? <Attendance /> : ''}
+
+            <Logout />
         </header>
-        </>
     );
 };
 
