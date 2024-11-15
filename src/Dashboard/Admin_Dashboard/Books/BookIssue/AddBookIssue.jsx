@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
+
 
 function AddBookIssue({ isOpen, onClose }) {
   const [books, setBooks] = useState([]); // List of books
@@ -49,7 +51,7 @@ function AddBookIssue({ isOpen, onClose }) {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/book/getBookList');
+        const response = await axios.get(`${BASE_URL}/book/getBookList`);
         if (response.data && response.data.success) {
           setBooks(response.data.data);
         } else {
@@ -64,7 +66,7 @@ function AddBookIssue({ isOpen, onClose }) {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/getUserList');
+        const response = await axios.get(`${BASE_URL}/user/getUserList`);
         if (response.data && response.data.success) {
           const filteredUsers = response.data.data.filter(user => user.role === 3 || user.role === 4);
           setUsers(filteredUsers);
@@ -95,7 +97,7 @@ function AddBookIssue({ isOpen, onClose }) {
     console.log("Form submission data:", formData);
 
     try {
-      const response = await axios.post('http://localhost:8080/library/saveBookIssued', formData);
+      const response = await axios.post(`${BASE_URL}/library/saveBookIssued`, formData);
 
       if (response.data.success) {
         toast.success('Book issued successfully!');

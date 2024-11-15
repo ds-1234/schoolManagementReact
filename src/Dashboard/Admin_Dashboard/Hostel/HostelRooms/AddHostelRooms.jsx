@@ -4,8 +4,8 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import BASE_URL from '../../../../conf/conf';
+
 
 const AddHostelRooms = ({ isOpen, onClose }) => {
   const [value, setValue] = useState(true);
@@ -19,7 +19,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
   // Fetch hostels and room types
   const fetchHostels = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/hostel/getHostelList');
+      const response = await axios.get(`${BASE_URL}/hostel/getHostelList`);
       const data = response.data.data.filter(data => data.isActive === true);
       
       setHostels(data);
@@ -30,7 +30,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
 
   const fetchRoomTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/roomType/getRoomTypeList');
+      const response = await axios.get(`${BASE_URL}/roomType/getRoomTypeList`);
       const data = response.data.data.filter(data => data.isActive === true);
 
       setRoomTypes(data);

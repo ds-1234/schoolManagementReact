@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import BASE_URL from '../../../../conf/conf';
+
 
 function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   const [bookIssueData, setBookIssueData] = useState(null); // Store the fetched data
@@ -44,7 +46,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   // Fetch book issue data by ID
   const fetchBookIssueById = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8080/library/getBookIssuedById/${id}`);
+      const response = await axios.get(`${BASE_URL}/library/getBookIssuedById/${id}`);
       if (response.data && response.data.success) {
         const data = response.data.data;
         setBookIssueData(data);
@@ -74,7 +76,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   // Fetch user data by userId
   const fetchUserById = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/user/getUser/${userId}`);
+      const response = await axios.get(`${BASE_URL}/user/getUser/${userId}`);
       if (response.data && response.data.success) {
         setUserData(response.data.data); // Store user data
       } else {
@@ -88,7 +90,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   // Fetch user data by userId
   const fetchBookById = async (bookMapping) => {
     try {
-      const response = await axios.get(`http://localhost:8080/book/getBook/${bookMapping}`);
+      const response = await axios.get(`${BASE_URL}/book/getBook/${bookMapping}`);
       if (response.data && response.data.success) {
         setBookData(response.data.data); // Store user data
       } else {
@@ -113,7 +115,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/library/saveBookIssued', payload);
+      const response = await axios.post(`${BASE_URL}/library/saveBookIssued`, payload);
       if (response.data && response.data.success) {
         toast.success("Book issue updated successfully!");
         onSuccess();

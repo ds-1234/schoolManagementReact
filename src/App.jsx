@@ -101,13 +101,15 @@ import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails';
-<<<<<<< Updated upstream
+
 import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
 import TchBookIssue from './Dashboard/Teacher_Dashboard/Library/TchBookIssue';
 import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
-=======
+
+import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceStatus/StaffAttendanceStatus';
+
 import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
->>>>>>> Stashed changes
+
 
 
 
@@ -199,11 +201,10 @@ function App() {
             
             <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
             <Route path='TchDetails' element={<TchDetails/>}/>
-<<<<<<< Updated upstream
             <Route path='bookissue' element={<BookIssue/>}/>
-=======
+            <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
+
             <Route path = 'ViewParent' element= {<ViewParent/>}/> 
->>>>>>> Stashed changes
           </Route>
 
           {/* Student Dashboard Routes */}
