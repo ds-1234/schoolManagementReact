@@ -51,6 +51,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   };
 
   const handleSubmit = (e) => {
+    console.log(editorData,'editorData')
     e.preventDefault();
     axios({
       method: 'POST',
