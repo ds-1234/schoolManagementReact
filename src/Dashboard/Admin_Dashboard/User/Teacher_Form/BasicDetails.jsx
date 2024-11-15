@@ -48,6 +48,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         setSelectedCountry(userData.country || '');
         setSelectedState(userData.state || '');
         setSelectedCity(userData.city || '') ;
+        setSelectedStds(userData.isParent)
       
         // Reset the form with the prefilled data
         reset(formattedData);
@@ -122,22 +123,23 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       }
     })
     .then((response) => {
-      const updatePromises = selectedStds.map(async(stdId) => {
+      if(selectedRole === 5){
+        const updatePromises = selectedStds.map(async(stdId) => {
         const {data : stdData} = await axios.get(`${BASE_URL}/user/getUser/${stdId}`) ;
-        await axios.post(`${BASE_URL}/user/updateUser`, { ...stdData , isParent: [userId] } , {
+        await axios.post(`${BASE_URL}/user/createUser`, { ...stdData , isParent: [userId] } , {
           headers: {'Content-Type' : 'application/json'} 
         })
       });
   
       // Execute all student updates in parallel
       Promise.all(updatePromises)
+    }})
       .then(() => {
-        toast.success("User Updated Successfully !")
         setSelectedStds([]) ;
+        toast.success("User Updated Successfully !")
         reset() ;
         handleNext() ;
       })
-    })
     .catch((error) => {
         console.error("Error updating user:", error);
       });
@@ -155,6 +157,37 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
   return (
     <div>
+      {/* Map Parent to Children */}
+      {selectedRole == 5 && (
+        <div className="mb-6 mt-4 relative">
+        <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
+        <div 
+          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
+          onClick={() => {
+            setStdDropdown(!stdDropdown)
+          }}
+        >
+          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+        {stdDropdown && (
+          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
+            {stds.map(std => (
+              <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectedStds?.includes(std.id)}
+                  onChange={() => handleCheckboxChange(std.id)}
+                  className="mr-2"
+                />
+                {std.firstName} {std.lastName}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+      )}
+
       <h3 className="text-xl font-semibold mb-2 text-gray-900">Basic Details</h3>
       <form  className='grid grid-cols-4 mt-5 gap-6'>
         <div className="flex flex-col px-1">
@@ -431,37 +464,6 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
-
-      {/* Map Parent to Children */}
-      {selectedRole == 5 && (
-        <div className="mb-4 mt-4 relative">
-        <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
-        <div 
-          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
-          onClick={() => {
-            setStdDropdown(!stdDropdown)
-          }}
-        >
-          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
-          <FontAwesomeIcon icon={faAngleDown} />
-        </div>
-        {stdDropdown && (
-          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
-            {stds.map(std => (
-              <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedStds?.includes(std.id)}
-                  onChange={() => handleCheckboxChange(std.id)}
-                  className="mr-2"
-                />
-                {std.firstName} {std.lastName}
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-      )}
 
     </div>
   );
