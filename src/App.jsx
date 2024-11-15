@@ -28,7 +28,7 @@ import Grade from './Dashboard/Admin_Dashboard/Examinations/Grade/Grade';
 import Role from './Dashboard/Admin_Dashboard/User/Role/Role';
 import PendingUser from './Dashboard/Admin_Dashboard/User/PendingUser';
 import AddUser from './Dashboard/Admin_Dashboard/User/AddUser';
-import EditUser from './Dashboard/Admin_Dashboard/User/EditUser';
+// import EditUser from './Dashboard/Admin_Dashboard/User/EditUser';
 import LandingPage from './LandingPage';
 import Admin from './Dashboard/Admin_Dashboard/Admin';
 import Parent from './Dashboard/Parent_Dashboard/Parent';
@@ -101,10 +101,15 @@ import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails';
+
 import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
 import TchBookIssue from './Dashboard/Teacher_Dashboard/Library/TchBookIssue';
 import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
+
 import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceStatus/StaffAttendanceStatus';
+
+import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
+
 
 
 
@@ -198,6 +203,8 @@ function App() {
             <Route path='TchDetails' element={<TchDetails/>}/>
             <Route path='bookissue' element={<BookIssue/>}/>
             <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
+
+            <Route path = 'ViewParent' element= {<ViewParent/>}/> 
           </Route>
 
           {/* Student Dashboard Routes */}

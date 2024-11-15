@@ -21,6 +21,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   const [toggleValue, setToggleValue] = useState(true);
   const [userData, setUserData] = useState({});
   const navigate = useNavigate();
+  const [documents , setDocuments] = useState([]) ;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,29 +38,68 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
     };
 
     fetchUserData();
+
+    const getDocuments = async () => {
+      await axios({
+        method: "GET" ,
+        url: `${BASE_URL}/document/getDocument/${userId}` ,
+        headers:{ 'Content-Type': 'application/json' }
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setDocuments(res.data.data);
+      })
+      .catch((err) => console.log("error in get Documents" , err));
+    }
+    getDocuments() ;
   }, [reset, userId]);
 
-  const onSubmit = (data) => {
-    const updatedData = {
-      ...userData,    // Include all existing user data
-      isActive: toggleValue  
-    };
+  const resumePath = documents.find(doc => doc.documentName === "Resume")?.attachmentPath || "";
+  const photoPath = documents.find(doc => doc.documentName === "Photo")?.attachmentPath || "";
 
-    axios({
-      method: "post",
-      url: `${BASE_URL}/user/updateUser`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: updatedData
-    })
-    .then((response) => {
-      toast.success("User Updated Successfully!");
-      navigate('/admin/activeUser');
-    })
-    .catch((error) => {
+  const uploadDocument = async (file, documentName) => {
+    if (!file) return;
+    const formData = new FormData();
+
+    const existingDocs = documents.find(doc => doc.documentName === documentName) ;
+    formData.append('id' , existingDocs? existingDocs.id : null);
+    formData.append('file', file);
+    formData.append('filesName', documentName);
+
+    try {
+      await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      toast.success(`${documentName} uploaded successfully!`);
+    } catch (error) {
+      toast.error(`Failed to upload ${documentName}`);
+      console.error("Error uploading document:", error);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      // First, upload the Resume and Photo files, if provided
+      const resumeUploaded = resumePath || await uploadDocument(data.resume?.[0], 'Resume') ;
+      const photoUploaded =  photoPath || await uploadDocument(data.photo?.[0], 'Photo') ;
+
+      // Only proceed with updating user data if both uploads were successful
+      if (resumeUploaded && photoUploaded) {
+        const updatedData = {
+          ...userData,
+          isActive: toggleValue,
+        };
+
+        await axios.post(`${BASE_URL}/user/updateUser`, updatedData, {
+          headers: { "Content-Type": "application/json" },
+        });
+        toast.success("User Updated Successfully!");
+        navigate('/admin/activeUser');
+      }
+    } catch (error) {
       console.error("Error updating user:", error);
-    });
+      toast.error("Error updating user details.");
+    }
   };
 
   return (
@@ -72,9 +112,10 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
             type="file"
             id="resume"
             className={`py-2 px-2 rounded-lg border ${errors.resume ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            {...register('resume')}
+            {...register('resume' , {required: !resumePath && 'Resume is required'})}
           />
-          {errors.resume && <span className="text-red-500 text-sm">{errors.resume.message}</span>}
+          {resumePath && <span className="text-sm text-blue-500">Current document: {resumePath}</span>}
+          {!resumePath && errors.resume && <span className="text-red-500 text-sm">{errors.resume.message}</span>}
         </div>
 
         <div className="flex flex-col mb-5">
@@ -83,9 +124,10 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
             type="file"
             id="photo"
             className={`py-2 px-2 rounded-lg border ${errors.photo ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-            {...register('photo')}
+            {...register('photo' , {required: !photoPath && 'Photo is required'})}
           />
-          {errors.photo && <span className="text-red-500 text-sm">{errors.photo.message}</span>}
+          {photoPath && <span className="text-sm text-blue-500">Current document: {photoPath}</span>}
+          {!photoPath && errors.photo && <span className="text-red-500 text-sm">{errors.photo.message}</span>}
         </div>
       </div>
 
