@@ -3,9 +3,15 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   const [subject, setSubject] = useState({ subject: '', description: '' });
+  const [editorData, setEditorData] = useState('');
+
 
   useEffect(() => {
     axios({
@@ -17,6 +23,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
     })
       .then((response) => {
         setSubject(response.data.data);
+        setEditorData(response.data.data.description)
       })
       .catch((error) => {
         console.error('Error fetching subject:', error);
@@ -51,7 +58,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      data:{id : '${subjectId}', ...subject , isActive: true},
+      data:{id : `${subjectId}`, ...subject ,description:editorData, isActive: true},
     })
       .then((response) => {
         console.log('Subject updated:', response.data);
@@ -91,7 +98,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
               required
             />
           </div>
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
             <textarea
               name="description"
@@ -101,6 +108,19 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
               placeholder="Enter subject description"
               rows="4"
               required
+            />
+          </div> */}
+
+                    {/* CKEditor for Description */}
+                    <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Description</label>
+            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
             />
           </div>
 

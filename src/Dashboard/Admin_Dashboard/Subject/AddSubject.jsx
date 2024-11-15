@@ -5,9 +5,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddSubject = ({ isOpen, onClose }) => {
-  const [value , setValue] = useState(true)
+  const [value, setValue] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -16,14 +22,13 @@ const AddSubject = ({ isOpen, onClose }) => {
   } = useForm();
 
   useEffect(() => {
-    // Disable scrolling on background when the popup is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setEditorData('')
     } else {
       document.body.style.overflow = 'auto';
     }
 
-    // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -34,19 +39,18 @@ const AddSubject = ({ isOpen, onClose }) => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'auto'; // Clean up scrolling style
+      document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
 
-  // Handle form submission
   const onSubmit = (data) => {
     axios({
       method: 'POST',
       url: `${BASE_URL}/subject/createSubject`,
       data: {
         subject: data.subject,
-        description: data.description,
-        isActive : value ,
+        description: editorData,
+        isActive: value,
       },
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +63,7 @@ const AddSubject = ({ isOpen, onClose }) => {
         onClose();
       })
       .catch((err) => {
-        console.log(err, 'error:');
+        console.error(err);
         toast.error('Error adding new subject');
         onClose();
       });
@@ -81,47 +85,41 @@ const AddSubject = ({ isOpen, onClose }) => {
 
           {/* Subject Input */}
           <div className="mb-4">
-            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
-            <input
-              type="text"
-              id="subject"
-              className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              {...register('subject', { required: 'Subject name is required' })}
-            />
-            {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
-          </div>
-
-          {/* Description Input */}
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
-            <textarea
-              id="description"
-              className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              {...register('description', { required: 'Description is required' })}
-            ></textarea>
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
-          </div>
-
-          <div className="mb-2">
-            <label className="mb-2" htmlFor="active">
-              Status 
+            <label htmlFor="subject" className="block text-gray-700 font-medium mb-2">
+              Subject Name
             </label>
-            <ToggleButton
-              isOn={value}
-              handleToggle={() => setValue(!value)}
-              register={register}
+            <input
+              id="subject"
+              {...register('subject', { required: 'Subject name is required' })}
+              className="w-full border border-gray-300 rounded-lg p-2"
+              placeholder="Enter subject name"
             />
-            </div>
+            {errors.subject && <p className="text-red-500 text-sm">{errors.subject.message}</p>}
+          </div>
+
+          {/* CKEditor for Description */}
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Description</label>
+            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+            />
+          </div>
+
+          {/* Toggle Button for isActive */}
+          <div className="mb-4">
+            <ToggleButton isOn={value} onChange={setValue} />
+          </div>
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full text-center"
-          />
+          <Button type="submit" text="Add Subject" />
         </form>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </div>
   );
 };

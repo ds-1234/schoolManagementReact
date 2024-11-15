@@ -86,11 +86,17 @@ function Subject() {
     },
     {
       name: 'Subject Description',
-      selector: (row) => row.description,
+      selector: (row) => (
+        <div 
+          dangerouslySetInnerHTML={{ __html: row.description }} 
+          className="subject-description"
+        />
+      ),
       sortable: true,
       wrap: true,
       width: '300px', 
     },
+    
     {
       name: 'Action',
       cell: (row) => (
