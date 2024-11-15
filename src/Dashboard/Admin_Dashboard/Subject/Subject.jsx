@@ -87,27 +87,27 @@ function Subject() {
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-      width: '300px', 
+      // width: '300px', 
     },
     {
       name: 'Subject Name',
       selector: (row) => row.subject,
       sortable: true,
       wrap: true, 
-      width: '300px', 
+      // width: '300px', 
     },
-    {
-      name: 'Subject Description',
-      selector: (row) => (
-        <div 
-        dangerouslySetInnerHTML={{ __html: applyTailwindClassesToDescription(row.description) }} 
-          className="subject-description"
-        />
-      ),
-      sortable: true,
-      wrap: true,
-      width: '300px', 
-    },
+    // {
+    //   name: 'Subject Description',
+    //   selector: (row) => (
+    //     <div 
+    //     dangerouslySetInnerHTML={{ __html: applyTailwindClassesToDescription(row.description) }} 
+    //       className="subject-description"
+    //     />
+    //   ),
+    //   sortable: true,
+    //   wrap: true,
+    //   width: '300px', 
+    // },
     
     {
       name: 'Action',

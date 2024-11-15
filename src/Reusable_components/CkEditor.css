@@ -1,0 +1,5 @@
+/* This selector targets the editable element */
+.ck-editor__editable_inline {
+    min-height: 100px; /* Set this to your desired minimum height */
+    overflow-y: auto; /* Ensures scrolling if content exceeds the min-height */
+}

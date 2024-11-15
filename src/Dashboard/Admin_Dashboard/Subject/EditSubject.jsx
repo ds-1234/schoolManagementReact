@@ -5,6 +5,8 @@ import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../Reusable_components/CkEditor.css';
+
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -121,6 +123,13 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
               onChange={(event, editor) => {
                 const data = editor.getData();
                 setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
               }}
             />
           </div>

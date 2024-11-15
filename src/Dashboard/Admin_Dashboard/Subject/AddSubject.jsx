@@ -4,11 +4,13 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import  '../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const AddSubject = ({ isOpen, onClose }) => {
   const [value, setValue] = useState(true);
@@ -101,13 +103,26 @@ const AddSubject = ({ isOpen, onClose }) => {
           <div className="mb-4">
             <label className="block text-gray-700 font-medium mb-2">Description</label>
             <CKEditor
-              editor={ClassicEditor}
-              data={editorData}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                setEditorData(data);
-              }}
-            />
+  editor={ClassicEditor}
+  data={editorData}
+  onChange={(event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  }}
+  onReady={(editor) => {
+    editor.ui.view.editable.element.style.minHeight = "100px";
+ }}
+ config={{
+  toolbar: [
+    'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+    'link', 'blockQuote', 'undo', 'redo'
+    // Exclude 'imageUpload' to remove the icon
+  ],
+}}
+
+/>
+
+
           </div>
 
           {/* Toggle Button for isActive */}
