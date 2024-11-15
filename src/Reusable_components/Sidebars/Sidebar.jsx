@@ -257,12 +257,8 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faBookAtlas} className="mr-4 text-[#ffae01]" />
               Library
             </NavLink>
-<<<<<<< Updated upstream
           </li> */}
 
-=======
-          </li>
->>>>>>> Stashed changes
           
 
           {/* Student Section */}

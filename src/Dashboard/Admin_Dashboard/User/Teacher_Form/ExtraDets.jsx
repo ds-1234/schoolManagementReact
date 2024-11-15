@@ -171,7 +171,8 @@ const fetchBasicDets = async() => {
             options={languageOptions} 
             isMulti={true}         
             placeholder="Select languages..."
-            {...register('languages' , {required : true })}
+            // defaultValue={teacherData.languages?.split(",")}
+            {...register('languages' , {required : "Languages are required" })}
           />
           {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
         </div>

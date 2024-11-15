@@ -19,7 +19,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     formState: { errors },
   } = useForm({
     defaultValues: {
-      qualifications: [{ course: "", institute: "", passoutYear: "" , cgpa: "" , documentName: "", file: null}],
+      qualifications: [{ course: "", institute: "", passoutYear: "" , cgpa: "" , degreeDoc: "", degreeFile: null}],
       workExperiences: [{ institute: "", designation: "", joining: "" , relieving: "" , documentName: "", file: null }],
     },
   });
@@ -68,7 +68,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
 
       documents[0] ? formData.append('id' , documents.find(doc => doc.documentName === documentName).id) : formData.append('id' , null) ;
       formData.append('file', file);
-      formData.append('documentName', documentName);
+      formData.append('filesName', documentName);
       try {
         await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -101,13 +101,25 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     };
     
     const onSubmit = async (data) => {
+      const qualificationList = teacherData?.qualificationList || [];
+      const workExperienceList = teacherData?.workExperience || [];
+    
       const newQualifications = data.qualifications.filter(
-        (qualification) => !isDuplicateQualification(qualification, teacherData.qualificationList)
+        (qualification) => 
+          qualification.course && qualification.institute && qualification.passoutYear && 
+          qualification.cgpa && !isDuplicateQualification(qualification, qualificationList)
       );
     
       const newWorkExperiences = data.workExperiences.filter(
-        (experience) => !isDuplicateExperience(experience, teacherData.workExperience)
+        (experience) => 
+          experience.institute && experience.designation && experience.joining &&
+          experience.relieving && !isDuplicateExperience(experience, workExperienceList)
       );
+    
+      if (newQualifications.length === 0 && newWorkExperiences.length === 0) {
+        toast.warn("No new qualifications or work experiences to save.");
+        return;
+      }
     
       const formattedData = {
         ...teacherData,
@@ -122,7 +134,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           teacherId: userId,
           fromYear: experience.joining,
           toYear: experience.relieving,
-          institute: experience.institute,
+          insitutue: experience.institute,
           designation: experience.designation,
         })),
       };
@@ -137,17 +149,19 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           });
         }
     
-        // Document upload logic remains the same as in your code
+        // Sequentially upload qualification documents
         for (const qualification of newQualifications) {
-          if (qualification.documentFile && qualification.documentFile[0]) {
-            console.log("Uploading qualification document:", qualification.documentFile[0], qualification.documentName);
-            await uploadDocument(qualification.documentFile[0], qualification.documentName);
+          if (qualification.degreeFile && qualification.degreeFile[0]) {
+            console.log("Uploading qualification document:", qualification.degreeFile[0], qualification.degreeDoc);
+            await uploadDocument(qualification.degreeFile[0], qualification.degreeDoc);
           }
         }
+    
+        // Sequentially upload work experience documents
         for (const experience of newWorkExperiences) {
-          if (experience.documentFile && experience.documentFile[0]) {
-            console.log("Uploading work experience document:", experience.documentFile[0], experience.documentName);
-            await uploadDocument(experience.documentFile[0], experience.documentName);
+          if (experience.file && experience.file[0]) {
+            console.log("Uploading work experience document:", experience.file[0], experience.documentName);
+            await uploadDocument(experience.file[0], experience.documentName);
           }
         }
     
@@ -158,6 +172,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         console.error("Error updating user:", error);
       }
     };
+    
     
 
     useEffect(() => {
@@ -252,13 +267,13 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         <label htmlFor="file">Upload Marksheets/Degree</label>
         <input
           type="text"
-          {...register(`qualifications[${index}].documentName`, { required: true })}
+          {...register(`qualifications[${index}].degreeDoc`, { required: true })}
           className="border p-2 rounded-lg"
           placeholder="Document Name"
         />
         <input
           type="file"
-          {...register(`qualifications[${index}].documentFile` , { required: true })}
+          {...register(`qualifications[${index}].degreeFile` , { required: true })}
           className="border p-2 rounded-lg"
         />
       </div>
@@ -270,7 +285,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     </div>
   ))}
   <button type="button" className="text-blue-500 hover:text-blue-700 transition-colors duration-150" 
-  onClick={() => appendQualification({ course: "", institute: "", passoutYear: "", cgpa: "" ,documentName: "", file: null})}>
+  onClick={() => appendQualification({ course: "", institute: "", passoutYear: "", cgpa: "" ,degreeDoc: "", degreeFile: null})}>
       + Add New
   </button>
 </div>
@@ -334,7 +349,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         />
         <input
           type="file"
-          {...register(`qualifications[${index}].documentFile`)}
+          {...register(`qualifications[${index}].file`)}
           className="border p-2 rounded-lg"
         />
         </div>
