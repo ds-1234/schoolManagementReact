@@ -8,7 +8,7 @@ const HeaderBar = () => {
     const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
     useEffect(() => {
-        if (user.role === 4) {
+        if (user.role != 3|| user.role!=5) {
             setAtt(true);
         }
     }, [user.role]);
@@ -16,7 +16,7 @@ const HeaderBar = () => {
     return (
         <header className="flex items-center w-full justify-between border-b border-gray-300">
             {/* Move Attendance to the start */}
-            {att ? <Attendance /> : ''}
+            {att ? <Attendance /> : '_'}
 
             <Logout />
         </header>

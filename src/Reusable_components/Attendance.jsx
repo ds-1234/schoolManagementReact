@@ -7,14 +7,28 @@ function Attendance() {
     const navigate = useNavigate() 
     const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
-const handleAtt = async () => {
+    function getFormattedIndianTime() {
+        // Get the current time in Indian Standard Time (IST)
+        const now = new Date();
+        const offset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+        const indianTime = new Date(now.getTime() + offset);
+      
+        // Format the time as required
+        const formattedTime = indianTime.toISOString().replace('Z', '');
+      
+        return formattedTime;
+      }
+      
+      console.log(getFormattedIndianTime(),'formated time');
+      const handleAtt = async () => {
     if (user && user.id) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 // Format latitude and longitude to 4 decimal points
                 const latitude = position.coords.latitude.toFixed(4);
                 const longitude = position.coords.longitude.toFixed(4);
-                const currentDateTime = new Date().toISOString();
+                const currentDateTime = getFormattedIndianTime();
+                
 
                 try {
                     const response = await fetch('http://localhost:8080/attendance/saveStaffAttendance', {
