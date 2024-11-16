@@ -5,11 +5,16 @@ import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
   const [grade, setGrade] = useState({ grade: '', percentageFrom: '', percentageUpto: '', gradePoints: '', description: '',isActive:true });
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [value, setValue] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +38,8 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
           });
           // Update the toggle button value
           setValue(data.isActive);
+          setEditorData(response.data.data.description)
+
         })
         .catch((error) => {
           console.error('Error fetching Grade:', error);
@@ -163,13 +170,28 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
           {/* Description Input */}
           <div className="mb-2">
             <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
-            <textarea
+            {/* <textarea
               id="description"
               className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               rows="2"
               {...register('description')}
               defaultValue={grade.description}
-            ></textarea>
+            ></textarea> */}
+                                  <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
+            />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 

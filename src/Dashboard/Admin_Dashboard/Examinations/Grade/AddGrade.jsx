@@ -5,9 +5,14 @@ import { toast , ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
+  const [editorData, setEditorData] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -27,7 +32,7 @@ const AddExamType = ({ isOpen, onClose }) => {
           percentageFrom : data.marksfrom ,
           percentageUpto: data.marksupto,
           gradePoints: data.gradepoints,
-          description: data.description,
+          description: editorData,
           isActive: data.active = value ? 'true' : 'false',
 
         },
@@ -56,6 +61,8 @@ useEffect(() => {
   if (isOpen) {
     document.body.style.overflow = 'hidden';
     setValue(true)
+    setEditorData('')
+
 
   } else {
     document.body.style.overflow = 'auto';
@@ -144,12 +151,31 @@ useEffect(() => {
         {/* Description Input */}
         <div className="mb-2">
           <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Description</label>
-          <textarea
+          {/* <textarea
             id="description"
             className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
             rows="2"
             {...register('description', { required: 'Description is required' })}
-          ></textarea>
+          ></textarea> */}
+                            <CKEditor
+  editor={ClassicEditor}
+  data={editorData}
+  onChange={(event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  }}
+  onReady={(editor) => {
+    editor.ui.view.editable.element.style.minHeight = "100px";
+ }}
+ config={{
+  toolbar: [
+    'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+    'link', 'blockQuote', 'undo', 'redo'
+    // Exclude 'imageUpload' to remove the icon
+  ],
+}}
+
+/>
           {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
         </div>
 
