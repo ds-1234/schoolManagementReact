@@ -133,10 +133,10 @@ function BookIssue() {
   const openEditPopup = (userId,userName) => {
     // Set the list of book issues for the selected `userId`
     fetchBookIssues()
-    setSelectedUserIssues(allBookIssues[userId] || []);
+    setSelectedUserIssues(allBookIssues[userId].books || []);
     setUserName(userName)
   };
-
+console.log(allBookIssues,'allBookIssues')
   const closeEditPopup = () => {
     setSelectedUserIssues(null);
     setUserName(null)
@@ -186,6 +186,9 @@ function BookIssue() {
         try {
             const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
             const data = response.data.data;
+            if (response.data && response.data.success) {
+              const data = response.data.data;
+              setAllBookIssues(data);}
 
             // Process the data to flatten it into an array
             const formattedData = Object.keys(data).map(userId => {
