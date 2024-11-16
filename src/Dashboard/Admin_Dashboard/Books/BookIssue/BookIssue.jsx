@@ -28,6 +28,7 @@ function BookIssue() {
       name: 'SR.No',
       selector: (row,idx) => idx+1 ,
       sortable: false,
+      width:'100px'
     },
     // {
     //   name: 'Name',
@@ -38,38 +39,52 @@ function BookIssue() {
         name: 'Issue Id',
         selector: row => row.issueId,
         sortable: true,
+        width:'120px'
+
       },
     {
         name: 'Name',
         selector: row => userMap[row.userId] || row.userId, // Display userName if found, otherwise show userId
         sortable: true,
+        width:'120px'
+
       },
       {
         name: 'Book Number',
         selector: row => row.bookNumber,
         sortable: true,
+        width:'120px'
+
       },
 
     {
       name: 'Issued Date',
       selector: row => row.issuedDate,
       sortable: true,
+      width:'120px'
+
     },
     {
       name: 'Return Date',
       selector: row => row.returnDate,
       sortable: true,
+      width:'120px'
+
     },
 
     {
       name: 'Issued Count',
       selector: row => row.issuedCount,
       sortable: true,
+      width:'115px'
+
   },
   {
       name: 'Returned Count',
       selector: row => row.returnedCount,
       sortable: true,
+      width:'115px'
+
   },
     // {
     //   name: 'Alloted start date',
@@ -87,6 +102,8 @@ function BookIssue() {
         <LibraryStatusButton isActive={row.isActive}/>
       ),
       sortable: true,
+      width:'120px'
+
     },
     {
       name: 'Action',
@@ -102,6 +119,8 @@ function BookIssue() {
       </button>
       </div>
       ),
+      width:'100px'
+
     },
   ]
 
