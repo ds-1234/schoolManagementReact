@@ -101,23 +101,13 @@ import StdEvent from './Dashboard/Student_Dashboard/Event/StdEvent/StdEvent';
 import TeaEvent from './Dashboard/Teacher_Dashboard/TeaEvent/TeaEvent';
 import Edit from './Dashboard/Admin_Dashboard/User/Edit'
 import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails';
-<<<<<<< Updated upstream
 
 import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
 import TchBookIssue from './Dashboard/Teacher_Dashboard/Library/TchBookIssue';
 import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
-
 import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceStatus/StaffAttendanceStatus';
-
-import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
-
-=======
-import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
-import TchBookIssue from './Dashboard/Teacher_Dashboard/Library/TchBookIssue';
-import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
 import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
 import Children from './Dashboard/Parent_Dashboard/Children';
->>>>>>> Stashed changes
 
 
 
@@ -210,11 +200,7 @@ function App() {
             <Route path='pendingAdmissionForm' element={<PendingAdmForm/>}/>
             <Route path='TchDetails' element={<TchDetails/>}/>
             <Route path='bookissue' element={<BookIssue/>}/>
-<<<<<<< Updated upstream
             <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
-
-=======
->>>>>>> Stashed changes
             <Route path = 'ViewParent' element= {<ViewParent/>}/> 
           </Route>
 

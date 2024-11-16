@@ -27,18 +27,27 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   const [subjects , setSubjects] = useState([]) ;
   const [classSubjectRows, setClassSubjectRows] = useState([{ classId: '', subjectId: '' }]);
   const [teacherData , setTeacherData] = useState(null) 
+  const [designations , setDesignations] = useState([]) ;
+  const [selectedDest , setSelectedDest] = useState('') ;
+  const [departments , setDepartments] = useState([]) ;
+  const [selectedDept , setSelectedDept] = useState('') ;
 
   const fetchOptions = async () => {
     try {
-      const [classRes, schoolRes, subjectRes] = await Promise.all([
+      const [classRes, schoolRes, subjectRes , destRes , deptRes] = await Promise.all([
         axios.get(`${BASE_URL}/class/getClassList`),
         axios.get(`${BASE_URL}/school/getSchoolList`),
         axios.get(`${BASE_URL}/subject/getSubjectList`),
+        axios.get(`${BASE_URL}/designation/getDesignationList`),
+        axios.get(`${BASE_URL}/department/getDepartmentList`)
       ]);
 
       setClasses(classRes.data.data);
       setSchools(schoolRes.data.data);
       setSubjects(subjectRes.data.data);
+      setDepartments(deptRes.data.data) ;
+      setDesignations(destRes.data.data)
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -171,10 +180,44 @@ const fetchBasicDets = async() => {
             options={languageOptions} 
             isMulti={true}         
             placeholder="Select languages..."
-            // defaultValue={teacherData.languages?.split(",")}
+            defaultValue={teacherData.languages?.split(",")}
             {...register('languages' , {required : "Languages are required" })}
           />
           {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
+        </div>
+
+        <div className="flex flex-col px-2 w-1/2 mb-4">
+            <label htmlFor="designation" className='text-gray-900 font-medium'>Designation</label>
+            <select
+            id="designation"
+            className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
+            // {...register('designation')}
+            value={selectedDest}
+            onChange={(e) => setSelectedDest(e.target.value)}
+            placeholder = "Select Designation "
+            >
+            <option value="" hidden>Select designation </option>
+            {designations.map(option => (
+            <option key={option.id} value={option.id}>{option.name}</option>
+            ))}
+            </select>
+        </div>
+
+        <div className="flex flex-col px-2 w-1/2 mb-4">
+            <label htmlFor="designation" className='text-gray-900 font-medium'>Department</label>
+            <select
+            id="department"
+            className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
+            // {...register('department')}
+            value={selectedDept}
+            onChange={(e) => setSelectedDept(e.target.value)}
+            placeholder = "Select Department "
+            >
+            <option value="" hidden>Select department</option>
+            {designations.map(option => (
+            <option key={option.id} value={option.id}>{option.name}</option>
+            ))}
+            </select>
         </div>
 
         <div className="flex flex-col px-2 w-1/2">
