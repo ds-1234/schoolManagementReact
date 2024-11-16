@@ -20,6 +20,7 @@ function BookIssue() {
     const [allBookIssues, setAllBookIssues] = useState({});
     const [selectedUserIssues, setSelectedUserIssues] = useState(null);
     const [userName, setUserName] = useState(null);
+    
 
 
   const column = [
@@ -60,16 +61,16 @@ function BookIssue() {
       sortable: true,
     },
 
-    // {
-    //   name: 'Book unique Id',
-    //   selector: row => row.bookUniqueId,
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Book ref Id',
-    //   selector: row => row.bookRefId,
-    //   sortable: true,
-    // },
+    {
+      name: 'Issued Count',
+      selector: row => row.issuedCount,
+      sortable: true,
+  },
+  {
+      name: 'Returned Count',
+      selector: row => row.returnedCount,
+      sortable: true,
+  },
     // {
     //   name: 'Alloted start date',
     //   selector: row => row.allotedStratDate,
@@ -131,7 +132,7 @@ function BookIssue() {
 
   const openEditPopup = (userId,userName) => {
     // Set the list of book issues for the selected `userId`
-    fetchBooks()
+    fetchBookIssues()
     setSelectedUserIssues(allBookIssues[userId] || []);
     setUserName(userName)
   };
@@ -140,11 +141,11 @@ function BookIssue() {
     setSelectedUserIssues(null);
     setUserName(null)
 
-    fetchBooks()
+    fetchBookIssues()
   };
 
   useEffect(() => {
-    fetchBooks();
+    fetchBookIssues();
     fetchUserData();
   }, []);
 
@@ -179,32 +180,32 @@ function BookIssue() {
     };
   }, [isAddPopupOpen, isEditPopupOpen]);
 
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
-        if (response.data && response.data.success) {
+
+    // Fetch book issues from API
+    const fetchBookIssues = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
             const data = response.data.data;
 
-            setAllBookIssues(data); // Store all data
+            // Process the data to flatten it into an array
+            const formattedData = Object.keys(data).map(userId => {
+                const userIssues = data[userId];
+                return {
+                    ...userIssues.books[0], // Take only the first book entry per user
+                    userId,
+                    issuedCount: userIssues.issuedCount,
+                    returnedCount: userIssues.returnedCount
+                };
+            });
 
-        // Filter data to only show the first entry for each `userId`
-        const firstEntries = Object.keys(data).map(userId => data[userId][0]);
-        setBookIssues(firstEntries);
-        setFilterBook(firstEntries); // Set filterBook for search
-
-        console.log(firstEntries,'firstentries')
-        //   setFilterBook(booksArray); // Set filterBook if you intend to use filtered data
-        } else {
-          console.error("Unexpected response structure:", response.data);
+            setBookIssues(formattedData);
+        } catch (error) {
+            console.error('Error fetching book issues:', error);
         }
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      }
     };
     useEffect(() => {
-
-    fetchBooks();
-  }, []);
+    fetchBookIssues();
+}, []);
   
 
   useEffect(() => {
@@ -281,14 +282,15 @@ const searchOptions = [
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
-          fetchBooks(); // Refresh data when add popup closes
+          fetchBookIssues(); // Refresh data when add popup closes
         }} 
       />
+      {console.log(selectedUserIssues,'selectedUserIssues')}
                   {selectedUserIssues && (
         <EditBookIssueListPopup
           issues={selectedUserIssues}
           isOpen={openEditPopup}
-          fetchBooks={fetchBooks} // Passing fetchBooks to refresh the data
+          fetchBooks={fetchBookIssues} // Passing fetchBooks to refresh the data
           userName = {userName}
           onClose={closeEditPopup}
         />
