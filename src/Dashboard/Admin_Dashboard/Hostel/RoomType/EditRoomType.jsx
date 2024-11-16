@@ -4,10 +4,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
   const [roomTy, setRoomTy] = useState({ roomTypeName: '', description: '' });
   const [value, setValue] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
 
 
   useEffect(() => {
@@ -22,6 +27,8 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
         data = response.data.data
         setRoomTy(response.data.data);
         setValue(data.isActive)
+        setEditorData(data.description)
+
       })
       .catch((error) => {
         console.error('Error fetching room type:', error);
@@ -56,7 +63,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      data:{id : '${roomtyId}', ...roomTy,isActive:value},
+      data:{id : '${roomtyId}', ...roomTy,isActive:value,description:editorData},
     })
       .then((response) => {
         console.log('Room Type updated:', response.data);
@@ -98,7 +105,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <textarea
+            {/* <textarea
               name="description"
               value={roomTy.description}
               onChange={handleChange}
@@ -106,6 +113,21 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
               placeholder="Enter Room Type Description"
               rows="4"
               required
+            /> */}
+                                                            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
             />
           </div>
 

@@ -8,12 +8,17 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 
 function AddIncome() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
   const [value, setValue] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
 
     // State for payment method dropdown
 const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -61,7 +66,7 @@ const handleSelectPaymentMethod = (method) => {
             amount: data.amount,
             invoice: data.invoiceno,
             paymentMode: selectedPaymentMethod,
-            description: data.description,
+            description: editorData,
             isActive: value
         },
         headers: {
@@ -213,12 +218,31 @@ const handleSelectPaymentMethod = (method) => {
             {/* Description */}
             <div>
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="description">Description *</label>
-              <textarea
+              {/* <textarea
                 type="text"
                 id="description"
                 {...register("description", { required: "Description is required" })}
                 className="block w-full border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
-              />
+              /> */}
+                                                      <CKEditor
+  editor={ClassicEditor}
+  data={editorData}
+  onChange={(event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  }}
+  onReady={(editor) => {
+    editor.ui.view.editable.element.style.minHeight = "100px";
+ }}
+ config={{
+  toolbar: [
+    'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+    'link', 'blockQuote', 'undo', 'redo'
+    // Exclude 'imageUpload' to remove the icon
+  ],
+}}
+
+/>
               {errors.description && (
                 <p className="text-red-500 text-sm">{errors.description.message}</p>
               )}

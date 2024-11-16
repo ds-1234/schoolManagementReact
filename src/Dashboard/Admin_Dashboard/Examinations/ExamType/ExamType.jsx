@@ -96,11 +96,11 @@ const column = [
     selector: row => row.examTypeName,
     sortable: true,
   },
-  {
-    name: 'Exam Type Description',
-    selector: row => row.examTypeDescription,
-    sortable: true,
-  },
+  // {
+  //   name: 'Exam Type Description',
+  //   selector: row => row.examTypeDescription,
+  //   sortable: true,
+  // },
   {
     name: 'Action',
     cell: row => (

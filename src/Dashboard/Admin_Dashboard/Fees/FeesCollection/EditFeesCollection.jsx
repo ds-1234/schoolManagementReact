@@ -8,6 +8,9 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -35,6 +38,8 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   const studentDropdownRef = useRef(null); // Ref for the student dropdown
   const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
   const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
+  const [editorData, setEditorData] = useState('');
+
 
 
   const {
@@ -80,6 +85,8 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
                 setPaymentStatus(FeeCollectionData.isActive);
                 setPaid(FeeCollectionData.isActive);
                 console.log(FeeCollectionData.paymentType,'paymentType')
+                setEditorData(FeeCollectionData.description)
+
                 
                 // Set selected values for dropdowns
                 setSelectedStudent(FeeCollectionData.userId);

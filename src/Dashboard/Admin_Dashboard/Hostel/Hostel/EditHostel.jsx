@@ -3,9 +3,14 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
   const [hostel, setHostel] = useState({ hostelName: '',hostelType: '',intakeBedCount: '',hostelAddress: '', description: '' });
+  const [editorData, setEditorData] = useState('');
+
 
   useEffect(() => {
     axios({
@@ -17,6 +22,8 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
     })
       .then((response) => {
         setHostel(response.data.data);
+        setEditorData(data.description)
+
       })
       .catch((error) => {
         console.error('Error fetching Hostel:', error);
@@ -51,7 +58,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      data:{id : '${hostelId}', ...hostel,isActive:true},
+      data:{id : '${hostelId}', ...hostel,isActive:true,description:editorData},
     })
       .then((response) => {
         console.log('Hostel updated:', response.data);
@@ -137,7 +144,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <textarea
+            {/* <textarea
               name="description"
               value={hostel.description}
               onChange={handleChange}
@@ -145,6 +152,21 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
               placeholder="Enter Hostel description"
               rows="2"
               required
+            /> */}
+                                                            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
             />
           </div>
 

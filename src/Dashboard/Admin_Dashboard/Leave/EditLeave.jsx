@@ -5,10 +5,15 @@ import Button from '../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../Reusable_components/CkEditor.css';
 
 function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
   const [leave, setLeave] = useState({ leaveType: '', leaveDescription: '' });
   const [value,setValue] =useState(true)
+  const [editorData, setEditorData] = useState('');
+
 
   const {
     register,
@@ -31,6 +36,7 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
             leaveType: leaveData.leaveType,
             leaveDescription: leaveData.leaveDescription,
         });
+        setEditorData(leaveData.leaveDescription)
         setValue(leaveData.isActive); // Set active status based on API response
       })
       .catch((error) => {
@@ -69,7 +75,7 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
       data:{
         id : `${leaveId}`,
         leaveType:leave.leaveType,
-        leaveDescription:leave.leaveDescription,
+        leaveDescription:editorData,
         isActive:value,
         },
     })
@@ -116,7 +122,7 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
 
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <textarea
+            {/* <textarea
               name="leaveDescription"
               value={leave.leaveDescription}
               onChange={handleChange}
@@ -124,6 +130,21 @@ function EditLeave({ isOpen, onClose, leaveId, onSuccess }) {
               placeholder="Enter Leave description"
               rows="4"
               required
+            /> */}
+                                                <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
             />
           </div>
 

@@ -20,6 +20,7 @@ function BookIssue() {
     const [allBookIssues, setAllBookIssues] = useState({});
     const [selectedUserIssues, setSelectedUserIssues] = useState(null);
     const [userName, setUserName] = useState(null);
+    
 
 
   const column = [
@@ -27,6 +28,7 @@ function BookIssue() {
       name: 'SR.No',
       selector: (row,idx) => idx+1 ,
       sortable: false,
+      width:'100px'
     },
     // {
     //   name: 'Name',
@@ -37,39 +39,53 @@ function BookIssue() {
         name: 'Issue Id',
         selector: row => row.issueId,
         sortable: true,
+        width:'120px'
+
       },
     {
         name: 'Name',
         selector: row => userMap[row.userId] || row.userId, // Display userName if found, otherwise show userId
         sortable: true,
+        width:'120px'
+
       },
       {
         name: 'Book Number',
         selector: row => row.bookNumber,
         sortable: true,
+        width:'120px'
+
       },
 
     {
       name: 'Issued Date',
       selector: row => row.issuedDate,
       sortable: true,
+      width:'120px'
+
     },
     {
       name: 'Return Date',
       selector: row => row.returnDate,
       sortable: true,
+      width:'120px'
+
     },
 
-    // {
-    //   name: 'Book unique Id',
-    //   selector: row => row.bookUniqueId,
-    //   sortable: true,
-    // },
-    // {
-    //   name: 'Book ref Id',
-    //   selector: row => row.bookRefId,
-    //   sortable: true,
-    // },
+    {
+      name: 'Issued Count',
+      selector: row => row.issuedCount,
+      sortable: true,
+      width:'115px'
+
+  },
+  {
+      name: 'Returned Count',
+      selector: row => row.returnedCount,
+      sortable: true,
+      width:'115px'
+
+  },
     // {
     //   name: 'Alloted start date',
     //   selector: row => row.allotedStratDate,
@@ -86,6 +102,8 @@ function BookIssue() {
         <LibraryStatusButton isActive={row.isActive}/>
       ),
       sortable: true,
+      width:'120px'
+
     },
     {
       name: 'Action',
@@ -101,6 +119,8 @@ function BookIssue() {
       </button>
       </div>
       ),
+      width:'100px'
+
     },
   ]
 
@@ -131,20 +151,20 @@ function BookIssue() {
 
   const openEditPopup = (userId,userName) => {
     // Set the list of book issues for the selected `userId`
-    fetchBooks()
-    setSelectedUserIssues(allBookIssues[userId] || []);
+    fetchBookIssues()
+    setSelectedUserIssues(allBookIssues[userId].books || []);
     setUserName(userName)
   };
-
+console.log(allBookIssues,'allBookIssues')
   const closeEditPopup = () => {
     setSelectedUserIssues(null);
     setUserName(null)
 
-    fetchBooks()
+    fetchBookIssues()
   };
 
   useEffect(() => {
-    fetchBooks();
+    fetchBookIssues();
     fetchUserData();
   }, []);
 
@@ -179,32 +199,35 @@ function BookIssue() {
     };
   }, [isAddPopupOpen, isEditPopupOpen]);
 
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
-        if (response.data && response.data.success) {
+
+    // Fetch book issues from API
+    const fetchBookIssues = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
             const data = response.data.data;
+            if (response.data && response.data.success) {
+              const data = response.data.data;
+              setAllBookIssues(data);}
 
-            setAllBookIssues(data); // Store all data
+            // Process the data to flatten it into an array
+            const formattedData = Object.keys(data).map(userId => {
+                const userIssues = data[userId];
+                return {
+                    ...userIssues.books[0], // Take only the first book entry per user
+                    userId,
+                    issuedCount: userIssues.issuedCount,
+                    returnedCount: userIssues.returnedCount
+                };
+            });
 
-        // Filter data to only show the first entry for each `userId`
-        const firstEntries = Object.keys(data).map(userId => data[userId][0]);
-        setBookIssues(firstEntries);
-        setFilterBook(firstEntries); // Set filterBook for search
-
-        console.log(firstEntries,'firstentries')
-        //   setFilterBook(booksArray); // Set filterBook if you intend to use filtered data
-        } else {
-          console.error("Unexpected response structure:", response.data);
+            setBookIssues(formattedData);
+        } catch (error) {
+            console.error('Error fetching book issues:', error);
         }
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      }
     };
     useEffect(() => {
-
-    fetchBooks();
-  }, []);
+    fetchBookIssues();
+}, []);
   
 
   useEffect(() => {
@@ -281,14 +304,15 @@ const searchOptions = [
         isOpen={isAddPopupOpen} 
         onClose={() => {
           closeAddPopup();
-          fetchBooks(); // Refresh data when add popup closes
+          fetchBookIssues(); // Refresh data when add popup closes
         }} 
       />
+      {console.log(selectedUserIssues,'selectedUserIssues')}
                   {selectedUserIssues && (
         <EditBookIssueListPopup
           issues={selectedUserIssues}
           isOpen={openEditPopup}
-          fetchBooks={fetchBooks} // Passing fetchBooks to refresh the data
+          fetchBooks={fetchBookIssues} // Passing fetchBooks to refresh the data
           userName = {userName}
           onClose={closeEditPopup}
         />

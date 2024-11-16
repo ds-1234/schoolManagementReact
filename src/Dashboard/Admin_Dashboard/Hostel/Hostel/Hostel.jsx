@@ -154,13 +154,13 @@ const handleDelete = (id)=>{
       wrap: true, 
     //   width: '300px', 
     },
-    {
-      name: 'Description',
-      selector: (row) => row.description,
-      sortable: true,
-      wrap: true,
-      width: '180px', 
-    },
+    // {
+    //   name: 'Description',
+    //   selector: (row) => row.description,
+    //   sortable: true,
+    //   wrap: true,
+    //   width: '180px', 
+    // },
     {
       name: 'Action',
       cell: (row) => (

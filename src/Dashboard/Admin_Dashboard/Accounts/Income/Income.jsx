@@ -32,7 +32,7 @@ function Income() {
       // wrap: true, 
       selector: (row, idx) => idx + 1,
       sortable: false,
-      width: '70px',
+      // width: '70px',
             wrap: true, 
 
     },
@@ -40,31 +40,31 @@ function Income() {
       name: 'Income Id',
       selector: row => row.incomeId,
       sortable: true,
-      width: '100px',
+      // width: '100px',
             wrap: true, 
     },
     {
       name: 'Income Name',
       selector: row => row.incomeName,
       sortable: true,
-      width: '100px',
+      // width: '100px',
             wrap: true, 
     },
 
-    {
-      name: 'Description',
-      selector: row => row.description,
-      sortable: true,
-      width: '150px',
-            wrap: true, 
+    // {
+    //   name: 'Description',
+    //   selector: row => row.description,
+    //   sortable: true,
+    //   width: '150px',
+    //         wrap: true, 
  
 
-    },
+    // },
     {
       name: 'Source',
       selector: row => row.incomeSource,
       sortable: true,
-      width: '117px',
+      // width: '117px',
             wrap: true, 
  
 
@@ -73,7 +73,7 @@ function Income() {
       name: 'Date',
       selector: row => row.incomeDate,
       sortable: true,
-      width: '117px',
+      // width: '117px',
             wrap: true, 
  
 
@@ -82,7 +82,7 @@ function Income() {
       name: 'Amount',
       selector: row => row.amount,
       sortable: true,
-      width: '117px',
+      // width: '117px',
             wrap: true, 
  
 
@@ -91,7 +91,7 @@ function Income() {
       name: 'Invoice No.',
       selector: row => row.invoice,
       sortable: true,
-      width: '117px',
+      // width: '117px',
             wrap: true, 
  
 
@@ -100,7 +100,7 @@ function Income() {
       name: 'Payment Method',
       selector: row => row.paymentMode,
       sortable: true,
-      width: '100px',
+      // width: '100px',
             wrap: true, 
  
 
@@ -111,7 +111,7 @@ function Income() {
         <StatusButton isActive={row.isActive} />
       ),
       sortable: true,
-      width: '117px',
+      // width: '117px',
             // wrap: true, 
  
 
@@ -128,7 +128,7 @@ function Income() {
           </button>
         </div>
       ),
-      width: '120px',
+      // width: '120px',
             wrap: true, 
  
 

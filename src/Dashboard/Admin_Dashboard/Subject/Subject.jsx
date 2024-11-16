@@ -8,6 +8,8 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../conf/conf';
+import ReactHtmlParser from 'react-html-parser';
+
 
 function Subject() {
   const [data, setData] = useState([]);
@@ -42,6 +44,8 @@ function Subject() {
   };
 
 
+  
+
   const fetchData = () => {
     axios({
       method: "GET",
@@ -69,28 +73,42 @@ function Subject() {
     setData(data);  
     setFilterData(data); 
   }, []);
+
+
+  const applyTailwindClassesToDescription = (description) => {
+    // Ensure the description has <ul> and <ol> lists with Tailwind classes
+    return description.replace(/<ul>/g, '<ul class="list-disc list-inside ">')
+                      .replace(/<ol>/g, '<ol class="list-decimal list-inside ">')
+                      // .replace(/<li>/g, '<li class="ml-4">');
+  };
   
   const column = [
     {
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
       sortable: false,
-      width: '300px', 
+      // width: '300px', 
     },
     {
       name: 'Subject Name',
       selector: (row) => row.subject,
       sortable: true,
       wrap: true, 
-      width: '300px', 
+      // width: '300px', 
     },
-    {
-      name: 'Subject Description',
-      selector: (row) => row.description,
-      sortable: true,
-      wrap: true,
-      width: '300px', 
-    },
+    // {
+    //   name: 'Subject Description',
+    //   selector: (row) => (
+    //     <div 
+    //     dangerouslySetInnerHTML={{ __html: applyTailwindClassesToDescription(row.description) }} 
+    //       className="subject-description"
+    //     />
+    //   ),
+    //   sortable: true,
+    //   wrap: true,
+    //   width: '300px', 
+    // },
+    
     {
       name: 'Action',
       cell: (row) => (
@@ -171,6 +189,12 @@ const searchOptions = [
         subjectId={editSubjectId}
         onSuccess={fetchData} // Refresh data after editing
       />
+              {/* <div 
+          dangerouslySetInnerHTML={{ __html: data[2].description }} 
+          className="subject-description p-4 bg-gray-50 border-l-4 border-yellow-400 list-disc pl-6"
+          /> */}
+          {/* {ReactHtmlParser(data[2].description)} */}
+{/* <ul className='list-disc list-inside'><li><strong>This is english subject</strong></li><li><strong>learn it well</strong></li></ul> */}
     </div>
   );
 };
