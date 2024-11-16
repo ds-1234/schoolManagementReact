@@ -32,9 +32,8 @@ const {
 
         // Fetch countries
         useEffect(() => {
-            axios.get('https://countriesnow.space/api/v0.1/countries/positions')
+            axios.get(`${BASE_URL}/area/getCountryList`)
               .then((response) => {
-                console.log(response.data.data);
                 setCountries(response.data.data)
               })
               .catch((error) => console.error("Error fetching countries:", error));
@@ -43,10 +42,9 @@ const {
           // Fetch states when country changes
           useEffect(() => {
             if (selectedCountry) {
-              axios.post('https://countriesnow.space/api/v0.1/countries/states', { country: selectedCountry })
+              axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
                 .then((response) => {
-                  console.log(response.data.data);
-                  setStates(response.data.data.states)
+                  setStates(response.data.data)
                 })
                 .catch((error) => console.error("Error fetching states:", error));
             }
@@ -55,9 +53,8 @@ const {
           // Fetch cities when state changes
           useEffect(() => {
             if (selectedState) {
-              axios.post('https://countriesnow.space/api/v0.1/countries/state/cities', { country: selectedCountry, state: selectedState })
+              axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
                 .then((response) => {
-                  console.log(response.data.data);
                   setCities(response.data.data)
                 })
                 .catch((error) => console.error("Error fetching cities:", error));
@@ -260,7 +257,7 @@ const {
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
-              <option key={country.iso2} value={country.name}>{country.name}</option>
+              <option key={country.id} value={country.id}>{country.name}</option>
             ))}
           </select>
           {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
@@ -278,7 +275,7 @@ const {
           >
             <option value="">Select State</option>
             {states.map((option) => (
-              <option key={option.name} value={option.name}>{option.name}</option>
+              <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
           {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
@@ -296,7 +293,7 @@ const {
           >
             <option value="">Select City</option>
             {cities.map((city) => (
-              <option key={city} value={city}>{city}</option>
+              <option key={city.id} value={city.id}>{city.name}</option>
             ))}
           </select>
           {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}

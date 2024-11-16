@@ -28,6 +28,8 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [selectedCity , setSelectedCity] = useState('') ;
   const [stdDropdown , setStdDropdown] = useState(false) ;
   const [selectedStds , setSelectedStds] = useState([]) ;
+  const [countryId , setCountryId] = useState(null) ;
+  const [stateId , setStateId] = useState(null) ;
   const [stds , setStds] = useState([]) ;
 
   useEffect(() => {
@@ -45,9 +47,17 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           ...userData,
           dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : ''
         };
-        setSelectedCountry(userData.country || '');
-        setSelectedState(userData.state || '');
-        setSelectedCity(userData.city || '') ;
+        setSelectedCountry(countries.find((country) => country.name === userData.country)?.id);
+        console.log("country" , selectedCountry);
+        
+        if(selectedCountry){
+          setSelectedState(states.find((state) => state.name === userData.state)?.id );
+          console.log("state" , selectedState);
+        }
+        if(selectedState){
+          setSelectedCity(cities.find((city) => city.name === userData.city)?.id) ;
+          console.log("city" , selectedCity);
+        }
         setSelectedStds(userData.isParent)
       
         // Reset the form with the prefilled data
@@ -76,9 +86,8 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
     // Fetch countries
     useEffect(() => {
-      axios.get('https://countriesnow.space/api/v0.1/countries/positions')
+      axios.get(`${BASE_URL}/area/getCountryList`)
         .then((response) => {
-          console.log(response.data.data);
           setCountries(response.data.data)
         })
         .catch((error) => console.error("Error fetching countries:", error));
@@ -86,27 +95,24 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
     // Fetch states when country changes
     useEffect(() => {
-      if (selectedCountry) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/states', { country: selectedCountry })
+      if (!selectedCountry) return; 
+        axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
           .then((response) => {
-            console.log(response.data.data);
-            setStates(response.data.data.states)
+            setStates(response.data.data)  
           })
           .catch((error) => console.error("Error fetching states:", error));
-      }
     }, [selectedCountry]);
   
     // Fetch cities when state changes
     useEffect(() => {
-      if (selectedState) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/state/cities', { country: selectedCountry, state: selectedState })
+      if (!selectedState) return; 
+        axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
           .then((response) => {
-            console.log(response.data.data);
-            setCities(response.data.data)
+            setCities(response.data.data) 
           })
           .catch((error) => console.error("Error fetching cities:", error));
-      }
-    }, [selectedCountry, selectedState]);
+      
+    }, [selectedState]);
 
   const onSubmit = (data) => {
     axios({
@@ -119,6 +125,9 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         ...data,
         role :  selectedRole,
         isParent : selectedRole === 5 ? selectedStds : null ,
+        country: countries.find((country) => country.id === selectedCountry)?.name  ,
+        state: states.find((state) => state.id === selectedState)?.name  ,
+        city: cities.find((city) => city.id === selectedCity)?.name  ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
       }
     })
@@ -309,11 +318,11 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('country', { required: 'Country is required' })}
             value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
+            onChange={(e) => setSelectedCountry(e.target.value)}          
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
-              <option key={country.iso2} value={country.name}>{country.name}</option>
+              <option key={country.id} value={country.id}>{country.name}</option>
             ))}
           </select>
           {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
@@ -331,7 +340,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           >
             <option value="">Select State</option>
             {states.map((option) => (
-              <option key={option.name} value={option.name}>{option.name}</option>
+              <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
           {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
@@ -349,7 +358,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           >
             <option value="">Select City</option>
             {cities.map((city) => (
-              <option key={city} value={city}>{city}</option>
+              <option key={city.id} value={city.id}>{city.name}</option>
             ))}
           </select>
           {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
