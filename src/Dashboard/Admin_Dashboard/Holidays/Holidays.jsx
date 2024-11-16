@@ -141,13 +141,13 @@ const handleDelete = (id)=>{
       wrap: true,
     //   width: '280px', 
     },
-    {
-      name: 'Description',
-      selector: (row) => row.description,
-      sortable: true,
-      wrap: true,
-    //   width: '280px', 
-    },
+    // {
+    //   name: 'Description',
+    //   selector: (row) => row.description,
+    //   sortable: true,
+    //   wrap: true,
+    // //   width: '280px', 
+    // },
     {
         name: 'Status',
         selector: row => (

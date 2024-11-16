@@ -5,10 +5,15 @@ import Button from '../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../Reusable_components/CkEditor.css';
 
 function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
   const [holiday, setHoliday] = useState({ title: '',holidayDate: '', description: '' });
   const [value,setValue] =useState(true)
+  const [editorData, setEditorData] = useState('');
+
 
   const {
     register,
@@ -33,6 +38,8 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
           holidayDate: holidayData.holidayDate,
           description: holidayData.description,
         });
+        setEditorData(holidayData.description)
+
         setValue(holidayData.isActive); // Set active status based on API response
       })
       .catch((error) => {
@@ -148,7 +155,7 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
 
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-            <textarea
+            {/* <textarea
               name="description"
               value={holiday.description}
               onChange={handleChange}
@@ -156,6 +163,21 @@ function EditHolidays({ isOpen, onClose, holidayId, onSuccess }) {
               placeholder="Enter holiday description"
               rows="4"
               required
+            /> */}
+                                    <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
             />
           </div>
 
