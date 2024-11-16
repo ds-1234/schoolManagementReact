@@ -4,11 +4,16 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../../conf/conf';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
   const [income, setIncome] = useState({ Income: '', source: '', date: '', amount: '',invoice: '',payment: '', description: '' });
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [value, setValue] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
 
 
 
@@ -33,6 +38,8 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
             payment: response.data.data.paymentMode,
             description: response.data.data.description,
           });
+          setEditorData(response.data.data.description)
+
           // Update the toggle button value
         //   setValue(response.data.data.isActive === 'true');
         })
@@ -195,14 +202,29 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
           {/* Description Input */}
           <div className="mb-1">
             <label htmlFor="description" className="block text-gray-700 font-semibold mb-1">Description</label>
-            <textarea
+            {/* <textarea
             readOnly
               id="description"
               className={`w-full px-3 py-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               rows="2"
               {...register('description')}
               value={income.description}
-            ></textarea>
+            ></textarea> */}
+                        <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              config={{
+                toolbar: [
+                  'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                  'link', 'blockQuote', 'undo', 'redo'
+                  // Exclude 'imageUpload' to remove the icon
+                ],
+              }}
+            />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 

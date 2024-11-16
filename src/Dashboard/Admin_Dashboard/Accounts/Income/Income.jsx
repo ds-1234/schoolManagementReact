@@ -51,15 +51,15 @@ function Income() {
             wrap: true, 
     },
 
-    {
-      name: 'Description',
-      selector: row => row.description,
-      sortable: true,
-      width: '150px',
-            wrap: true, 
+    // {
+    //   name: 'Description',
+    //   selector: row => row.description,
+    //   sortable: true,
+    //   width: '150px',
+    //         wrap: true, 
  
 
-    },
+    // },
     {
       name: 'Source',
       selector: row => row.incomeSource,
