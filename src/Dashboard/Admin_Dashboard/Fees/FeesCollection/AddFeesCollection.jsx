@@ -6,6 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import  '../../../../Reusable_components/CkEditor.css';
 
 function AddFeesCollection({ isOpen, onClose }) {
   const [value, setValue] = useState(true); // Toggle button state
@@ -27,6 +30,8 @@ function AddFeesCollection({ isOpen, onClose }) {
   const studentDropdownRef = useRef(null); // Ref for the student dropdown
   const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
   const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
+  const [editorData, setEditorData] = useState('');
+
 
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -36,6 +41,8 @@ function AddFeesCollection({ isOpen, onClose }) {
   useEffect(() => {
     // Disable scrolling on background when the popup is open
     if (isOpen) {
+      setEditorData('')
+
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -154,7 +161,7 @@ function AddFeesCollection({ isOpen, onClose }) {
       feesGroupNameId: selectedFeesGrp.id,
       feeAmount: data.amount,
       paymentType: selectedPaymentMethod,
-      description: data.description,
+      description: editorData,
       isActive: paymentStatus
     })
       .then(() => {
@@ -340,12 +347,31 @@ function AddFeesCollection({ isOpen, onClose }) {
           {/* Description */}
           <div className="mb-2">
             <label className="block text-sm font-medium mb-2 text-black" htmlFor="description">Description</label>
-            <textarea
+            {/* <textarea
               id="description"
               {...register("description")}
               rows="3"
               className="w-full px-3 py-2 border ${errors.feesGroupName ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            /> */}
+                                                                                          <CKEditor
+  editor={ClassicEditor}
+  data={editorData}
+  onChange={(event, editor) => {
+    const data = editor.getData();
+    setEditorData(data);
+  }}
+  onReady={(editor) => {
+    editor.ui.view.editable.element.style.minHeight = "100px";
+ }}
+ config={{
+  toolbar: [
+    'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+    'link', 'blockQuote', 'undo', 'redo'
+    // Exclude 'imageUpload' to remove the icon
+  ],
+}}
+
+/>
           </div>
           {/* Payment Status (Radio Buttons) */}
           <div className="mb-2">
