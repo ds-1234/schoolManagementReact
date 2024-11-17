@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import classImg from '../../../assets/class.png'
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 const ClassSelect = () => {
   const user = JSON.parse(sessionStorage.getItem('user'))
@@ -16,7 +17,7 @@ const ClassSelect = () => {
     const fetchCls = () => {
       axios({
         method: 'GET',
-        url: 'http://localhost:8080/class/getClassList',
+        url: `${BASE_URL}/class/getClassList`,
         headers: {
           'Content-Type': 'application/json',
         },

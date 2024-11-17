@@ -66,7 +66,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       if (!file) return;
       const formData = new FormData();
 
-      documents[0] ? formData.append('id' , documents.find(doc => doc.documentName === documentName).id) : formData.append('id' , null) ;
+      documents[0] ? formData.append('id' , documents.find(doc => doc.documentName === documentName)?.id) : formData.append('id' , null) ;
       formData.append('file', file);
       formData.append('filesName', documentName);
       try {

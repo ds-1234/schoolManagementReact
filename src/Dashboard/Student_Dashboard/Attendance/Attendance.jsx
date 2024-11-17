@@ -3,6 +3,7 @@ import Calendar from '../../../Reusable_components/Calendar';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import Labels from '../../../Reusable_components/Labels';
+import BASE_URL from '../../../conf/conf';
 
 function Attendance() {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -12,7 +13,7 @@ function Attendance() {
     try {
       const response = await axios({
         method: 'GET',
-        url: 'http://localhost:8080/attendance/getAttendanceList',
+        url: `${BASE_URL}/attendance/getAttendanceList`,
         headers: {
           "Content-Type": "application/json"
         }
