@@ -7,6 +7,7 @@ import Layout from './Reusable_components/Layout.jsx';
 import Button from './Reusable_components/Button.jsx';
 import DatePicker from './Reusable_components/DatePicker.jsx';
 import axios from 'axios';
+import BASE_URL from './conf/conf.js';
 
 
 function Registration() {
@@ -51,12 +52,15 @@ function Registration() {
             })
             .catch((error) => console.error("Error fetching cities:", error));
         }
-      }, [selectedCountry, selectedState]);
+      }, [selectedState]);
 
   const onSubmit = async (data) => {
     const result =  registerUser({
-      ...data , 
-      role: 1 ,
+      ...data ,
+      country: countries.find((country) => country.id === parseInt(data.country))?.name ,
+      state: states.find((state) => state.id === parseInt(data.state))?.name ,
+      city: cities.find((city) => city.id === parseInt(data.city))?.name ,
+       role: 1 ,
       isActive: "false" 
     });
   };

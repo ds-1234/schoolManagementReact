@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 import BASE_URL from '../../../../conf/conf';
 import axios from 'axios';
 import { useUserContext } from '../../../../hooks/UserContext';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -136,7 +136,7 @@ function DocsDets() {
           label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

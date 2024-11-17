@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import Button from '../../../Reusable_components/Button';
 import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 const Attendance = () => {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -17,7 +18,7 @@ const Attendance = () => {
   // Fetch students based on classItem
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/user/getUserList', {
+      const response = await axios.get(`${BASE_URL}/user/getUserList`, {
         headers: { 'Content-Type': 'application/json' },
       });
       const filteredStds = response.data.data.filter(user => user.role === 3);
@@ -73,7 +74,7 @@ const Attendance = () => {
         };
 
         try {
-          await axios.post('http://localhost:8080/attendance/saveAttendance', payload, {
+          await axios.post(`${BASE_URL}/attendance/saveAttendance`, payload, {
             headers: { 'Content-Type': 'application/json' },
           });
           Swal.fire('Success!', 'Attendance submitted successfully!', 'success');

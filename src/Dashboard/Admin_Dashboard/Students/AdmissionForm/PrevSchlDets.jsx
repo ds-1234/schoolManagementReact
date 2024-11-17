@@ -6,7 +6,7 @@ import { useUserContext } from '../../../../hooks/UserContext';
 import axios from 'axios';
 import ProgressIndicator from './ProgressIndicator';
 import { NavLink } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useStepContext } from '../../../../hooks/StepContext';
@@ -128,7 +128,7 @@ function PrevSchlDets() {
         </div>
     </div>
     </div>
-    <ToastContainer/>
+    {/* <ToastContainer/> */}
     </div>
   )
 }

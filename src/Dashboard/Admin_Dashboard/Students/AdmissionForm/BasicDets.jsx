@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 
 function BasicDets() {
 
-const { userId ,  setUserId } = useUserContext()
+const { userId ,  setUserId , setId } = useUserContext()
 const { currentStep, handleNextStep } = useStepContext();
 const [countries, setCountries] = useState([]);
 const [states, setStates] = useState([]);
@@ -21,6 +21,8 @@ const [cities, setCities] = useState([]);
 const [selectedCountry, setSelectedCountry] = useState('');
 const [selectedState, setSelectedState] = useState('');
 const [selectedCity , setSelectedCity] = useState('') ;
+const [userData , setUserData] = useState(null) ;
+
 const {
     register,
     handleSubmit,
@@ -45,6 +47,7 @@ const {
               axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
                 .then((response) => {
                   setStates(response.data.data)
+                  setSelectedState(states.find((state) => state.name === userData.state)?.id)
                 })
                 .catch((error) => console.error("Error fetching states:", error));
             }
@@ -56,6 +59,7 @@ const {
               axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
                 .then((response) => {
                   setCities(response.data.data)
+                  setSelectedCity(cities.find((city) => city.name === userData.city)?.id)
                 })
                 .catch((error) => console.error("Error fetching cities:", error));
             }
@@ -76,9 +80,8 @@ const {
                       };
                     
                       // Reset the form with the prefilled data
-                      setSelectedCountry(formattedData.country || '');
-                      setSelectedState(formattedData.state || '');
-                      setSelectedCity(formattedData.city || '') ;
+                      setUserData(formattedData);
+                      setSelectedCountry(countries.find((country) => country.name === formattedData.country)?.id);
 
                       reset(formattedData);
                 }
@@ -95,15 +98,15 @@ const {
     const onSubmit = async (data) => {
         console.log(data);
         
-        const userData = {
-            ...data , 
-            role: 3,
-          }
           await axios({
               method:"Post",
               url : `${BASE_URL}/user/addStudentBasicDetails`,
               data: {
-                ...userData ,
+                ...data , 
+                role : 3 ,
+                country: countries.find((country) => country.id === parseInt(data.country))?.name ,
+                state: states.find((state) => state.id === parseInt(data.state))?.name ,
+                city: cities.find((city) => city.id === parseInt(data.city))?.name ,
                 dateOfBirth : new Date(data.dateOfBirth).toISOString()
               } ,
               headers: {
@@ -114,6 +117,7 @@ const {
             .then((response)=>{
               console.log('response' , response.data.data)
               setUserId(response.data.data.userId)
+              setId(response.data.data.id)
               toast.success("Successfully Add Student!");
               handleNextStep()
               reset()

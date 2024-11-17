@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
@@ -146,7 +146,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
           />
         </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

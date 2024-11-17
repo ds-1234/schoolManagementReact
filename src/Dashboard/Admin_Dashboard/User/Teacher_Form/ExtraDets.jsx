@@ -180,7 +180,7 @@ const fetchBasicDets = async() => {
             options={languageOptions} 
             isMulti={true}         
             placeholder="Select languages..."
-            defaultValue={teacherData.languages?.split(",")}
+            defaultValue={teacherData?.languages?.split(",").join(',')}
             {...register('languages' , {required : "Languages are required" })}
           />
           {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
@@ -198,13 +198,13 @@ const fetchBasicDets = async() => {
             >
             <option value="" hidden>Select designation </option>
             {designations.map(option => (
-            <option key={option.id} value={option.id}>{option.name}</option>
+            <option key={option.id} value={option.id}>{option.designationName}</option>
             ))}
             </select>
         </div>
 
         <div className="flex flex-col px-2 w-1/2 mb-4">
-            <label htmlFor="designation" className='text-gray-900 font-medium'>Department</label>
+            <label htmlFor="department" className='text-gray-900 font-medium'>Department</label>
             <select
             id="department"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
@@ -214,8 +214,8 @@ const fetchBasicDets = async() => {
             placeholder = "Select Department "
             >
             <option value="" hidden>Select department</option>
-            {designations.map(option => (
-            <option key={option.id} value={option.id}>{option.name}</option>
+            {departments.map(option => (
+            <option key={option.id} value={option.id}>{option.departmentName}</option>
             ))}
             </select>
         </div>

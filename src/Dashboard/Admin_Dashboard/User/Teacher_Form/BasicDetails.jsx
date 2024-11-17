@@ -43,21 +43,15 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
     })
       .then((response) => {
         const userData = response.data.data;
+
         const formattedData = {
           ...userData,
+          country: countries.find((country) => country.name === userData.country)?.id ,
           dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : ''
         };
-        setSelectedCountry(countries.find((country) => country.name === userData.country)?.id);
-        console.log("country" , selectedCountry);
-        
-        if(selectedCountry){
-          setSelectedState(states.find((state) => state.name === userData.state)?.id );
-          console.log("state" , selectedState);
-        }
-        if(selectedState){
-          setSelectedCity(cities.find((city) => city.name === userData.city)?.id) ;
-          console.log("city" , selectedCity);
-        }
+        console.log(formattedData);
+        setSelectedCountry(formattedData.country) ;
+  
         setSelectedStds(userData.isParent)
       
         // Reset the form with the prefilled data
@@ -86,33 +80,39 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
     // Fetch countries
     useEffect(() => {
-      axios.get(`${BASE_URL}/area/getCountryList`)
+      const fetchCountries = async () => {
+        await axios.get(`${BASE_URL}/area/getCountryList`)
         .then((response) => {
           setCountries(response.data.data)
         })
         .catch((error) => console.error("Error fetching countries:", error));
-    }, []);
+      }
 
-    // Fetch states when country changes
-    useEffect(() => {
-      if (!selectedCountry) return; 
-        axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
-          .then((response) => {
-            setStates(response.data.data)  
-          })
-          .catch((error) => console.error("Error fetching states:", error));
-    }, [selectedCountry]);
-  
-    // Fetch cities when state changes
-    useEffect(() => {
-      if (!selectedState) return; 
-        axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
-          .then((response) => {
-            setCities(response.data.data) 
-          })
-          .catch((error) => console.error("Error fetching cities:", error));
-      
-    }, [selectedState]);
+      const fetchStates = async() => {
+        await axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
+        .then((response) => {
+          setStates(response.data.data)  
+        })
+        .catch((error) => console.error("Error fetching states:", error));
+      }
+
+      const fetchCities = async() => {
+        await  axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
+        .then((response) => {
+          setCities(response.data.data) 
+        })
+        .catch((error) => console.error("Error fetching cities:", error));
+      }
+
+      fetchCountries() ;
+      if(selectedCountry){
+        fetchStates() ;
+      }
+      if(selectedState){
+        fetchCities() ;
+      }
+    }, [selectedCountry , selectedState]);
+
 
   const onSubmit = (data) => {
     axios({
@@ -125,9 +125,9 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         ...data,
         role :  selectedRole,
         isParent : selectedRole === 5 ? selectedStds : null ,
-        country: countries.find((country) => country.id === selectedCountry)?.name  ,
-        state: states.find((state) => state.id === selectedState)?.name  ,
-        city: cities.find((city) => city.id === selectedCity)?.name  ,
+        country: countries.find((country) => country.id === parseInt(data.country))?.name ,
+        state: states.find((state) => state.id === parseInt(data.state))?.name ,
+        city: cities.find((city) => city.id === parseInt(data.city))?.name ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
       }
     })
