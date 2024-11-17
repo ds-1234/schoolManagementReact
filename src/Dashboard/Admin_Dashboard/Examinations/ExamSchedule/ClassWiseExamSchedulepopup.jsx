@@ -48,6 +48,34 @@ const [subject, setSubject] = useState([]);  // State for exam types
 //     setEditBookId(null); // Reset the selected ID after closing the popup
 //   };
   // Fetch exam type data from the API
+
+
+  const onDelete = (id) => {
+    axios({
+      method: "POST",
+      url:`${BASE_URL}/exam/deleteSubjectFromExamList/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        fetchSubject() ;
+        onClose();
+
+  
+  
+      })
+      .catch((error) => {
+        console.error("Error Deleting data:", error);
+        fetchSubject() ;
+  
+      });
+  }
+
+
+
   const fetchSubject = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
@@ -120,8 +148,10 @@ const [subject, setSubject] = useState([]);  // State for exam types
             <img src={edit} alt="Edit" className="h-8" />
           </button>
 
-          <button>
-            <img src={deleteIcon} alt="Delete" className="h-8" />
+          <button
+            onClick={() => onDelete(row.id)}
+
+          >            <img src={deleteIcon} alt="Delete" className="h-8" />
           </button>
         </div>
       ),

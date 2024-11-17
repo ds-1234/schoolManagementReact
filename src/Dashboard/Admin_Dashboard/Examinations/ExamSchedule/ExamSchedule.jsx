@@ -36,6 +36,28 @@ const ExamSchedule = () => {
     setSelectedExam(null);
   };
 
+  const onDelete = (id) => {
+    axios({
+      method: "POST",
+      url:`${BASE_URL}/exam/deleteExam/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // withCredentials: true,
+    })
+      .then((response) => {
+        console.log("Data from API:", response.data);
+        fetchExamSchedule() ;
+  
+  
+      })
+      .catch((error) => {
+        console.error("Error Deleting data:", error);
+        fetchExamSchedule() ;
+  
+      });
+  }
+
   // Fetch exam schedule data from the API
   const fetchExamSchedule = async () => {
     try {
@@ -118,7 +140,10 @@ const ExamSchedule = () => {
           <button onClick={() => openEditPopup(row , getClassNameById(row.className))}>
             <img src={edit} alt="Edit" className='h-8' />
           </button>
-          <button>
+          <button
+            onClick={() => onDelete(row.id)}
+
+          >
             <img src={deleteIcon} alt="Delete" className='h-8' />
           </button>
         </div>
