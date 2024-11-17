@@ -5,10 +5,15 @@ import LibraryStatusButton from '../../../../Reusable_components/LibraryStatusBu
 import edit from '../../../../assets/edit.png';
 import deleteIcon from '../../../../assets/delete.png'
 import { useEffect } from 'react';
+import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
+
 
 function ClassWiseExamSchedulepopup({ subjectWiseExamList, onClose, isOpen,className }) {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 //   const [editBookId, setEditBookId] = useState(null);
+const [subject, setSubject] = useState([]);  // State for exam types
+
 
   useEffect(() => {
     if (isOpen) {
@@ -42,6 +47,29 @@ function ClassWiseExamSchedulepopup({ subjectWiseExamList, onClose, isOpen,class
 //     setIsEditPopupOpen(false);
 //     setEditBookId(null); // Reset the selected ID after closing the popup
 //   };
+  // Fetch exam type data from the API
+  const fetchSubject = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
+      if (response.data && response.data.success) {
+        setSubject(response.data.data);  // Store exam type data
+        console.log(response.data.data,'res')
+      }
+    } catch (error) {
+      console.error('Error fetching exam types:', error);
+    }
+  };
+    // Fetch all data on component mount
+    useEffect(() => {
+        fetchSubject();
+      }, []);
+        // Map class ID to class name
+  const getSubjectNameById = (subjectId) => {
+    console.log(subjectId,'subid')
+    console.log(subject,'subject')
+    const subjectObj = subject.find((sub) => sub.id === subjectId);
+    return subjectObj ? `${subjectObj.subject} ` : 'Unknown Subject';
+  };
 
   const columns = [
     {
@@ -51,7 +79,7 @@ function ClassWiseExamSchedulepopup({ subjectWiseExamList, onClose, isOpen,class
     },
     {
       name: 'Subject',
-      selector: row => row.subject,
+      selector: row => getSubjectNameById(row.subject),
       sortable: true,
     },
     {
