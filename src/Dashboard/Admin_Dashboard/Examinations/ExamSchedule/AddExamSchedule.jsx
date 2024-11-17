@@ -31,6 +31,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
             // Reset the form when the modal is closed
     reset();
     setFilteredSubjects([])
+    setClassList([])
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -41,6 +42,8 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
             // Reset the form when the modal is closed
     reset();
     setFilteredSubjects([])
+    setClassList([])
+
     // Close the modal
     onClose();
         onClose();
@@ -110,7 +113,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const handleTimeChange = (index) => {
     const startTime = getValues(`days.Monday.${index}.timeFrom`);
     const endTime = getValues(`days.Monday.${index}.timeTo`);
-
+console.log(startTime,endTime,'startendtime')
     if (startTime && endTime) {
       const duration = calculateDuration(startTime, endTime);
       setValue(`days.Monday.${index}.duration`, duration);
@@ -144,21 +147,22 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         minMarks: item.minMarks,
       })),
     };
+    console.log(payload,'payload')
 
     // Submit to API
-    axios
-      .post(`${BASE_URL}/exam/saveExam`, payload)
-      .then((response) => {
-        toast.success('Exam schedule saved successfully!');
-    // Reset the form after submission
-    reset();
-    setFilteredSubjects([])
-    // Close the modal after submission
-    onClose();      })
-      .catch((error) => {
-        console.error('Error saving exam schedule:', error);
-        toast.error('Failed to save exam schedule');
-      });
+    // axios
+    //   .post(`${BASE_URL}/exam/saveExam`, payload)
+    //   .then((response) => {
+    //     toast.success('Exam schedule saved successfully!');
+    // // Reset the form after submission
+    // reset();
+    // setFilteredSubjects([])
+    // // Close the modal after submission
+    // onClose();      })
+    //   .catch((error) => {
+    //     console.error('Error saving exam schedule:', error);
+    //     toast.error('Failed to save exam schedule');
+    //   });
   };
 
   if (!isOpen) return null;
