@@ -30,8 +30,8 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
     if (isOpen) {
             // Reset the form when the modal is closed
     reset();
-    setFilteredSubjects([])
-    setClassList([])
+    // setFilteredSubjects([])
+    // setClassList([])
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';

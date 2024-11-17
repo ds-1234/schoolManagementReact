@@ -21,19 +21,26 @@ const ExamSchedule = () => {
 
   // Open/Close popup for adding a new exam schedule
   const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => setIsAddPopupOpen(false);
+  const closeAddPopup = () => {
+    setIsAddPopupOpen(false)
+    fetchExamSchedule() ;
+  };
 
   // Open/Close popup for editing an exam schedule
   const openEditPopup = (exam,className) => {
     setClassName(className)
     setSelectedExam(exam);
     setIsEditPopupOpen(true);
+    fetchExamSchedule() ;
+
   };
 
   const closeEditPopup = () => {
     setClassName(null)
     setIsEditPopupOpen(false);
     setSelectedExam(null);
+    fetchExamSchedule() ;
+
   };
 
   const onDelete = (id) => {
