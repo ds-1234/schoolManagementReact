@@ -106,6 +106,7 @@ const AddUser = () => {
         reset()
         toast.success("Successfully Add User");
         setValue(true)
+        setSelectedStds([])
     })
     .catch(err=>{
         console.log(err,'error:')
