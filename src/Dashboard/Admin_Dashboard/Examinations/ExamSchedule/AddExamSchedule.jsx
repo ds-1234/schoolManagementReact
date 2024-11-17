@@ -150,19 +150,19 @@ console.log(startTime,endTime,'startendtime')
     console.log(payload,'payload')
 
     // Submit to API
-    // axios
-    //   .post(`${BASE_URL}/exam/saveExam`, payload)
-    //   .then((response) => {
-    //     toast.success('Exam schedule saved successfully!');
-    // // Reset the form after submission
-    // reset();
-    // setFilteredSubjects([])
-    // // Close the modal after submission
-    // onClose();      })
-    //   .catch((error) => {
-    //     console.error('Error saving exam schedule:', error);
-    //     toast.error('Failed to save exam schedule');
-    //   });
+    axios
+      .post(`${BASE_URL}/exam/saveExam`, payload)
+      .then((response) => {
+        toast.success('Exam schedule saved successfully!');
+    // Reset the form after submission
+    reset();
+    setFilteredSubjects([])
+    // Close the modal after submission
+    onClose();      })
+      .catch((error) => {
+        console.error('Error saving exam schedule:', error);
+        toast.error('Failed to save exam schedule');
+      });
   };
 
   if (!isOpen) return null;
