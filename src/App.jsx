@@ -109,6 +109,7 @@ import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
 import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceStatus/StaffAttendanceStatus';
 
 import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
+import TchExamResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/TchExamResult';
 
 
 
@@ -249,6 +250,7 @@ function App() {
             <Route path='profile' element={<TchProfile/>} />
             <Route path='TeaEvent' element={<TeaEvent/>} />
             <Route path='tchBookIssue' element={<TchBookIssue/>} />
+            <Route path='tchExamResult' element={<TchExamResult/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}
