@@ -242,6 +242,7 @@ console.log(startTime,endTime,'startendtime')
                     <input
                       type="date"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                      max={new Date().toISOString().split("T")[0]} // Set max to today's date
                       {...register(`days.Monday.${index}.examDate`)}
                     />
                   </div>
