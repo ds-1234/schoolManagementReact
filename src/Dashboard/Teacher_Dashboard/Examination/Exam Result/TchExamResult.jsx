@@ -6,6 +6,7 @@ import edit from '../../../../assets/edit.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../../conf/conf';
+import AddExamResult from './AddExamResult';
 
 
 function TchExamResult() {
@@ -14,13 +15,13 @@ function TchExamResult() {
     const [student , setStudent] = useState([])
     const [classes , setClasses] = useState([])
     const [subject , setSubject] = useState([])
-    // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+    const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
     // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     // const [editGradeId , setEditGradeId] = useState(null)
   
     
-    // const openAddPopup = () => setIsAddPopupOpen(true);
-    // const closeAddPopup = () => setIsAddPopupOpen(false);
+    const openAddPopup = () => setIsAddPopupOpen(true);
+    const closeAddPopup = () => setIsAddPopupOpen(false);
   
     // const openEditPopup = (id) => {
     //   setEditGradeId(id);
@@ -227,7 +228,7 @@ function TchExamResult() {
       <div className=' h-full mb-10'>
         <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Result</h1>
         <p className=' mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Result</span> </p>
-        {/* <AddBtn onAddClick={openAddPopup}/> */}
+        <AddBtn onAddClick={openAddPopup}/>
         <Table 
         columns={column}
         data={data}
@@ -243,6 +244,14 @@ function TchExamResult() {
             fetchData(); // Refresh data when add popup closes
           }} 
           /> */}
+          <AddExamResult
+                    isOpen={isAddPopupOpen} 
+                    onClose={() => {
+                      closeAddPopup();
+                      fetchData(); // Refresh data when add popup closes
+                    }} 
+
+                      />
   
         {/* <EditClass
           isOpen={isEditPopupOpen}
