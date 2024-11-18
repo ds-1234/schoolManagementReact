@@ -75,10 +75,19 @@ const AddExamResult = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (selectedClassId && selectedSubjectId) {
-      const filtered = students
-        .filter(student => student.role === 3) // Filter by students
-        .filter(student => student.className && student.className.id === selectedClassId) // Filter by selected class
-        .filter(student => student.subjects && student.subjects.some(subject => subject.id === selectedSubjectId));
+console.log(students,'students')
+    //   const filtered = students
+    //     .filter(student => student.role === 3) // Filter by students
+    //     // .filter(student => student.className && student.className.id === selectedClassId) // Filter by selected class
+    //     .filter(student => student.className && student.className.some(classItem => classItem.id === selectedClassId)) // Filter by selected class
+    //     // .filter(student => student.subjects && student.subjects.some(subject => subject.id === selectedSubjectId));
+        console.log(selectedClassId,'stdselectedClassId')
+        console.log(selectedSubjectId,'stdselectedSubjectId')
+        
+        const filtered = students.filter(student => {
+            return student.role === 3 && Array.isArray(student.className) && student.className.includes(selectedClassId);
+        });
+        console.log(filtered,'stdfiltered')
 
       setFilteredStudents(filtered);
     } else {
