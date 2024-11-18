@@ -9,6 +9,7 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from "../../../../conf/conf";
 
 const AddExamResult = ({ isOpen, onClose }) => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [students, setStudents] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -16,10 +17,12 @@ const AddExamResult = ({ isOpen, onClose }) => {
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [selectedSubjectId, setSelectedSubjectId] = useState(null);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [classDropdownOpen, setClassDropdownOpen] = useState(false);
   const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
+  const [studentDropdownOpen, setStudentDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -31,6 +34,13 @@ const AddExamResult = ({ isOpen, onClose }) => {
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
+        reset();
+        setClasses([]);
+        setFilteredStudents([]);
+        setFilteredSubjects([])
+        setSelectedClassId(null)
+        setSelectedSubjectId(null)
+        setSelectedStudentId(null)
         onClose();
       }
     };
@@ -104,6 +114,12 @@ console.log(students,'students')
     setSelectedSubjectId(subjectId);
     setSubjectDropdownOpen(false); // Close subject dropdown after selection
   };
+  const handleStudentChange = (studentId) => {
+    setSelectedStudentId(studentId);
+    setStudentDropdownOpen(false); // Close subject dropdown after selection
+  };
+
+  
 
   const handleStudentSelect = (studentId) => {
     setSelectedStudents((prevSelected) => {
@@ -116,22 +132,25 @@ console.log(students,'students')
   };
 
   const handleSubmitExamResults = async (data) => {
+    console.log(selectedClassId,selectedSubjectId,selectedStudentId,'class,sub,std')
     try {
       const payload = {
-        selectedClassId,
-        selectedSubjectId,
-        studentResults: selectedStudents.map((studentId) => ({
-          studentId,
-          marks: data.marks[studentId],
-          review: data.review[studentId],
-        })),
+        teacherid:user.id,
+        className: selectedClassId,
+        subject: selectedSubjectId,
+        studentId: selectedStudentId,
+        subjectMarks: data.marks,
+        remarks: data.review,
+        isActive:true
       };
+      console.log(payload,'payload')
 
-      await axios.post(`${BASE_URL}/exam/addExamResults`, payload);
+      await axios.post(`${BASE_URL}/exam/saveExamResult`, payload);
       toast.success("Exam results submitted successfully");
       reset();
-      setSelectedStudents([]);
+      setClasses([]);
       setFilteredStudents([]);
+      setFilteredSubjects([])
       onClose();
     } catch (error) {
       toast.error("Error submitting exam results");
@@ -155,6 +174,7 @@ console.log(students,'students')
               onClick={() => {
                 setClassDropdownOpen((prev) => !prev);
                 setSubjectDropdownOpen(false); // Close subject dropdown if class is opened
+                setStudentDropdownOpen(false); // Close subject dropdown if class is opened
               }}
             >
               <p>{selectedClassId ? classes.find(c => c.id === selectedClassId)?.name : "Select Class"}</p>
@@ -183,6 +203,7 @@ console.log(students,'students')
               onClick={() => {
                 setSubjectDropdownOpen((prev) => !prev);
                 setClassDropdownOpen(false); // Close class dropdown if subject is opened
+                setStudentDropdownOpen(false); // Close class dropdown if subject is opened
               }}
             >
               <p>{selectedSubjectId ? filteredSubjects.find(s => s.id === selectedSubjectId)?.subject : "Select Subject"}</p>
@@ -204,12 +225,12 @@ console.log(students,'students')
           </div>
 
           {/* Display Filtered Students */}
-          {filteredStudents.length > 0 ? (
+          {/* {filteredStudents.length > 0 ? (
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-gray-700 mb-2">Select Students</h3>
               {filteredStudents.map((student) => (
                 <div key={student.id} className="mb-2 p-2 border rounded-lg flex justify-between items-center">
-                  <div>{student.name}</div>
+                  <div>{student.firstName}</div>
                   <div className="flex gap-2">
                     <Input
                       type="number"
@@ -234,7 +255,62 @@ console.log(students,'students')
             </div>
           ) : (
             <p>No students found for the selected class and subject.</p>
-          )}
+          )} */}
+
+                    {/* Student Dropdown */}
+                    <div className="mb-4 relative">
+            <label htmlFor="subjectDropdown" className="block text-gray-700 font-semibold mb-2">Select Student</label>
+            <div 
+              className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
+              onClick={() => {
+                setStudentDropdownOpen((prev) => !prev);
+                setClassDropdownOpen(false); // Close class dropdown if subject is opened
+                setSubjectDropdownOpen(false); // Close class dropdown if subject is opened
+              }}
+            >
+              <p>{selectedStudentId ? filteredStudents.find(s => s.id === selectedStudentId)?.firstName : "Select Student"}</p>
+              <FontAwesomeIcon icon={faAngleDown} />
+            </div>
+            {studentDropdownOpen && (
+              <div className="absolute bg-white border rounded-lg mt-1 w-full flex flex-col z-50">
+                {filteredStudents.map(student => (
+                  <div 
+                    key={student.id} 
+                    onClick={() => handleStudentChange(student.id)} 
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {student.firstName}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+                    {/* Exam Marks */}
+                    <div className="mb-4">
+            <label htmlFor="marks" className="block text-gray-700 font-semibold mb-2">Exam Marks</label>
+            <input
+              id="marks"
+              type="number"
+              {...register("marks", { required: "Marks are required" })}
+              className="border rounded-lg p-2 w-full"
+              min="0"
+            />
+            {errors.marks && <span className="text-red-500 text-sm">{errors.marks.message}</span>}
+          </div>
+
+          {/* Remarks */}
+          <div className="mb-4">
+            <label htmlFor="review" className="block text-gray-700 font-semibold mb-2">Remarks</label>
+            <textarea
+              id="review"
+              {...register("review", { required: "Review is required" })}
+              className="border rounded-lg p-2 w-full"
+              rows="4"
+            />
+            {errors.review && <span className="text-red-500 text-sm">{errors.review.message}</span>}
+          </div>
+
 
           <Button type="submit" className="w-full text-center" label="Submit Results" />
         </form>
@@ -245,3 +321,6 @@ console.log(students,'students')
 };
 
 export default AddExamResult;
+
+
+
