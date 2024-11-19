@@ -124,7 +124,7 @@ function TchSidebar() {
             </NavLink>
           </li>
                              {/* Events Section */}
-                             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+                             {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/teacherdashboard/TeaEvent"
               className={({ isActive }) =>
@@ -135,7 +135,7 @@ function TchSidebar() {
                 Event
               
             </NavLink>
-          </li>
+          </li> */}
                              {/* tchBookIssue Section */}
                              <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink

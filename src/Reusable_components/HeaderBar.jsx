@@ -8,7 +8,7 @@ const HeaderBar = () => {
     const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
     useEffect(() => {
-        if (user.role != 3|| user.role!=5) {
+        if (user.role != 3|| user.role!=5 || user.reole!=5) {
             setAtt(true);
         }
     }, [user.role]);

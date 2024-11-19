@@ -5,6 +5,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import { useState } from 'react';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
+import BASE_URL from '../../../../conf/conf';
+
 
 const AddEventCategory = ({ isOpen, onClose }) => {
 
