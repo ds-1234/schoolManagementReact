@@ -151,6 +151,9 @@ console.log(students,'students')
       setClasses([]);
       setFilteredStudents([]);
       setFilteredSubjects([])
+      setSelectedClassId(null)
+      setSelectedSubjectId(null)
+      setSelectedStudentId(null)
       onClose();
     } catch (error) {
       toast.error("Error submitting exam results");
