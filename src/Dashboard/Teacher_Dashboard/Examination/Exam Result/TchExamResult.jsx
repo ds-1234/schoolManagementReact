@@ -10,6 +10,7 @@ import AddExamResult from './AddExamResult';
 
 
 function TchExamResult() {
+  const user = JSON.parse(sessionStorage.getItem('user'));
     const [data, setData] = useState([]);
     const [filterData , setFilterData] = useState([])
     const [student , setStudent] = useState([])
@@ -115,7 +116,7 @@ function TchExamResult() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `${BASE_URL}/exam/getExamResult`,
+        url: `${BASE_URL}/exam/getExamListByTeacherId/${user.id}`,
         headers: {
           "Content-Type": "application/json",
         },
