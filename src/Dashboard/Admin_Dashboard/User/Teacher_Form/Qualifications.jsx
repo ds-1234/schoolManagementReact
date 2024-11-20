@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useForm , useFieldArray} from 'react-hook-form';
 import {differenceInMonths , differenceInYears} from 'date-fns'
+import { useNavigate } from 'react-router-dom';
 
 function Qualifications({handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -24,6 +25,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     },
   });
 
+  const navigate = useNavigate() ;
   const [documents , setDocuments] = useState([]) ;
 
   const {
@@ -66,7 +68,8 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       if (!file) return;
       const formData = new FormData();
 
-      documents[0] ? formData.append('id' , documents.find(doc => doc.documentName === documentName)?.id) : formData.append('id' , null) ;
+      const existingDocs = documents.find(doc => doc.documentName === documentName) ;
+      formData.append('id' , existingDocs? existingDocs.id : null);
       formData.append('file', file);
       formData.append('filesName', documentName);
       try {
@@ -93,7 +96,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     
     const isDuplicateExperience = (experience, existingExperiences) => {
       return existingExperiences.some((existing) =>
-        existing.institute === experience.institute &&
+        existing.insitutue === experience.institute &&
         existing.designation === experience.designation &&
         existing.fromYear === experience.joining &&
         existing.toYear === experience.relieving
@@ -203,18 +206,60 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           }
       };
 
+      // const getDocuments = async () => {
+      //   await axios({
+      //     method: "GET" ,
+      //     url: `${BASE_URL}/document/getDocument/${userId}` ,
+      //     headers:{ 'Content-Type': 'application/json' }
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data.data);
+      //     setDocuments(res.data.data);
+      //   })
+      //   .catch((err) => console.log("error in get Documents" , err));
+      // }
+
       const getDocuments = async () => {
-        await axios({
-          method: "GET" ,
-          url: `${BASE_URL}/document/getDocument/${userId}` ,
-          headers:{ 'Content-Type': 'application/json' }
-        })
-        .then((res) => {
-          console.log(res.data.data);
-          setDocuments(res.data.data);
-        })
-        .catch((err) => console.log("error in get Documents" , err));
-      }
+        try {
+          const response = await axios.get(`${BASE_URL}/document/getDocument/${userId}`);
+          const fetchedDocuments = response.data.data;
+          setDocuments(fetchedDocuments);
+    
+          // Map documents to corresponding fields
+          reset((prevValues) => {
+            const updatedQualifications = prevValues.qualifications.map((qualification) => {
+              const matchingDoc = fetchedDocuments.find(
+                (doc) => doc.documentName === qualification.degreeDoc
+              );
+              return {
+                ...qualification,
+                degreeDoc: matchingDoc?.documentName || qualification.degreeDoc,
+                degreeFile: matchingDoc ? [{ name: matchingDoc.attachmentName }] : null,
+              };
+            });
+    
+            const updatedWorkExperiences = prevValues.workExperiences.map((experience) => {
+              const matchingDoc = fetchedDocuments.find(
+                (doc) => doc.documentName === experience.documentName
+              );
+              return {
+                ...experience,
+                documentName: matchingDoc?.documentName || experience.documentName,
+                file: matchingDoc ? [{ name: matchingDoc.attachmentName }] : null,
+              };
+            });
+    
+            return {
+              ...prevValues,
+              qualifications: updatedQualifications,
+              workExperiences: updatedWorkExperiences,
+            };
+          });
+        } catch (error) {
+          console.error("Error fetching documents:", error);
+        }
+      };
+    
   
         fetchDetails();
         getDocuments() ;
@@ -276,6 +321,10 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           {...register(`qualifications[${index}].degreeFile` , { required: true })}
           className="border p-2 rounded-lg"
         />
+
+      {item.degreeFile && (
+          <p className="text-sm text-gray-500">Uploaded File: {item.degreeFile[0].attachmentName}</p>
+        )}
       </div>
       <div className='flex items-center justify-center mt-7'>
         <Button onClick={() => removeQualification(index)} 
@@ -343,15 +392,18 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         <label htmlFor="">Upload Experience Letter</label>
         <input
           type="text"
-          {...register(`qualifications[${index}].documentName`)}
+          {...register(`workExperiences[${index}].documentName`)}
           className="border p-2 rounded-lg"
           placeholder="Document Name"
         />
         <input
           type="file"
-          {...register(`qualifications[${index}].file`)}
+          {...register(`workExperiences[${index}].file`)}
           className="border p-2 rounded-lg"
         />
+        {item.file && item.file[0] && (
+        <p className="text-sm text-gray-500">Uploaded File: {item.file[0].attachmentName}</p>
+        )}
         </div>
 
           <div className='flex items-center justify-center mt-7'>
