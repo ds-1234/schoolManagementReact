@@ -19,7 +19,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   } = useForm();
 
   const [toggleValue, setToggleValue] = useState(true);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const [documents , setDocuments] = useState([]) ;
 

@@ -42,8 +42,9 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
     try {
       // Save the teacher info
       const response = await axios.post(`${BASE_URL}/teacherInfo/createTeacherInfo`, {
-        ...data,
         ...teacherData ,
+        aadhar : data.aadhar ,
+        pan: data.pan ,
         teacherId: userId,
       }, {
         headers: {

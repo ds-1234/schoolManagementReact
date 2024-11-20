@@ -27,8 +27,12 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
         "Content-Type": "application/json",
       },
       data: { 
-        ...data,
         ...teacherData ,
+        accountName : data.accountName ,
+        accountNumber : data.accountNumber ,
+        bankName : data.bankName ,
+        branchName : data.branchName ,
+        ifsc: data.ifsc ,
         teacherId : userId,
       }
     })

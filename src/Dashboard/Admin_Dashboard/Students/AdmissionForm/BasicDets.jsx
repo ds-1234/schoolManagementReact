@@ -32,101 +32,111 @@ const {
 
     const navigate = useNavigate()
 
-        // Fetch countries
-        useEffect(() => {
-            axios.get(`${BASE_URL}/area/getCountryList`)
-              .then((response) => {
-                setCountries(response.data.data)
-              })
-              .catch((error) => console.error("Error fetching countries:", error));
-          }, []);
-      
-          // Fetch states when country changes
-          useEffect(() => {
-            if (selectedCountry) {
-              axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
-                .then((response) => {
-                  setStates(response.data.data)
-                  setSelectedState(states.find((state) => state.name === userData.state)?.id)
-                })
-                .catch((error) => console.error("Error fetching states:", error));
-            }
-          }, [selectedCountry]);
-        
-          // Fetch cities when state changes
-          useEffect(() => {
-            if (selectedState) {
-              axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
-                .then((response) => {
-                  setCities(response.data.data)
-                  setSelectedCity(cities.find((city) => city.name === userData.city)?.id)
-                })
-                .catch((error) => console.error("Error fetching cities:", error));
-            }
-          }, [selectedCountry, selectedState]);
+    const fetchCountries = async () => {
+      await axios({
+        method: 'GET' ,
+        url: `${BASE_URL}/area/getCountryList`,
+        headers: {'Content-Type' : 'application/json'}
+      })
+      .then((res) => {
+        setCountries(res.data.data) ;
+      })
+      .catch((err) => {'error in country fetching' , err}) ;
+    }
 
     useEffect(() => {
-        // Fetch the existing student details if available
-        const fetchStudentDetails = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
-                const studentData = response.data.data;
+      fetchCountries()
+    } , [])
 
-                if (studentData) {
-                    // If data exists, populate the form
-                    const formattedData = {
-                        ...studentData,
-                        dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth).toLocaleString().split(',')[0] : ''
-                      };
-                    
-                      // Reset the form with the prefilled data
-                      setUserData(formattedData);
-                      setSelectedCountry(countries.find((country) => country.name === formattedData.country)?.id);
+    useEffect(() => {
+      const fetchStates = async () => {
+          if (!selectedCountry) return;
+          try {
+              const response = await axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
+              setStates(response.data.data);
+              // Reset selectedState and selectedCity when country changes
+              setSelectedState('');
+              setSelectedCity('');
+          } catch (error) {
+              toast.error("Error fetching states");
+          }
+      };
+      fetchStates();
+    } , [selectedCountry] ) ;
+  
+    useEffect(() => {
+      const fetchCities = async () => {
+          if (!selectedState) return;
+          try {
+              const response = await axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
+              setCities(response.data.data);
+              // Reset selectedCity when state changes
+              setSelectedCity('');
+          } catch (error) {
+              toast.error("Error fetching cities");
+          }
+      };
 
-                      reset(formattedData);
-                }
-            } catch (error) {
-                console.error('Error fetching student details:', error);
+      fetchCities();
+  }, [selectedState]);
+
+  useEffect(() => {
+    const fetchStudentDetails = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
+            const studentData = response.data.data;
+            if (studentData) {
+                const formattedData = { ...studentData, dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth).toLocaleDateString() : '' };
+                setUserData(formattedData);
+                reset(formattedData);
+                setSelectedCountry(countries.find(country => country.name === formattedData.country)?.id)
+                setSelectedState(states.find(state => state.name === formattedData.state)?.id);
+                setSelectedCity(cities.find(city => city.name === formattedData.city)?.id);
             }
-        };
-
-        if(userId){
-            fetchStudentDetails();
+        } catch (error) {
+            console.error('Error fetching student details:', error);
         }
-    }, [reset , userId]);
+    };
+
+    if (userId) {
+        fetchStudentDetails();
+    }
+}, [reset, userId]);
 
     const onSubmit = async (data) => {
-        console.log(data);
+      const countryName = countries.find((country) => country.id === parseInt(selectedCountry))?.name || userData?.country;
+      const stateName = states.find((state) => state.id === parseInt(selectedState))?.name || userData?.state;
+      const cityName = cities.find((city) => city.id === parseInt(selectedCity))?.name || userData?.city;
         
-          await axios({
-              method:"Post",
-              url : `${BASE_URL}/user/addStudentBasicDetails`,
-              data: {
-                ...data , 
-                role : 3 ,
-                country: countries.find((country) => country.id === parseInt(data.country))?.name ,
-                state: states.find((state) => state.id === parseInt(data.state))?.name ,
-                city: cities.find((city) => city.id === parseInt(data.city))?.name ,
-                dateOfBirth : new Date(data.dateOfBirth).toISOString()
-              } ,
-              headers: {
-                "Content-Type": "application/json",
-              },
-          
-            })
-            .then((response)=>{
-              console.log('response' , response.data.data)
-              setUserId(response.data.data.userId)
-              setId(response.data.data.id)
-              toast.success("Successfully Add Student!");
-              handleNextStep()
-              reset()
-          })
-          .catch(err=>{
-              console.log(err,'error:')
-              toast.error("Error to add new User");
-              reset()
-          })
+      await axios({
+          method:"Post",
+          url : `${BASE_URL}/user/addStudentBasicDetails`,
+          data: {
+            ...data , 
+            role : 3 ,
+            country: countryName ,
+            state: stateName,
+            city: cityName ,
+            dateOfBirth : new Date(data.dateOfBirth).toISOString()
+          } ,
+          headers: {
+            "Content-Type": "application/json",
+          },
+      
+        })
+        .then((response)=>{
+          console.log('response' , response.data.data)
+          setUserId(response.data.data.userId)
+          setId(response.data.data.id)
+          toast.success("Successfully Add Student!");
+          handleNextStep()
+          reset()
+      })
+      .catch(err=>{
+          console.log(err,'error:')
+          toast.error("Error to add new User");
+          reset()
+      })
     }
   return (
     <div>
@@ -344,41 +354,6 @@ const {
             {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
             </div>
 
-            {/* <div className="flex flex-col px-1 ">
-            <label htmlFor="city">City/Village *</label>
-            <input
-                type="text"
-                id="city"
-                placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('city', { required: 'City is required' })}
-            />
-            {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
-            </div>
-
-            <div className="flex flex-col px-1">
-            <label htmlFor="state">State *</label>
-            <input
-                type="text"
-                id="state"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('state', { required: 'State is required' })}
-            />
-            {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
-            </div>
-
-            <div className="flex flex-col px-1">
-            <label htmlFor="country">Country *</label>
-            <input
-                type="text"
-                id="country"
-                placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-                {...register('country', { required: 'Country is required' })}
-            />
-            {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
-            </div> */}
-
         {/* Blood Group Select */}
         <div className="flex flex-col px-1">
         <label htmlFor="bloodGroup">Blood Group</label>
@@ -446,7 +421,7 @@ const {
             }} 
             label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
-      <ToastContainer/>
+      {/* <ToastContainer/> */}
     </div>
 </div>
   )

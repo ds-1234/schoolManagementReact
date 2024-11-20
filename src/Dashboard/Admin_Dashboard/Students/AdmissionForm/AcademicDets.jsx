@@ -104,6 +104,7 @@ function AcademicDets() {
         const userData = {
             ...data , 
             userId : userId ,
+            rollNumber : parseInt(data.rollNumber) ,
             className: [data.className]
           }
           await axios({

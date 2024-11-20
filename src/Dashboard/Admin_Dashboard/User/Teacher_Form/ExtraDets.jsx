@@ -31,6 +31,7 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   const [selectedDest , setSelectedDest] = useState('') ;
   const [departments , setDepartments] = useState([]) ;
   const [selectedDept , setSelectedDept] = useState('') ;
+  const [basicTchData , setBasicTchData] = useState(null) ;
 
   const fetchOptions = async () => {
     try {
@@ -77,7 +78,21 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   };
 
   const onSubmit = (data) => {
-    axios({
+    
+    const classSubjectEntity = classSubjectRows.map((row) => {
+      const existingClassSubject = teacherData?.classSubjectEntity?.find(
+        (item) => item.classId === row.classId && item.subjectId === row.subjectId
+      );
+      return {
+        id: existingClassSubject ? existingClassSubject.id : null,
+        teacherId: userId,
+        classId: parseInt(row.classId),
+        subjectId: parseInt(row.subjectId),
+        isActive: true,
+      };
+    });
+
+   axios({
       method: "post",
       url: `${BASE_URL}/teacherInfo/createTeacherInfo`,
       headers: {
@@ -87,13 +102,15 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
         ...data,
         ...teacherData ,
         teacherId : userId,
-        languages: data.languages.map(lang => lang.value).join(',')
+        designation : parseInt(data.designation),
+        department : parseInt(data.department),
+        languages: data.languages.map(lang => lang.value).join(','),
+        classSubjectEntity
       }
     })
     .then((response) => {
+      axios.post(`${BASE_URL}/user/updateUser` ,  {...basicTchData , school : selectedSchl}) ;
       toast.success("User Updated Successfully !")
-      console.log('selectes class and subjects' , classSubjectRows) ;
-      console.log('selected school' , selectedSchl);
       handleNext()
     })
     .catch((error) => {
@@ -110,8 +127,24 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
             setTeacherData(data) ;
 
             if (data) {
-                // If data exists, populate the form
-                reset(data);
+              reset({
+                ...data,
+                languages: data.languages
+                  ? data.languages.split(',').map((lang) => languageOptions.find((opt) => opt.value === lang))
+                  : [],
+              });
+              setSelectedDept(data.department)
+              setSelectedDest(data.designation)
+
+              if (data.classSubjectEntity && Array.isArray(data.classSubjectEntity)) {
+                const parsedRows = data.classSubjectEntity.map((item) => ({
+                  classId: item.classId, 
+                  subjectId: item.subjectId, 
+                }));
+                console.log(parsedRows);
+                
+                setClassSubjectRows(parsedRows);
+              }
             }
         } catch (error) {
             console.error('Error fetching user details:', error);
@@ -128,8 +161,8 @@ const fetchBasicDets = async() => {
       })
         .then((response) => {
           const userData = response.data.data;
+          setBasicTchData(userData) ;
           setSelectedSchl(userData.school) 
-          // setSelectedCls(userData.className)
         })
         .catch((error) => {
           console.error("Error fetching user:", error);
@@ -180,7 +213,6 @@ const fetchBasicDets = async() => {
             options={languageOptions} 
             isMulti={true}         
             placeholder="Select languages..."
-            defaultValue={teacherData?.languages?.split(",").join(',')}
             {...register('languages' , {required : "Languages are required" })}
           />
           {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
@@ -191,7 +223,7 @@ const fetchBasicDets = async() => {
             <select
             id="designation"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            // {...register('designation')}
+            {...register('designation')}
             value={selectedDest}
             onChange={(e) => setSelectedDest(e.target.value)}
             placeholder = "Select Designation "
@@ -208,7 +240,7 @@ const fetchBasicDets = async() => {
             <select
             id="department"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            // {...register('department')}
+            {...register('department')}
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
             placeholder = "Select Department "
@@ -225,7 +257,7 @@ const fetchBasicDets = async() => {
             <select
             id="school"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            // {...register('school')}
+            {...register('school')}
             value={selectedSchl}
             onChange={(e) => setSelectedSchl(e.target.value)}
             placeholder = "Select School Branch "
@@ -245,7 +277,7 @@ const fetchBasicDets = async() => {
               <select
                 id={`class-${index}`}
                 className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-                value={row.id}
+                value={row.classId}
                 onChange={(e) => handleClassChange(index, e.target.value)}
               >
                 <option value="" hidden>Select Class</option>
@@ -260,7 +292,7 @@ const fetchBasicDets = async() => {
               <select
                 id={`subject-${index}`}
                 className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-                value={row.id}
+                value={row.subjectId}
                 onChange={(e) => handleSubjectChange(index, e.target.value)}
               >
                 <option value="" hidden>Select Subject</option>
