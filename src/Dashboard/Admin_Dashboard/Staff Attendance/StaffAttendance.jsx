@@ -71,30 +71,28 @@ function StaffAttendance() {
     fetchUser(); // Fetch staff data
   }, []);
 
-  // Filter by date logic
-  const filterByDate = () => {
+  // Helper function to extract only the date part (yyyy-MM-dd) from ISO string
+
+  // Helper function to extract date from a datetime string
+  const getDateFromDateTime = (dateTime) => format(parseISO(dateTime), 'yyyy-MM-dd');
+
+  // Function to filter data by date range or predefined options
+  const filterByDate = (filterValue, startDate = null, endDate = null) => {
+    const now = new Date(); // Current date
     let filteredData;
-    const now = new Date();
-    console.log(now,'now')
 
-    // Helper function to extract the date part from a full date (ignores time)
-    const getDateFromDateTime = (dateTime) => {
-      if (!dateTime) return null;
-      return format(parseISO(dateTime), 'yyyy-MM-dd'); // Extract date part (yyyy-MM-dd)
-    };
-
-    switch (dateFilter) {
+    switch (filterValue) {
       case 'Today':
         filteredData = filterData.filter((item) => {
-          const itemDate = getDateFromDateTime(item.loginDateTime);
-          return itemDate === format(now, 'yyyy-MM-dd'); // Compare only the date part
+          const itemDate = getDateFromDateTime(item.logindateTime);
+          return itemDate === format(now, 'yyyy-MM-dd');
         });
         break;
 
       case 'Yesterday':
         const yesterday = subDays(now, 1);
         filteredData = filterData.filter((item) => {
-          const itemDate = getDateFromDateTime(item.loginDateTime);
+          const itemDate = getDateFromDateTime(item.logindateTime);
           return itemDate === format(yesterday, 'yyyy-MM-dd');
         });
         break;
@@ -102,35 +100,35 @@ function StaffAttendance() {
       case 'Last 7 Days':
         const last7Days = subDays(now, 7);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.loginDateTime);
-          return itemDate >= last7Days; // Compare full date (including time)
+          const itemDate = parseISO(item.logindateTime);
+          return itemDate >= last7Days && itemDate <= now;
         });
         break;
 
       case 'Last 30 Days':
         const last30Days = subDays(now, 30);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.loginDateTime);
-          return itemDate >= last30Days; // Compare full date (including time)
+          const itemDate = parseISO(item.logindateTime);
+          return itemDate >= last30Days && itemDate <= now;
         });
         break;
 
       case 'This Year':
         const startOfYearDate = startOfYear(now);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.loginDateTime);
-          return itemDate >= startOfYearDate; // Compare full date (including time)
+          const itemDate = parseISO(item.logindateTime);
+          return itemDate >= startOfYearDate && itemDate <= now;
         });
         break;
 
       case 'Custom Range':
         if (startDate && endDate) {
           filteredData = filterData.filter((item) => {
-            const itemDate = parseISO(item.loginDateTime);
-            return itemDate >= startDate && itemDate <= endDate; // Filter by custom range
+            const itemDate = parseISO(item.logindateTime);
+            return itemDate >= startDate && itemDate <= endDate;
           });
         } else {
-          filteredData = filterData; // Return all if no custom range is selected
+          filteredData = filterData; // Return all if no range is provided
         }
         break;
 
@@ -139,28 +137,45 @@ function StaffAttendance() {
         break;
     }
 
-    setAttendanceData(filteredData); // Update the data with filtered results
+    setAttendanceData(filteredData);
   };
 
-  // Handle date filter change
+  // Handle dropdown change
   const handleDateFilterChange = (e) => {
-    setDateFilter(e.target.value); // Update the date filter
-    filterByDate(); // Reapply the filter when the date filter changes
+    const selectedFilter = e.target.value;
+    setDateFilter(selectedFilter);
+
+    // Apply filter directly
+    if (selectedFilter !== 'Custom Range') {
+      filterByDate(selectedFilter);
+    }
   };
 
   // Handle start date change for custom range
   const handleStartDateChange = (e) => {
     const selectedStartDate = e.target.value ? parseISO(e.target.value) : null;
     setStartDate(selectedStartDate);
-    filterByDate();
+
+    if (dateFilter === 'Custom Range' && selectedStartDate && endDate) {
+      filterByDate('Custom Range', selectedStartDate, endDate);
+    }
   };
 
   // Handle end date change for custom range
   const handleEndDateChange = (e) => {
     const selectedEndDate = e.target.value ? parseISO(e.target.value) : null;
     setEndDate(selectedEndDate);
-    filterByDate();
+
+    if (dateFilter === 'Custom Range' && startDate && selectedEndDate) {
+      filterByDate('Custom Range', startDate, selectedEndDate);
+    }
   };
+
+  // Apply the default filter on component mount
+  useEffect(() => {
+    filterByDate('Today'); // Apply "Today" filter initially
+  }, [filterData]);
+  
 
   // Map staff ID to staff name
   const getStaffNameById = (userId) => {
@@ -210,12 +225,13 @@ function StaffAttendance() {
   ];
 
   return (
-    <div className="h-full mb-10">
+      <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Staff Attendance</h1>
       <p className="mt-2">
         Dashboard /<NavLink to="/admin"> Admin </NavLink>/{' '}
         <span className="text-[#ffae01] font-semibold">Staff Attendance</span>
       </p>
+        {console.log(attendanceData,'attendanceData')}
 
       {/* Filter Section */}
       <div className="mb-4">
@@ -227,27 +243,24 @@ function StaffAttendance() {
           <option value="This Year">This Year</option>
           <option value="Custom Range">Custom Range</option>
         </select>
-
         {dateFilter === 'Custom Range' && (
-          <div className="flex space-x-4 mt-2">
+          <div className="flex mt-2 space-x-2">
             <input
               type="date"
               onChange={handleStartDateChange}
               className="p-2"
-              placeholder="Start Date"
             />
             <input
               type="date"
               onChange={handleEndDateChange}
               className="p-2"
-              placeholder="End Date"
             />
           </div>
         )}
       </div>
 
-      {/* Table */}
-      <Table data={attendanceData} columns={columns} />
+      {/* Attendance Table */}
+      <Table columns={columns} data={attendanceData} />
     </div>
   );
 }
