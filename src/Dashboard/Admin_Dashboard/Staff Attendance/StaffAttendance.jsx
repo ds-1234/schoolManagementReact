@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Table from '../../../Reusable_components/Table';
+// import StaffAttendanceTable '../../../Reusable_components/StaffAttendanceTable';
 import BASE_URL from '../../../conf/conf';
 import { parseISO, format, subDays, startOfYear } from 'date-fns';
+import StaffAttendanceTable from '../../../Reusable_components/StaffAttendanceTable';
 
 function StaffAttendance() {
   const [attendanceData, setAttendanceData] = useState([]);
@@ -183,7 +184,7 @@ function StaffAttendance() {
     return staffMember ? staffMember.firstName : 'Unknown Staff';
   };
 
-  // Table columns with updated fields (User Table ID and Attendance Status)
+  // StaffAttendanceTablecolumns with updated fields (User StaffAttendanceTableID and Attendance Status)
   const columns = [
     {
       name: 'SR.No',
@@ -259,8 +260,8 @@ function StaffAttendance() {
         )}
       </div>
 
-      {/* Attendance Table */}
-      <Table columns={columns} data={attendanceData} />
+      {/* Attendance StaffAttendanceTable*/}
+      <StaffAttendanceTable columns={columns} data={attendanceData} />
     </div>
   );
 }
