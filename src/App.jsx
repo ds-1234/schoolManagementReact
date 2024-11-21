@@ -111,6 +111,7 @@ import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceSt
 import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
 import TchExamResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/TchExamResult';
 import StdExamResult from './Dashboard/Student_Dashboard/Examination/Exam Result/StdExamResult';
+import StaffAttendance from './Dashboard/Admin_Dashboard/Staff Attendance/StaffAttendance';
 
 
 
@@ -207,6 +208,7 @@ function App() {
             <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
 
             <Route path = 'ViewParent' element= {<ViewParent/>}/> 
+            <Route path = 'StaffAttendance' element= {<StaffAttendance/>}/> 
           </Route>
 
           {/* Student Dashboard Routes */}
