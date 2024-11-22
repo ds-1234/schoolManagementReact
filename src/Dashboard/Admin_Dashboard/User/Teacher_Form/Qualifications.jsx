@@ -64,7 +64,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       }
     };
 
-    const uploadDocument = async (file, documentName) => {
+    const uploadDocument = async (file, documentName , moduleName , moduleId) => {
       if (!file) return;
       const formData = new FormData();
 
@@ -72,6 +72,9 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       formData.append('id' , existingDocs? existingDocs.id : null);
       formData.append('file', file);
       formData.append('filesName', documentName);
+      formData.append('moduleName' , moduleName);
+      formData.append('moduleId' , moduleId);
+      
       try {
         await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -121,6 +124,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     
       if (newQualifications.length === 0 && newWorkExperiences.length === 0) {
         toast.warn("No new qualifications or work experiences to save.");
+        handleNext()
         return;
       }
     
@@ -145,26 +149,29 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       console.log("Data to send:", formattedData);
     
       try {
+        let res ;
         if (newQualifications.length > 0 || newWorkExperiences.length > 0) {
-          await axios.post(`${BASE_URL}/teacherInfo/createTeacherInfo`, {
+          res = await axios.post(`${BASE_URL}/teacherInfo/createTeacherInfo`, {
             teacherId: userId,
             ...formattedData,
           });
         }
-    
+        
+        const responseData = res.data.data ;
+        
         // Sequentially upload qualification documents
         for (const qualification of newQualifications) {
           if (qualification.degreeFile && qualification.degreeFile[0]) {
-            console.log("Uploading qualification document:", qualification.degreeFile[0], qualification.degreeDoc);
-            await uploadDocument(qualification.degreeFile[0], qualification.degreeDoc);
+            console.log("Uploading qualification document:", qualification.degreeFile[0], qualification.degreeDoc , responseData.qualificationList[0].course , responseData.qualificationList[0].id);
+            await uploadDocument(qualification.degreeFile[0], qualification.degreeDoc , responseData.qualificationList[0].course , responseData.qualificationList[0].id);
           }
         }
     
         // Sequentially upload work experience documents
         for (const experience of newWorkExperiences) {
           if (experience.file && experience.file[0]) {
-            console.log("Uploading work experience document:", experience.file[0], experience.documentName);
-            await uploadDocument(experience.file[0], experience.documentName);
+            console.log("Uploading work experience document:", experience.file[0], experience.documentName , responseData.workExperience[0].insitutue , responseData.workExperience[0].id);
+            await uploadDocument(experience.file[0], experience.documentName, responseData.workExperience[0].insitutue , responseData.workExperience[0].id);
           }
         }
     
@@ -206,19 +213,6 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           }
       };
 
-      // const getDocuments = async () => {
-      //   await axios({
-      //     method: "GET" ,
-      //     url: `${BASE_URL}/document/getDocument/${userId}` ,
-      //     headers:{ 'Content-Type': 'application/json' }
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data.data);
-      //     setDocuments(res.data.data);
-      //   })
-      //   .catch((err) => console.log("error in get Documents" , err));
-      // }
-
       const getDocuments = async () => {
         try {
           const response = await axios.get(`${BASE_URL}/document/getDocument/${userId}`);
@@ -228,27 +222,30 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           // Map documents to corresponding fields
           reset((prevValues) => {
             const updatedQualifications = prevValues.qualifications.map((qualification) => {
+              
               const matchingDoc = fetchedDocuments.find(
-                (doc) => doc.documentName === qualification.degreeDoc
-              );
+                (doc) => doc.moduleName === qualification.course
+               );
+               
               return {
                 ...qualification,
                 degreeDoc: matchingDoc?.documentName || qualification.degreeDoc,
-                degreeFile: matchingDoc ? [{ name: matchingDoc.attachmentName }] : null,
+                degreeFile: matchingDoc ? [{ name: matchingDoc.attachmentPath }] : null,
               };
             });
+            
     
             const updatedWorkExperiences = prevValues.workExperiences.map((experience) => {
               const matchingDoc = fetchedDocuments.find(
-                (doc) => doc.documentName === experience.documentName
+                (doc) => doc.moduleName === experience.institute
               );
               return {
                 ...experience,
                 documentName: matchingDoc?.documentName || experience.documentName,
-                file: matchingDoc ? [{ name: matchingDoc.attachmentName }] : null,
+                file: matchingDoc ? [{ name: matchingDoc.attachmentPath }] : null,
               };
             });
-    
+
             return {
               ...prevValues,
               qualifications: updatedQualifications,
@@ -259,7 +256,6 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           console.error("Error fetching documents:", error);
         }
       };
-    
   
         fetchDetails();
         getDocuments() ;
@@ -312,18 +308,18 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         <label htmlFor="file">Upload Marksheets/Degree</label>
         <input
           type="text"
-          {...register(`qualifications[${index}].degreeDoc`, { required: true })}
+          {...register(`qualifications[${index}].degreeDoc`)}
           className="border p-2 rounded-lg"
           placeholder="Document Name"
         />
         <input
           type="file"
-          {...register(`qualifications[${index}].degreeFile` , { required: true })}
+          {...register(`qualifications[${index}].degreeFile`)}
           className="border p-2 rounded-lg"
         />
 
-      {item.degreeFile && (
-          <p className="text-sm text-gray-500">Uploaded File: {item.degreeFile[0].attachmentName}</p>
+        {item.degreeFile && (
+          <p className="text-sm text-gray-500">Uploaded File: {item.degreeFile[0]?.name}</p>
         )}
       </div>
       <div className='flex items-center justify-center mt-7'>
@@ -401,8 +397,8 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
           {...register(`workExperiences[${index}].file`)}
           className="border p-2 rounded-lg"
         />
-        {item.file && item.file[0] && (
-        <p className="text-sm text-gray-500">Uploaded File: {item.file[0].attachmentName}</p>
+        {item.file && (
+          <p className="text-sm text-gray-500">Uploaded File: {item.file[0]?.name}</p>
         )}
         </div>
 

@@ -24,6 +24,8 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
     formData.append('id' , existingDocs? existingDocs.id : null);
     formData.append('file', file);
     formData.append('filesName', fileName);
+    formData.append('moduleName' , fileName);
+    formData.append('moduleId' , 0);
 
     try {
       const response = await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {

@@ -30,69 +30,83 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [selectedStds , setSelectedStds] = useState([]) ;
   const [stds , setStds] = useState([]) ;
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/area/getCountryList`);
-        setCountries(response.data.data);
-        fetchUserData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching countries:", error);
-      }
-    };
+  const fetchLocationData = () => {
+    axios.get(`${BASE_URL}/area/getCountryList`)
+      .then((res) => {
+        setCountries(res.data.data);
 
-    const fetchUserData =  async(countriesData) => {
-      try {
-        const response =  await axios.get(`${BASE_URL}/user/getUser/${userId}`);
-        const userData = response.data.data;
-        const formattedData = {
-          ...userData,
-          country: countriesData.find((country) => country.name === userData.country)?.id,
-          dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
-        };
-        setSelectedCountry(formattedData.country);
-        setSelectedStds(userData.isParent);
-        reset(formattedData);
-        fetchStates(formattedData.country);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-    const fetchStates = async (countryId) => {
-      try {
-        const response = await axios.get(`${BASE_URL}/area/getStateList/${countryId}`);
-        setStates(response.data.data);
-
-        if (selectedState) {
-          fetchCities(selectedState);
+        // Fetch states if a country is selected
+        if (selectedCountry) {
+          return axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
         }
-      } catch (error) {
-        console.error("Error fetching states:", error);
-      }
-    };
- 
-    const fetchCities = async (stateId) => {
-      try {
-        const response = await axios.get(`${BASE_URL}/area/getCitiesList/${stateId}`);
-        setCities(response.data.data);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    };
+      })
+      .then((stateResponse) => {
+        if (stateResponse) {
+          setStates(stateResponse.data.data);
 
-    fetchCountries();
+          // Fetch cities if a state is selected
+          if (selectedState) {
+            return axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
+          }
+        }
+      })
+      .then((cityResponse) => {
+        if (cityResponse) {
+          setCities(cityResponse.data.data);
+        }
+      })
+      .catch((error) => {
+        toast.error("Error fetching location data");
+        console.error(error);
+      });
+  };
 
-    const fetchStds = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/user/getUserList`);
-        setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true));
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  // Fetch teacher details after fetching countries, states, and cities
+  const fetchUserData =  async() => {
+    try {
+      const response =  await axios.get(`${BASE_URL}/user/getUser/${userId}`);
+      const userData = response.data.data;
 
+      const formattedData = {
+        ...userData,
+        dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
+      };
+
+      setSelectedCountry(userData.country) ;
+        setSelectedState(userData.state) ;
+        setSelectedCity(userData.city) ;
+     
+        if(userData){
+          reset(formattedData) ;
+        }
+
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  const fetchStds = () => {
+    try {
+      const res = axios.get(`${BASE_URL}/user/getUserList`);
+      setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if(selectedRole === 5){
     fetchStds();
-  }, [userId, reset , selectedState]);
+  }
+
+  // UseEffect to ensure proper order
+  useEffect(() => {
+    const initializeData =  () => {
+       fetchLocationData(); 
+      fetchUserData();
+    };
+    initializeData();
+  }, [userId, selectedCountry, selectedState]);
+
 
   const onSubmit = async (data) => {
     await axios({
@@ -105,9 +119,9 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         ...data,
         role :  selectedRole,
         isParent : selectedRole === 5 ? selectedStds : null ,
-        country: countries.find((country) => country.id === parseInt(data.country))?.name ,
-        state: states.find((state) => state.id === parseInt(data.state))?.name ,
-        city: cities.find((city) => city.id === parseInt(data.city))?.name ,
+        country: data.country ,
+        state: data.state ,
+        city: data.city ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
       }
     })
