@@ -46,7 +46,7 @@ const column = [
   {
     name: 'Action',
     cell: row => (
-      <div className='flex gap-2'>
+      <div className='flex gap-2 justify-right'>
       {
         row.role == 3 ?   
         <button
@@ -69,7 +69,9 @@ const column = [
         <img src={view} alt="view" className='h-8' />
         </button>
         :
-        ''
+        <div className='h-8 w-8'>
+
+        </div>
       }
       {
         row.role == 3 ?   

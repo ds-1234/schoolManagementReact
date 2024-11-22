@@ -18,9 +18,9 @@ const { currentStep, handleNextStep } = useStepContext();
 const [countries, setCountries] = useState([]);
 const [states, setStates] = useState([]);
 const [cities, setCities] = useState([]);
-const [selectedCountry, setSelectedCountry] = useState('');
-const [selectedState, setSelectedState] = useState('');
-const [selectedCity , setSelectedCity] = useState('') ;
+const [selectedCountry, setSelectedCountry] = useState(null);
+const [selectedState, setSelectedState] = useState(null);
+const [selectedCity , setSelectedCity] = useState(null) ;
 const [userData , setUserData] = useState(null) ;
 
 const {
@@ -32,112 +32,93 @@ const {
 
     const navigate = useNavigate()
 
-    const fetchCountries = async () => {
-      await axios({
-        method: 'GET' ,
-        url: `${BASE_URL}/area/getCountryList`,
-        headers: {'Content-Type' : 'application/json'}
-      })
+
+  // Function to fetch countries, states, and cities synchronously
+  const fetchLocationData = async () => {
+    await axios.get(`${BASE_URL}/area/getCountryList`)
       .then((res) => {
-        setCountries(res.data.data) ;
-      })
-      .catch((err) => {'error in country fetching' , err}) ;
-    }
+        setCountries(res.data.data);
 
-    useEffect(() => {
-      fetchCountries()
-    } , [])
-
-    useEffect(() => {
-      const fetchStates = async () => {
-          if (!selectedCountry) return;
-          try {
-              const response = await axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
-              setStates(response.data.data);
-              // Reset selectedState and selectedCity when country changes
-              setSelectedState('');
-              setSelectedCity('');
-          } catch (error) {
-              toast.error("Error fetching states");
-          }
-      };
-      fetchStates();
-    } , [selectedCountry] ) ;
-  
-    useEffect(() => {
-      const fetchCities = async () => {
-          if (!selectedState) return;
-          try {
-              const response = await axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
-              setCities(response.data.data);
-              // Reset selectedCity when state changes
-              setSelectedCity('');
-          } catch (error) {
-              toast.error("Error fetching cities");
-          }
-      };
-
-      fetchCities();
-  }, [selectedState]);
-
-  useEffect(() => {
-    const fetchStudentDetails = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
-            const studentData = response.data.data;
-            if (studentData) {
-                const formattedData = { ...studentData, dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth).toLocaleDateString() : '' };
-                setUserData(formattedData);
-                reset(formattedData);
-                setSelectedCountry(countries.find(country => country.name === formattedData.country)?.id)
-                setSelectedState(states.find(state => state.name === formattedData.state)?.id);
-                setSelectedCity(cities.find(city => city.name === formattedData.city)?.id);
-            }
-        } catch (error) {
-            console.error('Error fetching student details:', error);
+        // Fetch states if a country is selected
+        if (selectedCountry) {
+          return axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
         }
+      })
+      .then((stateResponse) => {
+        if (stateResponse) {
+          setStates(stateResponse.data.data);
+
+          // Fetch cities if a state is selected
+          if (selectedState) {
+            return axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
+          }
+        }
+      })
+      .then((cityResponse) => {
+        if (cityResponse) {
+          setCities(cityResponse.data.data);
+        }
+      })
+      .catch((error) => {
+        toast.error("Error fetching location data");
+        console.error(error);
+      });
+  };
+
+  // Fetch student details after fetching countries, states, and cities
+  const fetchStudentDetails = async () => {
+    try {
+      if (!userId) return;
+
+      const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
+      const studentData = response.data.data;
+
+      if (studentData) {
+        setUserData(studentData);
+        // Match IDs for country, state, and city
+        setSelectedCountry(studentData.country) ;
+        setSelectedState(studentData.state) ;
+        setSelectedCity(studentData.city) ;
+
+          reset({
+            ...studentData ,
+            dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
+          });
+      }
+    } catch (error) {
+      console.error("Error fetching student details:", error);
+    }
+  };
+
+  // UseEffect to ensure proper order
+  useEffect(() => {
+    const initializeData =  () => {
+       fetchLocationData(); // Fetch location data first
+      fetchStudentDetails() ;
     };
+    initializeData();
+  }, [userId, selectedCountry, selectedState]);
 
-    if (userId) {
-        fetchStudentDetails();
-    }
-}, [reset, userId]);
+  const onSubmit = async (data) => {
 
-    const onSubmit = async (data) => {
-      const countryName = countries.find((country) => country.id === parseInt(selectedCountry))?.name || userData?.country;
-      const stateName = states.find((state) => state.id === parseInt(selectedState))?.name || userData?.state;
-      const cityName = cities.find((city) => city.id === parseInt(selectedCity))?.name || userData?.city;
-        
-      await axios({
-          method:"Post",
-          url : `${BASE_URL}/user/addStudentBasicDetails`,
-          data: {
-            ...data , 
-            role : 3 ,
-            country: countryName ,
-            state: stateName,
-            city: cityName ,
-            dateOfBirth : new Date(data.dateOfBirth).toISOString()
-          } ,
-          headers: {
-            "Content-Type": "application/json",
-          },
-      
-        })
-        .then((response)=>{
-          console.log('response' , response.data.data)
-          setUserId(response.data.data.userId)
-          setId(response.data.data.id)
-          toast.success("Successfully Add Student!");
-          handleNextStep()
-          reset()
-      })
-      .catch(err=>{
-          console.log(err,'error:')
-          toast.error("Error to add new User");
-          reset()
-      })
+    try {
+      const response = await axios.post(`${BASE_URL}/user/addStudentBasicDetails`, {
+        ...data,
+        role: 3,
+        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
+      });
+
+      toast.success("Successfully added student!");
+      setUserId(response.data.data.userId);
+      setId(response.data.data.id);
+      handleNextStep();
+      reset();
+    } catch (error) {
+      toast.error("Error adding new user");
+      console.error(error);
     }
+  };
+
   return (
     <div>
         <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>

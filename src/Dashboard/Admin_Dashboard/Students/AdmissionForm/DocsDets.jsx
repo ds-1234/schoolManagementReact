@@ -66,6 +66,8 @@ function DocsDets() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('filesName', documentName);
+      formData.append('moduleName' , documentName) ;
+      formData.append('moduleId' , 0)
 
       try {
         await axios.post(`${BASE_URL}/document/saveDocument/${id}`, formData, {

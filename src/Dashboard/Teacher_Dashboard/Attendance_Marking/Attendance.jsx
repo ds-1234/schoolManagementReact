@@ -22,8 +22,8 @@ const Attendance = () => {
         headers: { 'Content-Type': 'application/json' },
       });
       const filteredStds = response.data.data.filter(user => user.role === 3);
-      const filteredStudents = filteredStds.filter((std) => std.className[0] === classItem.id);
-      setStudents(filteredStudents);
+      const filteredStudents = filteredStds.filter(std => std.className?.includes(classItem.id));
+      setStudents(filteredStudents);      
 
      // Set default attendance as "Absent" for all students
       const defaultAttendance = {};
@@ -97,7 +97,7 @@ const Attendance = () => {
     },
     {
       name: 'Roll No',
-      selector: (row) => "",
+      selector: (row) => row.rollNumber,
       sortable: false,
     },
     {
