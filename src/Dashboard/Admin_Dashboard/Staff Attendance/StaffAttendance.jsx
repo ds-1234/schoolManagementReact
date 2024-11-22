@@ -203,23 +203,48 @@ function StaffAttendance() {
       sortable: true,
       wrap: true,
       cell: (row) => (
-        <div>
-          {/* Display all attendance statuses in a line */}
-          {attendanceStatusData.map((status, idx) => (
-            <span
-              key={idx}
-              style={{
-                marginRight: '10px',
-                backgroundColor: row.attendanceStatus === status ? '#FFEB3B' : 'transparent', // Highlight matching status
-                padding: '5px',
-                borderRadius: '4px',
-                fontWeight: row.attendanceStatus === status ? 'bold' : 'normal',
-              }}
-            >
-              {status} {/* Ensure we're rendering a string here */}
-            </span>
-          ))}
-        </div>
+<div>
+  {/* Display all attendance statuses in a line */}
+  {attendanceStatusData.map((status, idx) => (
+    <span
+      key={idx}
+      style={{
+        marginRight: '10px',
+        padding: '5px',
+        fontWeight: row.attendanceStatus === status ? 'bold' : 'normal',
+        display: 'inline-flex',
+        alignItems: 'center', // Vertically align the text
+      }}
+    >
+      {/* Blue disc with a white smaller disc */}
+      {row.attendanceStatus === status && (
+        <span
+          style={{
+            width: '12px', // Size of the blue disc
+            height: '12px', // Size of the blue disc
+            borderRadius: '50%', // Circular shape
+            backgroundColor: 'blue', // Blue color for the outer disc
+            display: 'flex',
+            alignItems: 'center', // Center the smaller disc inside
+            justifyContent: 'center', // Center the smaller disc inside
+            marginRight: '8px', // Space between the blue disc and status text
+          }}
+        >
+          <span
+            style={{
+              width: '6px', // Size of the white smaller disc
+              height: '6px', // Size of the white smaller disc
+              borderRadius: '50%', // Circular shape
+              backgroundColor: 'white', // White color for the inner disc
+            }}
+          ></span>
+        </span>
+      )}
+      {status}
+    </span>
+  ))}
+</div>
+
       ),
       width: '500px',
     },
