@@ -88,13 +88,15 @@ function AllStaffAttendance() {
   // Helper function to extract only the date part (yyyy-MM-dd) from ISO string
 
   // Helper function to extract date from a datetime string
-  const getDateFromDateTime = (dateTime) => format(parseISO(dateTime), 'yyyy-MM-dd');
-
+  const getDateFromDateTime = (dateTime) => {
+    const dateObj = parseISO(dateTime); // Parses the ISO string
+    return format(dateObj, 'yyyy-MM-dd'); // Formats it to 'yyyy-MM-dd'
+  };
   // Function to filter data by date range or predefined options
   const filterByDate = (filterValue, startDate = null, endDate = null) => {
-    const now = new Date(); // Current date
+    const now = new Date();
     let filteredData;
-
+  
     switch (filterValue) {
       case 'Today':
         filteredData = filterData.filter((item) => {
@@ -102,7 +104,7 @@ function AllStaffAttendance() {
           return itemDate === format(now, 'yyyy-MM-dd');
         });
         break;
-
+  
       case 'Yesterday':
         const yesterday = subDays(now, 1);
         filteredData = filterData.filter((item) => {
@@ -110,48 +112,48 @@ function AllStaffAttendance() {
           return itemDate === format(yesterday, 'yyyy-MM-dd');
         });
         break;
-
+  
       case 'Last 7 Days':
         const last7Days = subDays(now, 7);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.logindateTime);
+          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
           return itemDate >= last7Days && itemDate <= now;
         });
         break;
-
+  
       case 'Last 30 Days':
         const last30Days = subDays(now, 30);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.logindateTime);
+          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
           return itemDate >= last30Days && itemDate <= now;
         });
         break;
-
+  
       case 'This Year':
         const startOfYearDate = startOfYear(now);
         filteredData = filterData.filter((item) => {
-          const itemDate = parseISO(item.logindateTime);
+          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
           return itemDate >= startOfYearDate && itemDate <= now;
         });
         break;
-
+  
       case 'Custom Range':
         if (startDate && endDate) {
           filteredData = filterData.filter((item) => {
-            const itemDate = parseISO(item.logindateTime);
+            const itemDate = new Date(getDateFromDateTime(item.logindateTime));
             return itemDate >= startDate && itemDate <= endDate;
           });
         } else {
-          filteredData = filterData; // Return all if no range is provided
+          filteredData = filterData;
         }
         break;
-
+  
       default:
         filteredData = filterData;
         break;
     }
-
-    // setAttendanceData(filteredData);
+  
+    setAttendanceData(filteredData);
   };
 
   // Handle dropdown change
@@ -167,23 +169,23 @@ function AllStaffAttendance() {
 
   // Handle start date change for custom range
   const handleStartDateChange = (e) => {
-    const selectedStartDate = e.target.value ? parseISO(e.target.value) : null;
+    const selectedStartDate = e.target.value ? new Date(e.target.value) : null;
     setStartDate(selectedStartDate);
-
+  
     if (dateFilter === 'Custom Range' && selectedStartDate && endDate) {
       filterByDate('Custom Range', selectedStartDate, endDate);
     }
   };
-
-  // Handle end date change for custom range
+  
   const handleEndDateChange = (e) => {
-    const selectedEndDate = e.target.value ? parseISO(e.target.value) : null;
+    const selectedEndDate = e.target.value ? new Date(e.target.value) : null;
     setEndDate(selectedEndDate);
-
+  
     if (dateFilter === 'Custom Range' && startDate && selectedEndDate) {
       filterByDate('Custom Range', startDate, selectedEndDate);
     }
   };
+  
 
   // Apply the default filter on component mount
   useEffect(() => {
