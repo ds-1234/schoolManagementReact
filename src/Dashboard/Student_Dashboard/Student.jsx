@@ -6,6 +6,7 @@ import DashboardCards from './StdDashboardComponents/DashboardCards'; // Import 
 import Schedules from './StdDashboardComponents/Schedules'; // Import the Schedules component
 import HomeWorks from './StdDashboardComponents/HomeWorks'; // Import the HomeWorks component
 import ClassFaculties from './StdDashboardComponents/ClassFaculties'; // Import the ClassFaculties component
+import LeaveStatus from './StdDashboardComponents/LeaveStatus'; // Import the LeaveStatus component
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -40,7 +41,6 @@ function Student() {
         </div>
       </div>
 
-
       {/* Bottom Section: TodaysClasses */}
       <div className="flex flex-col mt-6">
         <TodaysClasses />
@@ -58,9 +58,15 @@ function Student() {
       <div className="flex flex-col mt-6">
         <HomeWorks />
       </div>
+
       {/* Section: Class Faculties */}
       <div className="flex flex-col mt-6">
         <ClassFaculties />
+      </div>
+
+      {/* Section: Leave Status */}
+      <div className="flex flex-col mt-6">
+        <LeaveStatus />
       </div>
     </div>
   );
