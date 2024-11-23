@@ -1,6 +1,8 @@
 import React from 'react';
 import Profile from './StdDashboardComponents/Profile'; // Import the Profile component
 import Attendance from './StdDashboardComponents/Attendance'; // Import the Attendance component
+import TodaysClasses from './StdDashboardComponents/TodaysClasses'; // Import the TodaysClasses component
+import DashboardCards from './StdDashboardComponents/DashboardCards'; // Import the DashboardCards component
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -12,25 +14,36 @@ function Student() {
   const halfDays = 0;
 
   return (
-    <div className="flex mt-20">
-      {/* Profile Component in the Left Corner */}
-      <div className="ml-5 w-1/3">
-        <Profile 
-          name={`${user.firstName} ${user.lastName}`}
-          className="10th Grade" 
-          rollNo="25" 
-        />
+    <div className="flex flex-col mt-20 space-y-10 px-5">
+      {/* Top Section: Profile */}
+      <div className="flex">
+        {/* Profile Component in the Left Corner */}
+        <div className="w-1/3">
+          <Profile 
+            name={`${user.firstName} ${user.lastName}`}
+            className="10th Grade" 
+            rollNo="25" 
+          />
+        </div>
+        
+        {/* Attendance Component in the Right Side */}
+        <div className="w-2/3 ml-6">
+          <Attendance 
+            totalDays={totalDays} 
+            presentDays={presentDays} 
+            absentDays={absentDays} 
+            halfDays={halfDays} 
+          />
+        </div>
       </div>
 
-      {/* Attendance Component in the Right Side */}
-      <div className="ml-6 w-2/3">
-        <Attendance 
-          totalDays={totalDays} 
-          presentDays={presentDays} 
-          absentDays={absentDays} 
-          halfDays={halfDays} 
-        />
+      {/* Bottom Section: TodaysClasses */}
+      <div className="flex flex-col mt-6">
+        <TodaysClasses />
       </div>
+
+      {/* Section with 4 Dashboard Cards */}
+      <DashboardCards className='mb-5 pb-5'/>
     </div>
   );
 }
