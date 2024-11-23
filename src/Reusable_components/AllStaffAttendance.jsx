@@ -2,22 +2,23 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 // import StaffAttendanceTable '../../../Reusable_components/StaffAttendanceTable';
-import BASE_URL from '../../../conf/conf';
+import BASE_URL from '../conf/conf';
 import { parseISO, format, subDays, startOfYear } from 'date-fns';
-import StaffAttendanceTable from '../../../Reusable_components/StaffAttendanceTable';
-// import { parseISO, format } from 'date-fns';
+import StaffAttendanceTable from './StaffAttendanceTable';
+// import StaffAttendanceTable from '../../../Reusable_components/StaffAttendanceTable';
 
-function StaffAttendance() {
+function AllStaffAttendance() {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
   const [attendanceData, setAttendanceData] = useState([]);
   const [attendanceStatusData, setAttendanceStatusData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [staff, setStaff] = useState([]);
+  const [profile, setProfile] = useState('');
   const [highlightedStatuses, setHighlightedStatuses] = useState(new Set());
   const [dateFilter, setDateFilter] = useState('Today'); // Default filter
   const [startDate, setStartDate] = useState(null); // Custom range start date
   const [endDate, setEndDate] = useState(null); // Custom range end date
-
-
 
   // Fetch attendance status data from /attendance/getStaffAttendanceStatus
   const fetchAttendanceStatusData = () => {
@@ -49,8 +50,10 @@ function StaffAttendance() {
     })
       .then((response) => {
         console.log('Attendance Data:', response.data);
-        setAttendanceData(response.data.data); // Set attendance data
-        setFilterData(response.data.data); // Initialize filter data
+        const filteredData = response.data.data.filter(item => item.userTableId === user.id);
+
+        setAttendanceData(filteredData); // Set attendance data
+        setFilterData(filteredData); // Initialize filter data
       })
       .catch((error) => {
         console.error('Error fetching attendance data:', error);
@@ -69,24 +72,29 @@ function StaffAttendance() {
     }
   };
 
+  const profilefind = async () =>{
+    if(user.role === 4){
+        setProfile('Teacher')
+    }
+  }
+
   useEffect(() => {
     fetchAttendanceStatusData(); // Fetch attendance statuses
     fetchAttendanceData(); // Fetch staff attendance data
     fetchUser(); // Fetch staff data
+    profilefind()
   }, []);
 
   // Helper function to extract only the date part (yyyy-MM-dd) from ISO string
 
   // Helper function to extract date from a datetime string
-  const getDateFromDateTime = (dateTime) => {
-    const dateObj = parseISO(dateTime); // Parses the ISO string
-    return format(dateObj, 'yyyy-MM-dd'); // Formats it to 'yyyy-MM-dd'
-  };
+  const getDateFromDateTime = (dateTime) => format(parseISO(dateTime), 'yyyy-MM-dd');
+
   // Function to filter data by date range or predefined options
   const filterByDate = (filterValue, startDate = null, endDate = null) => {
-    const now = new Date();
+    const now = new Date(); // Current date
     let filteredData;
-  
+
     switch (filterValue) {
       case 'Today':
         filteredData = filterData.filter((item) => {
@@ -94,7 +102,7 @@ function StaffAttendance() {
           return itemDate === format(now, 'yyyy-MM-dd');
         });
         break;
-  
+
       case 'Yesterday':
         const yesterday = subDays(now, 1);
         filteredData = filterData.filter((item) => {
@@ -102,49 +110,50 @@ function StaffAttendance() {
           return itemDate === format(yesterday, 'yyyy-MM-dd');
         });
         break;
-  
+
       case 'Last 7 Days':
         const last7Days = subDays(now, 7);
         filteredData = filterData.filter((item) => {
-          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
+          const itemDate = parseISO(item.logindateTime);
           return itemDate >= last7Days && itemDate <= now;
         });
         break;
-  
+
       case 'Last 30 Days':
         const last30Days = subDays(now, 30);
         filteredData = filterData.filter((item) => {
-          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
+          const itemDate = parseISO(item.logindateTime);
           return itemDate >= last30Days && itemDate <= now;
         });
         break;
-  
+
       case 'This Year':
         const startOfYearDate = startOfYear(now);
         filteredData = filterData.filter((item) => {
-          const itemDate = new Date(getDateFromDateTime(item.logindateTime));
+          const itemDate = parseISO(item.logindateTime);
           return itemDate >= startOfYearDate && itemDate <= now;
         });
         break;
-  
+
       case 'Custom Range':
         if (startDate && endDate) {
           filteredData = filterData.filter((item) => {
-            const itemDate = new Date(getDateFromDateTime(item.logindateTime));
+            const itemDate = parseISO(item.logindateTime);
             return itemDate >= startDate && itemDate <= endDate;
           });
         } else {
-          filteredData = filterData;
+          filteredData = filterData; // Return all if no range is provided
         }
         break;
-  
+
       default:
         filteredData = filterData;
         break;
     }
-  
-    setAttendanceData(filteredData);
+
+    // setAttendanceData(filteredData);
   };
+
   // Handle dropdown change
   const handleDateFilterChange = (e) => {
     const selectedFilter = e.target.value;
@@ -158,23 +167,23 @@ function StaffAttendance() {
 
   // Handle start date change for custom range
   const handleStartDateChange = (e) => {
-    const selectedStartDate = e.target.value ? new Date(e.target.value) : null;
+    const selectedStartDate = e.target.value ? parseISO(e.target.value) : null;
     setStartDate(selectedStartDate);
-  
+
     if (dateFilter === 'Custom Range' && selectedStartDate && endDate) {
       filterByDate('Custom Range', selectedStartDate, endDate);
     }
   };
-  
+
+  // Handle end date change for custom range
   const handleEndDateChange = (e) => {
-    const selectedEndDate = e.target.value ? new Date(e.target.value) : null;
+    const selectedEndDate = e.target.value ? parseISO(e.target.value) : null;
     setEndDate(selectedEndDate);
-  
+
     if (dateFilter === 'Custom Range' && startDate && selectedEndDate) {
       filterByDate('Custom Range', startDate, selectedEndDate);
     }
   };
-  
 
   // Apply the default filter on component mount
   useEffect(() => {
@@ -258,7 +267,7 @@ function StaffAttendance() {
       <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Staff Attendance</h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/admin"> Admin </NavLink>/{' '}
+        Dashboard /<NavLink to=""> {profile} </NavLink>/{' '}
         <span className="text-[#ffae01] font-semibold">Staff Attendance</span>
       </p>
         {console.log(attendanceData,'attendanceData')}
@@ -295,4 +304,4 @@ function StaffAttendance() {
   );
 }
 
-export default StaffAttendance;
+export default AllStaffAttendance;

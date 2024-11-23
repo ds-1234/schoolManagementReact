@@ -112,6 +112,7 @@ import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
 import TchExamResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/TchExamResult';
 import StdExamResult from './Dashboard/Student_Dashboard/Examination/Exam Result/StdExamResult';
 import StaffAttendance from './Dashboard/Admin_Dashboard/Staff Attendance/StaffAttendance';
+import AllStaffAttendance from './Reusable_components/AllStaffAttendance';
 
 
 
@@ -255,6 +256,7 @@ function App() {
             <Route path='TeaEvent' element={<TeaEvent/>} />
             <Route path='tchBookIssue' element={<TchBookIssue/>} />
             <Route path='tchExamResult' element={<TchExamResult/>} />
+            <Route path='AllStaffAttendance' element={<AllStaffAttendance/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}
