@@ -767,6 +767,19 @@ const Sidebar = () => {
               
             </NavLink>
           </li>
+             {/* StaffAttendance Section */}
+             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/admin/StaffAttendance"
+              className={({ isActive }) =>
+                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
+                Staff Attendance
+              
+            </NavLink>
+          </li>
 
 
 

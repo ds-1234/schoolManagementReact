@@ -9,7 +9,7 @@ import BASE_URL from '../../../../conf/conf';
 // import AddExamResult from './AddExamResult';
 
 
-function ExamResults() {
+function StdExamResult() {
   const user = JSON.parse(sessionStorage.getItem('user'));
     const [data, setData] = useState([]);
     const [filterData , setFilterData] = useState([])
@@ -119,7 +119,7 @@ function ExamResults() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `${BASE_URL}/exam/getExamResult`,
+        url: `${BASE_URL}/exam/getExamListByStudentId/${user.id}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -231,10 +231,8 @@ function ExamResults() {
     return (
       <div className=' h-full mb-10'>
         <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Result</h1>
-        <p className='pl-0 mt-2'>
-        Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
-        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
-      </p>        {/* <AddBtn onAddClick={openAddPopup}/> */}
+        <p className=' mt-2'>Dashboard /<NavLink to = '/studentDashboard'> Student </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Result</span> </p>
+        {/* <AddBtn onAddClick={openAddPopup}/> */}
         <Table 
         columns={column}
         data={data}
@@ -243,30 +241,9 @@ function ExamResults() {
         handleClear={handleClear}
         />
   
-        {/* <AddClassPopup
-          isOpen={isAddPopupOpen} 
-          onClose={() => {
-            closeAddPopup();
-            fetchData(); // Refresh data when add popup closes
-          }} 
-          /> */}
-          {/* <AddExamResult
-                    isOpen={isAddPopupOpen} 
-                    onClose={() => {
-                      closeAddPopup();
-                      fetchData(); // Refresh data when add popup closes
-                    }} 
 
-                      /> */}
-  
-        {/* <EditClass
-          isOpen={isEditPopupOpen}
-          onClose={closeEditPopup}
-          GradeId={editGradeId}
-          onSuccess={fetchData} // Refresh data after editing
-        /> */}
       </div>
     );
 }
 
-export default ExamResults
+export default StdExamResult

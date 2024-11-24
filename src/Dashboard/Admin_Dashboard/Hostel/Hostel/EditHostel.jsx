@@ -22,7 +22,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
     })
       .then((response) => {
         setHostel(response.data.data);
-        setEditorData(data.description)
+        setEditorData(response.data.data.description)
 
       })
       .catch((error) => {

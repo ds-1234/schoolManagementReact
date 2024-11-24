@@ -6,23 +6,23 @@ import edit from '../../../../assets/edit.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../../conf/conf';
-// import AddExamResult from './AddExamResult';
+import AddExamResult from './AddExamResult';
 
 
-function ExamResults() {
+function TchExamResult() {
   const user = JSON.parse(sessionStorage.getItem('user'));
     const [data, setData] = useState([]);
     const [filterData , setFilterData] = useState([])
     const [student , setStudent] = useState([])
     const [classes , setClasses] = useState([])
     const [subject , setSubject] = useState([])
-    // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+    const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
     // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     // const [editGradeId , setEditGradeId] = useState(null)
   
     
-    // const openAddPopup = () => setIsAddPopupOpen(true);
-    // const closeAddPopup = () => setIsAddPopupOpen(false);
+    const openAddPopup = () => setIsAddPopupOpen(true);
+    const closeAddPopup = () => setIsAddPopupOpen(false);
   
     // const openEditPopup = (id) => {
     //   setEditGradeId(id);
@@ -54,7 +54,6 @@ function ExamResults() {
       if (response.data && response.data.success) {
         setClasses(response.data.data);  // Store class data
       }
-      
     } catch (error) {
       console.error('Error fetching classes:', error);
     }
@@ -93,8 +92,6 @@ function ExamResults() {
 
     // Map class ID to class name
     const getClassNameById = (classId) => {
-      console.log(classId,'classid')
-      console.log(classes,'classes')
       const classObj = classes.find((cls) => cls.id === classId);
       return classObj ? `${classObj.name} ${classObj.section}` : 'Unknown Class';
     };
@@ -119,7 +116,7 @@ function ExamResults() {
     const fetchData = () => {
       axios({
         method: "GET",
-        url: `${BASE_URL}/exam/getExamResult`,
+        url: `${BASE_URL}/exam/getExamListByTeacherId/${user.id}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -231,10 +228,8 @@ function ExamResults() {
     return (
       <div className=' h-full mb-10'>
         <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Result</h1>
-        <p className='pl-0 mt-2'>
-        Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
-        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
-      </p>        {/* <AddBtn onAddClick={openAddPopup}/> */}
+        <p className=' mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Result</span> </p>
+        <AddBtn onAddClick={openAddPopup}/>
         <Table 
         columns={column}
         data={data}
@@ -250,14 +245,14 @@ function ExamResults() {
             fetchData(); // Refresh data when add popup closes
           }} 
           /> */}
-          {/* <AddExamResult
+          <AddExamResult
                     isOpen={isAddPopupOpen} 
                     onClose={() => {
                       closeAddPopup();
                       fetchData(); // Refresh data when add popup closes
                     }} 
 
-                      /> */}
+                      />
   
         {/* <EditClass
           isOpen={isEditPopupOpen}
@@ -269,4 +264,4 @@ function ExamResults() {
     );
 }
 
-export default ExamResults
+export default TchExamResult

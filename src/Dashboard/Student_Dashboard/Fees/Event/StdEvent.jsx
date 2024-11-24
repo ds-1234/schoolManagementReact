@@ -112,7 +112,7 @@ function StdEvent() {
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Event</h1>
       <p className='mt-2'>
-        Dashboard / <NavLink to='/admin'> Admin </NavLink> / 
+        Dashboard / <NavLink to='/studentDashboard'> Student </NavLink> / 
         <span className='text-[#ffae01] font-semibold'> Event</span>
       </p> 
       
