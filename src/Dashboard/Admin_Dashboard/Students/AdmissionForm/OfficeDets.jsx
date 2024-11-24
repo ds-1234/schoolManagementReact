@@ -18,6 +18,7 @@ function OfficeDets() {
   const [selectedStds , setSelectedStds] = useState([]) ;
   const [stds , setStds] = useState([]);
   const [dropdown , setDropdown] = useState(false)
+  const [userData , setUserData] = useState({}) 
 
     const {
         register,
@@ -34,6 +35,7 @@ function OfficeDets() {
             try {
                 const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
                 const studentData = response.data.data;
+                setUserData(studentData) ;
 
                 if (studentData) {
                     // If data exists, populate the form
@@ -78,12 +80,13 @@ function OfficeDets() {
               method:"POST",
               url : `${BASE_URL}/user/updateOfficeDetails`,
               data: {
+                ...userData ,
                 admissionNumber : data.admissionNumber ,
                 admissionDate: data.admissionDate ? new Date(data.admissionDate).toISOString().split("T")[0] : null,
                 siblings: selectedStds? selectedStds : null ,
                 userId : userId ,
-                knownAllergies: [data.knownAllergies] ,
-                medications: [data.medications]
+                knownAllergies: userData.knownAllergies?  data.knownAllergies : [data.knownAllergies] ,
+                medications: userData.medications? data.medications : [data.medications] 
               } ,
               headers: {
                 "Content-Type": "application/json",
@@ -91,7 +94,7 @@ function OfficeDets() {
           
             })
             .then((response)=>{
-              console.log('response' , response.data.data)
+              // console.log('response' , response.data.data)
               handleNextStep()
               reset()
           })

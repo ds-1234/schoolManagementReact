@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../../conf/conf';
 
@@ -193,7 +193,7 @@ function EditExpenses({ isOpen, onClose, expenseId, onSuccess }) {
 
         </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

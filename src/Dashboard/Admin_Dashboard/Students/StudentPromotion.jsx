@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
 import axios from 'axios';
 import Table from '../../../Reusable_components/Table';
+import { toast } from 'react-toastify';
 
 function StudentPromotion() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -74,10 +75,25 @@ function StudentPromotion() {
   };
 
   const onSubmit = (data) => {
-    data.currentSession = currentSession;
     data.promoteSession = promoteSession ;
     data.selectedStudents = selectedUsers ;
-    console.log(data);
+    
+    axios({
+      method: 'POST' ,
+      url: `${BASE_URL}/user/studentPromotion` ,
+      data: {
+        users : data.selectedStudents.map((user) => ({id : user})) ,
+        promotedSession : data.promoteSession ,
+        className: [parseInt(data.promotionToClass)] 
+      } ,
+      headers: {'Content-Type' : 'application/json'} 
+    })
+    .then((res) => {
+      toast.success("Students promoted Successfully!")
+      reset()
+    })
+    .catch((err) => console.log(err)) ;
+
   };
 
   const columns = [
@@ -120,6 +136,14 @@ function StudentPromotion() {
       button: true,
     },
   ];
+
+  useEffect(() => {
+    if (selectedUsers.length === userList.length && userList.length > 0) {
+      setSelectAll(true);
+    } else {
+      setSelectAll(false);
+    }
+  } , [selectedUsers , userList])
 
   // const searchOptions = [
   //   { label: 'User ID', value: 'userId' },

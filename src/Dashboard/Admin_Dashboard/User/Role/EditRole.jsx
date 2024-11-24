@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
 
 function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
   
@@ -12,7 +13,7 @@ function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/role/getRole/${roleId}`, // API to get specific subject by ID
+      url: `${BASE_URL}/role/getRole/${roleId}`, // API to get specific subject by ID
       headers: {
         "Content-Type": "application/json",
       },
@@ -49,7 +50,7 @@ function EditSubject({ isOpen, onClose, roleId , onSuccess }) {
     e.preventDefault();
     axios({
       method: "post",
-      url: `http://localhost:8080/role/createRole/${roleId}`,
+      url: `${BASE_URL}/role/createRole/${roleId}`,
       headers: {
         "Content-Type": "application/json",
       },

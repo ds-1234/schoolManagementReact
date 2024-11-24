@@ -7,10 +7,12 @@ import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import TodayDate from '../../../Reusable_components/TodayDate';
 import FutureDates from '../../../Reusable_components/futureDates';
+import BASE_URL from '../../../conf/conf';
 
 const AddHomework = ({ isOpen, onClose }) => {
 
   const user = JSON.parse(sessionStorage.getItem('user'));
+  const teacherData = JSON.parse(sessionStorage.getItem('teacherData')) ;
   const [value, setValue] = useState(true);
   const [classes, setClasses] = useState([]);
   const [subjects , setSubjects] = useState([]) ;
@@ -31,7 +33,7 @@ const AddHomework = ({ isOpen, onClose }) => {
   const fetchCls = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/class/getClassList',
+      url: `${BASE_URL}/class/getClassList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -52,7 +54,7 @@ const AddHomework = ({ isOpen, onClose }) => {
   const fetchSub = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/subject/getSubjectList',
+      url: `${BASE_URL}/subject/getSubjectList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -71,7 +73,7 @@ const AddHomework = ({ isOpen, onClose }) => {
   }
 
   useEffect(() => {
-    setClasses(user.className)
+    setClasses(teacherData.classSubjectEntity.map((item) => parseInt(item?.classId)))
     fetchCls() ;
     fetchSub()
   } , [])
@@ -115,7 +117,7 @@ const AddHomework = ({ isOpen, onClose }) => {
   
     axios({
       method: 'post',
-      url: 'http://localhost:8080/homework/saveHomework',
+      url: `${BASE_URL}/homework/saveHomework`,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     })

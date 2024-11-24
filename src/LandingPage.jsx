@@ -9,6 +9,7 @@ import { Input } from '@nextui-org/react';
 import Button from './Reusable_components/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import BASE_URL from './conf/conf';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -22,23 +23,36 @@ function LandingPage() {
     getValues,
   } = useForm();
 
-  const handleRole = (id) => {
-    axios({
-      method: 'GET',
-      url: `http://localhost:8080/role/getRole/${id}`,
-      headers: {
-        'Content-Type': 'application/json'
+  const handleRole = async (id, userId) => {
+    try {
+      // Fetch role data
+      const roleResponse = await axios({
+        method: 'GET',
+        url: `${BASE_URL}/role/getRole/${id}`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const roleID = roleResponse.data.data.id;
+      const roleName = roleResponse.data.data.name;
+      console.log(roleName);
+  
+      // Fetch teacher data if role is 'Teacher'
+      if (roleID === 4) {
+        const teacherRes = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
+        sessionStorage.setItem('teacherData', JSON.stringify(teacherRes.data.data));
+        console.log(teacherRes.data.data); // Successfully resolved data
       }
-    })
-    .then((res) => {
-      let roleID = res.data.data.id;
-      let roleName = res.data.data.name;
-      console.log(roleName)
+  
+      toast.success('Successfully Logged In');
+  
+      // Navigate based on role
       switch (roleName) {
         case 'Teacher':
           navigate('/teacherDashboard');
           break;
-        case 'Student' :
+        case 'Student':
           navigate('/studentDashboard');
           break;
         case 'Parents':
@@ -47,23 +61,23 @@ function LandingPage() {
         case 'Admin':
           navigate('/admin');
           break;
-        case 'Guest' :
+        case 'Guest':
           navigate('/guestDashboard');
           break;
         default:
           navigate('/guestDashboard');
       }
-    })
-    .catch((err) => {
+    } catch (err) {
       toast.error('Role fetching error');
-      console.log(err)
-    });
+      console.error(err);
+    }
   };
+  
 
   const onSubmit = (data) => {
     axios({
       method: 'post',
-      url: `http://localhost:8080/user/login`,
+      url: `${BASE_URL}/user/login`,
       data: {
         userName: data.userId,
         password: data.password,
@@ -77,9 +91,7 @@ function LandingPage() {
       sessionStorage.setItem('username', res.data.data.userId);
       sessionStorage.setItem('role', res.data.data.role);
       sessionStorage.setItem('user', JSON.stringify(res.data.data));
-      toast.success('Successfully Logged In');
-
-      handleRole(roleID); // Pass the role ID to handleRole
+      handleRole(roleID , res.data.data.id); // Pass the role ID to handleRole
     })
     .catch((err) => {
       toast.error('Runtime error');

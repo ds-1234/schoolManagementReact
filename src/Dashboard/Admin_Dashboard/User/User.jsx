@@ -7,8 +7,10 @@ import { NavLink , useNavigate} from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../conf/conf';
 import view from '../../../assets/file.png'
+import { useUserContext } from '../../../hooks/UserContext';
 
 function User() {
+  const {setUserId} = useUserContext()
 
 const column = [
   {
@@ -44,7 +46,7 @@ const column = [
   {
     name: 'Action',
     cell: row => (
-      <div className='flex gap-2'>
+      <div className='flex gap-2 justify-right'>
       {
         row.role == 3 ?   
         <button
@@ -67,14 +69,24 @@ const column = [
         <img src={view} alt="view" className='h-8' />
         </button>
         :
-        ''
-      }
+        <div className='h-8 w-8'>
 
+        </div>
+      }
+      {
+        row.role == 3 ?   
+        <button
+        onClick={() => (handleEditClick(row.id , row.role , row.userId))}
+        >
+        <img src={edit} alt="Edit" className='h-8' />
+        </button>
+        :
         <button
         onClick={() => (handleEditClick(row.id))}
-      >
+        >
         <img src={edit} alt="Edit" className='h-8' />
-      </button>
+        </button>
+      }
 
       <button>
         <img src={deleteIcon} alt="Delete" className='h-8' />
@@ -164,13 +176,18 @@ const column = [
     navigate('/admin/addUser');
   }
 
-  const handleEditClick = (userId) => {
-    console.log('Editing user with ID:', userId);
-    navigate('/admin/editUser', {
-      state: {
-        userId :  userId
-      }
-    }) ;
+  const handleEditClick = (id , role , userId) => {
+    console.log('Editing user with ID:', id);
+    if(role == 3){
+      navigate('/admin/admissionForm')
+      setUserId(userId)
+    }else{
+      navigate('/admin/editUser', {
+        state: {
+          userId :  id
+        }
+      }) ;
+    }
   }
 
   return (

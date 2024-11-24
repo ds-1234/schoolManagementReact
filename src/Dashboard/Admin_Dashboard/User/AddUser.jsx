@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { toast , ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import { NavLink } from 'react-router-dom';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
@@ -98,7 +98,7 @@ const AddUser = () => {
         if(response.data.success){
              Promise.all(selectedStds.map(async (stdId) => {
              const studentData =  (await axios.get(`${BASE_URL}/user/getUser/${stdId}`)).data.data ;
-             await axios.put(`${BASE_URL}/user/updateUser`, {...studentData , isParent: [response.data.data.id]}, {
+             await axios.post(`${BASE_URL}/user/createUser`, {...studentData , isParent: [response.data.data.id]}, {
               headers: { "Content-Type": "application/json" }
             });
           }));
@@ -106,6 +106,7 @@ const AddUser = () => {
         reset()
         toast.success("Successfully Add User");
         setValue(true)
+        setSelectedStds([])
     })
     .catch(err=>{
         console.log(err,'error:')
@@ -117,9 +118,8 @@ const AddUser = () => {
 
     // Fetch countries
     useEffect(() => {
-      axios.get('https://countriesnow.space/api/v0.1/countries/positions')
+      axios.get(`${BASE_URL}/area/getCountryList`)
         .then((response) => {
-          console.log(response.data.data);
           setCountries(response.data.data)
         })
         .catch((error) => console.error("Error fetching countries:", error));
@@ -128,10 +128,11 @@ const AddUser = () => {
     // Fetch states when country changes
     useEffect(() => {
       if (selectedCountry) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/states', { country: selectedCountry })
-          .then((response) => {
-            console.log(response.data.data);
-            setStates(response.data.data.states)
+        axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
+          .then((response) => {  
+            setStates(response.data.data)
+            console.log(states);
+            
           })
           .catch((error) => console.error("Error fetching states:", error));
       }
@@ -140,9 +141,8 @@ const AddUser = () => {
     // Fetch cities when state changes
     useEffect(() => {
       if (selectedState) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/state/cities', { country: selectedCountry, state: selectedState })
+        axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
           .then((response) => {
-            console.log(response.data.data);
             setCities(response.data.data)
           })
           .catch((error) => console.error("Error fetching cities:", error));
@@ -319,7 +319,7 @@ const AddUser = () => {
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
-              <option key={country.iso2} value={country.name}>{country.name}</option>
+              <option key={country.id} value={country.id}>{country.name}</option>
             ))}
           </select>
           {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
@@ -337,7 +337,7 @@ const AddUser = () => {
           >
             <option value="">Select State</option>
             {states.map((option) => (
-              <option key={option.name} value={option.name}>{option.name}</option>
+              <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
           {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
@@ -355,7 +355,7 @@ const AddUser = () => {
           >
             <option value="">Select City</option>
             {cities.map((city) => (
-              <option key={city} value={city}>{city}</option>
+              <option key={city.id} value={city.id}>{city.name}</option>
             ))}
           </select>
           {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
@@ -505,7 +505,7 @@ const AddUser = () => {
 
         {/* Submit Button */}
         <Button type='submit' className=' p-0 text-center mt-10' onClick={handleSubmit(onSubmit)}/>
-      <ToastContainer/>
+      {/* <ToastContainer/> */}
     </div>
     </div>
   );

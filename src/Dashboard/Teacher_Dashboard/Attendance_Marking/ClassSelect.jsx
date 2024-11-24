@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import classImg from '../../../assets/class.png'
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 const ClassSelect = () => {
   const user = JSON.parse(sessionStorage.getItem('user'))
-  console.log(user);
+  const teacherData = JSON.parse(sessionStorage.getItem('teacherData')) ;
   
   const [classMap, setClassMap] = useState({});
   const [classes , setClasses] = useState([])
@@ -16,22 +17,31 @@ const ClassSelect = () => {
     const fetchCls = () => {
       axios({
         method: 'GET',
-        url: 'http://localhost:8080/class/getClassList',
+        url: `${BASE_URL}/class/getClassList`,
         headers: {
           'Content-Type': 'application/json',
         },
       })
         .then((response) => {
           console.log('Data from API:', response.data.data);
-          const classes = {} ;
-          response.data.data.forEach((cls) => {
-            if(user.className.includes(cls.id)){
-              classes[cls.id] = cls;
-            }
-          })
-          console.log(classes);
-          setClassMap(classes)
-          setClasses(Object.values(classes))
+        
+          const classSubjectIds = teacherData.classSubjectEntity.map((item) => parseInt(item?.classId));
+
+          console.log(classSubjectIds);
+          
+        // Filter and map classes from the API based on class IDs
+        const filteredClasses = response.data.data.filter((cls) =>
+          classSubjectIds.includes(cls.id)
+        );
+
+        // Create a map for easy access and set the state
+        const classesMap = {};
+        filteredClasses.forEach((cls) => {
+          classesMap[cls.id] = cls;
+        });
+
+        setClassMap(classesMap);
+        setClasses(filteredClasses);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);

@@ -19,7 +19,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   } = useForm();
 
   const [toggleValue, setToggleValue] = useState(true);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const [documents , setDocuments] = useState([]) ;
 
@@ -65,6 +65,8 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
     formData.append('id' , existingDocs? existingDocs.id : null);
     formData.append('file', file);
     formData.append('filesName', documentName);
+    formData.append('moduleName' , documentName);
+    formData.append('moduleId' , 0);
 
     try {
       await axios.post(`${BASE_URL}/document/saveDocument/${userId}`, formData, {

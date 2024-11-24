@@ -12,8 +12,7 @@ const ViewParent = () => {
   const { userId } = location.state; // Get user ID from the route state
   const [user, setUser] = useState(null);
   const [childrenDetails, setChildrenDetails] = useState([]); 
-  const [className , setClassName] = useState(null) ;
-  // const [selectedCls , setSelectedCls] = useState() ;
+  const [classData , setClassData] = useState({})
 
   // Fetch user data based on userId
   useEffect(() => {
@@ -30,28 +29,21 @@ const ViewParent = () => {
           );
 
           const childrenData = await Promise.all(childPromises);
-          setChildrenDetails(childrenData.map(childRes => childRes.data.data));
+          const childrenDetailsArray = childrenData.map(childRes => childRes.data.data);
+          setChildrenDetails(childrenDetailsArray);
+          
+
+          // Fetch class details for each child
+          for (const child of childrenDetailsArray) {
+            const classResponse = await axios.get(`${BASE_URL}/class/getClass/${child.className}`);
+            setClassData(prev => ({ ...prev, [child.userId]: classResponse.data.data }));
+          }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
     fetchUserData();
-
-    const fetchClasses = async() => {
-      await axios({
-        method: "GET" ,
-        url: `${BASE_URL}/class/getClass/${childrenDetails.className[0]}`,
-        headers: {'Content-Type' : 'application/json'} 
-      })
-      .then((res) => setClassName(res.data.data))
-      .catch((err) => console.log(err))
-    }
-
-   if(childrenDetails){
-    fetchClasses() ;
-    console.log('id:' , className, 'res:' , className );
-   }
     
   }, [userId]);
 
@@ -93,14 +85,14 @@ const ViewParent = () => {
             <div className="flex items-center mb-2 mt-4 ">
               <img src={child.gender === "Male" ? maleImg : femaleImg} alt="Child" className="w-12 h-12 rounded-full mr-4" />
               <div>
-                <p className='flex flex-col'><strong>{child.firstName} {child.lastName}</strong>{className?.name} , {className?.section}</p>
+                <p className='flex flex-col'><strong>{child.firstName} {child.lastName}</strong>{classData[child.userId]?.name}, {classData[child.userId]?.section}</p>
               </div>
             </div>
             <p className="flex flex-col"><strong>Roll No: </strong>{child.rollNumber}</p>
             <p className="flex flex-col"><strong>Gender:</strong> {child.gender}</p>
             <p className="flex flex-col"><strong>Date of Joined:</strong> {new Date(child.admissionDate).toLocaleDateString()}</p>
             <div className="flex gap-2 mt-2">
-              <button className="px-4 py-1 bg-green-500 text-white rounded-lg">Add Fees</button>
+              {/* <button className="px-4 py-1 bg-green-500 text-white rounded-lg">Add Fees</button> */}
               <button
                 className="px-4 py-1 bg-blue-500 text-white rounded-lg"
                 onClick={() => navigate('/admin/studentDetails', { state: {userId: child.userId } })}

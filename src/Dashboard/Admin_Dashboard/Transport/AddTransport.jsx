@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import Button from '../../../Reusable_components/Button'
 import axios from 'axios';
-import {toast , ToastContainer } from 'react-toastify';
+import {toast } from 'react-toastify';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
@@ -157,7 +157,7 @@ function AddTransport() {
             className="px-8 bg-[#ffae01] hover:bg-[#042954]"
             label="Reset"
           />
-          <ToastContainer/>
+          {/* <ToastContainer/> */}
         </div>
       </form>
     </div>

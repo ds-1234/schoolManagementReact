@@ -30,85 +30,86 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [selectedStds , setSelectedStds] = useState([]) ;
   const [stds , setStds] = useState([]) ;
 
-  useEffect(() => {
-    const fetchData = async() =>
-    await axios({
-      method: "GET",
-      url: `${BASE_URL}/user/getUser/${userId}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        const userData = response.data.data;
-        const formattedData = {
-          ...userData,
-          dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : ''
-        };
-        setSelectedCountry(userData.country || '');
-        setSelectedState(userData.state || '');
-        setSelectedCity(userData.city || '') ;
-      
-        // Reset the form with the prefilled data
-        reset(formattedData);
+  const fetchLocationData = () => {
+    axios.get(`${BASE_URL}/area/getCountryList`)
+      .then((res) => {
+        setCountries(res.data.data);
+
+        // Fetch states if a country is selected
+        if (selectedCountry) {
+          return axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
+        }
+      })
+      .then((stateResponse) => {
+        if (stateResponse) {
+          setStates(stateResponse.data.data);
+
+          // Fetch cities if a state is selected
+          if (selectedState) {
+            return axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
+          }
+        }
+      })
+      .then((cityResponse) => {
+        if (cityResponse) {
+          setCities(cityResponse.data.data);
+        }
       })
       .catch((error) => {
-        console.error("Error fetching user:", error);
+        toast.error("Error fetching location data");
+        console.error(error);
       });
+  };
 
-      fetchData() ;
+  // Fetch teacher details after fetching countries, states, and cities
+  const fetchUserData =  async() => {
+    try {
+      const response =  await axios.get(`${BASE_URL}/user/getUser/${userId}`);
+      const userData = response.data.data;
 
-      const fetchStds = async() =>{
-        await axios({
-          method: "GET" ,
-          url: `${BASE_URL}/user/getUserList` ,
-          headers: {'Content-Type' : 'application/json'}
-        })
-        .then((res) => {
-          setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true)) ;
-        })
-        .catch((err) => console.log(err)) ;
-      }
-  
-      fetchStds() ;
-  }, [userId, reset]);
+      const formattedData = {
+        ...userData,
+        dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
+      };
 
-    // Fetch countries
-    useEffect(() => {
-      axios.get('https://countriesnow.space/api/v0.1/countries/positions')
-        .then((response) => {
-          console.log(response.data.data);
-          setCountries(response.data.data)
-        })
-        .catch((error) => console.error("Error fetching countries:", error));
-    }, []);
+      setSelectedCountry(userData.country) ;
+        setSelectedState(userData.state) ;
+        setSelectedCity(userData.city) ;
+     
+        if(userData){
+          reset(formattedData) ;
+        }
 
-    // Fetch states when country changes
-    useEffect(() => {
-      if (selectedCountry) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/states', { country: selectedCountry })
-          .then((response) => {
-            console.log(response.data.data);
-            setStates(response.data.data.states)
-          })
-          .catch((error) => console.error("Error fetching states:", error));
-      }
-    }, [selectedCountry]);
-  
-    // Fetch cities when state changes
-    useEffect(() => {
-      if (selectedState) {
-        axios.post('https://countriesnow.space/api/v0.1/countries/state/cities', { country: selectedCountry, state: selectedState })
-          .then((response) => {
-            console.log(response.data.data);
-            setCities(response.data.data)
-          })
-          .catch((error) => console.error("Error fetching cities:", error));
-      }
-    }, [selectedCountry, selectedState]);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
-  const onSubmit = (data) => {
-    axios({
+  const fetchStds = () => {
+    try {
+      const res = axios.get(`${BASE_URL}/user/getUserList`);
+      setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if(selectedRole === 5){
+    fetchStds();
+  }
+
+  // UseEffect to ensure proper order
+  useEffect(() => {
+    const initializeData =  () => {
+       fetchLocationData(); 
+      fetchUserData();
+    };
+    initializeData();
+  }, [userId, selectedCountry, selectedState]);
+
+
+  const onSubmit = async (data) => {
+    await axios({
       method: "post",
       url: `${BASE_URL}/user/updateUser`,
       headers: {
@@ -118,26 +119,30 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         ...data,
         role :  selectedRole,
         isParent : selectedRole === 5 ? selectedStds : null ,
+        country: data.country ,
+        state: data.state ,
+        city: data.city ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
       }
     })
     .then((response) => {
-      const updatePromises = selectedStds.map(async(stdId) => {
+      if(selectedRole === 5){
+        const updatePromises = selectedStds.map(async(stdId) => {
         const {data : stdData} = await axios.get(`${BASE_URL}/user/getUser/${stdId}`) ;
-        await axios.post(`${BASE_URL}/user/updateUser`, { ...stdData , isParent: [userId] } , {
+        await axios.post(`${BASE_URL}/user/createUser`, { ...stdData , isParent: [userId] } , {
           headers: {'Content-Type' : 'application/json'} 
         })
       });
   
       // Execute all student updates in parallel
       Promise.all(updatePromises)
+    }})
       .then(() => {
-        toast.success("User Updated Successfully !")
         setSelectedStds([]) ;
+        toast.success("User Updated Successfully !")
         reset() ;
         handleNext() ;
       })
-    })
     .catch((error) => {
         console.error("Error updating user:", error);
       });
@@ -155,6 +160,37 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
   return (
     <div>
+      {/* Map Parent to Children */}
+      {selectedRole == 5 && (
+        <div className="mb-6 mt-4 relative">
+        <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
+        <div 
+          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
+          onClick={() => {
+            setStdDropdown(!stdDropdown)
+          }}
+        >
+          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+        {stdDropdown && (
+          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
+            {stds.map(std => (
+              <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectedStds?.includes(std.id)}
+                  onChange={() => handleCheckboxChange(std.id)}
+                  className="mr-2"
+                />
+                {std.firstName} {std.lastName}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+      )}
+
       <h3 className="text-xl font-semibold mb-2 text-gray-900">Basic Details</h3>
       <form  className='grid grid-cols-4 mt-5 gap-6'>
         <div className="flex flex-col px-1">
@@ -276,11 +312,11 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('country', { required: 'Country is required' })}
             value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
+            onChange={(e) => setSelectedCountry(e.target.value)}          
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
-              <option key={country.iso2} value={country.name}>{country.name}</option>
+              <option key={country.id} value={country.id}>{country.name}</option>
             ))}
           </select>
           {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
@@ -298,7 +334,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           >
             <option value="">Select State</option>
             {states.map((option) => (
-              <option key={option.name} value={option.name}>{option.name}</option>
+              <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
           {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
@@ -316,7 +352,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           >
             <option value="">Select City</option>
             {cities.map((city) => (
-              <option key={city} value={city}>{city}</option>
+              <option key={city.id} value={city.id}>{city.name}</option>
             ))}
           </select>
           {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
@@ -431,37 +467,6 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             label="Cancel" className='px-6 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
       </div>
-
-      {/* Map Parent to Children */}
-      {selectedRole == 5 && (
-        <div className="mb-4 mt-4 relative">
-        <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
-        <div 
-          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
-          onClick={() => {
-            setStdDropdown(!stdDropdown)
-          }}
-        >
-          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
-          <FontAwesomeIcon icon={faAngleDown} />
-        </div>
-        {stdDropdown && (
-          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
-            {stds.map(std => (
-              <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedStds?.includes(std.id)}
-                  onChange={() => handleCheckboxChange(std.id)}
-                  className="mr-2"
-                />
-                {std.firstName} {std.lastName}
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-      )}
 
     </div>
   );
