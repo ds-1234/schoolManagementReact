@@ -19,7 +19,7 @@ const StdsAttendance = () => {
         headers: { 'Content-Type': 'application/json' },
       });
       const filteredStds = response.data.data.filter(user => user.role === 3);
-      const filteredStudents = filteredStds.filter((std) => std.className === classItem.id);
+      const filteredStudents = filteredStds.filter((std) => std.className?.includes(classItem.id));
       setStudents(filteredStudents);
     } catch (error) {
       console.error('Error fetching data:', error);
