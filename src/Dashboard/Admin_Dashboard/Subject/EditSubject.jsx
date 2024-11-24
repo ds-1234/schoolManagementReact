@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -140,7 +140,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
           />
         </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

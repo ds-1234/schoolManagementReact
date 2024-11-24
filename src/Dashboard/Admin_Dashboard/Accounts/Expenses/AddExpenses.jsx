@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import Button from '../../../../Reusable_components/Button';
@@ -256,7 +256,7 @@ const handleSelectPaymentMethod = (method) => {
               className="px-8 bg-[#ffae01] hover:bg-[#042954]"
               label="Reset"
             />
-            <ToastContainer />
+            {/* <ToastContainer /> */}
           </div>
         </form>
       </div>

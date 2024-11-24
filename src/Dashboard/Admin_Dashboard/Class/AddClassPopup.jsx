@@ -2,7 +2,7 @@ import { Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../Reusable_components/Button";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
@@ -137,7 +137,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           <Button type='submit' className='w-full text-center' label="Add Class" />
         </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };

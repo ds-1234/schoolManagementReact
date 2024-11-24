@@ -105,15 +105,14 @@ import TchDetails from './Dashboard/Admin_Dashboard/User/Teacher_Form/TchDetails
 import BookIssue from './Dashboard/Admin_Dashboard/Books/BookIssue/BookIssue';
 import TchBookIssue from './Dashboard/Teacher_Dashboard/Library/TchBookIssue';
 import StdBookIssue from './Dashboard/Student_Dashboard/Library/StdBookIssue';
-
 import StaffAttendanceStatus from './Dashboard/Admin_Dashboard/StaffAttendanceStatus/StaffAttendanceStatus';
-
 import ViewParent from './Dashboard/Admin_Dashboard/User/ViewParent';
 import TchExamResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/TchExamResult';
 import StdExamResult from './Dashboard/Student_Dashboard/Examination/Exam Result/StdExamResult';
 import StaffAttendance from './Dashboard/Admin_Dashboard/Staff Attendance/StaffAttendance';
 import AllStaffAttendance from './Reusable_components/AllStaffAttendance';
 
+import Children from './Dashboard/Parent_Dashboard/Children';
 
 
 
@@ -207,7 +206,6 @@ function App() {
             <Route path='TchDetails' element={<TchDetails/>}/>
             <Route path='bookissue' element={<BookIssue/>}/>
             <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
-
             <Route path = 'ViewParent' element= {<ViewParent/>}/> 
             <Route path = 'StaffAttendance' element= {<StaffAttendance/>}/> 
           </Route>
@@ -269,6 +267,7 @@ function App() {
             }
           >
             <Route index element={<Parent />} />
+            <Route path = 'childDetail' element ={<Children/>} />
           </Route>
         {/* Guest Dashboard Routes */}
         <Route

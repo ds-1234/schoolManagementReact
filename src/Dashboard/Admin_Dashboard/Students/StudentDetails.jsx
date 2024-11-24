@@ -17,7 +17,7 @@ function StudentDetails() {
   const [transport , setTransport] = useState({})
   const [hostelRoom , setHostelRoom] = useState({}) 
   const [documents , setDocuments] = useState({})
-  const [user , setUser] = useState(null) ;
+  const [siblingsDets , setSiblingDets] = useState([]) ;
 
   useEffect(() => {
     const fetchData = () => {
@@ -98,21 +98,29 @@ function StudentDetails() {
         }
       };
 
+      if (studentDetails?.siblings?.length > 0) {
+        const siblingIds = studentDetails.siblings;
+  
+        // Fetch each sibling's details
+        Promise.all(
+          siblingIds.map((id) =>
+            axios.get(`${BASE_URL}/user/getUser/${id}`).then((res) => res.data.data)
+          )
+        )
+          .then((data) => {
+            setSiblingDets(data) ;
+            console.log(siblingsDets);
+            
+          })
+          .catch((error) => console.error('Error fetching sibling details:', error));
+      }
+
       fetchHostel() ;
       fetchTransport() ;
       fetchHostelRooms()
       fetchDocuments()
     }
   } , [studentDetails])
-
-  const fetchUsers = async (id) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/user/getUser/${id}`);
-      setUser(response.data.data);
-    } catch (error) {
-      console.error('Error fetching documents:', error);
-    }
-  };
 
   const handleDownload = (attachmentName) => {
     const fullPath = `${attachmentName}`; 
@@ -191,11 +199,9 @@ function StudentDetails() {
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Sibling Information</h3>
             <ul className="space-y-2 text-gray-600">
-              {studentDetails.siblings?.map((child , index) => {
-              // fetchUsers(child)  
-              (
-                <li><strong>{user?.firstName} {user?.lastName} : </strong>{user?.className[0]}</li>
-              )})}
+              {siblingsDets?.map((std , index) => {
+                <li key={std.id}><strong>{std.firstName} {std.lastName} : </strong>{std.className}</li>
+              })}
             </ul>
           </div>
 

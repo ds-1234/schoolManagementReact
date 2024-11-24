@@ -95,16 +95,12 @@ function AcademicDets() {
       const onSubmit = async (data) => {
         console.log(data);
 
-        if (JSON.stringify(data) === JSON.stringify(initialData)) {
-          // If no changes were made, just move forward
-          handleNextStep();
-          return;
-      }
         
         const userData = {
             ...data , 
             userId : userId ,
-            className: [data.className]
+            rollNumber : parseInt(data.rollNumber) ,
+            className: initialData.className[0] ? data.className :  [data.className]
           }
           await axios({
               method:"Post",
@@ -116,7 +112,7 @@ function AcademicDets() {
           
             })
             .then((response)=>{
-              console.log('response' , response.data.data)
+              // console.log('response' , response.data.data)
               handleNextStep()
               reset()
           })
@@ -141,7 +137,7 @@ function AcademicDets() {
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
             {...register('school')}
             value={selectedSchl}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setSelectedSchl(e.target.value)}
             placeholder = "Select School Branch "
             >
             <option value="" hidden>Select Branch </option>
@@ -158,7 +154,7 @@ function AcademicDets() {
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
             {...register('className')}
             value={selectedCls}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setSelectedCls(e.target.value)}
             >
             <option value="" hidden>Select Class </option>
             {classes.map(option => (

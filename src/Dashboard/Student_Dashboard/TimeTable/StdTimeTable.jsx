@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
 import TimetableGrid from '../../Admin_Dashboard/TimeTable/Class/TimetableGrid';
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 const StdTimetable = () => {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -14,7 +15,7 @@ const StdTimetable = () => {
     const fetchTimetable = async () => {
       try {
         // Fetch timetable data from API
-        const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
+        const response = await axios.get(`${BASE_URL}/timeTable/getTimeTable`);
 
         setTimetableData(response.data.data.filter((tt) => tt.className === user.className[0]))
         console.log(timetableData);
@@ -29,7 +30,7 @@ const StdTimetable = () => {
   }, [user.id]);
 
   const fetchCls = async () => {
-    await axios.get('http://localhost:8080/class/getClassList')
+    await axios.get(`${BASE_URL}/class/getClassList`)
       .then((response) => {
         const classes = {};
         response.data.data.forEach((cls) => {

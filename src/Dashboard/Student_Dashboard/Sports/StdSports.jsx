@@ -4,6 +4,7 @@ import CricketSt from '../../../assets/cricket.jpg';
 import FootballSt from '../../../assets/Football.jpg';
 import SportSt from '../../../assets/Sports.jpg';
 import { NavLink } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
 
 
 // Sports to image mapping
@@ -24,7 +25,7 @@ const StdSports = () => {
     const fetchPlayer = async () => {
       try {
         // Fetch playerlist data from API
-        const response = await axios.get(`http://localhost:8080/players/getPlayersList`);
+        const response = await axios.get(`${BASE_URL}/players/getPlayersList`);
         
         // Log the user data to check if it's being fetched correctly
         console.log(user,'user');

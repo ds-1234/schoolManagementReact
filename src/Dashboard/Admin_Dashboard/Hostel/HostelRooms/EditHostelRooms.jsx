@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
@@ -208,7 +208,7 @@ console.log(hostelroomId,'hostelroomId')
 {          console.log(selectedcostofbed,'sef')
 }        </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };
