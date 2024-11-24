@@ -7,6 +7,9 @@ import Schedules from './StdDashboardComponents/Schedules'; // Import the Schedu
 import HomeWorks from './StdDashboardComponents/HomeWorks'; // Import the HomeWorks component
 import ClassFaculties from './StdDashboardComponents/ClassFaculties'; // Import the ClassFaculties component
 import LeaveStatus from './StdDashboardComponents/LeaveStatus'; // Import the LeaveStatus component
+import ExamResult from './StdDashboardComponents/ExamResult';
+import FeesReminder from './StdDashboardComponents/FeesReminder';
+import NoticeBoard from './StdDashboardComponents/NoticeBoard';
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -65,9 +68,32 @@ function Student() {
       </div>
 
       {/* Section: Leave Status */}
-      <div className="flex flex-col mt-6">
+      {/* <div className="flex flex-col mt-6">
         <LeaveStatus />
       </div>
+      <div className="flex flex-col mt-6">
+        <ExamResult />
+      </div> */}
+
+      <div className="flex">
+        {/* Profile Component in the Left Corner */}
+        <div className="w-1/2">
+        <LeaveStatus />
+
+        </div>
+        
+        {/* Attendance Component in the Right Side */}
+        <div className="w-1/2 ml-6">
+        <ExamResult />
+        </div>
+
+    </div>
+        <div className="flex flex-col mt-6">
+        <FeesReminder/>
+      </div> 
+        <div className="flex flex-col mt-6">
+        <NoticeBoard/>
+      </div> 
     </div>
   );
 }
