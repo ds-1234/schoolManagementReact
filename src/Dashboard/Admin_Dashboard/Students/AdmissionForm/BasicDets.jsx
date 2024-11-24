@@ -33,37 +33,45 @@ const {
     const navigate = useNavigate()
 
 
-  // Function to fetch countries, states, and cities synchronously
-  const fetchLocationData = async () => {
-    await axios.get(`${BASE_URL}/area/getCountryList`)
+    const fetchLocationData = async() => {
+      await axios({
+        method:'GET' ,
+        url: `${BASE_URL}/area/getCountryList` ,
+        headers: {'Content-Type' : 'application/json'} 
+      })
       .then((res) => {
-        setCountries(res.data.data);
-
-        // Fetch states if a country is selected
-        if (selectedCountry) {
-          return axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
-        }
+        setCountries(res.data.data) ;
       })
-      .then((stateResponse) => {
-        if (stateResponse) {
-          setStates(stateResponse.data.data);
-
-          // Fetch cities if a state is selected
-          if (selectedState) {
-            return axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
-          }
-        }
+      .catch((err) => {
+        console.log("Error in fetching countries" , err);
       })
-      .then((cityResponse) => {
-        if (cityResponse) {
-          setCities(cityResponse.data.data);
-        }
-      })
-      .catch((error) => {
-        toast.error("Error fetching location data");
-        console.error(error);
-      });
-  };
+    }
+  
+    useEffect(() => {
+      const fetchStates = () => {
+        axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
+        .then((res) => {
+          setStates(res.data.data) ;
+        })
+        .catch((err) => console.error(err)) 
+      }
+  
+      const fetchCities = () => {
+        axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
+        .then((res) => {
+          setCities(res.data.data) ;
+        })
+        .catch((err) => console.error(err)) 
+      }
+      
+      if(selectedCountry){
+        fetchStates() ;
+      }
+  
+      if(selectedState){
+        fetchCities() ;
+      }
+    } , [selectedCountry , selectedState])
 
   // Fetch student details after fetching countries, states, and cities
   const fetchStudentDetails = async () => {
@@ -73,17 +81,19 @@ const {
       const response = await axios.get(`${BASE_URL}/user/getStudentDetails/${userId}`);
       const studentData = response.data.data;
 
+      const formattedData = {
+        ...studentData ,
+        dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth).toLocaleString().split(',')[0] : '',
+      };
+
       if (studentData) {
         setUserData(studentData);
-        // Match IDs for country, state, and city
-        setSelectedCountry(studentData.country) ;
-        setSelectedState(studentData.state) ;
-        setSelectedCity(studentData.city) ;
+        setSelectedCountry(studentData.country);
+        setSelectedState(studentData.state);
+        setSelectedCity(studentData.city);
 
-          reset({
-            ...studentData ,
-            dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
-          });
+          reset(formattedData)
+          
       }
     } catch (error) {
       console.error("Error fetching student details:", error);
@@ -92,12 +102,12 @@ const {
 
   // UseEffect to ensure proper order
   useEffect(() => {
-    const initializeData =  () => {
-       fetchLocationData(); // Fetch location data first
-      fetchStudentDetails() ;
+    const initializeData =  async() => {
+      await fetchLocationData(); // Fetch location data first
+      await fetchStudentDetails() ;
     };
     initializeData();
-  }, [userId, selectedCountry, selectedState]);
+  }, [userId]);
 
   const onSubmit = async (data) => {
 

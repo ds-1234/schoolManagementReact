@@ -85,7 +85,7 @@ useEffect(() => {
   };
 
   const sections = [
-    { component: <BasicDetails handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} selectedRole = {selectedRole}  userId={userId}/>},
+    { component: <BasicDetails handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} selectedRole = {selectedRole} userId={userId}/>},
     {component: <ExtraDets   handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole}  /> } , 
     { component: <Qualifications  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole}  /> },
     { component: <HRDets  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} /> },

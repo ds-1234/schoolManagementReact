@@ -82,7 +82,7 @@ const column = [
         </button>
         :
         <button
-        onClick={() => (handleEditClick(row.id))}
+        onClick={() => (handleEditClick(row.id , row.role , row.userId))}
         >
         <img src={edit} alt="Edit" className='h-8' />
         </button>

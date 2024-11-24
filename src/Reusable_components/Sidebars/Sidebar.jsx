@@ -768,7 +768,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
              {/* StaffAttendance Section */}
-             <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+             {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/StaffAttendance"
               className={({ isActive }) =>
@@ -779,7 +779,7 @@ const Sidebar = () => {
                 Staff Attendance
               
             </NavLink>
-          </li>
+          </li> */}
 
 
 

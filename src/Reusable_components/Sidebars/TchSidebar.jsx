@@ -35,7 +35,7 @@ function TchSidebar() {
       {/* Attendance Section */}
       <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
         <NavLink
-          to="/teacherDashboard/classSelect"
+          to="/teacherDashboard/select"
           className={({ isActive }) =>
             `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
           }
@@ -162,7 +162,7 @@ function TchSidebar() {
               
             </NavLink>
           </li>
-                             {/* StaffAttendance Section */}
+                             {/* StaffAttendance Section
                              <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/teacherdashboard/AllStaffAttendance"
@@ -174,7 +174,7 @@ function TchSidebar() {
                 Staff Attendance
               
             </NavLink>
-          </li>
+          </li> */}
       </ul>
       </nav>
       </div>
