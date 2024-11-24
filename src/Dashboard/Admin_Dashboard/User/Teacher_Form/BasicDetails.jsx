@@ -30,36 +30,46 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [selectedStds , setSelectedStds] = useState([]) ;
   const [stds , setStds] = useState([]) ;
 
-  const fetchLocationData = () => {
-    axios.get(`${BASE_URL}/area/getCountryList`)
+
+  const fetchLocationData = async() => {
+    await axios({
+      method:'GET' ,
+      url: `${BASE_URL}/area/getCountryList` ,
+      headers: {'Content-Type' : 'application/json'} 
+    })
+    .then((res) => {
+      setCountries(res.data.data) ;
+    })
+    .catch((err) => {
+      console.log("Error in fetching countries" , err);
+    })
+  }
+
+  useEffect(() => {
+    const fetchStates = () => {
+      axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
       .then((res) => {
-        setCountries(res.data.data);
+        setStates(res.data.data) ;
+      })
+      .catch((err) => console.error(err)) 
+    }
 
-        // Fetch states if a country is selected
-        if (selectedCountry) {
-          return axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`);
-        }
+    const fetchCities = () => {
+      axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
+      .then((res) => {
+        setCities(res.data.data) ;
       })
-      .then((stateResponse) => {
-        if (stateResponse) {
-          setStates(stateResponse.data.data);
+      .catch((err) => console.error(err)) 
+    }
+    
+    if(selectedCountry){
+      fetchStates() ;
+    }
 
-          // Fetch cities if a state is selected
-          if (selectedState) {
-            return axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`);
-          }
-        }
-      })
-      .then((cityResponse) => {
-        if (cityResponse) {
-          setCities(cityResponse.data.data);
-        }
-      })
-      .catch((error) => {
-        toast.error("Error fetching location data");
-        console.error(error);
-      });
-  };
+    if(selectedState){
+      fetchCities() ;
+    }
+  } , [selectedCountry , selectedState])
 
   // Fetch teacher details after fetching countries, states, and cities
   const fetchUserData =  async() => {
@@ -72,13 +82,13 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth).toLocaleString().split(',')[0] : '',
       };
 
-      setSelectedCountry(userData.country) ;
-        setSelectedState(userData.state) ;
-        setSelectedCity(userData.city) ;
-     
-        if(userData){
-          reset(formattedData) ;
-        }
+      if (userData) {
+        if (!selectedCountry) setSelectedCountry(userData.country);
+        if (!selectedState) setSelectedState(userData.state);
+        if (!selectedCity) setSelectedCity(userData.city);
+  
+        reset(formattedData);
+      }
 
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -105,7 +115,8 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       fetchUserData();
     };
     initializeData();
-  }, [userId, selectedCountry, selectedState]);
+  }, [userId]);
+
 
 
   const onSubmit = async (data) => {

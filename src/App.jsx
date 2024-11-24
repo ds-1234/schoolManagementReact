@@ -113,6 +113,7 @@ import StaffAttendance from './Dashboard/Admin_Dashboard/Staff Attendance/StaffA
 import AllStaffAttendance from './Reusable_components/AllStaffAttendance';
 
 import Children from './Dashboard/Parent_Dashboard/Children';
+import SelectTile from './Dashboard/Teacher_Dashboard/Attendance_Marking/Select';
 
 
 
@@ -248,13 +249,14 @@ function App() {
             <Route path='teaholidays' element = {<TeaHolidays/>} />
             <Route path='teasports' element = {<TeaSports/>} />
             <Route path='teanotice' element = {<TeaNotice/>} />
+            <Route path='select' element = {<SelectTile/>}/> 
             <Route path='classSelect' element = {<ClassSelect/>}/>
             <Route path='attendance/:className/:section' element={<Attendance/>}/>
             <Route path='profile' element={<TchProfile/>} />
             <Route path='TeaEvent' element={<TeaEvent/>} />
             <Route path='tchBookIssue' element={<TchBookIssue/>} />
             <Route path='tchExamResult' element={<TchExamResult/>} />
-            <Route path='AllStaffAttendance' element={<AllStaffAttendance/>} />
+            <Route path='StaffAttendance' element={<AllStaffAttendance/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

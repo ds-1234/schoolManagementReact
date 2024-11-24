@@ -57,9 +57,9 @@ function Registration() {
   const onSubmit = async (data) => {
     const result =  registerUser({
       ...data ,
-      country: countries.find((country) => country.id === parseInt(data.country))?.name ,
-      state: states.find((state) => state.id === parseInt(data.state))?.name ,
-      city: cities.find((city) => city.id === parseInt(data.city))?.name ,
+      country: data.country,
+      state: data.state,
+      city: data.city ,
        role: 1 ,
       isActive: "false" 
     });
