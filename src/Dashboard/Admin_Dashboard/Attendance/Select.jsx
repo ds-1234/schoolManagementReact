@@ -25,7 +25,7 @@ const Select = () => {
       {/* Teachers Tile */}
       <div 
         className="bg-white shadow-lg rounded-lg overflow-hidden w-72 h-auto hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105 p-8"
-        onClick={() => navigate('/admin/tchsAttendance')}>
+        onClick={() => navigate('/admin/StaffAttendance')}>
         <img src={teacherImg} alt="Teachers" className="w-full py-4 px-4 object-cover" />
         <div className="p-4 text-center">
           <h3 className="text-lg font-semibold">Teachers</h3>
