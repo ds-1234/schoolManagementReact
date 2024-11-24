@@ -33,13 +33,15 @@ const HeaderBar = () => {
             <header className="flex items-center w-full justify-between border-b border-gray-300">
             {/* Move Attendance to the start */}
             {att ? <Attendance /> : '_'}
-            
-            <div className='flex flex-col text-black items-end'>
-                <p><strong>{user.firstName} {user.lastName}</strong> </p>
-                <p>as <strong>{roleName}</strong> </p>
-            </div>
 
-            <Logout />
+            <div className = 'flex gap-2 items-center'>
+                <div className='flex flex-col text-black items-end'>
+                    <p><strong>{user.firstName} {user.lastName}</strong> </p>
+                    <p>as <strong>{roleName}</strong> </p>
+                </div>
+
+                <Logout />
+            </div>
             </header>
     );
 };
