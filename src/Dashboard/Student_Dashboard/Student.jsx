@@ -10,6 +10,7 @@ import LeaveStatus from './StdDashboardComponents/LeaveStatus'; // Import the Le
 import ExamResult from './StdDashboardComponents/ExamResult';
 import FeesReminder from './StdDashboardComponents/FeesReminder';
 import NoticeBoard from './StdDashboardComponents/NoticeBoard';
+import Syllabus from './StdDashboardComponents/Syllabus';
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -93,6 +94,9 @@ function Student() {
       </div> 
         <div className="flex flex-col mt-6">
         <NoticeBoard/>
+      </div> 
+        <div className="flex flex-col mt-6">
+        <Syllabus/>
       </div> 
     </div>
   );
