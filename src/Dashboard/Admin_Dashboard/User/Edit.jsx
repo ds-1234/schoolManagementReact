@@ -15,8 +15,8 @@ import Documents from './Teacher_Form/Documents';
 // import Button from '../../../Reusable_components/Button';
 
 function EditUser() {
-  const location = useLocation();
-  const { userId } = location.state || {};
+  // const location = useLocation();
+  // const { userId } = location.state || {};
 
 
   const [roles, setRoles] = useState([]);
@@ -85,7 +85,7 @@ useEffect(() => {
   };
 
   const sections = [
-    { component: <BasicDetails handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} selectedRole = {selectedRole}  userId={userId}/>},
+    { component: <BasicDetails handleNext={handleNext} handlePrevious={handlePrevious} currentStep={currentStep} selectedRole = {selectedRole} />},
     {component: <ExtraDets   handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole}  /> } , 
     { component: <Qualifications  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole}  /> },
     { component: <HRDets  handleNext={handleNext} handlePrevious={handlePrevious} userId={userId} currentStep={currentStep} selectedRole = {selectedRole} /> },
