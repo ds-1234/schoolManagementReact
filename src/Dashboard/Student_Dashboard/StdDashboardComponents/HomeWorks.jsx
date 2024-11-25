@@ -10,6 +10,8 @@ function HomeWorks() {
   const [filteredHomeworks, setFilteredHomeworks] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(''); // Track selected subject
 
+  console.log(user,'user')
+
   const classId = user.className[0]; // Directly get the class ID from the user's className array
 
   useEffect(() => {
