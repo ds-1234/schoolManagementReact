@@ -49,9 +49,10 @@ function Admin() {
     return Object.entries(tileData.data).map(([key, value]) => (
       <div
         key={key}
-        className="p-4 py-8 rounded-lg bg-white flex flex-col items-center shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
+        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
       >
-        <div className="flex items-center justify-center gap-2">
+        <h1 className="text-lg font-bold text-blue-950 mb-2">{key}</h1>
+        <div className="flex items-center gap-2">
           {/* Image */}
         <img
           src={userTypeImages[key]}
@@ -59,11 +60,13 @@ function Admin() {
           className="w-16 h-14 mb-4"
         />
 
-        {/* User Type */}
-        <h3 className="text-lg font-bold text-blue-950">{key}</h3>
+        <div className="flex flex-col">
+            {/* User Type */}
+            <h3 className="text-medium text-blue-950">Total</h3>
 
-        {/* Total Count */}
-        <p className="text-lg font-bold text-blue-950">{value.totalCount}</p>
+            {/* Total Count */}
+            <p className="text-lg font-bold text-blue-950">{value.totalCount}</p>
+        </div>
         </div>
 
         
@@ -97,12 +100,18 @@ function Admin() {
       </div>
 
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex gap-4">
         {/*Event Schedule Section*/ }
-      <Events userTypeImages={userTypeImages} />
+      <div className="w-1/3">
+        <Events userTypeImages={userTypeImages} />
+      </div>
 
       {/* Attendance View */}
-      <Attendance />
+      <div className="w-1/3">
+        <Attendance />
+      </div>
+
+      {/* Quick Links */}
       </div>
     </div>
   );

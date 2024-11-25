@@ -16,12 +16,13 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 function Attendance() {
   const [attendanceData, setAttendanceData] = useState([]);
+  const [staffAttendance , setStaffAttendance] = useState([]) ;
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState("Students");
   const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchAttendance = async () => {
+    const fetchStdAttendance = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/attendance/getAttendanceList`);
         setAttendanceData(response.data.data);
@@ -32,21 +33,29 @@ function Attendance() {
       }
     };
 
-    fetchAttendance();
+    const fetchStaffAttendance = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendance`);
+        setStaffAttendance(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching attendance data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchStdAttendance();
+    fetchStaffAttendance() ;
   }, []);
 
   // Filter attendance data based on the selected tab
   const filterDataByCategory = () => {
-    // if (selectedTab === "Students") {
-    //   return attendanceData.filter((entry) => entry.category === "Student");
-    // } else if (selectedTab === "Teachers") {
-    //   return attendanceData.filter((entry) => entry.category === "Teacher");
-    // } else if (selectedTab === "Staff") {
-    //   return attendanceData.filter((entry) => entry.category === "Staff");
-    // }
-    // return [];
-
-    return attendanceData ;
+    if (selectedTab === "Students") {
+      return attendanceData ;
+    } else if (selectedTab === "Staff") {
+      return staffAttendance ;
+    }
+    return [];
   };
 
   // Process attendance data to calculate status counts
@@ -58,10 +67,20 @@ function Attendance() {
       other: 0, 
     };
 
-    filteredData.forEach((entry) => {
-      const statusString = entry.attendenceStatus; 
-      const status = statusString.match(/=(\w+)/)?.[1]; 
+   
+      filteredData.forEach((entry) => {
+      const statusString = selectedTab === "Students" ? entry.attendenceStatus : entry.attendanceStatus ; 
+      console.log(statusString);
+      
+      let status;
+      if(selectedTab === "Students"){
+       status = statusString.match(/=(\w+)/)?.[1]; 
+      }else{
+        status = statusString?.toLowerCase() ;
+      }
 
+      console.log(status);
+      
       if (statusCounts[status] !== undefined) {
         statusCounts[status]++;
       } else {
@@ -99,9 +118,9 @@ function Attendance() {
     <div className="mt-4 rounded-md p-5 bg-white">
       <h1 className="text-xl text-black font-semibold mb-4">Attendance</h1>
 
-      {/* Tabs for Students, Teachers, Staff */}
+      {/* Tabs for Students, Staff */}
       <div className="flex space-x-4 border-b mb-10">
-        {["Students", "Teachers", "Staff"].map((tab) => (
+        {["Students",  "Staff"].map((tab) => (
           <button
             key={tab}
             className={`pb-2 px-4 border-b-2 ${
@@ -139,7 +158,9 @@ function Attendance() {
         )}
       </div>
 
-      <Button label="View More" onClick={() => navigate('/admin/attendance')} className="justify-right"/>
+     <div className="flex justify-end">
+     <Button label="View More" onClick={() => navigate('/admin/select')}/>
+     </div>
     </div>
   );
 }

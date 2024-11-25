@@ -257,7 +257,7 @@ const Profile = () => {
       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Documents</h3>
         <div className="space-y-4">
-          {documents.map((doc) => (
+          {documents.length > 0 ? documents?.map((doc) => (
             <div key={doc.id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
               <div className="flex items-center space-x-3">
                 <FontAwesomeIcon icon={faFilePdf} />
@@ -271,7 +271,7 @@ const Profile = () => {
                 <span>Download</span>
               </button>
             </div>
-          ))}
+          )) : ''}
         </div>
       </div>
 
