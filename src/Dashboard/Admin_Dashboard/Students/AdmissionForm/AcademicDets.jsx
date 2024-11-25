@@ -94,13 +94,15 @@ function AcademicDets() {
 
       const onSubmit = async (data) => {
         console.log(data);
+        console.log(data.className,'data.className')
+        console.log(initialData.className,'initialData.className[0]')
 
         
         const userData = {
             ...data , 
             userId : userId ,
             rollNumber : parseInt(data.rollNumber) ,
-            className: initialData.className[0] ? data.className :  [data.className]
+            className: initialData.className ? data.className :  [data.className]
           }
           await axios({
               method:"Post",
