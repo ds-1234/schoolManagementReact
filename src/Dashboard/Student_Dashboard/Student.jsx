@@ -60,7 +60,9 @@ function Student() {
 
       {/* HomeWorks Section */}
       <div className="flex flex-col mt-6">
-        <HomeWorks />
+        <HomeWorks
+        user = {user}
+         />
       </div>
 
       {/* Section: Class Faculties */}

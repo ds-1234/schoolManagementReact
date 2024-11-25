@@ -4,15 +4,15 @@ function ClassFaculties() {
   // Sample data for tiles
   const faculties = [
     { id: 1, image: 'https://via.placeholder.com/50', teacher: 'Mr. Sharma', subject: 'Mathematics', email: 'sharma@example.com' },
-    { id: 2, image: 'https://via.placeholder.com/50', teacher: 'Ms. Smith', subject: 'English', email: 'smith@example.com' },
-    { id: 3, image: 'https://via.placeholder.com/50', teacher: 'Dr. Brown', subject: 'Physics', email: 'brown@example.com' },
-    { id: 4, image: 'https://via.placeholder.com/50', teacher: 'Dr. Taylor', subject: 'Chemistry', email: 'taylor@example.com' },
-    { id: 5, image: 'https://via.placeholder.com/50', teacher: 'Mr. Gupta', subject: 'Biology', email: 'gupta@example.com' },
-    { id: 6, image: 'https://via.placeholder.com/50', teacher: 'Ms. Khan', subject: 'History', email: 'khan@example.com' },
-    { id: 7, image: 'https://via.placeholder.com/50', teacher: 'Mr. Kumar', subject: 'Geography', email: 'kumar@example.com' },
-    { id: 8, image: 'https://via.placeholder.com/50', teacher: 'Ms. Patel', subject: 'Chemistry', email: 'patel@example.com' },
-    { id: 9, image: 'https://via.placeholder.com/50', teacher: 'Dr. Singh', subject: 'Physics', email: 'singh@example.com' },
-    { id: 10, image: 'https://via.placeholder.com/50', teacher: 'Mr. Verma', subject: 'Mathematics', email: 'verma@example.com' }
+    // { id: 2, image: 'https://via.placeholder.com/50', teacher: 'Ms. Smith', subject: 'English', email: 'smith@example.com' },
+    // { id: 3, image: 'https://via.placeholder.com/50', teacher: 'Dr. Brown', subject: 'Physics', email: 'brown@example.com' },
+    // { id: 4, image: 'https://via.placeholder.com/50', teacher: 'Dr. Taylor', subject: 'Chemistry', email: 'taylor@example.com' },
+    // { id: 5, image: 'https://via.placeholder.com/50', teacher: 'Mr. Gupta', subject: 'Biology', email: 'gupta@example.com' },
+    // { id: 6, image: 'https://via.placeholder.com/50', teacher: 'Ms. Khan', subject: 'History', email: 'khan@example.com' },
+    // { id: 7, image: 'https://via.placeholder.com/50', teacher: 'Mr. Kumar', subject: 'Geography', email: 'kumar@example.com' },
+    // { id: 8, image: 'https://via.placeholder.com/50', teacher: 'Ms. Patel', subject: 'Chemistry', email: 'patel@example.com' },
+    // { id: 9, image: 'https://via.placeholder.com/50', teacher: 'Dr. Singh', subject: 'Physics', email: 'singh@example.com' },
+    // { id: 10, image: 'https://via.placeholder.com/50', teacher: 'Mr. Verma', subject: 'Mathematics', email: 'verma@example.com' }
   ];
 
   const tileWidth = 400; // Width for each tile
