@@ -21,7 +21,7 @@ const TimetablePage = () => {
       try {
         const response = await axios.get(`${BASE_URL}/timeTable/getTimeTable`);
         setTimetableData(response.data.data.filter((tt) => tt.className === classItem.id))
-         console.log(response.data.data);
+        //  console.log(response.data.data);
       } catch (error) {
         // setError(error.message || 'Something went wrong'); 
         console.log(error);
@@ -31,7 +31,7 @@ const TimetablePage = () => {
     };
 
     fetchTimetable();
-  }, [classItem , closeAddPopup]); 
+  }, []); 
 
   const handleAddClick = () => {
     openAddPopup()

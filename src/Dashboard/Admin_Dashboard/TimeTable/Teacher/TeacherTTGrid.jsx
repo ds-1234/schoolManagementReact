@@ -41,7 +41,7 @@ const TeacherTTGrid = ({ timetableData }) => {
     useEffect(() => {
       fetchCls() ;
       fetchSub() ;
-    })
+    } , [])
   const transformData = (data) => {
     const result = {};
     data.forEach((item, index) => {

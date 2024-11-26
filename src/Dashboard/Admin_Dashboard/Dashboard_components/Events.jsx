@@ -22,6 +22,8 @@ function Events({userTypeImages}) {
         fetchEvents() ;
       } , [])
 
+      const today = new Date();
+
   return (
     <div className="bg-white flex flex-col p-5 rounded-md mt-5">
         <div className="flex justify-between items-center">
@@ -48,9 +50,22 @@ function Events({userTypeImages}) {
             </h2>
             <div className="flex justify-between items-center border-b-1 mb-2">
             <p className="text-sm text-gray-500 mt-1 mb-1">
-            <i className="fas fa-calendar"></i>  {new Date().getDate() <= event.startDate
-                ? event.startDate
-                : `${event.startDate} - ${event.endDate}`}
+            <i className="fas fa-calendar"></i>  
+            {(() => {
+              const startDate = new Date(event.startDate);
+              const endDate = event.endDate ? new Date(event.endDate) : null;
+
+              if (startDate >= today) {
+                // If the event's start date is today or in the future
+                return startDate.toLocaleDateString();
+              } else if (endDate && endDate >= today) {
+                // If the event is ongoing (end date is in the future)
+                return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+              } else {
+                // Event is in the past, no need to show
+                return null;
+              }
+            })()}
             </p>
             <p className="text-sm text-gray-500 mt-1 mb-1">
               <i className="fas fa-clock"></i> {event.startTime} - {event.endTime}
