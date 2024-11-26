@@ -25,7 +25,7 @@ function Events({userTypeImages}) {
   return (
     <div className="bg-white flex flex-col p-5 rounded-md mt-5">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl text-black font-semibold">Schedules</h1>
+          <h1 className="text-lg text-blue-950 font-bold">Schedules</h1>
           <Button label="View More" className="text-sm py-0 px-0" onClick={() => navigate('/admin/Event')} />
         </div>
 

@@ -115,11 +115,11 @@ function Attendance() {
   };
 
   return (
-    <div className="mt-4 rounded-md p-5 bg-white">
-      <h1 className="text-xl text-black font-semibold mb-4">Attendance</h1>
+    <div className="mt-5 rounded-md p-5 bg-white">
+      <h1 className="text-lg text-blue-950 font-bold mb-4">Attendance</h1>
 
       {/* Tabs for Students, Staff */}
-      <div className="flex space-x-4 border-b mb-10">
+      <div className="flex space-x-4 border-b mb-10 mt-6">
         {["Students",  "Staff"].map((tab) => (
           <button
             key={tab}
@@ -158,7 +158,7 @@ function Attendance() {
         )}
       </div>
 
-     <div className="flex justify-end">
+     <div className="flex justify-end mt-10">
      <Button label="View More" onClick={() => navigate('/admin/select')}/>
      </div>
     </div>

@@ -8,6 +8,12 @@ import stdImg from '../../assets/Icons/graduates.png'
 import tchImg from '../../assets/Icons/teacher.png'
 import Attendance from "./Dashboard_components/Attendance";
 import Events from "./Dashboard_components/Events";
+import QuickLinks from "./Dashboard_components/QuickLinks";
+import Leaves from "./Dashboard_components/Leaves";
+import FeesCollection from "./Dashboard_components/FeesCollection";
+import Notice from "./Dashboard_components/Notice";
+import StatCard from "./Dashboard_components/StatCard";
+import ChartCard from "./Dashboard_components/ChartCard";
 
 function Admin() {
   const [tileData, setTileData] = useState(null);
@@ -40,6 +46,32 @@ function Admin() {
     Teacher: tchImg,
     Admin: adminImg,
     Student: stdImg,
+  };
+
+  const earningsData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Earnings",
+        data: [54000, 58000, 60000, 63000, 65000, 64522],
+        borderColor: "#3b82f6",
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const expensesData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Expenses",
+        data: [50000, 52000, 53000, 55000, 58000, 60522],
+        borderColor: "#ef4444",
+        backgroundColor: "rgba(239, 68, 68, 0.2)",
+        tension: 0.4,
+      },
+    ],
   };
 
   // Render Tiles
@@ -102,16 +134,61 @@ function Admin() {
 
       <div className="flex gap-4">
         {/*Event Schedule Section*/ }
-      <div className="w-1/3">
-        <Events userTypeImages={userTypeImages} />
+        <div className="w-1/2">
+          <Events userTypeImages={userTypeImages} />
+        </div>
+
+        {/* Attendance View */}
+        <div className="w-1/2">
+          <Attendance />
+        </div>
+
+       
       </div>
 
-      {/* Attendance View */}
-      <div className="w-1/3">
-        <Attendance />
+      <div className="grid grid-cols-2 mt-5 gap-4">
+        {/* Fees Collection */}
+        <div>
+          <FeesCollection/>
+        </div>
+        <div>
+          <Notice/>
+        </div>
       </div>
 
-      {/* Quick Links */}
+
+      {/* Financial Overview */}
+      <div className="flex gap-5 mt-10">
+        <div className="flex flex-col gap-2 w-1/2">
+          {/* Earnings Card */}
+        <ChartCard
+          title="Total Earnings"
+          amount="₹64,522.24"
+          color="text-blue-500"
+          chartData={earningsData}
+        />
+
+        {/* Expenses Card */}
+        <ChartCard
+          title="Total Expenses"
+          amount="₹60,522.24"
+          color="text-red-500"
+          chartData={expensesData}
+        />
+        </div>
+
+
+        <div className="flex flex-col gap-4 w-1/4"> 
+          <StatCard title="Total Earnings" value="$64,522.24" percentage="1.2" isPositive={true} />
+          <StatCard title="Total Expenses" value="$60,522.24" percentage="1.2" isPositive={false} />
+          <StatCard title="Total Fees Collected" value="$25,000.02" percentage="1.2" isPositive={true} />
+          <StatCard title="Fine Collected Till Date" value="$4,56.64" percentage="1.2" isPositive={false} />
+        </div>
+
+        <div className="flex  flex-col gap-5">
+          <QuickLinks/>
+          <Leaves/>
+        </div>
       </div>
     </div>
   );
