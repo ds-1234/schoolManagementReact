@@ -17,6 +17,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function ExamResult() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [examData, setExamData] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [chartData, setChartData] = useState(null);
 
   // Fetch exam data from API
@@ -31,14 +32,33 @@ function ExamResult() {
       .catch((error) => console.error('Error fetching exam data:', error));
   }, []);
 
+  // Fetch subject data from API
+  useEffect(() => {
+    fetch(`${BASE_URL}/subject/getSubjectList`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setSubjects(data.data); // Store subject data
+        }
+      })
+      .catch((error) => console.error('Error fetching subjects:', error));
+  }, []);
+
+  // Function to get subject name by ID
+  const getSubjectNameById = (id) => {
+    console.log(subjects,'subjects')
+    const subject = subjects.find((subject) => subject.id == id);
+    return subject ? subject.subject : `Subject ${id}`;
+  };
+
   // Generate chart data
   useEffect(() => {
-    if (examData.length > 0) {
-      const subjectIds = examData.map((exam) => `Subject ${exam.subjectId}`); // X-axis labels
+    if (examData.length > 0 && subjects.length > 0) {
+      const subjectNames = examData.map((exam) => getSubjectNameById(exam.subjectId)); // Map subject names
       const marks = examData.map((exam) => parseInt(exam.subjectMarks, 10)); // Y-axis marks
 
       const chartData = {
-        labels: subjectIds, // X-axis
+        labels: subjectNames, // X-axis
         datasets: [
           {
             label: 'Marks (out of 100)',
@@ -51,7 +71,7 @@ function ExamResult() {
       };
       setChartData(chartData);
     }
-  }, [examData]);
+  }, [examData, subjects]);
 
   // Bar chart options
   const options = {
