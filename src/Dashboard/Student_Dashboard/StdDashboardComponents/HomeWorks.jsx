@@ -10,8 +10,6 @@ function HomeWorks() {
   const [filteredHomeworks, setFilteredHomeworks] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(''); // Track selected subject
 
-  console.log(user,'user')
-
   const classId = user.className[0]; // Directly get the class ID from the user's className array
 
   useEffect(() => {
@@ -53,16 +51,15 @@ function HomeWorks() {
   useEffect(() => {
     // Filter homeworks based on the selected subject
     const filtered = homeworks.filter((homework) =>
-      !selectedSubject || homework.subject === selectedSubject
+      !selectedSubject || homework.subject == selectedSubject
     );
     setFilteredHomeworks(filtered);
   }, [homeworks, selectedSubject]);
 
   const getSubjectName = (subjectId) => {
-    console.log(subjects,'subjects')
-    const subject = subjects.filter((sub) => sub.id == subjectId);
-    console.log(subject,'subjectname')
-    return subject ? subject.subject : 'Unknown Subject'; // Return subject name or default text
+    // Filter subjects to find the one with the matching subject ID
+    const subject = subjects.filter((sub) => sub.id === subjectId);
+    return subject.length > 0 ? subject[0].subject : 'Unknown Subject'; // Return subject name or default text
   };
 
   const generateRandomPercentage = () => {
@@ -88,7 +85,7 @@ function HomeWorks() {
             ) : (
               subjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>
-                  {subject.name} {/* Display the subject name */}
+                  {subject.subject} {/* Display the subject name */}
                 </option>
               ))
             )}
@@ -102,7 +99,7 @@ function HomeWorks() {
           <p>No homework found for the selected subject.</p> // Show message if no homework found
         ) : (
           filteredHomeworks.map((hw, index) => {
-            const subjectName = getSubjectName(hw.subject);
+            const subjectName = hw.subject; // Display subjectId as subject
             const randomPercentage = generateRandomPercentage(); // Get random percentage for each homework
 
             return (
@@ -114,7 +111,7 @@ function HomeWorks() {
                 <div
                   className={`px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full mb-2`}
                 >
-                  {subjectName}
+                  {subjectName} {/* Display the subject ID */}
                 </div>
 
                 {/* Homework Details */}

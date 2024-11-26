@@ -61,7 +61,6 @@ function Student() {
       {/* HomeWorks Section */}
       <div className="flex flex-col mt-6">
         <HomeWorks
-        user = {user}
          />
       </div>
 
