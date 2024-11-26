@@ -1,36 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import BASE_URL from '../../../conf/conf';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
 // Register required chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function ExamResult() {
-  const [selectedQuarter, setSelectedQuarter] = useState('1st Quarter'); // Default to 1st Quarter
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
+  const [examData, setExamData] = useState([]);
+  const [chartData, setChartData] = useState(null);
 
-  // Dropdown change handler
-  const handleQuarterChange = (e) => {
-    setSelectedQuarter(e.target.value);
-  };
+  // Fetch exam data from API
+  useEffect(() => {
+    fetch(`${BASE_URL}/exam/getExamListByStudentId/${user.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setExamData(data.data); // Store the fetched data
+        }
+      })
+      .catch((error) => console.error('Error fetching exam data:', error));
+  }, []);
 
-  // Generate random marks between 0 and 100
-  const generateRandomMarks = () => {
-    return Array.from({ length: 5 }, () => Math.floor(Math.random() * 101));
-  };
+  // Generate chart data
+  useEffect(() => {
+    if (examData.length > 0) {
+      const subjectIds = examData.map((exam) => `Subject ${exam.subjectId}`); // X-axis labels
+      const marks = examData.map((exam) => parseInt(exam.subjectMarks, 10)); // Y-axis marks
 
-  // Bar chart data
-  const data = {
-    labels: ['Mat', 'Phy', 'Che', 'Eng', 'Sci'], // Subjects
-    datasets: [
-      {
-        label: `${selectedQuarter} - Marks`, // Title of the graph
-        data: generateRandomMarks(), // Random data for marks
-        backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#F3FF33'], // Different colors for each bar
-        borderColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#F3FF33'], // Same colors for the border
-        borderWidth: 1,
-      },
-    ],
-  };
+      const chartData = {
+        labels: subjectIds, // X-axis
+        datasets: [
+          {
+            label: 'Marks (out of 100)',
+            data: marks, // Y-axis
+            backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#F3FF33'], // Colors
+            borderColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#F3FF33'], // Border colors
+            borderWidth: 1,
+          },
+        ],
+      };
+      setChartData(chartData);
+    }
+  }, [examData]);
 
   // Bar chart options
   const options = {
@@ -47,37 +68,24 @@ function ExamResult() {
     plugins: {
       title: {
         display: true,
-        text: 'Marks in Various Subjects',
+        text: 'Exam Results by Subject',
       },
     },
   };
 
   return (
-    <div className=''>
-    <div className="flex justify-between items-center mb-6">
-      {/* Left side: Title */}
-      <div className="w-1/3">
+    <div>
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Exam Result</h2>
       </div>
 
-      {/* Right side: Dropdown for selecting Quarter */}
-      <div className="w-2/3 flex items-center space-x-4">
-        <select
-          value={selectedQuarter}
-          onChange={handleQuarterChange}
-          className="p-2 border rounded-md"
-        >
-          <option value="1st Quarter">1st Quarter</option>
-          <option value="2nd Quarter">2nd Quarter</option>
-          <option value="3rd Quarter">3rd Quarter</option>
-          <option value="4th Quarter">4th Quarter</option>
-        </select>
-      </div>
-      </div>
-
-      {/* Bar Graph */}
+      {/* Show bar chart or a loading message */}
       <div className="mt-10">
-        <Bar data={data} options={options} />
+        {chartData ? (
+          <Bar data={chartData} options={options} />
+        ) : (
+          <p className="text-lg text-center text-gray-500">Loading Exam Data...</p>
+        )}
       </div>
     </div>
   );
