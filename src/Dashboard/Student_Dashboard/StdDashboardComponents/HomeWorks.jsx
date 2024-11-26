@@ -6,7 +6,7 @@ import BASE_URL from '../../../conf/conf';
 function HomeWorks() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [homeworks, setHomeworks] = useState([]);
-  const [subjects, setSubjects] = useState([]); // To store subjects with their names
+  const [subjects, setSubjects] = useState([]); // Store subjects data
   const [filteredHomeworks, setFilteredHomeworks] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(''); // Track selected subject
 
@@ -57,9 +57,9 @@ function HomeWorks() {
   }, [homeworks, selectedSubject]);
 
   const getSubjectName = (subjectId) => {
-    // Filter subjects to find the one with the matching subject ID
-    const subject = subjects.filter((sub) => sub.id === subjectId);
-    return subject.length > 0 ? subject[0].subject : 'Unknown Subject'; // Return subject name or default text
+    // Find subject name from the subjects state using the subject ID
+    const subject = subjects.find((sub) => sub.id === subjectId);
+    return subject ? subject.subject : 'Unknown Subject'; // Return subject name or default text
   };
 
   const generateRandomPercentage = () => {
@@ -99,7 +99,7 @@ function HomeWorks() {
           <p>No homework found for the selected subject.</p> // Show message if no homework found
         ) : (
           filteredHomeworks.map((hw, index) => {
-            const subjectName = hw.subject; // Display subjectId as subject
+            const subjectName = getSubjectName(hw.subject); // Get subject name using the helper function
             const randomPercentage = generateRandomPercentage(); // Get random percentage for each homework
 
             return (
@@ -111,7 +111,7 @@ function HomeWorks() {
                 <div
                   className={`px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full mb-2`}
                 >
-                  {subjectName} {/* Display the subject ID */}
+                  {subjectName} {/* Display the subject name */}
                 </div>
 
                 {/* Homework Details */}
