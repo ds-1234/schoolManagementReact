@@ -8,6 +8,12 @@ import stdImg from '../../assets/Icons/graduates.png'
 import tchImg from '../../assets/Icons/teacher.png'
 import Attendance from "./Dashboard_components/Attendance";
 import Events from "./Dashboard_components/Events";
+import QuickLinks from "./Dashboard_components/QuickLinks";
+import Leaves from "./Dashboard_components/Leaves";
+import FeesCollection from "./Dashboard_components/FeesCollection";
+import Notice from "./Dashboard_components/Notice";
+import StatCard from "./Dashboard_components/StatCard";
+import ChartCard from "./Dashboard_components/ChartCard";
 
 function Admin() {
   const [tileData, setTileData] = useState(null);
@@ -42,6 +48,32 @@ function Admin() {
     Student: stdImg,
   };
 
+  const earningsData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Earnings",
+        data: [54000, 58000, 60000, 63000, 65000, 64522],
+        borderColor: "#3b82f6",
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const expensesData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Expenses",
+        data: [50000, 52000, 53000, 55000, 58000, 60522],
+        borderColor: "#ef4444",
+        backgroundColor: "rgba(239, 68, 68, 0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+
   // Render Tiles
   const renderTiles = () => {
     if (!tileData) return <p>No data available</p>;
@@ -49,9 +81,10 @@ function Admin() {
     return Object.entries(tileData.data).map(([key, value]) => (
       <div
         key={key}
-        className="p-4 py-8 rounded-lg bg-white flex flex-col items-center shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
+        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
       >
-        <div className="flex items-center justify-center gap-2">
+        <h1 className="text-lg font-bold text-blue-950 mb-2">{key}</h1>
+        <div className="flex items-center gap-2">
           {/* Image */}
         <img
           src={userTypeImages[key]}
@@ -59,11 +92,13 @@ function Admin() {
           className="w-16 h-14 mb-4"
         />
 
-        {/* User Type */}
-        <h3 className="text-lg font-bold text-blue-950">{key}</h3>
+        <div className="flex flex-col">
+            {/* User Type */}
+            <h3 className="text-medium text-blue-950">Total</h3>
 
-        {/* Total Count */}
-        <p className="text-lg font-bold text-blue-950">{value.totalCount}</p>
+            {/* Total Count */}
+            <p className="text-lg font-bold text-blue-950">{value.totalCount}</p>
+        </div>
         </div>
 
         
@@ -97,12 +132,63 @@ function Admin() {
       </div>
 
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex gap-4">
         {/*Event Schedule Section*/ }
-      <Events userTypeImages={userTypeImages} />
+        <div className="w-1/2">
+          <Events userTypeImages={userTypeImages} />
+        </div>
 
-      {/* Attendance View */}
-      <Attendance />
+        {/* Attendance View */}
+        <div className="w-1/2">
+          <Attendance />
+        </div>
+
+       
+      </div>
+
+      <div className="grid grid-cols-2 mt-5 gap-4">
+        {/* Fees Collection */}
+        <div>
+          <FeesCollection/>
+        </div>
+        <div>
+          <Notice/>
+        </div>
+      </div>
+
+
+      {/* Financial Overview */}
+      <div className="flex gap-5 mt-10">
+        <div className="flex flex-col gap-2 w-1/2">
+          {/* Earnings Card */}
+        <ChartCard
+          title="Total Earnings"
+          amount="₹64,522.24"
+          color="text-blue-500"
+          chartData={earningsData}
+        />
+
+        {/* Expenses Card */}
+        <ChartCard
+          title="Total Expenses"
+          amount="₹60,522.24"
+          color="text-red-500"
+          chartData={expensesData}
+        />
+        </div>
+
+
+        <div className="flex flex-col gap-4 w-1/4"> 
+          <StatCard title="Total Earnings" value="$64,522.24" percentage="1.2" isPositive={true} />
+          <StatCard title="Total Expenses" value="$60,522.24" percentage="1.2" isPositive={false} />
+          <StatCard title="Total Fees Collected" value="$25,000.02" percentage="1.2" isPositive={true} />
+          <StatCard title="Fine Collected Till Date" value="$4,56.64" percentage="1.2" isPositive={false} />
+        </div>
+
+        <div className="flex  flex-col gap-5">
+          <QuickLinks/>
+          <Leaves/>
+        </div>
       </div>
     </div>
   );

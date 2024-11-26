@@ -25,7 +25,7 @@ function Events({userTypeImages}) {
   return (
     <div className="bg-white flex flex-col p-5 rounded-md mt-5">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl text-black font-semibold">Schedules</h1>
+          <h1 className="text-lg text-blue-950 font-bold">Schedules</h1>
           <Button label="View More" className="text-sm py-0 px-0" onClick={() => navigate('/admin/Event')} />
         </div>
 
@@ -34,7 +34,7 @@ function Events({userTypeImages}) {
          {/* Events List */}
   <div className="mt-10">
     <h1 className="text-xl text-black font-semibold mb-5">Upcoming Events</h1>
-    {events.length > 0 ? (
+    {events.length > 0? (
       events.map((event) => (
         <div
           key={event.id}
@@ -48,7 +48,7 @@ function Events({userTypeImages}) {
             </h2>
             <div className="flex justify-between items-center border-b-1 mb-2">
             <p className="text-sm text-gray-500 mt-1 mb-1">
-            <i className="fas fa-calendar"></i>  {event.startDate === event.endDate
+            <i className="fas fa-calendar"></i>  {new Date().getDate() <= event.startDate
                 ? event.startDate
                 : `${event.startDate} - ${event.endDate}`}
             </p>
