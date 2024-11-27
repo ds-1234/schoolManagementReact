@@ -97,16 +97,20 @@ const StdsAttendance = () => {
         name: 'SR.No',
         selector: (row, idx) => idx + 1,
         sortable: false,
+        style: { position: 'sticky', left: '0px', zIndex: 2, backgroundColor: 'white' }
       },
       {
         name: 'Roll No',
         selector: (row) => row.rollNumber,
         sortable: false,
+       style: { position: 'sticky', left: '50px', zIndex: 2, backgroundColor: 'white' }
       },
       {
         name: 'Student Name',
         selector: (row) => row.firstName + ' ' + row.lastName,
         sortable: true,
+        style: { position: 'sticky', left: '100px', zIndex: 2, backgroundColor: 'white' } , 
+        width: '180px'
       },
     // Dynamically add date columns
     ...sortedUniqueDates.map(date => ({
@@ -114,7 +118,8 @@ const StdsAttendance = () => {
       selector: row => {
         const studentId = row.id.toString();
         return formatAttendance(attendanceMap[studentId]?.[date] || '-'); 
-      }
+      },
+      width: '120px'
     })),
   ];
 
@@ -126,7 +131,7 @@ const StdsAttendance = () => {
       </div>
       
       <Labels/>
-      <div className="overflow-x-auto max-w-full">  {/* Enable horizontal scrolling */}
+      <div className="overflow-x-auto max-w-7xl">  {/* Enable horizontal scrolling */}
         <Table
           columns={columns}  
           data={students}    
