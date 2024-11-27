@@ -60,6 +60,7 @@ function TodaysClasses() {
   const filterClassesByDateAndStatus = () => {
     const currentDay = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get day name
     const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false }); // Current time in 24-hour format
+    console.log(currentTime,'currenttime')
 
     const filtered = classes
       .filter((classItem) => classItem.className === userClassName[0]) // Filter by className
@@ -69,8 +70,10 @@ function TodaysClasses() {
           // Today's date: Check time for status
           const { startTime, endTime } = classItem;
           const isCompleted =
-            currentTime >= startTime && currentTime <= endTime ? 'Completed' : 'Incompleted';
+            currentTime >= startTime && currentTime <= endTime ? 'Incompleted' : 'Completed';
+            console.log(isCompleted,'iscompleted')
           return { ...classItem, status: isCompleted };
+
         } else {
           // Other dates: All are Completed
           return { ...classItem, status: 'Completed' };
