@@ -94,7 +94,7 @@ function ExamResult() {
   };
 
   return (
-    <div>
+    <div className="p-6 space-y-6 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Exam Result</h2>
       </div>

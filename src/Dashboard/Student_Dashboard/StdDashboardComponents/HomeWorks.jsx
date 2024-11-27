@@ -67,7 +67,7 @@ function HomeWorks() {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-white shadow-lg rounded-lg">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">HomeWorks</h1>

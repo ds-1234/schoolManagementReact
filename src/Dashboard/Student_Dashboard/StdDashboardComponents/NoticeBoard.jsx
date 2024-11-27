@@ -25,7 +25,7 @@ function NoticeBoard() {
   }, []);
 
   return (
-    <div className="p-6 font-sans">
+    <div className="p-6 font-sans bg-white shadow-lg rounded-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Notice Board</h2>
