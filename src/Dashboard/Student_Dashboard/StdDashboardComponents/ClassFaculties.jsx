@@ -1,52 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function ClassFaculties() {
-  const [faculties, setFaculties] = useState([]);
   const tileWidth = 400; // Width for each tile
   const visibleTiles = 3; // Number of tiles visible at a time
+
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [timeTableData, setTimeTableData] = useState([]);
+  const [subjectData, setSubjectData] = useState({});
 
-  // Fetch timetable data from the API
+  // Fetch timetable data
   useEffect(() => {
-    const fetchTimetableData = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/timeTable/getTimeTable');
-        const data = await response.json();
-
-        if (data.success) {
-          const filteredData = [];
-          const seen = new Set(); // To track unique userId and subject pairs
-
-          data.data.forEach((item) => {
-            if (item.className === 1) {
-              const uniqueKey = `${item.userId}-${item.subject[0]}`;
-              if (!seen.has(uniqueKey)) {
-                seen.add(uniqueKey);
-                filteredData.push({
-                  id: item.id,
-                  userId: item.userId, // Use userId directly
-                  subject: item.subject[0], // Use subject ID
-                  email: "placeholder@example.com", // Placeholder email
-                });
-              }
-            }
-          });
-
-          setFaculties(filteredData);
-        }
-      } catch (error) {
-        console.error('Error fetching timetable data:', error);
-      }
-    };
-
-    fetchTimetableData();
+    axios.get('http://localhost:8080/timeTable/getTimeTable')
+      .then((response) => {
+        const uniqueData = response.data.data.filter((entry, index, array) => {
+          return array.findIndex(
+            (e) => e.userId === entry.userId && e.subject[0] === entry.subject[0]
+          ) === index;
+        });
+        setTimeTableData(uniqueData.filter((item) => item.className === 1));
+      })
+      .catch((error) => console.error(error));
   }, []);
 
-  const totalTiles = faculties.length;
+  // Fetch subject data
+  useEffect(() => {
+    axios.get('http://localhost:8080/subject/getSubjectList')
+      .then((response) => {
+        const subjects = response.data.data.reduce((acc, subject) => {
+          acc[subject.id] = subject.subject;
+          return acc;
+        }, {});
+        setSubjectData(subjects);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  // Function to get subject name by ID
+  const getSubjectName = (id) => {
+    return subjectData[id] || 'Unknown Subject';
+  };
 
   // Scroll logic to move by one tile at a time
   const scrollRight = () => {
-    if (scrollPosition < totalTiles - visibleTiles) {
+    if (scrollPosition < timeTableData.length - visibleTiles) {
       setScrollPosition(scrollPosition + 1);
     }
   };
@@ -78,20 +75,17 @@ function ClassFaculties() {
           className="flex transition-transform ease-in-out"
           style={{
             transform: `translateX(-${scrollPosition * tileWidth}px)`, // Scroll based on the fixed tile width
-            width: `${tileWidth * totalTiles}px`, // Total width of the tiles (scrollable area)
+            width: `${tileWidth * timeTableData.length}px`, // Total width of the tiles (scrollable area)
           }}
         >
-          {faculties.map((faculty) => (
-            <div key={faculty.id} className="flex-shrink-0" style={{ width: `${tileWidth}px`, padding: "10px" }}>
+          {timeTableData.map((entry) => (
+            <div key={entry.id} className="flex-shrink-0" style={{ width: `${tileWidth}px`, padding: '10px' }}>
               <div className="bg-white p-4 rounded-lg shadow-md">
-                <img src="https://via.placeholder.com/50" alt="Teacher" className="w-16 h-16 rounded-full mb-3" />
-                <p className="font-semibold">User ID: {faculty.userId}</p>
-                <p className="text-sm text-gray-500">Subject ID: {faculty.subject}</p>
+                <p className="font-semibold">Faculty ID: {entry.userId}</p>
+                <p className="text-sm text-gray-500">Subject: {getSubjectName(entry.subject[0])}</p>
 
                 <div className="flex items-center mt-2 space-x-2">
-                  <a href={`mailto:${faculty.email}`} className="text-blue-500">
-                    <i className="fas fa-envelope"></i> {faculty.email}
-                  </a>
+                  <span className="text-blue-500">random@example.com</span>
                   <button className="bg-blue-500 text-white p-1 rounded-full">
                     <i className="fas fa-comments"></i> Chat
                   </button>
