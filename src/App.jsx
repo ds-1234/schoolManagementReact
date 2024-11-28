@@ -114,6 +114,8 @@ import AllStaffAttendance from './Reusable_components/AllStaffAttendance';
 
 import Children from './Dashboard/Parent_Dashboard/Children';
 import SelectTile from './Dashboard/Teacher_Dashboard/Attendance_Marking/Select';
+import LeaveTabs from './Dashboard/Student_Dashboard/Leave/LeaveTab';
+import LeaveCategoryPage from './Dashboard/Student_Dashboard/Leave/LeaveCategoryPage';
 
 
 
@@ -232,6 +234,8 @@ function App() {
             <Route path = 'profile' element = {<Profile/>}/>
             <Route path = 'StdBookIssue' element = {<StdBookIssue/>}/>
             <Route path = 'stdExamResult' element = {<StdExamResult/>}/>
+            <Route path = 'leaves' element = {<LeaveTabs/>}/>
+            <Route path = 'leaves/:status' element={<LeaveCategoryPage/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}

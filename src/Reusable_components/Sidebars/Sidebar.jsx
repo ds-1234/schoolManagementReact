@@ -41,6 +41,7 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('user')} 
             >
               <div className='flex items-center justify-start gap-1'>
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
@@ -54,7 +55,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/activeUser"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -65,7 +66,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/pendingUser"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -83,12 +84,13 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('conf')}
             >
-              <div className='flex items-center justify-start gap-1'>
-              <FontAwesomeIcon icon={faSliders} className="mr-2 text-[#ffae01]" />
+              <div className='flex items-center justify-start'>
+              <FontAwesomeIcon icon={faSliders} className=" text-[#ffae01]" />
                 Configuration
               </div>
-              <FontAwesomeIcon icon={renderAngleIcon('conf')} className="mr-3" onClick={() => toggleDropdown('conf')} />
+              <FontAwesomeIcon icon={renderAngleIcon('conf')}  onClick={() => toggleDropdown('conf')} />
             </NavLink>
             {openDropdown=='conf' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -96,7 +98,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/role"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256]  hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256]  hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -110,7 +112,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/class"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faPenRuler} className="mr-3 text-[#ffae01]" /> */}
@@ -124,7 +126,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/subject"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faBook} className="mr-3 text-[#ffae01]" /> */}
@@ -138,7 +140,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/school"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
@@ -151,7 +153,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/designation"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
@@ -164,7 +166,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/department"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
@@ -177,7 +179,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/eventcategory"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
@@ -190,7 +192,7 @@ const Sidebar = () => {
             <NavLink
               to="/admin/StaffAttendanceStatus"
               className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
             >
               {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
@@ -210,20 +212,21 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('library')}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Library
               </div>
-              <FontAwesomeIcon icon={renderAngleIcon('exam')} className="mr-3" onClick={() => toggleDropdown('exam')} />
+              <FontAwesomeIcon icon={renderAngleIcon('library')} className="mr-1" onClick={() => toggleDropdown('library')} />
             </NavLink>
-            {openDropdown=='exam' && (
+            {openDropdown=='library' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
                     to="/admin/books"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -234,7 +237,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/bookissue"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -268,6 +271,7 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('students')}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon  icon={faChildren} className=" mr-2 text-[#ffae01]" />
@@ -292,7 +296,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/AdmissionForm"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                     onClick={() => {
                       setUserId(null)
@@ -307,7 +311,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/pendingAdmissionForm"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -334,7 +338,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/studentPromotion"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-5 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -394,12 +398,13 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('exam')}
             >
-              <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
+              <div className='flex items-center justify-start'>
+                <FontAwesomeIcon icon={faFileLines} className=" text-[#ffae01] text-sm" />
                 Examinations
               </div>
-              <FontAwesomeIcon icon={renderAngleIcon('exam')} className="mr-3" onClick={() => toggleDropdown('exam')} />
+              <FontAwesomeIcon icon={renderAngleIcon('exam')}  onClick={() => toggleDropdown('exam')} />
             </NavLink>
             {openDropdown=='exam' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
@@ -407,7 +412,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Examinations"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -418,7 +423,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Examschedule"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -429,7 +434,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Grade"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -440,7 +445,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Examattendance"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -451,7 +456,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Examresults"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -497,9 +502,10 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('accounts')}
             >
               <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
+                <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
                 Accounts
               </div>
               <FontAwesomeIcon icon={renderAngleIcon('accounts')} className="mr-3" onClick={() => toggleDropdown('accounts')} />
@@ -510,7 +516,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Expenses"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -521,7 +527,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/ExpenseCategory"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -532,7 +538,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/income"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -543,7 +549,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Invoices"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -554,7 +560,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Invoiceview"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -565,7 +571,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Transactions"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -609,6 +615,7 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('sports')}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faVolleyball} className="mr-1 text-[#ffae01]" />
@@ -622,7 +629,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Sports"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -633,7 +640,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/Players"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight}  />
@@ -650,6 +657,7 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('hostel')}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faHotel} className="mr-1 text-[#ffae01]" />
@@ -663,7 +671,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/hostel"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -674,7 +682,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/hostelrooms"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight}  />
@@ -685,7 +693,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/roomtype"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight}  />
@@ -718,6 +726,7 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={() => toggleDropdown('fees')}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
@@ -731,7 +740,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/feesgrp"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
@@ -742,7 +751,7 @@ const Sidebar = () => {
                   <NavLink
                     to="/admin/feescollect"
                     className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] py-2 px-10 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
