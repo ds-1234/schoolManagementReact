@@ -8,6 +8,7 @@ function ClassFaculties() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [timeTableData, setTimeTableData] = useState([]);
   const [subjectData, setSubjectData] = useState({});
+  const [userList, setUserList] = useState('');
 
   // Fetch timetable data
   useEffect(() => {
@@ -36,6 +37,62 @@ function ClassFaculties() {
       .catch((error) => console.error(error));
   }, []);
 
+  // Fetch User List from API
+  const fetchUserList = async () => {
+    // try {
+    //   const response = await fetch('http://localhost:8080/user/getUserList');
+    //   const data = await response.json();
+    //   setUserList(data); // Store the user list data
+    //   console.log(userList,'userList')
+    // } catch (error) {
+    //   console.error('Error fetching user list:', error);
+    // }
+    axios.get('http://localhost:8080/user/getUserList')
+    .then((response) => {
+      // const subjects = response.data.data.reduce((acc, subject) => {
+      //   acc[subject.id] = subject.subject;
+      //   return acc;
+      // }, {});
+        setUserList(response.data.data); // Store the user list data
+              console.log(userList,'userList')
+              console.log(response.data,'userList res')
+
+
+    })
+    .catch((error) => console.error(error));
+  };
+
+  // Function to get Faculty Details by userId
+  const getFacultyDetails = (userId) => {
+    console.log(userList,'userlist get fac')
+    const user = userList.find((user) => user.id === userId);
+    if (user) {
+      return {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      };
+    }
+    return { firstName: '', lastName: '', email: '' }; // Return empty values if user is not found
+  };
+
+  // Map through timetable data and update with faculty details
+  const getUpdatedTimeTableData = () => {
+    return timeTableData.map((timetable) => {
+      const facultyDetails = getFacultyDetails(timetable.userId);
+      return {
+        ...timetable,
+        facultyName: `${facultyDetails.firstName} ${facultyDetails.lastName}`,
+        email: facultyDetails.email,
+      };
+    });
+  };
+
+  useEffect(() => {
+    // Fetch user list data when the component mounts
+    fetchUserList();
+  }, []);
+
   // Function to get subject name by ID
   const getSubjectName = (id) => {
     return subjectData[id] || 'Unknown Subject';
@@ -54,10 +111,13 @@ function ClassFaculties() {
     }
   };
 
+  // Get the updated timetable data with faculty details
+  const updatedTimeTableData = getUpdatedTimeTableData();
+
   return (
-    <div>
+    <div className= 'p-2 space-y-4 bg-white shadow-lg rounded-lg'>
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 ">
         <h1 className="text-2xl font-bold">Class Faculties</h1>
         <div className="flex space-x-2">
           <button onClick={scrollLeft} className="bg-gray-200 p-2 rounded-full">
@@ -75,17 +135,16 @@ function ClassFaculties() {
           className="flex transition-transform ease-in-out"
           style={{
             transform: `translateX(-${scrollPosition * tileWidth}px)`, // Scroll based on the fixed tile width
-            width: `${tileWidth * timeTableData.length}px`, // Total width of the tiles (scrollable area)
+            width: `${tileWidth * updatedTimeTableData.length}px`, // Total width of the tiles (scrollable area)
           }}
         >
-          {timeTableData.map((entry) => (
+          {updatedTimeTableData.map((entry) => (
             <div key={entry.id} className="flex-shrink-0" style={{ width: `${tileWidth}px`, padding: '10px' }}>
               <div className="bg-white p-4 rounded-lg shadow-md">
-                <p className="font-semibold">Faculty ID: {entry.userId}</p>
+                <p className="font-semibold">{entry.facultyName}</p>
                 <p className="text-sm text-gray-500">Subject: {getSubjectName(entry.subject[0])}</p>
-
                 <div className="flex items-center mt-2 space-x-2">
-                  <span className="text-blue-500">random@example.com</span>
+                  <span className="text-blue-500">{entry.email}</span>
                   <button className="bg-blue-500 text-white p-1 rounded-full">
                     <i className="fas fa-comments"></i> Chat
                   </button>
