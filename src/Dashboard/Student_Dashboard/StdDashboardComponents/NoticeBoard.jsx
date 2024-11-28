@@ -67,7 +67,7 @@ function NoticeBoard() {
                 <div>
                   <h3 className="text-lg font-semibold">{notice.noticeTitle}</h3>
                   <p className="text-sm text-gray-500">
-                    Notice on: {new Date(notice.noticeDate).toLocaleDateString()}
+                    Notice for: {new Date(notice.noticeDate).toLocaleDateString()}
                   </p>
                 </div>
               </div>
