@@ -63,7 +63,7 @@ function TodaysClasses() {
     console.log(currentTime,'currenttime')
 
     const filtered = classes
-      .filter((classItem) => classItem.className === userClassName[0]) // Filter by className
+      // .filter((classItem) => classItem.className == userClassName[0]) // Filter by className
       .filter((classItem) => classItem.weekDay === currentDay) // Filter by day of the week
       .map((classItem) => {
         if (formatDate(date) === formatDate(new Date())) {

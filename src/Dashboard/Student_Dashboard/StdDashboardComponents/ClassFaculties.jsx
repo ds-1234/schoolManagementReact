@@ -1,25 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function ClassFaculties() {
-  // Sample data for tiles
-  const faculties = [
-    { id: 1, image: 'https://via.placeholder.com/50', teacher: 'Mr. Sharma', subject: 'Mathematics', email: 'sharma@example.com' },
-    { id: 2, image: 'https://via.placeholder.com/50', teacher: 'Ms. Smith', subject: 'English', email: 'smith@example.com' },
-    { id: 3, image: 'https://via.placeholder.com/50', teacher: 'Dr. Brown', subject: 'Physics', email: 'brown@example.com' },
-    { id: 4, image: 'https://via.placeholder.com/50', teacher: 'Dr. Taylor', subject: 'Chemistry', email: 'taylor@example.com' },
-    { id: 5, image: 'https://via.placeholder.com/50', teacher: 'Mr. Gupta', subject: 'Biology', email: 'gupta@example.com' },
-    { id: 6, image: 'https://via.placeholder.com/50', teacher: 'Ms. Khan', subject: 'History', email: 'khan@example.com' },
-    { id: 7, image: 'https://via.placeholder.com/50', teacher: 'Mr. Kumar', subject: 'Geography', email: 'kumar@example.com' },
-    { id: 8, image: 'https://via.placeholder.com/50', teacher: 'Ms. Patel', subject: 'Chemistry', email: 'patel@example.com' },
-    { id: 9, image: 'https://via.placeholder.com/50', teacher: 'Dr. Singh', subject: 'Physics', email: 'singh@example.com' },
-    { id: 10, image: 'https://via.placeholder.com/50', teacher: 'Mr. Verma', subject: 'Mathematics', email: 'verma@example.com' }
-  ];
-
+  const [faculties, setFaculties] = useState([]);
   const tileWidth = 400; // Width for each tile
   const visibleTiles = 3; // Number of tiles visible at a time
-  const totalTiles = faculties.length;
-  
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Fetch timetable data from the API
+  useEffect(() => {
+    const fetchTimetableData = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/timeTable/getTimeTable');
+        const data = await response.json();
+
+        if (data.success) {
+          const filteredData = [];
+          const seen = new Set(); // To track unique userId and subject pairs
+
+          data.data.forEach((item) => {
+            if (item.className === 1) {
+              const uniqueKey = `${item.userId}-${item.subject[0]}`;
+              if (!seen.has(uniqueKey)) {
+                seen.add(uniqueKey);
+                filteredData.push({
+                  id: item.id,
+                  userId: item.userId, // Use userId directly
+                  subject: item.subject[0], // Use subject ID
+                  email: "placeholder@example.com", // Placeholder email
+                });
+              }
+            }
+          });
+
+          setFaculties(filteredData);
+        }
+      } catch (error) {
+        console.error('Error fetching timetable data:', error);
+      }
+    };
+
+    fetchTimetableData();
+  }, []);
+
+  const totalTiles = faculties.length;
 
   // Scroll logic to move by one tile at a time
   const scrollRight = () => {
@@ -59,11 +82,11 @@ function ClassFaculties() {
           }}
         >
           {faculties.map((faculty) => (
-            <div key={faculty.id} className="flex-shrink-0" style={{ width: `${tileWidth}px`, padding: '10px' }}>
+            <div key={faculty.id} className="flex-shrink-0" style={{ width: `${tileWidth}px`, padding: "10px" }}>
               <div className="bg-white p-4 rounded-lg shadow-md">
-                <img src={faculty.image} alt="Teacher" className="w-16 h-16 rounded-full mb-3" />
-                <p className="font-semibold">{faculty.teacher}</p>
-                <p className="text-sm text-gray-500">{faculty.subject}</p>
+                <img src="https://via.placeholder.com/50" alt="Teacher" className="w-16 h-16 rounded-full mb-3" />
+                <p className="font-semibold">User ID: {faculty.userId}</p>
+                <p className="text-sm text-gray-500">Subject ID: {faculty.subject}</p>
 
                 <div className="flex items-center mt-2 space-x-2">
                   <a href={`mailto:${faculty.email}`} className="text-blue-500">
