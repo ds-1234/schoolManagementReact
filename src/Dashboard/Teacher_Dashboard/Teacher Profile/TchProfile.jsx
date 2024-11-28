@@ -83,7 +83,7 @@ console.log(filteredClasses,'classes')
 
   // Filter classes based on the teacher's className array
   useEffect(() => {
-    if (teacherDetails && Array.isArray(teacherDetails.className) && classList.length > 0) {
+    if (teacherDetails && Array.isArray(teacherDetails.className) && classList?.length > 0) {
       const teacherClassIds = teacherDetails.className;  // Array of class IDs from teacher details
       const filtered = classList.filter(classItem =>
         teacherClassIds.includes(classItem.id)
