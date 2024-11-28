@@ -13,7 +13,7 @@ function Syllabus() {
   ];
 
   return (
-    <div className="p-6 font-sans">
+    <div className="p-6 font-sans bg-white shadow-lg rounded-lg">
       {/* Title */}
       <h2 className="text-2xl font-bold mb-4">Syllabus</h2>
 

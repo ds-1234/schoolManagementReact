@@ -6,43 +6,54 @@ import BASE_URL from '../../../conf/conf';
 function HomeWorks() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [homeworks, setHomeworks] = useState([]);
-  const [subjects, setSubjects] = useState([]); // To store subjects with their names
+  const [subjects, setSubjects] = useState([]); // Store subjects data
   const [filteredHomeworks, setFilteredHomeworks] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(''); // Track selected subject
 
-  console.log(user,'user')
-
-  const classId = user.className[0]; // Directly get the class ID from the user's className array
+  const classId = user.className ? user.className[0] : null; // Get the class ID from the user's className array
 
   useEffect(() => {
     // Fetch homeworks and subjects data
     const fetchHomeworks = async () => {
-      const homeworkResponse = await fetch(`${BASE_URL}/homework/getHomeworkList`);
-      const homeworkData = await homeworkResponse.json();
-      console.log('Fetched Homework Data:', homeworkData); // Log the homework data
-      setHomeworks(homeworkData.data);
+      try {
+        const homeworkResponse = await fetch(`${BASE_URL}/homework/getHomeworkList`);
+        const homeworkData = await homeworkResponse.json();
+        console.log('Fetched Homework Data:', homeworkData);
+
+        // Filter homeworks to match the user's class
+        const classFilteredHomeworks = homeworkData.data.filter(
+          (homework) => homework.className === classId
+        );
+        setHomeworks(classFilteredHomeworks); // Save only relevant homeworks
+      } catch (error) {
+        console.error('Error fetching homework:', error);
+      }
     };
 
     const fetchSubjects = async () => {
-      const classResponse = await fetch(`${BASE_URL}/class/getClass/${classId}`);
-      const classData = await classResponse.json();
-      console.log('Fetched Class Data:', classData); // Log the class data to check subjects
+      try {
+        const classResponse = await fetch(`${BASE_URL}/class/getClass/${classId}`);
+        const classData = await classResponse.json();
+        console.log('Fetched Class Data:', classData);
 
-      if (classData.success) {
-        const classSubjects = classData.data.subject; // Get subjects related to the class
-        console.log('Class Subjects:', classSubjects); // Log the subject IDs
+        if (classData.success) {
+          const classSubjects = classData.data.subject; // Get subjects related to the class
+          console.log('Class Subjects:', classSubjects);
 
-        // Fetch subject names based on subject IDs
-        const subjectNames = await Promise.all(
-          classSubjects.map(async (subjectId) => {
-            const subjectResponse = await fetch(`${BASE_URL}/subject/getSubject/${subjectId}`);
-            const subjectData = await subjectResponse.json();
-            console.log('Fetched Subject Data:', subjectData); // Log each subject response
-            return subjectData.data; // Assuming the subject API returns the full subject object
-          })
-        );
+          // Fetch subject names based on subject IDs
+          const subjectNames = await Promise.all(
+            classSubjects.map(async (subjectId) => {
+              const subjectResponse = await fetch(`${BASE_URL}/subject/getSubject/${subjectId}`);
+              const subjectData = await subjectResponse.json();
+              console.log('Fetched Subject Data:', subjectData);
+              return subjectData.data; // Assuming the subject API returns the full subject object
+            })
+          );
 
-        setSubjects(subjectNames); // Save subjects to the state
+          setSubjects(subjectNames); // Save subjects to the state
+        }
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
       }
     };
 
@@ -59,9 +70,8 @@ function HomeWorks() {
   }, [homeworks, selectedSubject]);
 
   const getSubjectName = (subjectId) => {
-    console.log(subjects,'subjects')
-    const subject = subjects.filter((sub) => sub.id == subjectId);
-    console.log(subject,'subjectname')
+    // Find subject name from the subjects state using the subject ID
+    const subject = subjects.find((sub) => sub.id === subjectId);
     return subject ? subject.subject : 'Unknown Subject'; // Return subject name or default text
   };
 
@@ -70,7 +80,7 @@ function HomeWorks() {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-white shadow-lg rounded-lg">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">HomeWorks</h1>
@@ -88,7 +98,7 @@ function HomeWorks() {
             ) : (
               subjects.map((subject) => (
                 <option key={subject.id} value={subject.id}>
-                  {subject.name} {/* Display the subject name */}
+                  {subject.subject} {/* Display the subject name */}
                 </option>
               ))
             )}
@@ -102,7 +112,7 @@ function HomeWorks() {
           <p>No homework found for the selected subject.</p> // Show message if no homework found
         ) : (
           filteredHomeworks.map((hw, index) => {
-            const subjectName = getSubjectName(hw.subject);
+            const subjectName = getSubjectName(hw.subject); // Get subject name using the helper function
             const randomPercentage = generateRandomPercentage(); // Get random percentage for each homework
 
             return (
@@ -114,7 +124,7 @@ function HomeWorks() {
                 <div
                   className={`px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full mb-2`}
                 >
-                  {subjectName}
+                  {subjectName} {/* Display the subject name */}
                 </div>
 
                 {/* Homework Details */}
