@@ -117,7 +117,7 @@ function ClassFaculties() {
   return (
     <div className= 'p-2 space-y-4 bg-white shadow-lg rounded-lg'>
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 ">
+      <div className=" space-y-4 flex justify-between items-center mb-6 ">
         <h1 className="text-2xl font-bold">Class Faculties</h1>
         <div className="flex space-x-2">
           <button onClick={scrollLeft} className="bg-gray-200 p-2 rounded-full">
