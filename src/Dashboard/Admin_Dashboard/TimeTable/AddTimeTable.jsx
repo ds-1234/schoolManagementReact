@@ -96,15 +96,15 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
 
 
   const onSubmit = (data) => {
-    const payload = {
+    const payload = data.days[activeDay].map((row) => ({
       className: classItem.id,
       weekDay: activeDay,
-      startTime: data.days[activeDay][0].timeFrom,
-      endTime: data.days[activeDay][0].timeTo,
-      userId: parseInt(data.days[activeDay][0].teacher),
-      subject: [parseInt(data.days[activeDay][0].subject)],
-      isActive : true
-    };
+      startTime: row.timeFrom,
+      endTime: row.timeTo,
+      userId: parseInt(row.teacher),
+      subject: [parseInt(row.subject)],
+      isActive: true,
+    }));
   
     console.log(payload);
     

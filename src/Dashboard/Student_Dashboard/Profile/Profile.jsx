@@ -11,6 +11,7 @@ import femaleImg from '../../../assets/woman.png'
 const Profile = () => {
   const user = JSON.parse(sessionStorage.getItem('user'));
   const [studentDetails, setStudentDetails] = useState(null);
+  const [siblingDets , setSiblingDets] = useState([])
   const [activeTab, setActiveTab] = useState('hostel'); 
   const [hostel , setHostel] = useState({}) 
   const [transport , setTransport] = useState({})
@@ -18,27 +19,41 @@ const Profile = () => {
   const [documents , setDocuments] = useState({})
 
   useEffect(() => {
-    const fetchData = () => {
-      axios({
+    const fetchData = async () => {
+      try{
+     const response  = await axios({
         method: 'GET',
         url: `${BASE_URL}/user/getStudentDetails/${user.userId}`,
         headers: {
           'Content-Type': 'application/json',
         },
       })
-        .then((response) => {
-          console.log('Data from API:', response.data);
+      
           setStudentDetails(response.data.data);
-        })
-        .catch((error) => {
+
+          if (studentDetails?.siblings && studentDetails.siblings?.length > 0) {
+            console.log(studentDetails.siblings);
+            
+            const siblingData = await Promise.all(
+              studentDetails.siblings.map((siblingId) =>
+                 axios.get(`${BASE_URL}/user/getUser/${siblingId}`).then((res) => res.data.data)
+              )
+            );
+            console.log(siblingData);
+            
+            setSiblingDets(siblingData);
+        }
+      }catch(error) {
           console.error('Error fetching data:', error);
-        });
+        };
     };
 
     const fetchDocuments = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/document/getDocument/${id}`);
+        const response = await axios.get(`${BASE_URL}/document/getDocument/${user.id}`);
         setDocuments(response.data.data);
+        // console.log(documents);
+        
       } catch (error) {
         console.error('Error fetching documents:', error);
       }
@@ -59,7 +74,6 @@ const Profile = () => {
           },
         })
           .then((response) => {
-            console.log('Data from API:', response.data);
             setHostel(response.data.data);
           })
           .catch((error) => {
@@ -76,7 +90,6 @@ const Profile = () => {
           },
         })
           .then((response) => {
-            console.log('Data from API:', response.data);
             setHostelRoom(response.data.data);
           })
           .catch((error) => {
@@ -93,7 +106,6 @@ const Profile = () => {
           },
         })
           .then((response) => {
-            console.log('Data from API:', response.data);
             setTransport(response.data.data);
           })
           .catch((error) => {
@@ -194,10 +206,22 @@ const Profile = () => {
           {/* Sibling Information */}
           <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Sibling Information</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li><strong>Ralph Claudia:</strong> III, B</li>
-              <li><strong>Julie Scott:</strong> V, A</li>
-            </ul>
+            {siblingDets.length > 0 ? (
+              <ul className="space-y-2  text-gray-600">
+                {siblingDets.map((sibling) => (
+                  <li key={sibling.id} className="flex space-x-2  items-center">
+                    <span>
+                      <strong>{sibling.firstName} {sibling.lastName} : </strong>
+                    </span>
+                    <span>
+                      {sibling.className} 
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No siblings found.</p>
+            )}
           </div>
 
           {/* Hostel and Transport Section */}

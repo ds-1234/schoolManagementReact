@@ -37,7 +37,7 @@ const HeaderBar = () => {
             <div className = 'flex gap-2 items-center'>
                 <div className='flex flex-col text-black items-end'>
                     <p><strong>{user.firstName} {user.lastName}</strong> </p>
-                    <p>as <strong>{roleName}</strong> </p>
+                    <p className="text-xs">as {roleName} </p>
                 </div>
 
                 <Logout />

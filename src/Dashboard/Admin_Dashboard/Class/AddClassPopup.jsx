@@ -13,11 +13,14 @@ const AddClassPopup = ({ isOpen, onClose }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [teachers , setTeachers] = useState([])
+  const [selectedTeacher , setSelectedTeacher] = useState('')  
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       fetchSubjects();
+      fetchTeachers() ;
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -44,6 +47,16 @@ const AddClassPopup = ({ isOpen, onClose }) => {
     }
   };
 
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/getUserList`);
+      setTeachers(response.data.data.filter((tch) => (tch.role === 4 && tch.isActive == true))) ;
+      
+    } catch (error) {
+      toast.error("Error fetching teachers");
+    }
+  };
+
   const handleCheckboxChange = (subjectId) => {
     setSelectedSubjects((prevSelected) => {
       if (prevSelected.includes(subjectId)) {
@@ -53,6 +66,14 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       }
     });
   };
+
+  const handleOnClose = () => {
+    onClose() ;
+    reset()
+    setSelectedSubjects([])
+      setSelectedTeacher('') 
+      setDropdownOpen(false)
+  }
 
   const onSubmit = async (data) => {
     const subjectDetails = selectedSubjects.map(id => {
@@ -67,6 +88,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
         name: data.name,
         section: data.section,
         subject: subjectDetails,
+        primaryTeacher: parseInt(selectedTeacher) , 
         isActive: true 
       }, {
         headers: {
@@ -77,12 +99,16 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       toast.success("Successfully added class");
       reset()
       setSelectedSubjects([])
+      setSelectedTeacher('') 
       setSubjects([])
       onClose();
 
     } catch (error) {
       toast.error("Error adding new class");
       console.error(error);
+      reset()
+      setSelectedSubjects([])
+      setSelectedTeacher('') 
     }
   };
 
@@ -91,7 +117,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
+        <button onClick={handleOnClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Class</h2>
 
@@ -105,6 +131,22 @@ const AddClassPopup = ({ isOpen, onClose }) => {
             <label htmlFor="section" className="block text-gray-700 font-semibold mb-2">Section</label>
             <Input type="text" id="section" className={`w-full ${errors.section ? 'border-red-500' : 'border-gray-300'} rounded-lg`} {...register('section', { required: 'Section is required' })} />
             {errors.section && <p className="text-red-500 text-sm mt-1">{errors.section.message}</p>}
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="classTeacher" className="block text-gray-700 font-semibold mb-2">Class Teacher</label>
+            <select  
+              id="classTeacher" 
+              value={selectedTeacher}
+              className={`w-full ${errors.primaryTeacher ? 'border-red-500' : 'border-gray-300'} rounded-lg border py-2 px-2`}
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+            >
+              <option value="">Select Teacher</option>
+              {teachers.map((tch) => (
+                <option key={tch.id} value={tch.id}>{tch.firstName} {tch.lastName}</option>
+              ))}
+            </select>
+            {errors.primaryTeacher && <p className="text-red-500 text-sm mt-1">{errors.primaryTeacher.message}</p>}
           </div>
 
           {/* Subject Input */}
