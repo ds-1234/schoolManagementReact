@@ -1,9 +1,19 @@
-import React from 'react'
+import React , {useState}from 'react'
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse , faCalendarDay, faBookOpen,faChildren,faFileLines, faClipboardUser } from '@fortawesome/free-solid-svg-icons';
+import { faHouse , faCalendarDay, faBookOpen,faChildren,faFileLines, faClipboardUser , faAngleRight , faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function TchSidebar() {
+  const [openDropdown, setOpenDropdown] = useState(null)
+
+  const toggleDropdown = (dropdown) => {
+    setOpenDropdown(prevDropdown => prevDropdown === dropdown ? null : dropdown);
+  };
+
+  const renderAngleIcon = (dropdown) => {
+    return openDropdown === dropdown ? faAngleDown : faAngleRight;
+  };
+
   return (
     <div className='bg-[#051f3e] fixed h-full '>
       <nav className="p-5 h-full overflow-y-auto scrollbar-hide">
@@ -84,6 +94,50 @@ function TchSidebar() {
             Holidays
           
         </NavLink>
+      </li>
+
+       {/* Leaves Section */}
+       <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
+            <NavLink
+              to="/teacherDashboard/leaves"
+              className={({ isActive }) =>
+                `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+              onClick={() => toggleDropdown('leave')} 
+            >
+              <div className='flex items-center justify-start gap-1'>
+                <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
+                Leave
+              </div>
+              <FontAwesomeIcon icon={renderAngleIcon('leave')} className="mr-3" onClick={() => toggleDropdown('leave')} />
+            </NavLink>
+            {openDropdown=='leave' && (
+              <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                <li>
+                  <NavLink
+                    to="/teacherDashboard/leaves"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    List of Leaves
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/teacherDashboard/leaveRequest"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Approve Request
+                  </NavLink>
+                </li>
+              </ul>
+            )}
       </li>
                         {/* Sports section */}
     <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">

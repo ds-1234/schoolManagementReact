@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import TodayDate from '../../../Reusable_components/TodayDate';
-import FutureDates from '../../../Reusable_components/futureDates';
+import FutureDates from '../../../Reusable_components/FutureDates';
 import BASE_URL from '../../../conf/conf';
 
 const AddHomework = ({ isOpen, onClose }) => {
