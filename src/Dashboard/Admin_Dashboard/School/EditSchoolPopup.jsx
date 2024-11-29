@@ -16,12 +16,62 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
     country: ''
   });
 
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity , setSelectedCity] = useState('') ;
+
+  const fetchLocationData = async() => {
+    await axios({
+      method:'GET' ,
+      url: `${BASE_URL}/area/getCountryList` ,
+      headers: {'Content-Type' : 'application/json'} 
+    })
+    .then((res) => {
+      setCountries(res.data.data) ;
+    })
+    .catch((err) => {
+      console.log("Error in fetching countries" , err);
+    })
+  }
+
+  useEffect(() => {
+    const fetchStates = () => {
+      axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
+      .then((res) => {
+        setStates(res.data.data) ;
+      })
+      .catch((err) => console.error(err)) 
+    }
+
+    const fetchCities = () => {
+      axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
+      .then((res) => {
+        setCities(res.data.data) ;
+      })
+      .catch((err) => console.error(err)) 
+    }
+    
+    if(selectedCountry){
+      fetchStates() ;
+    }
+
+    if(selectedState){
+      fetchCities() ;
+    }
+  } , [selectedCountry , selectedState])
+
   useEffect(() => {
     
     // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
+        setSelectedCountry('')
+        setSelectedState('')
+        setSelectedCity('')
       }
     };
 
@@ -40,7 +90,14 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
         },
       })
       .then((response) => {
+        const data = response.data.data ;
+        fetchLocationData()
         setSchool(response.data.data);
+        if (data) {
+           setSelectedCountry(data.country);
+           setSelectedState(data.state);
+           setSelectedCity(data.city);
+        }
       })
       .catch((error) => {
         console.error('Error fetching School:', error);
@@ -59,7 +116,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
     axios({
       method: 'POST', 
       url: `${BASE_URL}/school/createSchool`,
-      data: {id : '${schoolId}', ...school},
+      data: {id : '${schoolId}', ...school ,  country: selectedCountry ,state: selectedState , city: selectedCity},
       headers: {
         'Content-Type': 'application/json',
       },
@@ -68,6 +125,9 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
       toast.success('School updated successfully!');
       onSuccess(); // Call onSuccess to refresh data
       onClose(); // Close the popup
+      setSelectedCountry('')
+      setSelectedState('')
+      setSelectedCity('')
     })
     .catch((err) => {
       console.error('Error:', err);
@@ -130,33 +190,54 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
             {!school.street && <span className="text-red-500 text-sm">Street is required</span>}
           </div>
 
-          <div>
-            <Input
-              type="text"
-              name="city"
-              value={school.city}
-              onChange={handleChange}
-              label="City"
-              placeholder="Enter the City"
-              aria-invalid={school.city ? 'false' : 'true'}
-              color={school.city ? 'default' : 'error'}
-            />
-            {!school.city && <span className="text-red-500 text-sm">City is required</span>}
-          </div>
+            {/* Country dropdown */}
+        <div className="flex flex-col">
+          <label htmlFor="country"  className='text-black text-sm'>Country</label>
+          <select
+            id="country"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border  focus:outline-none`}
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+          >
+            <option value="">Select Country</option>
+            {countries.map((country) => (
+              <option key={country.id} value={country.id}>{country.name}</option>
+            ))}
+          </select>
+       </div>
 
-          <div>
-            <Input
-              type="text"
-              name="state"
-              value={school.state}
-              onChange={handleChange}
-              label="State"
-              placeholder="Enter the State"
-              aria-invalid={school.state ? 'false' : 'true'}
-              color={school.state ? 'default' : 'error'}
-            />
-            {!school.state && <span className="text-red-500 text-sm">State is required</span>}
-          </div>
+        {/* State dropdown */}
+        <div className="flex flex-col ">
+          <label htmlFor="state"  className='text-black text-sm'>State</label>
+          <select
+            id="state"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border  focus:outline-none`}
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+          >
+            <option value="">Select State</option>
+            {states.map((option) => (
+              <option key={option.id} value={option.id}>{option.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* City dropdown */}
+        <div className="flex flex-col">
+          <label htmlFor="city" className='text-black text-sm'>City/Village</label>
+          <select
+            id="city"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none`}
+            value={selectedCity}
+            onChange={(e) => setSelectedCity(e.target.value)}
+          >
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>{city.name}</option>
+            ))}
+          </select>
+      </div>
+
 
           <div>
             <Input
@@ -172,7 +253,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
             {!school.pinCode && <span className="text-red-500 text-sm">Pin code is required</span>}
           </div>
 
-          <div>
+          {/* <div>
             <Input
               type="text"
               name="country"
@@ -184,7 +265,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
               color={school.country ? 'default' : 'error'}
             />
             {!school.country && <span className="text-red-500 text-sm">Country is required</span>}
-          </div>
+          </div> */}
 
           <Button 
             type='submit'

@@ -95,8 +95,9 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
         await axios.post(`${BASE_URL}/user/updateUser`, updatedData, {
           headers: { "Content-Type": "application/json" },
         });
-        toast.success("User Updated Successfully!");
         navigate('/admin/activeUser');
+        toast.success("User Updated Successfully!");
+        
       }
     } catch (error) {
       console.error("Error updating user:", error);
@@ -109,7 +110,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
       <h3 className="font-semibold text-gray-900 text-xl">Upload Documents</h3>
       <div className='grid grid-cols-2 gap-5'>
         <div className="flex flex-col mb-5">
-          <label htmlFor="resume">Resume </label>
+          <label htmlFor="resume">Resume <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="file"
             id="resume"
@@ -121,7 +122,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
         </div>
 
         <div className="flex flex-col mb-5">
-          <label htmlFor="photo">Upload Photo</label>
+          <label htmlFor="photo">Upload Photo <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="file"
             id="photo"
@@ -134,7 +135,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
       </div>
 
       <div className="mb-2">
-        <label className="mb-2" htmlFor="active">Status</label>
+        <label className="mb-2" htmlFor="active">Status <span className='text-red-700 font-bold'>*</span></label>
         <ToggleButton
           isOn={toggleValue}
           handleToggle={() => setToggleValue(!toggleValue)}

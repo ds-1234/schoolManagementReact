@@ -102,7 +102,7 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
       <h3 className="font-semibold text-gray-900 text-xl">HR Information</h3>
       <div className='grid grid-cols-2 gap-5'>
         <div className="flex flex-col mb-5 gap-2">
-          <label htmlFor="aadhar">Aadhar Card</label>
+          <label htmlFor="aadhar">Aadhar Card <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="text"
             id="aadhar"
@@ -122,7 +122,7 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
         </div>
 
         <div className="flex flex-col mb-5 gap-2">
-          <label htmlFor="pan">PAN Card</label>
+          <label htmlFor="pan">PAN Card <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="text"
             id="pan"

@@ -39,7 +39,7 @@ useEffect(() => {
         const userData = response.data.data;
         setSelectedRole(userData.role);
         setUserName(userData.userId) ;
-        if (userData.dateOfBirth === null) setCurrentStep(0);
+        if (userData.dateOfBirth === null && userData.role == 4) setCurrentStep(0);
 
         // Additional check for teacher info if role is 4
         if (userData.role == 4) {
@@ -54,7 +54,7 @@ useEffect(() => {
           else setCurrentStep(7);
         }
 
-        if(userData.isActive === true){
+        if(userData.role != 4){
           setCurrentStep(0) ;
         }
       } catch (error) {
@@ -103,7 +103,7 @@ useEffect(() => {
     <div className="bg-white rounded-lg w-full mb-10 p-10 mt-5">
         {/* Role Input */}
         <div className="mt-4 mb-5" hidden = {currentStep != 0}>
-        <label htmlFor="role" className="block text-gray-900 font-semibold">Role</label>
+        <label htmlFor="role" className="block text-gray-900 font-semibold">Role <span className='text-red-700 font-bold'>*</span></label>
 
         <div
           className="border rounded-lg cursor-pointer  flex justify-between items-center w-1/2 p-2"

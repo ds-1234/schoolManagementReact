@@ -178,7 +178,7 @@ const fetchBasicDets = async() => {
   return (
     <div>
          <div className="flex flex-col px-1 mt-2 mb-5">
-            <label htmlFor="maritalStatus" className='text-gray-900 font-semibold text-xl'>Marital Status</label>
+            <label htmlFor="maritalStatus" className='text-gray-900 font-semibold text-xl'>Marital Status <span className='text-red-700 font-bold'>*</span></label>
             <div className="flex space-x-4">
               <label className="flex items-center">
                 <input
@@ -206,7 +206,7 @@ const fetchBasicDets = async() => {
 
        
         <div className="flex flex-col px-1 mt-2 mb-5">
-          <label htmlFor="languages" className='text-gray-900 font-semibold text-xl'>Languages</label>
+          <label htmlFor="languages" className='text-gray-900 font-semibold text-xl'>Languages <span className='text-red-700 font-bold'>*</span></label>
           <SelectDropdown
             name="languages"
             control={control}
@@ -253,11 +253,11 @@ const fetchBasicDets = async() => {
         </div>
 
         <div className="flex flex-col px-2 w-1/2">
-            <label htmlFor="school" className='text-gray-900 font-medium'>School Branch</label>
+            <label htmlFor="school" className='text-gray-900 font-medium'>School Branch <span className='text-red-700 font-bold'>*</span></label>
             <select
             id="school"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            {...register('school')}
+            {...register('school' , {required: 'School is required'})}
             value={selectedSchl}
             onChange={(e) => setSelectedSchl(e.target.value)}
             placeholder = "Select School Branch "

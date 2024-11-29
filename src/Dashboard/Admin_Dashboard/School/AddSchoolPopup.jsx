@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect , useState} from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@nextui-org/react';
 import axios from 'axios';
@@ -7,6 +7,14 @@ import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
 
 const AddSchoolPopup = ({ isOpen, onClose }) => {
+
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity , setSelectedCity] = useState('') ;
+
   const {
     register,
     handleSubmit,
@@ -40,8 +48,10 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
 
   const Submitschool = (data) => {
     const formData = getValues();
-    console.log('Form Data:', formData);
-    console.log('Submitted Data:', data);
+    
+    setSelectedCountry(data.country || '');
+    setSelectedState(data.state || '');
+    setSelectedCity(data.city || '') ;
 
     axios({
       method: 'post',
@@ -50,10 +60,10 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         name: data.name,
         houseNumber: data.houseNumber,
         street: data.street,
-        city: data.city,
-        state: data.state,
+        city: selectedCity,
+        state: selectedState,
         pinCode: data.pinCode,
-        country: data.country,
+        country: selectedCountry,
         isActive: true
       },
       headers: {
@@ -73,6 +83,39 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         reset()
       });
   };
+
+   // Fetch countries
+   useEffect(() => {
+    axios.get(`${BASE_URL}/area/getCountryList`)
+      .then((response) => {
+        setCountries(response.data.data)
+      })
+      .catch((error) => console.error("Error fetching countries:", error));
+  }, []);
+
+  // Fetch states when country changes
+  useEffect(() => {
+    if (selectedCountry) {
+      axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
+        .then((response) => {  
+          setStates(response.data.data)
+          console.log(states);
+          
+        })
+        .catch((error) => console.error("Error fetching states:", error));
+    }
+  }, [selectedCountry]);
+
+  // Fetch cities when state changes
+  useEffect(() => {
+    if (selectedState) {
+      axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
+        .then((response) => {
+          setCities(response.data.data)
+        })
+        .catch((error) => console.error("Error fetching cities:", error));
+    }
+  }, [selectedCountry, selectedState]);
 
   if (!isOpen) return null;
 
@@ -135,7 +178,61 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
-          <div>
+          {/* Country dropdown */}
+        <div className="flex flex-col">
+          <label htmlFor="country"  className='text-black text-sm'>Country</label>
+          <select
+            id="country"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('country', { required: 'Country is required' })}
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+          >
+            <option value="">Select Country</option>
+            {countries.map((country) => (
+              <option key={country.id} value={country.id}>{country.name}</option>
+            ))}
+          </select>
+          {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
+        </div>
+
+        {/* State dropdown */}
+        <div className="flex flex-col ">
+          <label htmlFor="state"  className='text-black text-sm'>State</label>
+          <select
+            id="state"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('state', { required: 'State is required' })}
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+          >
+            <option value="">Select State</option>
+            {states.map((option) => (
+              <option key={option.id} value={option.id}>{option.name}</option>
+            ))}
+          </select>
+          {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
+        </div>
+
+        {/* City dropdown */}
+        <div className="flex flex-col">
+          <label htmlFor="city" className='text-black text-sm'>City/Village</label>
+          <select
+            id="city"
+            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('city', { required: 'City is required' })}
+            value={selectedCity}
+            onChange={(e) => setSelectedCity(e.target.value)}
+          >
+            <option value="">Select City</option>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>{city.name}</option>
+            ))}
+          </select>
+          {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
+        </div>
+
+          {/* <div>
             <Input
               {...register('city', {
                 required: 'City is required',
@@ -165,7 +262,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
             {errors.state && (
               <span className="text-red-500 text-sm">{errors.state.message}</span>
             )}
-          </div>
+          </div> */}
 
           <div>
             <Input
@@ -183,7 +280,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
             )}
           </div>
 
-          <div>
+          {/* <div>
             <Input
               {...register('country', {
                 required: 'Country is required',
@@ -197,7 +294,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
             {errors.country && (
               <span className="text-red-500 text-sm">{errors.country.message}</span>
             )}
-          </div>
+          </div> */}
 
           {/* <Button
             type="submit"

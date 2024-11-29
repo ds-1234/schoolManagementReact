@@ -9,7 +9,6 @@ import FutureDates from '../../../Reusable_components/FutureDates';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../Reusable_components/CkEditor.css';
-import FutureDateExcludeToday from '../../../Reusable_components/FutureDateExcludeToday'
 
 const AddLeave = ({ isOpen, onClose }) => {
   const { register, handleSubmit, reset , formState: { errors } } = useForm();
@@ -162,15 +161,15 @@ const AddLeave = ({ isOpen, onClose }) => {
           className={"border py-2 px-2 rounded-md mb-2"}
           />
 
-
-          <FutureDateExcludeToday
+        <FutureDates 
           label={"End Date"} 
-          labelClass={"block text-gray-700 font-semibold mb-2"} 
+          labelClass={"block text-gray-700 font-semibold mb-1"} 
           name={"leaveEndDate"}
           required={"true"}
           register={register}
           className={"border py-2 px-2 rounded-md mb-2"}
-          /> 
+          />
+
 
     <div className="mb-2">
     <label htmlFor="leaveReason" className="block text-gray-700 font-semibold mb-2">Leave Reason *</label>

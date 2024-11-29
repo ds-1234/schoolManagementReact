@@ -34,7 +34,7 @@ const DatePicker = ({ labelClass , name, label,register , required ,  className 
 
   return (
     <div className='flex flex-col'>
-      <label className={labelClass} >{label} *</label>
+      <label className={labelClass} >{label} <span className='text-red-700 font-bold'>*</span></label>
       <input
         className={className}
         placeholder="Select Date"

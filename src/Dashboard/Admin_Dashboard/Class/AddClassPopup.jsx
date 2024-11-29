@@ -122,13 +122,13 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Class</h2>
 
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">Name</label>
+            <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">Name  <span className='text-red-700 font-bold'>*</span></label>
             <Input type="text" id="name" className={`w-full ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg`} {...register('name', { required: 'Name is required' })} />
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
           </div>
 
           <div className="mb-4">
-            <label htmlFor="section" className="block text-gray-700 font-semibold mb-2">Section</label>
+            <label htmlFor="section" className="block text-gray-700 font-semibold mb-2">Section  <span className='text-red-700 font-bold'>*</span></label>
             <Input type="text" id="section" className={`w-full ${errors.section ? 'border-red-500' : 'border-gray-300'} rounded-lg`} {...register('section', { required: 'Section is required' })} />
             {errors.section && <p className="text-red-500 text-sm mt-1">{errors.section.message}</p>}
           </div>
@@ -151,7 +151,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
           {/* Subject Input */}
           <div className="mb-4 relative">
-            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject</label>
+            <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject  <span className='text-red-700 font-bold'>*</span> </label>
             <div 
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
