@@ -25,12 +25,27 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const [subjects, setSubjects] = useState([]); // State for all subjects
   const [filteredSubjects, setFilteredSubjects] = useState([]); // State for filtered subjects based on selected class
 
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+      setFilteredSubjects([]);
+      setClassList([]);
+    }
+  }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      fetchClassList()
+      fetchExamTypes()
+      fetchSubjects()
+      }
+  }, [isOpen]);
+  
+
   // Fetch class list from the API
   useEffect(() => {
     if (isOpen) {
             // Reset the form when the modal is closed
-    reset();
-    // setFilteredSubjects([])
+fetchClassList    // setFilteredSubjects([])
     // setClassList([])
       document.body.style.overflow = 'hidden';
     } else {
@@ -58,7 +73,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
     };
   }, [isOpen, onClose]);
 
-  useEffect(() => {
+  // useEffect(() => {
     // Fetch Class List from API
     const fetchClassList = async () => {
       try {
@@ -68,7 +83,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching class list:', error);
       }
     };
-    fetchClassList();
+    // fetchClassList();
 
     // Fetch Exam Type List from API
     const fetchExamTypes = async () => {
@@ -79,7 +94,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching exam types:', error);
       }
     };
-    fetchExamTypes();
+    // fetchExamTypes();
 
     // Fetch Subjects from API
     const fetchSubjects = async () => {
@@ -90,8 +105,8 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching subjects:', error);
       }
     };
-    fetchSubjects();
-  }, []);
+    // fetchSubjects();
+  // }, []);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -113,12 +128,18 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const handleTimeChange = (index) => {
     const startTime = getValues(`days.Monday.${index}.timeFrom`);
     const endTime = getValues(`days.Monday.${index}.timeTo`);
-console.log(startTime,endTime,'startendtime')
+    if (startTime && endTime && startTime >= endTime) {
+      toast.error('Start time must be earlier than end time');
+      setValue(`days.Monday.${index}.timeTo`, '');
+      setValue(`days.Monday.${index}.duration`, '');
+      return;
+    }
     if (startTime && endTime) {
       const duration = calculateDuration(startTime, endTime);
       setValue(`days.Monday.${index}.duration`, duration);
     }
   };
+  
 
   const calculateDuration = (startTime, endTime) => {
     const start = new Date(`1970-01-01T${startTime}:00Z`);
@@ -244,7 +265,7 @@ console.log(startTime,endTime,'startendtime')
                     <input
                       type="date"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                      max={new Date().toISOString().split("T")[0]} // Set max to today's date
+                      max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split("T")[0]}
                       {...register(`days.Monday.${index}.examDate`)}
                     />
                   </div>
