@@ -76,7 +76,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           <input
             type="text"
             id="accountName"
-            {...register('accountName', { required: 'Account Name is required' })}
+            {...register('accountName')}
             className="border border-gray-300 p-2 rounded-lg "
           />
         </div>
@@ -85,7 +85,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           <input
             type="text"
             id="accountNumber"
-            {...register('accountNumber', { required: 'Account Number is required' })}
+            {...register('accountNumber')}
             className="border border-gray-300 p-2 rounded-lg "
           />
         </div>
@@ -94,7 +94,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           <input
             type="text"
             id="bankName"
-            {...register('bankName', { required: 'Bank Name is required' })}
+            {...register('bankName')}
             className="border border-gray-300 p-2 rounded-lg"
           />
         </div>
@@ -103,7 +103,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           <input
             type="text"
             id="ifsc"
-            {...register('ifsc', { required: 'IFSC Code is required' })}
+            {...register('ifsc')}
             className="border border-gray-300 p-2 rounded-lg"
           />
         </div>
@@ -112,7 +112,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           <input
             type="text"
             id="branchName"
-            {...register('branchName', { required: 'Branch Name is required' })}
+            {...register('branchName')}
             className="border border-gray-300 p-2 rounded-lg"
           />
         </div>

@@ -205,7 +205,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       <h3 className="text-xl font-semibold mb-2 text-gray-900">Basic Details</h3>
       <form  className='grid grid-cols-4 mt-5 gap-6'>
         <div className="flex flex-col px-1">
-          <label htmlFor="firstName">First Name *</label>
+          <label htmlFor="firstName">First Name <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="text"
             id="firstName"
@@ -217,7 +217,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         </div>
           
         <div className="flex flex-col px-1 ">
-          <label htmlFor="lastName">Last Name *</label>
+          <label htmlFor="lastName">Last Name <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="text"
             id="lastName"
@@ -229,7 +229,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         </div>
           
         <div className="flex flex-col px-1 ">
-          <label htmlFor="email">Email *</label>
+          <label htmlFor="email">Email <span className='text-red-700 font-bold'>*</span></label>
           <input
             type="email"
             id="email"
@@ -247,7 +247,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         </div>
 
         <div className="flex flex-col px-1 ">
-            <label htmlFor="phone">Mobile Number *</label>
+            <label htmlFor="phone">Mobile Number <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="phone"
               id="phone"
@@ -265,7 +265,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           </div>
 
           <div className="flex flex-col px-1 ">
-            <label htmlFor="gender">Gender * </label>
+            <label htmlFor="gender">Gender <span className='text-red-700 font-bold'>*</span> </label>
             <select
               id="gender"
               className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -291,7 +291,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
                 </div>
 
           <div className="flex flex-col px-1 ">
-            <label htmlFor="fatherName">Father's Name *</label>
+            <label htmlFor="fatherName">Father's Name <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="text"
               id="fatherName"
@@ -303,7 +303,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           </div>
 
           <div className="flex flex-col px-1">
-            <label htmlFor="motherName">Mother's Name *</label>
+            <label htmlFor="motherName">Mother's Name <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="text"
               id="motherName"
@@ -317,7 +317,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
         {/* Country dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="country">Country *</label>
+          <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="country"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -335,7 +335,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
         {/* State dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="state">State *</label>
+          <label htmlFor="state">State <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="state"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -353,7 +353,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
         {/* City dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="city">City *</label>
+          <label htmlFor="city">City <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="city"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -372,7 +372,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
           {/* House Number */}
           <div className="flex flex-col  px-1">
-            <label htmlFor="houseNumber">House Number *</label>
+            <label htmlFor="houseNumber">House Number <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="text"
               id="houseNumber"
@@ -385,7 +385,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
           {/* Street */}
           <div className="flex flex-col px-1 ">
-            <label htmlFor="street">Street *</label>
+            <label htmlFor="street">Street <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="text"
               id="street"
@@ -421,7 +421,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
           </div>*/}
 
           <div className="flex flex-col px-1 ">
-            <label htmlFor="pinCode">Pincode *</label>
+            <label htmlFor="pinCode">Pincode <span className='text-red-700 font-bold'>*</span></label>
             <input
               type="text"
               id="pinCode"

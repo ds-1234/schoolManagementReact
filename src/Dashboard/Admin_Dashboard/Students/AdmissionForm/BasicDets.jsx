@@ -4,7 +4,7 @@ import DatePicker from '../../../../Reusable_components/DatePicker';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
-import { toast , ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useUserContext } from '../../../../hooks/UserContext';
 import BASE_URL from '../../../../conf/conf';
 import ProgressIndicator from './ProgressIndicator';
@@ -140,7 +140,7 @@ const {
 
         {/* Input Fields */}
         <div className="flex flex-col px-1">
-            <label htmlFor="firstName">First Name *</label>
+            <label htmlFor="firstName">First Name <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="firstName"
@@ -152,7 +152,7 @@ const {
         </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="lastName">Last Name *</label>
+            <label htmlFor="lastName">Last Name <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="lastName"
@@ -164,7 +164,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="email">Email *</label>
+            <label htmlFor="email">Email <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="email"
                 id="email"
@@ -182,7 +182,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="phone">Mobile Number *</label>
+            <label htmlFor="phone">Mobile Number <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="phone"
                 id="phone"
@@ -200,7 +200,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="fatherName">Father's Name *</label>
+            <label htmlFor="fatherName">Father's Name <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="fatherName"
@@ -212,7 +212,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1">
-            <label htmlFor="motherName">Mother's Name *</label>
+            <label htmlFor="motherName">Mother's Name <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="motherName"
@@ -224,7 +224,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="gender">Gender * </label>
+            <label htmlFor="gender">Gender <span className='text-red-700 font-bold'>*</span> </label>
             <select
                 id="gender"
                 className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -252,7 +252,7 @@ const {
 
         {/* Country dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="country">Country *</label>
+          <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="country"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -270,7 +270,7 @@ const {
 
         {/* State dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="state">State *</label>
+          <label htmlFor="state">State <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="state"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -288,7 +288,7 @@ const {
 
         {/* City dropdown */}
         <div className="flex flex-col px-1">
-          <label htmlFor="city">City/Village*</label>
+          <label htmlFor="city">City/Village <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="city"
             className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -305,7 +305,7 @@ const {
         </div>
 
             <div className="flex flex-col  px-1">
-            <label htmlFor="houseNumber">House Number *</label>
+            <label htmlFor="houseNumber">House Number <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="houseNumber"
@@ -328,7 +328,7 @@ const {
             </div>
 
             <div className="flex flex-col px-1 ">
-            <label htmlFor="pinCode">Pincode *</label>
+            <label htmlFor="pinCode">Pincode <span className='text-red-700 font-bold'>*</span></label>
             <input
                 type="text"
                 id="pinCode"

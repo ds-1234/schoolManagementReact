@@ -37,22 +37,25 @@ const column = [
   },
   {
     name: 'City',
-    selector: row => row.city,
+    selector: row => cityMap[row.city],
     sortable: true,
   },
   {
     name: 'State',
-    selector: row => row.state,
+    selector: row => stateMap[row.state],
+    sortable: true,
+  },
+  {
+    name: 'Country',
+    selector: row => {
+      const country = countries.filter((c) => c.id == row.country)   
+      return country[0]?.name
+    },
     sortable: true,
   },
   {
     name: 'Pin Code',
     selector: row => row.pinCode,
-    sortable: true,
-  },
-  {
-    name: 'Country',
-    selector: row => row.country,
     sortable: true,
   },
   {
@@ -82,6 +85,9 @@ const column = [
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editSchoolId, setEditSchoolId] = useState(null);
+  const [countries, setCountries] = useState([]);
+  const [stateMap, setStateMap] = useState({});
+  const [cityMap, setCityMap] = useState({});
 
 
   const openAddPopup = () => setIsAddPopupOpen(true);
@@ -97,6 +103,43 @@ const column = [
     setIsEditPopupOpen(false);
   };
 
+  const fetchCountries = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/area/getCountryList`);
+      setCountries(response.data.data);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
+  };
+
+  const fetchStatesByCountry = async (countryId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/area/getStateList/${countryId}`);
+      const states = response.data.data;
+      const newStateMap = { ...stateMap };
+      states.forEach((state) => {
+        newStateMap[state.id] = state.name;
+      });
+      setStateMap(newStateMap);
+    } catch (error) {
+      console.error('Error fetching states:', error);
+    }
+  };
+
+  const fetchCitiesByState = async (stateId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/area/getCitiesList/${stateId}`);
+      const cities = response.data.data;
+      const newCityMap = { ...cityMap };
+      cities.forEach((city) => {
+        newCityMap[city.id] = city.name;
+      });
+      setCityMap(newCityMap);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+    }
+  };
+
   useEffect(() => {
     if (isAddPopupOpen || isEditPopupOpen) {
       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
@@ -109,24 +152,32 @@ const column = [
     };
   }, [isAddPopupOpen, isEditPopupOpen]);
 
-  const fetchData = async() => {
-    axios({
-      method: 'GET',
-      url: `${BASE_URL}/school/getSchoolList`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        setSchool(response.data.data);
-        console.log('Data from API:', response.data.data);
-        console.log('Data from schooldata', school);
-        setFilterSchool(response.data.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/school/getSchoolList`);
+      const schoolData = response.data.data;
+
+      // Fetch states and cities dynamically for each school
+      for (const school of schoolData) {
+        if (school.country && !stateMap[school.state]) {
+          await fetchStatesByCountry(school.country); // Fetch states for this country
+        }
+        if (school.state && !cityMap[school.city]) {
+          await fetchCitiesByState(school.state); // Fetch cities for this state
+        }
+      }
+
+      setSchool(schoolData);
+      setFilterSchool(schoolData);
+    } catch (error) {
+      console.error('Error fetching school data:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchCountries();
+    fetchData();
+  }, []);
 
   useEffect(() => {
     fetchData();

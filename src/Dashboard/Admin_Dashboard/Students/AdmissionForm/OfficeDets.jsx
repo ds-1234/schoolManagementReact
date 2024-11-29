@@ -133,7 +133,7 @@ function OfficeDets() {
         </div>
 
         <div className="flex flex-col px-1">
-            <label htmlFor="admissionNumber">Admission Number</label>
+            <label htmlFor="admissionNumber">Admission Number <span className='text-red-700 font-bold'>*</span></label>
             <input
             type="text"
             id="admissionNumber"

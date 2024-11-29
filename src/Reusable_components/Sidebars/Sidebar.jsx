@@ -105,6 +105,33 @@ const Sidebar = () => {
                     Role
                   </NavLink>
                 </li>
+            {/* School Section */}
+            <li className="">
+            <NavLink
+              to="/admin/school"
+              className={({ isActive }) =>
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
+              }
+            >
+              {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
+               <FontAwesomeIcon icon={faAngleRight} />
+              School
+            </NavLink>
+          </li>
+
+            {/* Subject Section */}
+            <li className="">
+            <NavLink
+              to="/admin/subject"
+              className={({ isActive }) =>
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+              {/* <FontAwesomeIcon icon={faBook} className="mr-3 text-[#ffae01]" /> */}
+               <FontAwesomeIcon icon={faAngleRight} />
+              Subject
+            </NavLink>
+          </li>
 
 
           {/* Class Section */}
@@ -121,33 +148,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          {/* Subject Section */}
-          <li className="">
-            <NavLink
-              to="/admin/subject"
-              className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-              {/* <FontAwesomeIcon icon={faBook} className="mr-3 text-[#ffae01]" /> */}
-               <FontAwesomeIcon icon={faAngleRight} />
-              Subject
-            </NavLink>
-          </li>
-
-                 {/* School Section */}
-                 <li className="">
-            <NavLink
-              to="/admin/school"
-              className={({ isActive }) =>
-                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
-              }
-            >
-              {/* <FontAwesomeIcon icon={faSchool} className="mr-3 text-[#ffae01]" /> */}
-               <FontAwesomeIcon icon={faAngleRight} />
-              School
-            </NavLink>
-          </li>
+                 
                  {/* Designation Section */}
                  <li className="">
             <NavLink

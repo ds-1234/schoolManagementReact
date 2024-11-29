@@ -49,7 +49,8 @@ function PrevSchlDets() {
             ...data , 
             userId : userId ,
           }
-          await axios({
+          if(data.previousSchoolName){
+            await axios({
               method:"Post",
               url : `${BASE_URL}/user/updatePreSchoolDetails`,
               data: userData ,
@@ -66,7 +67,9 @@ function PrevSchlDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })
+          })}else{
+            handleNextStep()
+          }
     }
     
   return (

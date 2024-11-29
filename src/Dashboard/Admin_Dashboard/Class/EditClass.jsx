@@ -11,6 +11,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [teachers , setTeachers] = useState([])
+  const [selectedTeacher , setSelectedTeacher] = useState('')
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -36,6 +38,16 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
       });
   }, []);
 
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/user/getUserList`);
+      setTeachers(response.data.data.filter((tch) => (tch.role === 4 && tch.isActive == true))) ;
+      
+    } catch (error) {
+      toast.error("Error fetching teachers");
+    }
+  };
+
   useEffect(() => {
     if (GradeId) {
       axios.get(`${BASE_URL}/class/getClass/${GradeId}`)
@@ -43,13 +55,15 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
           const classData = response.data.data;
           setGrade(classData);
           console.log(classData.subject);
-          
+          setSelectedTeacher(classData.primaryTeacher) ;
           setSelectedSubjects(classData.subject); // Pre-check subjects from API
         })
         .catch((error) => {
           console.error('Error fetching class:', error);
         });
     }
+
+    fetchTeachers()
   }, [GradeId, isOpen]);
 
   const handleChange = (e) => {
@@ -71,12 +85,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
     // Construct the subject array in the required format
     const selectedSubjectObjects = selectedSubjects.map(id => {
       const subjectData = subjects.find(sub => sub.id === id);
-      return {
-        id: subjectData.id,
-        subject: subjectData.subject,
-        description: subjectData.description,
-        isActive: true
-      };
+      return subjectData.id
     });
 
     axios({
@@ -88,6 +97,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
       data: {
         id: `${GradeId}`,
         ...grade,
+        primaryTeacher: parseInt(selectedTeacher) ,
         subject: selectedSubjectObjects, // Pass selected subjects in the required format
       },
     })
@@ -145,6 +155,21 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
               placeholder="Enter section"
               required
             />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="classTeacher" className="block text-gray-700 font-semibold mb-2">Class Teacher</label>
+            <select  
+              id="classTeacher" 
+              value={selectedTeacher}
+              className={`w-full  rounded-lg border py-2 px-2`}
+              onChange={(e) => setSelectedTeacher(e.target.value)}
+            >
+              <option value="">Select Teacher</option>
+              {teachers.map((tch) => (
+                <option key={tch.id} value={tch.id}>{tch.firstName} {tch.lastName}</option>
+              ))}
+            </select>
           </div>
 
           {/* Subject Input */}

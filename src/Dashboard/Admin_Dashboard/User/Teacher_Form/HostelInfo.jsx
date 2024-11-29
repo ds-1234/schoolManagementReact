@@ -84,16 +84,15 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
 
 
       const onSubmit = async (data) => {
-        console.log(data.roomNumber);
-        console.log(parseInt(data.roomNumber));
-        
         
         const userData = {
             buildingName : parseInt(data.buildingName) ,
-            roomNumber :  parseInt(data.roomNumber) , 
+            roomNumber :  parseInt(data.roomNumber)  , 
             userId : userName ,
           }
-          await axios({
+          
+          if(data.buildingName){
+            await axios({
               method:"Post",
               url : `${BASE_URL}/user/updateHostelDetails`,
               data: userData ,
@@ -109,7 +108,10 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
           })
           .catch(err=>{
               console.log(err,'error:')
-          })
+          })}else{
+            handleNext();
+          }
+
     }
 
     const navigate = useNavigate() ;
@@ -123,7 +125,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
             <select
               id="buildingName"
               className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-              {...register('buildingName' )}
+              {...register('buildingName')}
             >
               <option value="" hidden>Select Hostel </option>
               {hostels.map(option => (
