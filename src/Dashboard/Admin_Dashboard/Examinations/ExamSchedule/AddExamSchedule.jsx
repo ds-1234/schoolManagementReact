@@ -157,6 +157,8 @@ console.log(startTime,endTime,'startendtime')
     // Reset the form after submission
     reset();
     setFilteredSubjects([])
+    setClassList([])
+
     // Close the modal after submission
     onClose();      })
       .catch((error) => {
