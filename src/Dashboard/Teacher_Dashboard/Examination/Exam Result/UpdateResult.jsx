@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";  // Import Axios
+import Button from "../../../../Reusable_components/Button";
 
 const UpdateResult = () => {
   const location = useLocation();
@@ -11,7 +12,8 @@ const UpdateResult = () => {
   const [examResults, setExamResults] = useState([]);
 
   const { className, selectedSubject, selectedExamType } = location.state || {};
-  const teacherId = user.id
+  const teacherId = user.id;
+
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {
@@ -101,6 +103,12 @@ const UpdateResult = () => {
         Dashboard / <NavLink to="/teacherDashboard">Teacher Dashboard</NavLink> /{" "}
         <span className="text-[#ffae01] font-semibold">Exam Result</span>
       </p>
+
+      {/* Dynamic Heading */}
+      <h2 className="mt-6 text-xl font-semibold text-black">
+        Update Marks of {className} for {selectedSubject} in {selectedExamType}
+      </h2>
+
       <div className="container mt-4">
         <table className="min-w-full table-auto border-collapse border border-gray-200 bg-white">
           <thead>
@@ -145,14 +153,15 @@ const UpdateResult = () => {
             ))}
           </tbody>
         </table>
-        {/* Save Changes button */}
-        <div className="mt-4 text-center">
-          <button
+        
+        {/* Save Changes button aligned to the right */}
+        <div className="flex justify-end mt-4">
+          <Button
             onClick={handleSaveChanges}
             className="bg-blue-500 text-white py-2 px-4 rounded"
           >
             Save Changes
-          </button>
+          </Button>
         </div>
       </div>
     </div>
