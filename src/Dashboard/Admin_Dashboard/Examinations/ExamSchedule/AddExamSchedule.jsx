@@ -131,15 +131,15 @@ fetchClassList    // setFilteredSubjects([])
     
     if (field === 'timeFrom' && value && otherValue && value >= otherValue) {
       toast.error('Start time must be earlier than end time');
-      setValue(`days.Monday.${index}.timeTo`, ''); // Reset end time
-      setValue(`days.Monday.${index}.duration`, ''); // Reset duration
+      setValue(`days.Monday.${index}.timeTo`, ''); 
+      setValue(`days.Monday.${index}.duration`, ''); 
       return;
     }
   
     if (field === 'timeTo' && value && otherValue && otherValue >= value) {
       toast.error('Start time must be earlier than end time');
-      setValue(`days.Monday.${index}.${field}`, ''); // Reset current field
-      setValue(`days.Monday.${index}.duration`, ''); // Reset duration
+      setValue(`days.Monday.${index}.${field}`, ''); 
+      setValue(`days.Monday.${index}.duration`, ''); 
       return;
     }
   
@@ -296,8 +296,8 @@ fetchClassList    // setFilteredSubjects([])
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeFrom`)}
                         onChange={(e) => {
-                       setValue(`days.Monday.${index}.timeFrom`, e.target.value); // Update form value
-                       handleTimeChange(index, 'timeFrom', e.target.value); // Trigger logic
+                       setValue(`days.Monday.${index}.timeFrom`, e.target.value); 
+                       handleTimeChange(index, 'timeFrom', e.target.value); 
                       }} 
                        />
                   </div>
@@ -309,8 +309,8 @@ fetchClassList    // setFilteredSubjects([])
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeTo`)}
                        onChange={(e) => {
-                        setValue(`days.Monday.${index}.timeTo`, e.target.value); // Update form value
-                        handleTimeChange(index, 'timeTo', e.target.value); // Trigger logic
+                        setValue(`days.Monday.${index}.timeTo`, e.target.value); 
+                        handleTimeChange(index, 'timeTo', e.target.value); 
                         }} 
                         />
                   </div>
