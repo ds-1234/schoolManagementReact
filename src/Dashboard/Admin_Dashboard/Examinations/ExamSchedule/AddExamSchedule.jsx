@@ -358,7 +358,7 @@ fetchClassList    // setFilteredSubjects([])
 
             <div className="mb-6">
               <Button
-              label='add new Exam'
+              label='Add New Exam'
                 onClick={() =>
                   append({
                     subject: '',
@@ -377,7 +377,7 @@ fetchClassList    // setFilteredSubjects([])
           </div>
 
           <div className="flex justify-end space-x-4">
-            <Button onClick={onClose} label='cancel'></Button>
+            <Button onClick={onClose} label='Cancel'></Button>
             <Button type="submit">Save</Button>
           </div>
         </form>
