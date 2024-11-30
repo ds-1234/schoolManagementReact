@@ -116,6 +116,7 @@ import Children from './Dashboard/Parent_Dashboard/Children';
 import SelectTile from './Dashboard/Teacher_Dashboard/Attendance_Marking/Select';
 import LeaveTabs from './Dashboard/Student_Dashboard/Leave/LeaveTab';
 import LeaveCategoryPage from './Dashboard/Student_Dashboard/Leave/LeaveCategoryPage';
+import UpdateClassResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/UpdateClassResult';
 
 
 
@@ -261,6 +262,7 @@ function App() {
             <Route path='tchBookIssue' element={<TchBookIssue/>} />
             <Route path='tchExamResult' element={<TchExamResult/>} />
             <Route path='StaffAttendance' element={<AllStaffAttendance/>} />
+            <Route path='UpdateClassResult' element={<UpdateClassResult/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}

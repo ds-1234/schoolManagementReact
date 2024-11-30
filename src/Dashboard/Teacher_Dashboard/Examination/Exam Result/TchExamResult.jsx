@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import UpdateClassResult from './UpdateClassResult'; // Import the UpdateClassResult component
 
 const TchExamResult = () => {
   const [exams, setExams] = useState([]);
   const [examTypes, setExamTypes] = useState([]);
-  const navigate = useNavigate(); // To handle navigation on tile click
+  const [selectedClassId, setSelectedClassId] = useState(null); // State to track the selected classId
+
   const teacherData = JSON.parse(sessionStorage.getItem("teacherData"));
 
   useEffect(() => {
@@ -16,7 +18,6 @@ const TchExamResult = () => {
     const validClasses = teacherData.classSubjectEntity
       .filter((entry) => entry.classId !== null)
       .map((entry) => entry.classId);
-    console.log(validClasses, 'validClasses');
 
     // Fetch exams using Axios
     axios
@@ -29,7 +30,6 @@ const TchExamResult = () => {
             validClasses.includes(String(exam.className)) // Convert className to string
           );
           setExams(filteredExams);
-          console.log(filteredExams, 'filteredExams');
         }
       })
       .catch((error) => {
@@ -53,14 +53,13 @@ const TchExamResult = () => {
 
   // Function to get examTypeName based on examTypeId
   const getExamTypeNameById = (examTypeId) => {
-    console.log(examTypes, 'examtype');
-    const examType = examTypes.find((type) => type.id == examTypeId); // Match examTypeId
+    const examType = examTypes.find((type) => type.id === examTypeId); // Match examTypeId
     return examType ? examType.examTypeName : "Unknown";
   };
 
-  const handleTileClick = (examId) => {
-    // Example: Navigate to a detailed exam page (modify the route as needed)
-    // navigate(`/examDetails/${examId}`);
+  const handleTileClick = (exam) => {
+    // Set selectedClassId when a tile is clicked
+    setSelectedClassId(exam.className);
   };
 
   return (
@@ -71,17 +70,23 @@ const TchExamResult = () => {
         <NavLink to='/teacherDashboard'> Teacher Dashboard </NavLink> /
         <span className='text-[#ffae01] font-semibold'> Exam Result</span>
       </p>
-      <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {exams.map((exam) => (
-          <div
-            key={exam.id}
-            className="bg-red-500 text-white p-4 rounded-lg text-center shadow-md cursor-pointer transform transition-transform hover:scale-105"
-            onClick={() => handleTileClick(exam.id)} // Click handler
-          >
-            <p className="font-semibold">Exam Type: {getExamTypeNameById(exam.examName)}</p> {/* Display exam type name */}
-          </div>
-        ))}
-      </div>
+
+      {/* Show the UpdateClassResult component if a class is selected */}
+      {selectedClassId ? (
+        <UpdateClassResult selectedClassId={selectedClassId} />
+      ) : (
+        <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {exams.map((exam) => (
+            <div
+              key={exam.id}
+              className="bg-red-500 text-white p-4 rounded-lg text-center shadow-md cursor-pointer transform transition-transform hover:scale-105"
+              onClick={() => handleTileClick(exam)} // Pass entire exam object to the click handler
+            >
+              <p className="font-semibold">Exam Type: {getExamTypeNameById(exam.examName)}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
