@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const UpdateClassResult = ({ selectedClassId }) => {
   const [students, setStudents] = useState([]);
@@ -23,7 +24,15 @@ console.log(selectedClassId,'classidselected')
 
   return (
     <div>
-      <h2>Update Class Result</h2>
+                <>
+          <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Update Exam Result</h1>
+          <p className='mt-2'>
+            Dashboard /
+            <NavLink to='/teacherDashboard'> Teacher Dashboard </NavLink> /
+            <span className='text-[#ffae01] font-semibold'> Exam Result</span>
+          </p>
+        </>
+      {/* <h2>Update Class Result</h2> */}
       <form>
         {students.map((student) => (
           <div key={student.id}>
