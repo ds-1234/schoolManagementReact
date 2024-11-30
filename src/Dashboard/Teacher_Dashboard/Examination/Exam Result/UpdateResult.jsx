@@ -10,6 +10,9 @@ const UpdateResult = () => {
 
   const [userList, setUserList] = useState([]);
   const [examResults, setExamResults] = useState([]);
+  const [subjects, setSubjects] = useState('');
+  const [examType, setExamType] = useState('');
+  const [classNamestr, setClassNamestr] = useState('');
 
   const { className, selectedSubject, selectedExamType } = location.state || {};
   const teacherId = user.id;
@@ -43,6 +46,76 @@ const UpdateResult = () => {
 
     fetchUserData();
   }, [className]);
+
+  useEffect(() => {
+    fetchSubjects();
+    fetchExamType()
+    fetchClassName()
+  }, []);
+
+  const fetchExamType = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+      
+      if (response.data.success) {
+        const examTypeData = response.data.data;
+        const ExamTyperes = examTypeData.find((type) => type.id === selectedExamType);
+        const examName = ExamTyperes?.examTypeName;
+        
+        if (examName) {
+          setExamType(examName);
+        } else {
+          console.error("Exam type not found for the selected exam ID.");
+        }
+      } else {
+        console.error("Failed to fetch exam type data.");
+      }
+    } catch (error) {
+      console.error("Error fetching exam type data:", error);
+    }
+  };
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+      
+      if (response.data.success) {
+        const subjectData = response.data.data;
+        const Subjectres = subjectData.find((type) => type.id === selectedSubject);
+        const SubjectName = Subjectres?.subject;
+        
+        if (SubjectName) {
+          setSubjects(SubjectName);
+        } else {
+          console.error("Subject Name not found for the selected Subject ID.");
+        }
+      } else {
+        console.error("Failed to fetch Subject data.");
+      }
+    } catch (error) {
+      console.error("Error fetching Subject data:", error);
+    }
+  };
+  const fetchClassName = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/class/getClassList");
+      
+      if (response.data.success) {
+        const clasdata = response.data.data;
+        const classres = clasdata.find((type) => type.id === className);
+        const clas = classres?.name;
+        
+        if (clas) {
+          setClassNamestr(clas);
+        } else {
+          console.error("Class name not found for the selected Class ID.");
+        }
+      } else {
+        console.error("Failed to fetch Class data.");
+      }
+    } catch (error) {
+      console.error("Error fetching Class data:", error);
+    }
+  };
 
   const handleMarksChange = (studentId, value) => {
     setExamResults((prevResults) =>
@@ -106,7 +179,7 @@ const UpdateResult = () => {
 
       {/* Dynamic Heading */}
       <h2 className="mt-6 text-xl font-semibold text-black">
-        Update Marks of {className} for {selectedSubject} in {selectedExamType}
+        Update Marks of {classNamestr} for {subjects} in {examType}
       </h2>
 
       <div className="container mt-4">

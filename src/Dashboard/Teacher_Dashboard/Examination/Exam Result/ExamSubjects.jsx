@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ExamSubjects = () => {
@@ -7,6 +8,9 @@ const ExamSubjects = () => {
 
   // Retrieve the selected exam data passed via navigate
   const { selectedExam } = location.state || {}; // Handle undefined state gracefully
+  const [subjects, setSubjects] = useState([]);
+  const [examType, setExamType] = useState('');
+
 
   // If there's no selectedExam, navigate back to the previous page
   if (!selectedExam) {
@@ -15,6 +19,52 @@ const ExamSubjects = () => {
   }
 
   const { className, examName, subjectWiseExamList } = selectedExam; // Destructure the data
+
+  useEffect(() => {
+    fetchSubjects();
+    fetchExamType()
+  }, []);
+
+  const fetchSubjects = () => {
+    axios
+      .get("http://localhost:8080/subject/getSubjectList")
+      .then((response) => {
+        if (response.data.success) {
+            setSubjects(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching Data:", error);
+      });
+  };
+
+  const getSubjectNameById = (SubjectId) => {
+    const subject = subjects.find((type) => type.id == SubjectId);
+    return subject ? subject.subject : "Unknown";
+  };
+
+  const fetchExamType = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+      
+      if (response.data.success) {
+        const examTypeData = response.data.data;
+        const selectedExamType = examTypeData.find((type) => type.id === selectedExam.id);
+        const examName = selectedExamType?.examTypeName;
+        
+        if (examName) {
+          setExamType(examName);
+        } else {
+          console.error("Exam type not found for the selected exam ID.");
+        }
+      } else {
+        console.error("Failed to fetch exam type data.");
+      }
+    } catch (error) {
+      console.error("Error fetching exam type data:", error);
+    }
+  };
+  
 
   // Handle subject tile click
   const handleSubjectClick = (subjectDetails) => {
@@ -31,7 +81,7 @@ const ExamSubjects = () => {
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-        Subjects for Exam ID: {selectedExam.id}
+        Subjects for Exam :  {examType}
       </h1>
       <p className="mt-2">
         Dashboard / <span className="text-[#ffae01] font-semibold">Exam Subjects</span>
@@ -46,7 +96,7 @@ const ExamSubjects = () => {
             onClick={() => handleSubjectClick(subjectDetails)} // Pass subject details to the handler
           >
             <p className="font-semibold text-red-500">
-              Subject ID: {subjectDetails.subject}
+              {getSubjectNameById(subjectDetails.subject)}
             </p>
           </div>
         ))}
