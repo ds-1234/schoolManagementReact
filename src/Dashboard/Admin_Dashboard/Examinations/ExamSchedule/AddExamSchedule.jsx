@@ -125,20 +125,35 @@ fetchClassList    // setFilteredSubjects([])
     reset({ classId: selectedClassId, examTypeId: '', days: {} });
   };
 
-  const handleTimeChange = (index) => {
-    const startTime = getValues(`days.Monday.${index}.timeFrom`);
-    const endTime = getValues(`days.Monday.${index}.timeTo`);
-    if (startTime && endTime && startTime >= endTime) {
+  const handleTimeChange = (index, field, value) => {
+    const otherField = field === 'timeFrom' ? 'timeTo' : 'timeFrom';
+    const otherValue = getValues(`days.Monday.${index}.${otherField}`);
+    
+    if (field === 'timeFrom' && value && otherValue && value >= otherValue) {
       toast.error('Start time must be earlier than end time');
-      setValue(`days.Monday.${index}.timeTo`, '');
-      setValue(`days.Monday.${index}.duration`, '');
+      setValue(`days.Monday.${index}.timeTo`, ''); // Reset end time
+      setValue(`days.Monday.${index}.duration`, ''); // Reset duration
       return;
     }
-    if (startTime && endTime) {
-      const duration = calculateDuration(startTime, endTime);
-      setValue(`days.Monday.${index}.duration`, duration);
+  
+    if (field === 'timeTo' && value && otherValue && otherValue >= value) {
+      toast.error('Start time must be earlier than end time');
+      setValue(`days.Monday.${index}.${field}`, ''); // Reset current field
+      setValue(`days.Monday.${index}.duration`, ''); // Reset duration
+      return;
+    }
+  
+    if (field === 'timeFrom' || field === 'timeTo') {
+      const startTime = field === 'timeFrom' ? value : otherValue;
+      const endTime = field === 'timeTo' ? value : otherValue;
+  
+      if (startTime && endTime) {
+        const duration = calculateDuration(startTime, endTime);
+        setValue(`days.Monday.${index}.duration`, duration);
+      }
     }
   };
+  
   
 
   const calculateDuration = (startTime, endTime) => {
@@ -270,14 +285,21 @@ fetchClassList    // setFilteredSubjects([])
                     />
                   </div>
 
+
+
+
+
                   <div>
                     <label className="block text-sm font-semibold mb-1">Start Time</label>
                     <input
                       type="time"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeFrom`)}
-                      onChange={() => handleTimeChange(index)} // Handle time change
-                    />
+                        onChange={(e) => {
+                       setValue(`days.Monday.${index}.timeFrom`, e.target.value); // Update form value
+                       handleTimeChange(index, 'timeFrom', e.target.value); // Trigger logic
+                      }} 
+                       />
                   </div>
 
                   <div>
@@ -286,8 +308,11 @@ fetchClassList    // setFilteredSubjects([])
                       type="time"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeTo`)}
-                      onChange={() => handleTimeChange(index)} // Handle time change
-                    />
+                       onChange={(e) => {
+                        setValue(`days.Monday.${index}.timeTo`, e.target.value); // Update form value
+                        handleTimeChange(index, 'timeTo', e.target.value); // Trigger logic
+                        }} 
+                        />
                   </div>
 
                   <div>
