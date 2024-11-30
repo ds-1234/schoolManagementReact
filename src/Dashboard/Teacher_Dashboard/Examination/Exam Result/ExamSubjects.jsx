@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const ExamSubjects = () => {
   const location = useLocation();
@@ -14,7 +14,7 @@ const ExamSubjects = () => {
 
   // If there's no selectedExam, navigate back to the previous page
   if (!selectedExam) {
-    navigate("/tch-exam-result");
+    navigate("/teacherdashboard/tchExamResult");
     return null;
   }
 
@@ -84,7 +84,9 @@ const ExamSubjects = () => {
         Subjects for Exam :  {examType}
       </h1>
       <p className="mt-2">
-        Dashboard / <span className="text-[#ffae01] font-semibold">Exam Subjects</span>
+        Dashboard /
+        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /<NavLink to="/teacherdashboard/ExamSubjects"> Exam Result </NavLink>/
+        <span className="text-[#ffae01] font-semibold"> Subject</span>
       </p>
 
       {/* Subject Tiles */}
