@@ -90,7 +90,8 @@ function HostelDets() {
             ...data , 
             userId : userId ,
           }
-          await axios({
+          if(data.buildingName){
+            await axios({
               method:"Post",
               url : `${BASE_URL}/user/updateHostelDetails`,
               data: userData ,
@@ -107,7 +108,9 @@ function HostelDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })
+          })}else{
+            handleNextStep()
+          }
     }
   return (
     <div>

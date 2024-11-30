@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 
 const UpdateClassResult = ({ selectedClassId }) => {
   const [students, setStudents] = useState([]);
-console.log(selectedClassId,'classidselected')
+
   useEffect(() => {
     // Fetch the user data from the API
     fetch('http://localhost:8080/user/getUserList')
@@ -23,35 +22,49 @@ console.log(selectedClassId,'classidselected')
   }, [selectedClassId]);
 
   return (
-    <div>
-                <>
-          <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Update Exam Result</h1>
-          <p className='mt-2'>
-            Dashboard /
-            <NavLink to='/teacherDashboard'> Teacher Dashboard </NavLink> /
-            <span className='text-[#ffae01] font-semibold'> Exam Result</span>
-          </p>
-        </>
-      {/* <h2>Update Class Result</h2> */}
-      <form>
-        {students.map((student) => (
-          <div key={student.id}>
-            <div>
-              <label>{student.firstName} {student.lastName}</label>
-              <input 
-                type="number" 
-                name={`marks-${student.id}`} 
-                placeholder="Enter Marks" 
-              />
-              <input 
-                type="text" 
-                name={`remarks-${student.id}`} 
-                placeholder="Enter Remarks" 
-              />
-            </div>
-          </div>
-        ))}
-      </form>
+    <div className="p-6 space-y-6">
+      {/* Heading */}
+      <h1 className="text-xl md:text-3xl font-semibold text-gray-800 mb-4">Update Exam Results</h1>
+
+      {/* Student List in 3 Columns */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto">
+          <thead>
+            <tr className="bg-gray-100 text-left text-sm text-gray-600">
+              <th className="p-3">Name</th>
+              <th className="p-3">Class</th>
+              <th className="p-3">Marks</th>
+              <th className="p-3">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id} className="border-b hover:bg-gray-50">
+                <td className="p-3">{student.firstName} {student.lastName}</td>
+                <td className="p-3">{student.className}</td>
+
+                {/* Marks and Remarks Inputs */}
+                <td className="p-3">
+                  <input
+                    type="number"
+                    name={`marks-${student.id}`}
+                    placeholder="Enter Marks"
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </td>
+                <td className="p-3">
+                  <input
+                    type="text"
+                    name={`remarks-${student.id}`}
+                    placeholder="Enter Remarks"
+                    className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

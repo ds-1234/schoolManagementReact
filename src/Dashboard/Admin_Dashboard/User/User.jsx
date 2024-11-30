@@ -10,7 +10,7 @@ import view from '../../../assets/file.png'
 import { useUserContext } from '../../../hooks/UserContext';
 
 function User() {
-  const {setUserId} = useUserContext()
+  const {setId , setUserId} = useUserContext()
 
 const column = [
   {
@@ -181,6 +181,7 @@ const column = [
     if(role == 3){
       navigate('/admin/admissionForm')
       setUserId(userId)
+      setId(id)
     }else{
       navigate('/admin/editUser', {
         state: {

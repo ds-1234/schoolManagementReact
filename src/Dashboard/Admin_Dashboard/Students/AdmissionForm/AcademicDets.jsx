@@ -102,7 +102,7 @@ function AcademicDets() {
             ...data , 
             userId : userId ,
             rollNumber : parseInt(data.rollNumber) ,
-            className: initialData.className ? data.className :  [data.className]
+            className:   [data.className]
           }
           await axios({
               method:"Post",
@@ -133,7 +133,7 @@ function AcademicDets() {
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Academic Details</h2>
     <form  className="grid grid-cols-4 mt-5 gap-6">
         <div className="flex flex-col px-1">
-            <label htmlFor="school">School Branch</label>
+            <label htmlFor="school">School Branch <span className='text-red-700 font-bold'>*</span></label>
             <select
             id="school"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
@@ -150,7 +150,7 @@ function AcademicDets() {
         </div>
 
         <div className="flex flex-col px-1">
-            <label htmlFor="class">Class</label>
+            <label htmlFor="class">Class <span className='text-red-700 font-bold'>*</span></label>
             <select
             id="class"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
@@ -166,13 +166,13 @@ function AcademicDets() {
         </div>
 
         <div className="flex flex-col px-1">
-            <label htmlFor="academicYear">Academic Year</label>
+            <label htmlFor="academicYear">Academic Year <span className='text-red-700 font-bold'>*</span></label>
             <input
             type="text"
             id="academicYear"
             placeholder="e.g., 2014-2015"
             className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
-            {...register('academicYear')}
+            {...register('academicYear' , {required: true})}
             />
         </div>
 

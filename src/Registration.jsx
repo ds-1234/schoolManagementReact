@@ -160,7 +160,7 @@ function Registration() {
             </div>
 
             <div className="flex flex-col pt-2 px-1 md:w-1/2">
-                <label htmlFor="gender">Gender * </label>
+                <label htmlFor="gender">Gender <span className='text-red-700 font-bold'>*</span></label>
                 <select
                   id="gender"
                   className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -211,7 +211,7 @@ function Registration() {
 
         {/* Country dropdown */}
         <div className="flex flex-col pt-2 px-1 md:w-1/2">
-          <label htmlFor="country">Country *</label>
+          <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="country"
             className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -229,7 +229,7 @@ function Registration() {
 
         {/* State dropdown */}
         <div className="flex flex-col pt-2 px-1 md:w-1/2">
-          <label htmlFor="state">State *</label>
+          <label htmlFor="state">State <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="state"
             className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
@@ -247,7 +247,7 @@ function Registration() {
 
         {/* City dropdown */}
         <div className="flex flex-col pt-2 px-1 md:w-1/2">
-          <label htmlFor="city">City/Village *</label>
+          <label htmlFor="city">City/Village <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="city"
             className={`py-3 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}

@@ -106,7 +106,8 @@ function TransportDets() {
         ...data , 
         userId : userId ,
       }
-      await axios({
+      if(data.routeName){
+        await axios({
           method:"Post",
           url : `${BASE_URL}/user/updateTransportDetails`,
           data: userData ,
@@ -123,7 +124,9 @@ function TransportDets() {
       .catch(err=>{
           console.log(err,'error:')
           reset()
-      })
+      })}else{
+        handleNextStep()
+      }
 }
   return (
     <div>

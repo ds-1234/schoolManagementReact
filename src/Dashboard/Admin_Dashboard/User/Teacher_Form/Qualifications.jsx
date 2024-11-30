@@ -269,7 +269,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
   {qualificationFields.map((item, index) => (
     <div key={item.id} className="grid grid-cols-4 gap-1">
       <div className='flex flex-col gap-1'>
-        <label htmlFor={`qualifications[${index}].course`}>Degree</label>
+        <label htmlFor={`qualifications[${index}].course`}>Degree <span className='text-red-700 font-bold'>*</span></label>
         <input
           type="text"
           {...register(`qualifications[${index}].course`, { required: true })}
@@ -278,7 +278,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         />
       </div>
       <div className='flex flex-col gap-1'>
-        <label htmlFor={`qualifications[${index}].institute`}>Institution</label>
+        <label htmlFor={`qualifications[${index}].institute`}>Institution <span className='text-red-700 font-bold'>*</span></label>
         <input
           type="text"
           {...register(`qualifications[${index}].institute`, { required: true })}
@@ -287,7 +287,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         />
       </div>
       <div className='flex flex-col gap-1 '>
-        <label htmlFor={`qualifications[${index}].passoutYear`}>Year of Passing</label>
+        <label htmlFor={`qualifications[${index}].passoutYear`}>Year of Passing <span className='text-red-700 font-bold'>*</span></label>
         <input
           type="text"
           {...register(`qualifications[${index}].passoutYear`, { required: true })}
@@ -296,7 +296,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         />
       </div>
       <div className='flex flex-col gap-1'>
-        <label htmlFor={`qualifications[${index}].cgpa`}>Marks (%) / CGPA</label>
+        <label htmlFor={`qualifications[${index}].cgpa`}>Marks (%) / CGPA <span className='text-red-700 font-bold'>*</span></label>
         <input
           type="text"
           {...register(`qualifications[${index}].cgpa`, { required: true })}
@@ -305,10 +305,10 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
         />
       </div>
       <div className="flex flex-col gap-1">
-        <label htmlFor="file">Upload Marksheets/Degree</label>
+        <label htmlFor="file">Upload Marksheets/Degree <span className='text-red-700 font-bold'>*</span></label>
         <input
           type="text"
-          {...register(`qualifications[${index}].degreeDoc`)}
+          {...register(`qualifications[${index}].degreeDoc` , {required: true})}
           className="border p-2 rounded-lg"
           placeholder="Document Name"
         />

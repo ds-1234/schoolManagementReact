@@ -76,14 +76,14 @@ function TransportInfo({ handlePrevious , handleNext , userId , userName , curre
 
 
   const onSubmit = async (data) => {
-    console.log(data);
     
     const userData = {
         ...data ,
         routeName : parseInt(data.routeName) , 
         userId : userName ,
       }
-      await axios({
+      if(data.routeName){
+        await axios({
           method:"Post",
           url : `${BASE_URL}/user/updateTransportDetails`,
           data: userData ,
@@ -99,7 +99,9 @@ function TransportInfo({ handlePrevious , handleNext , userId , userName , curre
       })
       .catch(err=>{
           console.log(err,'error:')
-      })
+      })}else{
+        handleNext()
+      }
 }
 
 useEffect(() => {
