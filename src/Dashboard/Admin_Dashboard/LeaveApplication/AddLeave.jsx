@@ -16,14 +16,15 @@ const AddLeave = ({ isOpen, onClose }) => {
   const [editorData, setEditorData] = useState('');
   const [selectedLeaveType, setSelectedLeaveType] = useState('')
   const [leaveTypeList , setLeaveTypeList] = useState([])
-  const [selectedTeacher , setSelectedTeacher] = useState({})
+  const [admins , setAdmins] = useState([])
+  const [selectedAdmin , setSelectedAdmin] = useState('')
   const user = JSON.parse(sessionStorage.getItem('user'))   
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       fetchLeaveType() ;
-      fetchClass() ;
+      fetchAdmins() ;
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -50,26 +51,13 @@ const AddLeave = ({ isOpen, onClose }) => {
     }
   };
 
-  const fetchClass = async() => {
+  const fetchAdmins = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/class/getClassList`);
-      const userClass = response.data.data.find((cls) => cls.id === user.className[0])
-      fetchTeacher(userClass?.primaryTeacher)
-    } catch (error) {
-      toast.error("Error fetching class!");
-    }
-  }
-
-  const fetchTeacher =  async(id) => {
-    try {
-      console.log("fetch teacher" , id);
-      
-      const response = await axios.get(`${BASE_URL}/user/getUser/${id}`);
-      setSelectedTeacher(response.data.data) ;
-      console.log("teacher" , selectedTeacher);
+      const response = await axios.get(`${BASE_URL}/user/getUserList`);
+      setAdmins(response.data.data.filter((tch) => ( tch.role === 2 && tch.isActive == true))) ;
       
     } catch (error) {
-      toast.error("Error fetching teacher");
+      toast.error("Error fetching teachers");
     }
   };
 
@@ -78,7 +66,7 @@ const AddLeave = ({ isOpen, onClose }) => {
     onClose() ;
     reset()
     setSelectedLeaveType('')
-      setSelectedTeacher('') 
+      setSelectedAdmin('') 
       setDropdownOpen(false)
   }
 
@@ -86,7 +74,7 @@ const AddLeave = ({ isOpen, onClose }) => {
     try {
       await axios.post(`${BASE_URL}/leaves/applyLeaves`, {
         senderId: user.id,
-        leaveAuthoriserId: parseInt(selectedTeacher?.id),
+        leaveAuthoriserId: parseInt(selectedAdmin),
         rollOrEmployeeId: user.rollNumber,
         leaveType: parseInt(selectedLeaveType) , 
         leaveStartDate : data.leaveStartDate ,
@@ -101,7 +89,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       toast.success("Successfully added Leave Application");
       reset()
       setSelectedLeaveType('')
-      setSelectedTeacher('') 
+      setSelectedAdmin('') 
       onClose();
 
     } catch (error) {
@@ -109,7 +97,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       console.error(error);
       reset()
       setSelectedLeaveType('')
-      setSelectedTeacher('') 
+      setSelectedAdmin('') 
     }
   };
 
@@ -133,13 +121,19 @@ const AddLeave = ({ isOpen, onClose }) => {
           </div>
 
           <div className="mb-2">
-            <label htmlFor="name" className="block text-gray-700 font-semibold mb-1">Name *</label>
-            <input 
-            type="text" 
-            id="name" 
-            value= {selectedTeacher ? selectedTeacher.firstName + " " + selectedTeacher.lastName : ''}
-            className={`w-full rounded-lg border py-2 px-2`}
-            readOnly/>
+            <label htmlFor="Authority" className="block text-gray-700 font-semibold mb-2">Authority *</label>
+            <select  
+              id="Authority" 
+              value={selectedAdmin}
+              className={`w-full ${errors.leaveAuthoriserId ? 'border-red-500' : 'border-gray-300'} rounded-lg border py-2 px-2`}
+              onChange={(e) => setSelectedAdmin(e.target.value)}
+            >
+              <option value="">Select Authority</option>
+              {admins.map((auth) => (
+                <option key={auth.id} value={auth.id}>{auth.firstName} {auth.lastName}</option>
+              ))}
+            </select>
+            {errors.leaveAuthoriserId && <p className="text-red-500 text-sm mt-1">{errors.leaveAuthoriserId.message}</p>}
           </div>
 
           <div className="mb-2">
@@ -175,7 +169,7 @@ const AddLeave = ({ isOpen, onClose }) => {
           register={register}
           className={"border py-2 px-2 rounded-md mb-2"}
           />
-
+          
 
     <div className="mb-2">
     <label htmlFor="leaveReason" className="block text-gray-700 font-semibold mb-2">Leave Reason *</label>
