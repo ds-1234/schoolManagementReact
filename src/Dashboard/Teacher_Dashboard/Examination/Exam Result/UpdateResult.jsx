@@ -204,63 +204,64 @@ const UpdateResult = () => {
       </h2>
 
       <div className="container mt-4">
-        <table className="min-w-full table-auto border-collapse border border-gray-200 bg-white">
-          <thead>
-            <tr>
-              <th className="border px-4 py-2">Full Name</th>
-              <th className="border px-4 py-2">Exam Marks</th>
-              <th className="border px-4 py-2">Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userList.map((user) => (
-              <tr key={user.id}>
-                <td className="border px-4 py-2">
-                  {user.firstName} {user.lastName}
-                </td>
-                <td className="border px-4 py-2">
-                  <input
-                    type="number"
-                    className="border p-1 rounded"
-                    placeholder="Enter marks"
-                    value={
-                      examResults.find((result) => result.studentId === user.id)
-                        ?.examMarks || ""
-                    }
-                    onChange={(e) =>
-                      handleMarksChange(user.id, e.target.value)
-                    }
-                  />
-                </td>
-                <td className="border px-4 py-2">
-                  <input
-                    type="text"
-                    className="border p-1 rounded"
-                    placeholder="Enter remarks"
-                    value={
-                      examResults.find((result) => result.studentId === user.id)
-                        ?.remarks || ""
-                    }
-                    onChange={(e) =>
-                      handleRemarksChange(user.id, e.target.value)
-                    }
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  <table className="min-w-full table-auto border-collapse border border-gray-200 bg-white">
+    <thead>
+      <tr>
+        <th className="border px-4 py-2 text-center">Full Name</th>
+        <th className="border px-4 py-2 text-center">Exam Marks</th>
+        <th className="border px-4 py-2 text-center">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {userList.map((user) => (
+        <tr key={user.id}>
+          <td className="border px-4 py-2 text-center">
+            {user.firstName} {user.lastName}
+          </td>
+          <td className="border px-4 py-2 text-center">
+            <input
+              type="number"
+              className="border p-1 rounded w-40 text-center"
+              placeholder="Enter marks"
+              value={
+                examResults.find((result) => result.studentId === user.id)
+                  ?.examMarks || ""
+              }
+              onChange={(e) =>
+                handleMarksChange(user.id, e.target.value)
+              }
+            />
+          </td>
+          <td className="border px-4 py-2 text-center">
+            <input
+              type="text"
+              className="border p-1 rounded w-full text-center"
+              placeholder="Enter remarks"
+              value={
+                examResults.find((result) => result.studentId === user.id)
+                  ?.remarks || ""
+              }
+              onChange={(e) =>
+                handleRemarksChange(user.id, e.target.value)
+              }
+            />
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 
-        {/* Save Changes button aligned to the right */}
-        <div className="flex justify-end mt-4">
-          <Button
-            onClick={handleSaveChanges}
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            Save Changes
-          </Button>
-        </div>
-      </div>
+  {/* Save Changes button aligned to the right */}
+  <div className="flex justify-end mt-4">
+    <Button
+      onClick={handleSaveChanges}
+      className="bg-blue-500 text-white py-2 px-4 rounded"
+    >
+      Save Changes
+    </Button>
+  </div>
+</div>
+
     </div>
   );
 };
