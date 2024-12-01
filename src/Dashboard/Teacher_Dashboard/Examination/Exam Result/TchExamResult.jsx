@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 const TchExamResult = () => {
   const [exams, setExams] = useState([]);
   const [examTypes, setExamTypes] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
+  const navigate = useNavigate();
 
   const teacherData = JSON.parse(sessionStorage.getItem("teacherData"));
 
@@ -51,29 +51,39 @@ const TchExamResult = () => {
   };
 
   const handleTileClick = (exam) => {
-    // Navigate to the new page and pass selected exam data
     navigate("/teacherdashboard/ExamSubjects", { state: { selectedExam: exam } });
   };
 
   return (
-    <div className="h-full mb-10">
-      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Exam Result</h1>
-      <p className="mt-2">
-        Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
-        <span className="text-[#ffae01] font-semibold"> Exam Result</span>
-      </p>
-
-      <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {exams.map((exam) => (
-          <div
-            key={exam.id}
-            className="bg-red-500 text-white p-4 rounded-lg text-center shadow-md cursor-pointer transform transition-transform hover:scale-105"
-            onClick={() => handleTileClick(exam)}
+    <div className="h-full mb-10 bg-gray-100">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Result</h1>
+        <p className="mt-2  text-gray-600">
+          Dashboard /
+          <NavLink
+            to="/teacherDashboard"
+            // className="text-blue-600 hover:underline"
           >
-            <p className="font-semibold">Exam Type: {getExamTypeNameById(exam.examName)}</p>
-          </div>
-        ))}
+            Teacher Dashboard
+          </NavLink>{" "}
+          / <span className="text-yellow-500 font-semibold">Exam Result</span>
+        </p>
+
+        {/* Exam Tiles */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {exams.map((exam) => (
+            <div
+              key={exam.id}
+              className="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-lg shadow-lg cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl"
+              onClick={() => handleTileClick(exam)}
+            >
+              <p className="font-semibold text-lg">
+                Exam Type: {getExamTypeNameById(exam.examName)}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

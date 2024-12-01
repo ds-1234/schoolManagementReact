@@ -9,8 +9,7 @@ const ExamSubjects = () => {
   // Retrieve the selected exam data passed via navigate
   const { selectedExam } = location.state || {}; // Handle undefined state gracefully
   const [subjects, setSubjects] = useState([]);
-  const [examType, setExamType] = useState('');
-
+  const [examType, setExamType] = useState("");
 
   // If there's no selectedExam, navigate back to the previous page
   if (!selectedExam) {
@@ -22,7 +21,7 @@ const ExamSubjects = () => {
 
   useEffect(() => {
     fetchSubjects();
-    fetchExamType()
+    fetchExamType();
   }, []);
 
   const fetchSubjects = () => {
@@ -30,7 +29,7 @@ const ExamSubjects = () => {
       .get("http://localhost:8080/subject/getSubjectList")
       .then((response) => {
         if (response.data.success) {
-            setSubjects(response.data.data);
+          setSubjects(response.data.data);
         }
       })
       .catch((error) => {
@@ -45,13 +44,17 @@ const ExamSubjects = () => {
 
   const fetchExamType = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
-      
+      const response = await axios.get(
+        "http://localhost:8080/examType/getExamTypeList"
+      );
+
       if (response.data.success) {
         const examTypeData = response.data.data;
-        const selectedExamType = examTypeData.find((type) => type.id === selectedExam.id);
+        const selectedExamType = examTypeData.find(
+          (type) => type.id === selectedExam.id
+        );
         const examName = selectedExamType?.examTypeName;
-        
+
         if (examName) {
           setExamType(examName);
         } else {
@@ -64,11 +67,9 @@ const ExamSubjects = () => {
       console.error("Error fetching exam type data:", error);
     }
   };
-  
 
   // Handle subject tile click
   const handleSubjectClick = (subjectDetails) => {
-    // Navigate to another page with the required data
     navigate("/teacherdashboard/UpdateResult", {
       state: {
         className,
@@ -81,23 +82,24 @@ const ExamSubjects = () => {
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-        Subjects for Exam :  {examType}
+        Subjects for Exam : {examType}
       </h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /<NavLink to="/teacherdashboard/ExamSubjects"> Exam Result </NavLink>/
+        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
+        <NavLink to="/teacherdashboard/ExamSubjects"> Exam Result </NavLink> /
         <span className="text-[#ffae01] font-semibold"> Subject</span>
       </p>
 
       {/* Subject Tiles */}
-      <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="p-12 max-w-7xl mx-auto bg-white my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {subjectWiseExamList.map((subjectDetails) => (
           <div
             key={subjectDetails.id}
-            className="bg-gray-300 p-4 rounded-lg text-center shadow-md cursor-pointer transform transition-transform hover:scale-105"
-            onClick={() => handleSubjectClick(subjectDetails)} // Pass subject details to the handler
+            className="bg-gray-300 p-6 rounded-lg text-center shadow-md cursor-pointer transform transition-transform hover:scale-105 flex items-center justify-center"
+            onClick={() => handleSubjectClick(subjectDetails)}
           >
-            <p className="font-semibold text-red-500">
+            <p className="font-semibold text-red-500 text-base">
               {getSubjectNameById(subjectDetails.subject)}
             </p>
           </div>

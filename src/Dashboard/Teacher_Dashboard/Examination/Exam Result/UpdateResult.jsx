@@ -139,7 +139,7 @@ const UpdateResult = () => {
 
   const handleSaveChanges = async () => {
     const saveData = {
-      teacherid: teacherId, // Assuming teacherId is passed in the location state
+      teacherid: teacherId, 
       className: className,
       subject: selectedSubject,
       examType: selectedExamType,
@@ -174,7 +174,7 @@ const UpdateResult = () => {
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Exam Result</h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /<NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/<NavLink to="/teacherdashboard/tchExamResult"> Exam Subject </NavLink>/
+        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /<NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/<NavLink to="/teacherdashboard/tchExamResult">  Subject </NavLink>/
         <span className="text-[#ffae01] font-semibold"> Update Result</span>
       </p>
 
@@ -196,11 +196,9 @@ const UpdateResult = () => {
             {userList.map((user) => (
               <tr key={user.id}>
                 <td className="border px-4 py-2">
-                  {/* Display FirstName and LastName in a single column */}
                   {user.firstName} {user.lastName}
                 </td>
                 <td className="border px-4 py-2">
-                  {/* Exam Marks input */}
                   <input
                     type="number"
                     className="border p-1 rounded"
@@ -212,7 +210,6 @@ const UpdateResult = () => {
                   />
                 </td>
                 <td className="border px-4 py-2">
-                  {/* Remarks input */}
                   <input
                     type="text"
                     className="border p-1 rounded"
