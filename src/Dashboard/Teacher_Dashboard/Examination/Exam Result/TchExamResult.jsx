@@ -23,7 +23,7 @@ const TchExamResult = () => {
         if (data.success) {
           const filteredExams = data.data.filter((exam) =>
             validClasses.includes(String(exam.className))
-          );
+        );
           setExams(filteredExams);
         }
       })
@@ -50,8 +50,29 @@ const TchExamResult = () => {
     return examType ? examType.examTypeName : "Unknown";
   };
 
-  const handleTileClick = (exam) => {
-    navigate("/teacherdashboard/ExamSubjects", { state: { selectedExam: exam } });
+  // Group exams by examType and collect unique classNames
+  const groupedExamData = exams.reduce((acc, exam) => {
+    const { examName: examTypeId, className } = exam;
+    if (!acc[examTypeId]) {
+      acc[examTypeId] = {
+        examType: examTypeId,
+        classNames: new Set(),
+      };
+    }
+    acc[examTypeId].classNames.add(className);
+    return acc;
+  }, {});
+
+  // Convert to an array and remove duplicate classNames
+  const uniqueExamTypes = Object.values(groupedExamData).map((item) => ({
+    examType: item.examType,
+    classNames: Array.from(item.classNames),
+  }));
+
+  const handleTileClick = (examType, classNames) => {
+    navigate("/teacherdashboard/ExamClasses", {
+      state: { examType, classNames },
+    });
   };
 
   return (
@@ -59,12 +80,9 @@ const TchExamResult = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Result</h1>
-        <p className="mt-2  text-gray-600">
+        <p className="mt-2 text-gray-600">
           Dashboard /
-          <NavLink
-            to="/teacherDashboard"
-            // className="text-blue-600 hover:underline"
-          >
+          <NavLink to="/teacherDashboard">
             Teacher Dashboard
           </NavLink>{" "}
           / <span className="text-yellow-500 font-semibold">Exam Result</span>
@@ -72,15 +90,16 @@ const TchExamResult = () => {
 
         {/* Exam Tiles */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {exams.map((exam) => (
+          {uniqueExamTypes.map(({ examType, classNames }) => (
             <div
-              key={exam.id}
+              key={examType}
               className="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-lg shadow-lg cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl"
-              onClick={() => handleTileClick(exam)}
+              onClick={() => handleTileClick(examType, classNames)}
             >
               <p className="font-semibold text-lg">
-                Exam Type: {getExamTypeNameById(exam.examName)}
+                Exam Type: {getExamTypeNameById(examType)}
               </p>
+              <p className="text-sm">Classes: {classNames.join(", ")}</p>
             </div>
           ))}
         </div>

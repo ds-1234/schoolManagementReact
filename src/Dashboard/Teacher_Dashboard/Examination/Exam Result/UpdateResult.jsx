@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";  // Import Axios
+import axios from "axios";
 import Button from "../../../../Reusable_components/Button";
 
 const UpdateResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const teacherData = JSON.parse(sessionStorage.getItem("teacherData")); // Retrieve teacherData from session storage
 
   const [userList, setUserList] = useState([]);
   const [examResults, setExamResults] = useState([]);
-  const [subjects, setSubjects] = useState('');
-  const [examType, setExamType] = useState('');
-  const [classNamestr, setClassNamestr] = useState('');
+  const [subjects, setSubjects] = useState("");
+  const [classNamestr, setClassNamestr] = useState("");
+  const [examTypeName, setExamTypeName] = useState("");
 
-  const { className, selectedSubject, selectedExamType } = location.state || {};
+  const { className = "Unknown", examType = "Unknown" } = location.state || {};
   const teacherId = user.id;
+
+  console.log(className, examType, "classname", "examtype");
+
+  // Extract subjectId by comparing classId with className
+  const subjectId = teacherData?.classSubjectEntity?.find(
+    (entry) => entry.classId == className
+  )?.subjectId;
+
+  console.log("SubjectId:", subjectId);
 
   useEffect(() => {
     // Fetch user data from the API
@@ -35,10 +45,10 @@ const UpdateResult = () => {
         // Set the filtered user list
         setUserList(filteredUsers);
         setExamResults(
-          filteredUsers.map(user => ({
+          filteredUsers.map((user) => ({
             studentId: user.id,
             examMarks: "",
-            remarks: ""
+            remarks: "",
           }))
         );
       }
@@ -49,8 +59,8 @@ const UpdateResult = () => {
 
   useEffect(() => {
     fetchSubjects();
+    fetchClassName();
     fetchExamType()
-    fetchClassName()
   }, []);
 
   const fetchExamType = async () => {
@@ -59,11 +69,11 @@ const UpdateResult = () => {
       
       if (response.data.success) {
         const examTypeData = response.data.data;
-        const ExamTyperes = examTypeData.find((type) => type.id === selectedExamType);
+        const ExamTyperes = examTypeData.find((type) => type.id == examType);
         const examName = ExamTyperes?.examTypeName;
         
         if (examName) {
-          setExamType(examName);
+            setExamTypeName(examName);
         } else {
           console.error("Exam type not found for the selected exam ID.");
         }
@@ -74,15 +84,18 @@ const UpdateResult = () => {
       console.error("Error fetching exam type data:", error);
     }
   };
+
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
-      
+      const response = await axios.get(
+        "http://localhost:8080/subject/getSubjectList"
+      );
+
       if (response.data.success) {
         const subjectData = response.data.data;
-        const Subjectres = subjectData.find((type) => type.id === selectedSubject);
+        const Subjectres = subjectData.find((type) => type.id == subjectId); // Use subjectId here
         const SubjectName = Subjectres?.subject;
-        
+
         if (SubjectName) {
           setSubjects(SubjectName);
         } else {
@@ -95,15 +108,16 @@ const UpdateResult = () => {
       console.error("Error fetching Subject data:", error);
     }
   };
+
   const fetchClassName = async () => {
     try {
       const response = await axios.get("http://localhost:8080/class/getClassList");
-      
+
       if (response.data.success) {
         const clasdata = response.data.data;
         const classres = clasdata.find((type) => type.id === className);
         const clas = classres?.name;
-        
+
         if (clas) {
           setClassNamestr(clas);
         } else {
@@ -139,21 +153,25 @@ const UpdateResult = () => {
 
   const handleSaveChanges = async () => {
     const saveData = {
-      teacherid: teacherId, 
+      teacherid: teacherId,
       className: className,
-      subject: selectedSubject,
-      examType: selectedExamType,
+      subject: subjectId, // Include subjectId in the payload
+      examType,
       isActive: true,
-      studentMarksMapping: examResults
+      studentMarksMapping: examResults,
     };
 
     try {
       // Use Axios to send the request
-      const response = await axios.post("http://localhost:8080/exam/saveExamResult", saveData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/exam/saveExamResult",
+        saveData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // Handle the response
       if (response.data.success) {
@@ -174,13 +192,15 @@ const UpdateResult = () => {
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Exam Result</h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /<NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/<NavLink to="/teacherdashboard/tchExamResult">  Subject </NavLink>/
+        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
+        <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
+        <NavLink to="/teacherdashboard/tchExamResult"> Subject </NavLink>/
         <span className="text-[#ffae01] font-semibold"> Update Result</span>
       </p>
 
       {/* Dynamic Heading */}
       <h2 className="mt-6 text-xl font-semibold text-black">
-        Update Marks of {classNamestr} for {subjects} in {examType}
+        Update Marks of {classNamestr} for {subjects} in {examTypeName}
       </h2>
 
       <div className="container mt-4">
@@ -203,7 +223,10 @@ const UpdateResult = () => {
                     type="number"
                     className="border p-1 rounded"
                     placeholder="Enter marks"
-                    value={examResults.find(result => result.studentId === user.id)?.examMarks || ""}
+                    value={
+                      examResults.find((result) => result.studentId === user.id)
+                        ?.examMarks || ""
+                    }
                     onChange={(e) =>
                       handleMarksChange(user.id, e.target.value)
                     }
@@ -214,7 +237,10 @@ const UpdateResult = () => {
                     type="text"
                     className="border p-1 rounded"
                     placeholder="Enter remarks"
-                    value={examResults.find(result => result.studentId === user.id)?.remarks || ""}
+                    value={
+                      examResults.find((result) => result.studentId === user.id)
+                        ?.remarks || ""
+                    }
                     onChange={(e) =>
                       handleRemarksChange(user.id, e.target.value)
                     }
@@ -224,7 +250,7 @@ const UpdateResult = () => {
             ))}
           </tbody>
         </table>
-        
+
         {/* Save Changes button aligned to the right */}
         <div className="flex justify-end mt-4">
           <Button

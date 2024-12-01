@@ -118,6 +118,7 @@ import LeaveTabs from './Dashboard/Student_Dashboard/Leave/LeaveTab';
 import LeaveCategoryPage from './Dashboard/Student_Dashboard/Leave/LeaveCategoryPage';
 import ExamSubjects from './Dashboard/Teacher_Dashboard/Examination/Exam Result/ExamSubjects';
 import UpdateResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/UpdateResult';
+import ExamClasses from './Dashboard/Teacher_Dashboard/Examination/Exam Result/ExamClasses';
 
 
 
@@ -265,6 +266,7 @@ function App() {
             <Route path='StaffAttendance' element={<AllStaffAttendance/>} />
             <Route path='ExamSubjects' element={<ExamSubjects/>} />
             <Route path='UpdateResult' element={<UpdateResult/>} />
+            <Route path='ExamClasses' element={<ExamClasses/>} />
           </Route>
 
           {/* Parents Dashboard Routes */}
