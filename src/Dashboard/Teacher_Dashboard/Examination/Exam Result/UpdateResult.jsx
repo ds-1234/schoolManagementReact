@@ -194,7 +194,7 @@ const UpdateResult = () => {
         Dashboard /
         <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
         <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
-        <NavLink to="/teacherdashboard/tchExamResult"> Subject </NavLink>/
+        {/* <NavLink to="/teacherdashboard/ExamClasses"> Subject </NavLink>/ */}
         <span className="text-[#ffae01] font-semibold"> Update Result</span>
       </p>
 
