@@ -122,11 +122,11 @@ function StudentDetails() {
     }
   } , [studentDetails])
 
-  const handleDownload = (attachmentName) => {
-    const fullPath = `${attachmentName}`; 
+  const handleDownload = (attachmentName, attachmentPath) => {
+    const fullPath = `${attachmentPath}`;
     const link = document.createElement('a');
-    link.href = fullPath;  
-    link.setAttribute('download', attachmentName); 
+    link.href = fullPath;
+    link.target = '_blank'; 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -270,7 +270,7 @@ function StudentDetails() {
                 <span className="text-gray-700 font-semibold">{doc.documentName}</span>
               </div>
               <button
-                onClick={() => handleDownload(doc.attachmentName)}
+                onClick={() => handleDownload(doc.attachmentName , doc.attachmentPath)}
                 className="text-blue-500 font-semibold flex items-center space-x-2"
               >
                 <FontAwesomeIcon icon={faDownload} />
