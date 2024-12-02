@@ -261,9 +261,11 @@ const AddEvent = ({ isOpen, onClose }) => {
     };
 
   // Create a string of selected class names for the placeholder
-  const selectedClassNames = selectedClasses.map(classId => 
-    classes.find(cls => cls.id === Number(classId))?.name
-  );
+  const selectedClassNames = selectedClasses.map(classId => {
+    const cls = classes.find(cls => cls.id === Number(classId));
+    return cls ? `${cls.name} - ${cls.section}` : '';
+  });
+  
   
   console.log("Mapped Class Names:", selectedClassNames);
 
@@ -339,7 +341,7 @@ console.log("Filtered Class Names:", filteredClassNames);
           </option>
           {classes.map(cls => (
             <option key={cls.id} value={cls.id}>
-              {cls.name}
+              {cls.name} - {cls.section}
             </option>
           ))}
         </select>
