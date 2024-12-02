@@ -23,6 +23,7 @@ function ExamResult() {
   const [loading, setLoading] = useState(true); // Loading state
   const [examTypeFilter, setExamTypeFilter] = useState(''); // State to hold the selected exam type filter
   const [examTypes, setExamTypes] = useState([]); // State to hold the unique exam types
+  const [examTypeName, setExamTypeName] = useState([]); 
 
   // Fetch exam results from API
   useEffect(() => {
@@ -67,11 +68,29 @@ function ExamResult() {
 
     fetchSubjects();
   }, []);
+  useEffect(() => {
+    const fetchExamType = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
+        if (response.data.success) {
+          setExamTypeName(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching Exam Type:', error);
+      }
+    };
+
+    fetchExamType();
+  }, []);
 
   // Function to get subject name by ID
   const getSubjectNameById = (id) => {
     const subject = subjects.find((subject) => subject.id === id);
     return subject ? subject.subject : `Subject ${id}`;
+  };
+  const getExamTypeNameById = (id) => {
+    const name = examTypeName.find((type) => type.id === id);
+    return name ? name.examTypeName : `type ${id}`;
   };
 
   // Generate chart data based on examTypeFilter
@@ -139,7 +158,7 @@ function ExamResult() {
           <option value="">Select Exam Type</option>
           {examTypes.map((examType, index) => (
             <option key={index} value={examType}>
-              {`Exam Type ${examType}`}
+              {`${getExamTypeNameById(examType)}`}
             </option>
           ))}
         </select>
