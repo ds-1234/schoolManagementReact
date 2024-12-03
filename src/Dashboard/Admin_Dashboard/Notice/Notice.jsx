@@ -25,7 +25,10 @@ function NoticeBoard() {
   const fetchNotices = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/notice/getNoticeList`);
-      setNotices(response.data.data);
+      const sortedNotices = response.data.data.sort(
+        (a, b) => new Date(a.noticeDate) - new Date(b.noticeDate) // Sort by newest date
+      );
+      setNotices(sortedNotices);
     } catch (error) {
       console.error('Error fetching notices:', error);
     }

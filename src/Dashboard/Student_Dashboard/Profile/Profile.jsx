@@ -120,7 +120,7 @@ const Profile = () => {
   } , [studentDetails])
 
   const handleDownload = (attachmentName , attachmentPath) => {
-    const fullPath = `${attachmentPath}`; 
+    const fullPath = `${attachmentName}`; 
     const link = document.createElement('a');
     link.href = fullPath;      
     link.setAttribute('download', attachmentName); 

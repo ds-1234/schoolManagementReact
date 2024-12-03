@@ -123,10 +123,11 @@ function StudentDetails() {
   } , [studentDetails])
 
   const handleDownload = (attachmentName, attachmentPath) => {
-    const fullPath = `${attachmentPath}`;
+    const fullPath = `${attachmentName}`;
     const link = document.createElement('a');
     link.href = fullPath;
-    link.target = '_blank'; 
+    // link.target = '_blank'; 
+    link.setAttribute('download', attachmentName);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

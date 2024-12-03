@@ -54,7 +54,7 @@ function Notice() {
               <div className="flex flex-col ">
                 <h3 className="text-medium font-bold text-gray-800">{notice.noticeTitle}</h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  Holiday on: {new Date(notice.noticeDate).toLocaleDateString()}
+                  Notice on: {new Date(notice.noticeDate).toLocaleDateString()}
                 </p>
                 <p className="text-gray-700 mt-2 text-sm line-clamp-2 ">
                   {notice.noticeDetails || "No additional description available."}

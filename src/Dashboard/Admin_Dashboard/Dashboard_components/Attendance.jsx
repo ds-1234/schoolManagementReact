@@ -20,12 +20,27 @@ function Attendance() {
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState("Students");
   const navigate = useNavigate()
+  const [statusMap , setStatusMap] = useState([]) 
 
   useEffect(() => {
-    const fetchStdAttendance = async () => {
+    const fetchAttendanceData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/attendance/getAttendanceList`);
-        setAttendanceData(response.data.data);
+        const [stdResponse, staffResponse, statusResponse] = await Promise.all([
+          axios.get(`${BASE_URL}/attendance/getAttendanceList`),
+          axios.get(`${BASE_URL}/attendance/getStaffAttendance`),
+          axios.get(`${BASE_URL}/attendance/getStaffAttendanceStatus`),
+        ]);
+
+        setAttendanceData(stdResponse.data.data);
+        setStaffAttendance(staffResponse.data.data);
+
+        // Generate statusMap
+        const statusMapGenerated = {};
+        statusResponse.data.data.forEach((status) => {
+          statusMapGenerated[status.id] = status.attendanceStatus;
+        });
+
+        setStatusMap(statusMapGenerated);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching attendance data:", error);
@@ -33,19 +48,7 @@ function Attendance() {
       }
     };
 
-    const fetchStaffAttendance = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendance`);
-        setStaffAttendance(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching attendance data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchStdAttendance();
-    fetchStaffAttendance() ;
+    fetchAttendanceData();
   }, []);
 
   // Filter attendance data based on the selected tab
@@ -63,31 +66,37 @@ function Attendance() {
     const statusCounts = {
       present: 0,
       absent: 0,
+      'half day' : 0 ,
       medical: 0,
       other: 0, 
     };
 
    
-      filteredData.forEach((entry) => {
-      const statusString = selectedTab === "Students" ? entry.attendenceStatus : entry.attendanceStatus ; 
-      console.log(statusString);
-      
-      let status;
-      if(selectedTab === "Students"){
-       status = statusString.match(/=(\w+)/)?.[1]; 
-      }else{
-        status = statusString?.toLowerCase() ;
-      }
-
-      console.log(status);
-      
-      if (statusCounts[status] !== undefined) {
-        statusCounts[status]++;
-      } else {
-        statusCounts.other++;
+    filteredData.forEach((entry) => {
+      if (selectedTab === "Students" && Array.isArray(entry.attendenceStatusList)) {
+        // Traverse all attendanceStatusList entries
+        entry.attendenceStatusList.forEach((statusItem) => {
+          const statusId = statusItem.attendanceStatusId;
+          const status = statusMap[statusId]?.toLowerCase() || "other";
+  
+          if (statusCounts[status] !== undefined) {
+            statusCounts[status]++;
+          } else {
+            statusCounts.other++;
+          }
+        });
+      } else if (selectedTab === "Staff") {
+        const statusString = entry.attendanceStatus;
+        const status = statusMap[statusString]?.toLowerCase() || "other";
+  
+        if (statusCounts[status] !== undefined) {
+          statusCounts[status]++;
+        } else {
+          statusCounts.other++;
+        }
       }
     });
-
+  
     return statusCounts;
   };
 
@@ -97,18 +106,19 @@ function Attendance() {
     const statusCounts = processAttendanceData(filteredData);
 
     return {
-      labels: ["Present", "Absent", "Medical", "Other"],
+      labels: ["Present", "Absent","Half Day" , "Medical", "Other"],
       datasets: [
         {
           label: "Attendance Status",
           data: [
             statusCounts.present,
             statusCounts.absent,
+            statusCounts["half day"],
             statusCounts.medical,
             statusCounts.other,
           ],
-          backgroundColor: ["#36A2EB", "#FF6384", "#FFCE56", "#A9A9A9"],
-          hoverBackgroundColor: ["#36A2EB", "#FF6384", "#FFCE56", "#A9A9A9"],
+          backgroundColor: ["#87f542", "#FF6384", "#FFCE56", "#36A2EB" , "#A9A9A9"],
+          hoverBackgroundColor: ["#87f542", "#FF6384", "#FFCE56", "#36A2EB" , "#A9A9A9"],
         },
       ],
     };
