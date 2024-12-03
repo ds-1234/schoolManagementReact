@@ -103,7 +103,7 @@ function Attendance({ user }) {
   };
 
   return (
-    <div className="p-6 w-[700px] bg-gray-100 rounded-lg shadow-lg">
+    <div className="p-6 w-[700px] h-[550px] bg-gray-100 rounded-lg shadow-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Attendance</h1>
@@ -146,7 +146,7 @@ function Attendance({ user }) {
       </div>
 
       {/* Pie Chart */}
-      <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
+      <div className="bg-white w-96 h-[200px] p-6 rounded-lg shadow-lg">
         <Pie data={pieChartData} />
       </div>
     </div>
