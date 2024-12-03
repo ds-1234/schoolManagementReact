@@ -13,7 +13,7 @@ function FeesReminder() {
   const getRandomDue = () => Math.random() > 0.5; // Randomly assign a due status
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div className='bg-white shadow-lg rounded-lg' style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Fees Remainder</h2>
