@@ -89,8 +89,8 @@ function ExamResult() {
     return subject ? subject.subject : `Subject ${id}`;
   };
   const getExamTypeNameById = (id) => {
-    const name = examTypeName.find((type) => type.id === id);
-    return name ? name.examTypeName : `type ${id}`;
+    const name = examTypeName.find((type) => type.id == id);
+    return name ? name.examTypeName : `Exam type ${id}`;
   };
 
   // Generate chart data based on examTypeFilter
@@ -100,6 +100,7 @@ function ExamResult() {
       filteredResults = examResults.filter(
         (result) => result.examData.examType === parseInt(examTypeFilter)
       );
+      console.log(examTypeFilter,'Examtypefilter')
     }
 
     if (filteredResults.length > 0 && subjects.length > 0) {
@@ -139,7 +140,7 @@ function ExamResult() {
     plugins: {
       title: {
         display: true,
-        text: 'Exam Results by Subject',
+        text: `Exam Results of ${getExamTypeNameById(examTypeFilter)}`,
       },
     },
   };
