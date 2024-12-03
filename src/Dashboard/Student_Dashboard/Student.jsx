@@ -29,8 +29,8 @@ function Student() {
         <div className="w-1/3">
           <Profile 
             name={`${user.firstName} ${user.lastName}`}
-            className="10th Grade" 
-            rollNo="25" 
+            className={user.className ? user.className[0]:''}
+            rollNo={user.rollNumber?user.rollNumber:''} 
           />
         </div>
         
