@@ -49,16 +49,16 @@ function Books() {
     //   selector: row => row.bookRefId,
     //   sortable: true,
     // },
-    {
-      name: 'Alloted start date',
-      selector: row => row.allotedStratDate,
-      sortable: true,
-    },
-    {
-      name: 'Alloted End Date',
-      selector: row => row.allotedEndtDate,
-      sortable: true,
-    },
+    // {
+    //   name: 'Alloted start date',
+    //   selector: row => row.allotedStratDate,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Alloted End Date',
+    //   selector: row => row.allotedEndtDate,
+    //   sortable: true,
+    // },
     {
       name: 'Status',
       selector: row => (

@@ -1,26 +1,28 @@
 import { Input } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../Reusable_components/Button";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from "../../../conf/conf";
 
 const AddClassPopup = ({ isOpen, onClose }) => {
-  const { register, handleSubmit, reset , formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [teachers , setTeachers] = useState([])
-  const [selectedTeacher , setSelectedTeacher] = useState('')  
+  const [teachers, setTeachers] = useState([]);
+  const [selectedTeacher, setSelectedTeacher] = useState('');
+
+  const dropdownRef = useRef(null); // Ref to track dropdown
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       fetchSubjects();
-      fetchTeachers() ;
+      fetchTeachers();
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -31,9 +33,19 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       }
     };
 
+    // Close the dropdown when clicking outside
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
     document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('click', handleClickOutside);
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleClickOutside);
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
@@ -50,8 +62,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
   const fetchTeachers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/getUserList`);
-      setTeachers(response.data.data.filter((tch) => (tch.role === 4 && tch.isActive == true))) ;
-      
+      setTeachers(response.data.data.filter((tch) => (tch.role === 4 && tch.isActive == true)));
     } catch (error) {
       toast.error("Error fetching teachers");
     }
@@ -68,17 +79,15 @@ const AddClassPopup = ({ isOpen, onClose }) => {
   };
 
   const handleOnClose = () => {
-    onClose() ;
+    onClose();
     reset()
     setSelectedSubjects([])
-      setSelectedTeacher('') 
-      setDropdownOpen(false)
+    setSelectedTeacher('')
+    setDropdownOpen(false)
   }
 
   const onSubmit = async (data) => {
     const subjectDetails = selectedSubjects.map(id => {
-      console.log(subjects , id);
-      
       const subject = subjects.find(sub => sub.id === id);
       return subject.id
     });
@@ -88,8 +97,8 @@ const AddClassPopup = ({ isOpen, onClose }) => {
         name: data.name,
         section: data.section,
         subject: subjectDetails,
-        primaryTeacher: parseInt(selectedTeacher) , 
-        isActive: true 
+        primaryTeacher: parseInt(selectedTeacher),
+        isActive: true
       }, {
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +108,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       toast.success("Successfully added class");
       reset()
       setSelectedSubjects([])
-      setSelectedTeacher('') 
+      setSelectedTeacher('')
       setSubjects([])
       onClose();
 
@@ -108,7 +117,7 @@ const AddClassPopup = ({ isOpen, onClose }) => {
       console.error(error);
       reset()
       setSelectedSubjects([])
-      setSelectedTeacher('') 
+      setSelectedTeacher('')
     }
   };
 
@@ -135,8 +144,8 @@ const AddClassPopup = ({ isOpen, onClose }) => {
 
           <div className="mb-4">
             <label htmlFor="classTeacher" className="block text-gray-700 font-semibold mb-2">Class Teacher</label>
-            <select  
-              id="classTeacher" 
+            <select
+              id="classTeacher"
               value={selectedTeacher}
               className={`w-full ${errors.primaryTeacher ? 'border-red-500' : 'border-gray-300'} rounded-lg border py-2 px-2`}
               onChange={(e) => setSelectedTeacher(e.target.value)}
@@ -150,9 +159,9 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           </div>
 
           {/* Subject Input */}
-          <div className="mb-4 relative">
+          <div className="mb-4 relative" ref={dropdownRef}>
             <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">Subject  <span className='text-red-700 font-bold'>*</span> </label>
-            <div 
+            <div
               className="border rounded-lg cursor-pointer p-2 flex justify-between items-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
@@ -179,7 +188,6 @@ const AddClassPopup = ({ isOpen, onClose }) => {
           <Button type='submit' className='w-full text-center' label="Add Class" />
         </form>
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 };

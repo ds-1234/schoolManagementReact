@@ -81,7 +81,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
 
           {/* Start Time Input */}
           <div className="mb-4">
-            <label htmlFor="startTime" className="block text-gray-700 font-semibold mb-2">Start Time</label>
+            <label htmlFor="startTime" className="block text-gray-700 font-semibold mb-2">Start Time*</label>
             <input
               type="time"
               id="startTime"
@@ -94,7 +94,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
 
           {/* End Time Input */}
           <div className="mb-4">
-            <label htmlFor="endTime" className="block text-gray-700 font-semibold mb-2">End Time</label>
+            <label htmlFor="endTime" className="block text-gray-700 font-semibold mb-2">End Time*</label>
             <input
               type="time"
               id="endTime"
@@ -107,7 +107,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
 
           {/* Attendance Status Input */}
           <div className="mb-4">
-            <label htmlFor="attendanceStatus" className="block text-gray-700 font-semibold mb-2">Attendance Status</label>
+            <label htmlFor="attendanceStatus" className="block text-gray-700 font-semibold mb-2">Attendance Status*</label>
             <input
               type="text"
               id="attendanceStatus"

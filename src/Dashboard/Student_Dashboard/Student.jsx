@@ -11,6 +11,11 @@ import ExamResult from './StdDashboardComponents/ExamResult';
 import FeesReminder from './StdDashboardComponents/FeesReminder';
 import NoticeBoard from './StdDashboardComponents/NoticeBoard';
 import Syllabus from './StdDashboardComponents/Syllabus';
+import guestImg from '../../assets/Icons/guest.png'
+import adminImg from '../../assets/Icons/user-gear.png'
+import parentImg from '../../assets/Icons/family.png'
+import stdImg from '../../assets/Icons/graduates.png'
+import tchImg from '../../assets/Icons/teacher.png'
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -21,6 +26,15 @@ function Student() {
   const absentDays = 2;
   const halfDays = 0;
 
+     // Map images to user types
+     const userTypeImages = {
+      Guest: guestImg,
+      Parents: parentImg,
+      Teacher: tchImg,
+      Admin: adminImg,
+      Student: stdImg,
+    };
+
   return (
     <div className="flex flex-col mt-20 space-y-10 px-5">
       {/* Top Section: Profile */}
@@ -29,8 +43,8 @@ function Student() {
         <div className="w-1/3">
           <Profile 
             name={`${user.firstName} ${user.lastName}`}
-            className="10th Grade" 
-            rollNo="25" 
+            className={user.className ? user.className[0]:''}
+            rollNo={user.rollNumber?user.rollNumber:''} 
           />
         </div>
         
@@ -55,7 +69,7 @@ function Student() {
       
       {/* Middle Section: Schedule */}
       <div className="flex flex-col mt-6">
-        <Schedules />
+        <Schedules userTypeImages={userTypeImages} />
       </div>
 
       {/* HomeWorks Section */}
@@ -66,7 +80,7 @@ function Student() {
 
       {/* Section: Class Faculties */}
       <div className="flex flex-col mt-6">
-        <ClassFaculties />
+        <ClassFaculties className={user.className?user.className[0]:''}/>
       </div>
 
       {/* Section: Leave Status */}

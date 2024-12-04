@@ -94,7 +94,7 @@ function LandingPage() {
       handleRole(roleID , res.data.data.id); // Pass the role ID to handleRole
     })
     .catch((err) => {
-      toast.error('Runtime error');
+      toast.error('Please Enter Valid User Id and Password');
     });
   };
 

@@ -25,12 +25,27 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const [subjects, setSubjects] = useState([]); // State for all subjects
   const [filteredSubjects, setFilteredSubjects] = useState([]); // State for filtered subjects based on selected class
 
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+      setFilteredSubjects([]);
+      setClassList([]);
+    }
+  }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      fetchClassList()
+      fetchExamTypes()
+      fetchSubjects()
+      }
+  }, [isOpen]);
+  
+
   // Fetch class list from the API
   useEffect(() => {
     if (isOpen) {
             // Reset the form when the modal is closed
-    reset();
-    // setFilteredSubjects([])
+fetchClassList    // setFilteredSubjects([])
     // setClassList([])
       document.body.style.overflow = 'hidden';
     } else {
@@ -58,7 +73,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
     };
   }, [isOpen, onClose]);
 
-  useEffect(() => {
+  // useEffect(() => {
     // Fetch Class List from API
     const fetchClassList = async () => {
       try {
@@ -68,7 +83,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching class list:', error);
       }
     };
-    fetchClassList();
+    // fetchClassList();
 
     // Fetch Exam Type List from API
     const fetchExamTypes = async () => {
@@ -79,7 +94,7 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching exam types:', error);
       }
     };
-    fetchExamTypes();
+    // fetchExamTypes();
 
     // Fetch Subjects from API
     const fetchSubjects = async () => {
@@ -90,8 +105,8 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
         console.error('Error fetching subjects:', error);
       }
     };
-    fetchSubjects();
-  }, []);
+    // fetchSubjects();
+  // }, []);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -110,15 +125,36 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
     reset({ classId: selectedClassId, examTypeId: '', days: {} });
   };
 
-  const handleTimeChange = (index) => {
-    const startTime = getValues(`days.Monday.${index}.timeFrom`);
-    const endTime = getValues(`days.Monday.${index}.timeTo`);
-console.log(startTime,endTime,'startendtime')
-    if (startTime && endTime) {
-      const duration = calculateDuration(startTime, endTime);
-      setValue(`days.Monday.${index}.duration`, duration);
+  const handleTimeChange = (index, field, value) => {
+    const otherField = field === 'timeFrom' ? 'timeTo' : 'timeFrom';
+    const otherValue = getValues(`days.Monday.${index}.${otherField}`);
+    
+    if (field === 'timeFrom' && value && otherValue && value >= otherValue) {
+      toast.error('Start time must be earlier than end time');
+      setValue(`days.Monday.${index}.timeTo`, ''); 
+      setValue(`days.Monday.${index}.duration`, ''); 
+      return;
+    }
+  
+    if (field === 'timeTo' && value && otherValue && otherValue >= value) {
+      toast.error('Start time must be earlier than end time');
+      setValue(`days.Monday.${index}.${field}`, ''); 
+      setValue(`days.Monday.${index}.duration`, ''); 
+      return;
+    }
+  
+    if (field === 'timeFrom' || field === 'timeTo') {
+      const startTime = field === 'timeFrom' ? value : otherValue;
+      const endTime = field === 'timeTo' ? value : otherValue;
+  
+      if (startTime && endTime) {
+        const duration = calculateDuration(startTime, endTime);
+        setValue(`days.Monday.${index}.duration`, duration);
+      }
     }
   };
+  
+  
 
   const calculateDuration = (startTime, endTime) => {
     const start = new Date(`1970-01-01T${startTime}:00Z`);
@@ -157,6 +193,8 @@ console.log(startTime,endTime,'startendtime')
     // Reset the form after submission
     reset();
     setFilteredSubjects([])
+    setClassList([])
+
     // Close the modal after submission
     onClose();      })
       .catch((error) => {
@@ -242,10 +280,14 @@ console.log(startTime,endTime,'startendtime')
                     <input
                       type="date"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                      max={new Date().toISOString().split("T")[0]} // Set max to today's date
+                      max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split("T")[0]}
                       {...register(`days.Monday.${index}.examDate`)}
                     />
                   </div>
+
+
+
+
 
                   <div>
                     <label className="block text-sm font-semibold mb-1">Start Time</label>
@@ -253,8 +295,11 @@ console.log(startTime,endTime,'startendtime')
                       type="time"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeFrom`)}
-                      onChange={() => handleTimeChange(index)} // Handle time change
-                    />
+                        onChange={(e) => {
+                       setValue(`days.Monday.${index}.timeFrom`, e.target.value); 
+                       handleTimeChange(index, 'timeFrom', e.target.value); 
+                      }} 
+                       />
                   </div>
 
                   <div>
@@ -263,8 +308,11 @@ console.log(startTime,endTime,'startendtime')
                       type="time"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                       {...register(`days.Monday.${index}.timeTo`)}
-                      onChange={() => handleTimeChange(index)} // Handle time change
-                    />
+                       onChange={(e) => {
+                        setValue(`days.Monday.${index}.timeTo`, e.target.value); 
+                        handleTimeChange(index, 'timeTo', e.target.value); 
+                        }} 
+                        />
                   </div>
 
                   <div>
@@ -310,7 +358,7 @@ console.log(startTime,endTime,'startendtime')
 
             <div className="mb-6">
               <Button
-              label='add new Exam'
+              label='Add New Exam'
                 onClick={() =>
                   append({
                     subject: '',
@@ -329,7 +377,7 @@ console.log(startTime,endTime,'startendtime')
           </div>
 
           <div className="flex justify-end space-x-4">
-            <Button onClick={onClose} label='cancel'></Button>
+            <Button onClick={onClose} label='Cancel'></Button>
             <Button type="submit">Save</Button>
           </div>
         </form>

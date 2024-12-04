@@ -49,9 +49,6 @@ function StdEvent() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // const openAddPopup = () => setIsAddPopupOpen(true);
-  // const closeAddPopup = () => setIsAddPopupOpen(false);
-
   useEffect(() => {
     if (isAddPopupOpen) {
       document.body.style.overflow = 'hidden';

@@ -725,17 +725,6 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/admin/hostelrooms"
-                    className={({ isActive }) =>
-                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                    }
-                  >
-                    <FontAwesomeIcon icon={faAngleRight}  />
-                    Hostel Rooms 
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
                     to="/admin/roomtype"
                     className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
@@ -745,6 +734,18 @@ const Sidebar = () => {
                      Room Type
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/admin/hostelrooms"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight}  />
+                    Hostel Rooms 
+                  </NavLink>
+                </li>
+
                 {/* <li>
                   <NavLink
                     to="/admin/hostelallocation"

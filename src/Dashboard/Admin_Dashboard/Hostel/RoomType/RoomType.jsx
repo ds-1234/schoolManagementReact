@@ -231,6 +231,7 @@ const searchOptions = [
         roomtyId={editRoomTyId}
         onSuccess={fetchData} // Refresh data after editing
       />
+      {console.log(editRoomTyId,'editRoomTyId')}
     </div>
   );
 };

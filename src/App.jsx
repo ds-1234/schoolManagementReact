@@ -116,6 +116,9 @@ import Children from './Dashboard/Parent_Dashboard/Children';
 import SelectTile from './Dashboard/Teacher_Dashboard/Attendance_Marking/Select';
 import LeaveTabs from './Dashboard/Student_Dashboard/Leave/LeaveTab';
 import LeaveCategoryPage from './Dashboard/Student_Dashboard/Leave/LeaveCategoryPage';
+import ExamSubjects from './Dashboard/Teacher_Dashboard/Examination/Exam Result/ExamSubjects';
+import UpdateResult from './Dashboard/Teacher_Dashboard/Examination/Exam Result/UpdateResult';
+import ExamClasses from './Dashboard/Teacher_Dashboard/Examination/Exam Result/ExamClasses';
 import LeaveTab from './Dashboard/Teacher_Dashboard/Leave/LeaveTab';
 // import LeaveCategory from './Dashboard/Teacher_Dashboard/Leave/LeaveCategory';
 import LeaveRequest from './Dashboard/Teacher_Dashboard/Leave/LeaveRequest';
@@ -268,6 +271,9 @@ function App() {
             <Route path='tchBookIssue' element={<TchBookIssue/>} />
             <Route path='tchExamResult' element={<TchExamResult/>} />
             <Route path='StaffAttendance' element={<AllStaffAttendance/>} />
+            <Route path='ExamSubjects' element={<ExamSubjects/>} />
+            <Route path='UpdateResult' element={<UpdateResult/>} />
+            <Route path='ExamClasses' element={<ExamClasses/>} />
             <Route path = 'leaves' element = {<LeaveTab/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequest/>}/>
           </Route>

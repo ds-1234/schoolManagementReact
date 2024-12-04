@@ -16,6 +16,8 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
 
 
   useEffect(() => {
+    if(roomtyId!=null){
+    console.log(roomtyId,'roomtyid')
     axios({
       method: 'GET',
       url: `${BASE_URL}/roomType/getRoomTypeById/${roomtyId}`,
@@ -24,7 +26,8 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
       },
     })
       .then((response) => {
-        data = response.data.data
+        const data = response.data.data
+        // console.log(data,'data')
         setRoomTy(response.data.data);
         setValue(data.isActive)
         setEditorData(data.description)
@@ -33,6 +36,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
       .catch((error) => {
         console.error('Error fetching room type:', error);
       });
+    }
   }, [roomtyId]);
 
   useEffect(() => {
@@ -114,7 +118,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
               rows="4"
               required
             /> */}
-                                                            <CKEditor
+            <CKEditor
               editor={ClassicEditor}
               data={editorData}
               onChange={(event, editor) => {

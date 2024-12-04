@@ -6,7 +6,7 @@ function LeaveStatus() {
     { type: 'Emergency Leave', date: '2024-11-12', status: 'Pending' },
     { type: 'Medical Leave', date: '2024-11-05', status: 'Approved' },
     { type: 'Casual Leave', date: '2024-11-03', status: 'Declined' },
-    { type: 'Fever Leave', date: '2024-11-08', status: 'Approved' },
+    // { type: 'Fever Leave', date: '2024-11-08', status: 'Approved' },
   ];
 
   // Status colors mapping
