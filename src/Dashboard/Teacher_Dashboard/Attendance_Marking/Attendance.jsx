@@ -14,6 +14,7 @@ const Attendance = () => {
   const [students, setStudents] = useState([]);
   const [attendanceMap, setAttendanceMap] = useState({});
   const today = dayjs().format('YYYY-MM-DD'); // ISO format for date in payload
+  const [attendanceStatuses, setAttendanceStatuses] = useState([]);
 
   // Fetch students based on classItem
   const fetchStudents = async () => {
@@ -28,11 +29,22 @@ const Attendance = () => {
      // Set default attendance as "Absent" for all students
       const defaultAttendance = {};
       filteredStudents.forEach(student => {
-        defaultAttendance[student.id] = 'absent';
+        defaultAttendance[student.id] = 'Absent';
       });
       setAttendanceMap(defaultAttendance);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchAttendanceStatus = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendanceStatus`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      setAttendanceStatuses(response.data.data.filter(status => status.isActive));
+    } catch (error) {
+      console.error('Error fetching attendance statuses:', error);
     }
   };
 
@@ -46,6 +58,7 @@ const Attendance = () => {
 
   useEffect(() => {
     fetchStudents();
+    fetchAttendanceStatus()
   }, [classItem]);
 
   // Handle form submission (sending the attendance data)
@@ -66,11 +79,22 @@ const Attendance = () => {
       cancelButtonText: 'Cancel',
     }).then(async (result) => {
       if (result.isConfirmed) {
+
+        const attendanceStatusList = Object.keys(attendanceMap).map((studentId) => {
+          const attendanceStatus = attendanceStatuses.find(
+            (status) => status.attendanceStatus === attendanceMap[studentId]
+          );
+          return {
+            studentId: parseInt(studentId),
+            attendanceStatusId: attendanceStatus?.id,
+          };
+        });
+
         const payload = {
           teacher: user.id,
           className: classItem.id,
           attendanceDate: today,
-          attendenceStatus: attendanceMap,
+         attendanceStatusList
         };
 
         try {
@@ -105,60 +129,73 @@ const Attendance = () => {
       selector: (row) => row.firstName + ' ' + row.lastName,
       sortable: true,
     },
-    {
-      name: 'Present',
-      cell: (row) => (
-        <input
-          type="radio"
-          name={`attendance_${row.id}`}
-          value="present"
-          checked={attendanceMap[row.id] === 'present'}
-          onChange={() => handleAttendanceChange(row.id, 'present')}
-          className="bg-green-500"
-        />
-      ),
-    },
-    {
-      name: 'Absent',
-      cell: (row) => (
-        <input
-          type="radio"
-          name={`attendance_${row.id}`}
-          value="absent"
-          checked={attendanceMap[row.id] === 'absent'}
-          onChange={() => handleAttendanceChange(row.id, 'absent')}
-          className="bg-red-500"
-        />
-      ),
-    },
+    // {
+    //   name: 'Present',
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name={`attendance_${row.id}`}
+    //       value="present"
+    //       checked={attendanceMap[row.id] === 'present'}
+    //       onChange={() => handleAttendanceChange(row.id, 'present')}
+    //       className="bg-green-500"
+    //     />
+    //   ),
+    // },
+    // {
+    //   name: 'Absent',
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name={`attendance_${row.id}`}
+    //       value="absent"
+    //       checked={attendanceMap[row.id] === 'absent'}
+    //       onChange={() => handleAttendanceChange(row.id, 'absent')}
+    //       className="bg-red-500"
+    //     />
+    //   ),
+    // },
 
-    {
-      name: 'Half Day',
-      cell: (row) => (
-        <input
-          type="radio"
-          name={`attendance_${row.id}`}
-          value="halfDay"
-          checked={attendanceMap[row.id] === 'halfDay'}
-          onChange={() => handleAttendanceChange(row.id, 'halfDay')}
-          className="bg-yellow-500"
-        />
-      ),
-    },
+    // {
+    //   name: 'Half Day',
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name={`attendance_${row.id}`}
+    //       value="halfDay"
+    //       checked={attendanceMap[row.id] === 'halfDay'}
+    //       onChange={() => handleAttendanceChange(row.id, 'halfDay')}
+    //       className="bg-yellow-500"
+    //     />
+    //   ),
+    // },
 
-    {
-      name: 'Medical',
+    // {
+    //   name: 'Medical',
+    //   cell: (row) => (
+    //     <input
+    //       type="radio"
+    //       name={`attendance_${row.id}`}
+    //       value="medical"
+    //       checked={attendanceMap[row.id] === 'medical'}
+    //       onChange={() => handleAttendanceChange(row.id, 'medical')}
+    //       className="bg-blue-500"
+    //     />
+    //   ),
+    // },
+    ...attendanceStatuses.map((status) => ({
+      name: status.attendanceStatus,
       cell: (row) => (
         <input
           type="radio"
           name={`attendance_${row.id}`}
-          value="medical"
-          checked={attendanceMap[row.id] === 'medical'}
-          onChange={() => handleAttendanceChange(row.id, 'medical')}
-          className="bg-blue-500"
+          value={status.attendanceStatus}
+          checked={attendanceMap[row.id] === status.attendanceStatus}
+          onChange={() => handleAttendanceChange(row.id, status.attendanceStatus)}
+          // className={`bg-${status.attendanceStatus.toLowerCase()}-500`}
         />
       ),
-    },
+    })),
   ];
 
   const handleDelete = () => {

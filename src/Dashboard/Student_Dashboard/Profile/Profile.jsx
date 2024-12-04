@@ -119,10 +119,10 @@ const Profile = () => {
     }
   } , [studentDetails])
 
-  const handleDownload = (attachmentName) => {
+  const handleDownload = (attachmentName , attachmentPath) => {
     const fullPath = `${attachmentName}`; 
     const link = document.createElement('a');
-    link.href = fullPath;  
+    link.href = fullPath;      
     link.setAttribute('download', attachmentName); 
     document.body.appendChild(link);
     link.click();
@@ -288,7 +288,7 @@ const Profile = () => {
                 <span className="text-gray-700 font-semibold">{doc.documentName}</span>
               </div>
               <button
-                onClick={() => handleDownload(doc.attachmentName)}
+                onClick={() => handleDownload(doc.attachmentName , doc.attachmentPath)}
                 className="text-blue-500 font-semibold flex items-center space-x-2"
               >
                 <FontAwesomeIcon icon={faDownload} />

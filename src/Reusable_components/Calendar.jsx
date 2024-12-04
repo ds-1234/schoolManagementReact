@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import BASE_URL from '../conf/conf';
 
 const Calendar = ({ attendanceMap }) => {
   // Set the initial date to the previous month
   const [currentDate, setCurrentDate] = useState(dayjs());
+  const [statusMap, setStatusMap] = useState({});
 
   const startOfMonth = currentDate.startOf('month');
   const endOfMonth = currentDate.endOf('month');
@@ -38,6 +41,31 @@ const Calendar = ({ attendanceMap }) => {
 
   const isToday = (date) => dayjs().isSame(date, 'day');
   const isCurrentMonth = (date) => currentDate.isSame(date, 'month');
+
+    // Fetch attendance statuses
+    const fetchAttendanceStatuses = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendanceStatus`, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+  
+        // Transform the response into a usable status map
+        const statuses = response.data.data.reduce((map, { id, attendanceStatus }) => {
+          map[id] = attendanceStatus;
+          return map;
+        }, {});
+  
+        setStatusMap(statuses);
+        console.log('Status Map:', statuses);
+      } catch (error) {
+        console.error('Error fetching attendance statuses:', error);
+        throw error; // Ensure fetchAttendanceData doesn't execute if this fails
+      }
+    };
+
+    useEffect(() => {
+      fetchAttendanceStatuses()
+    } , [attendanceMap])
 
   return (
     <div className="max-w-md mx-auto p-4">
@@ -76,10 +104,10 @@ const Calendar = ({ attendanceMap }) => {
               {attendanceMap[formattedDate] && (
                 <span
                   className={`w-2 h-2 rounded-full mt-1 ${
-                    attendanceMap[formattedDate] === "present" ? "bg-green-500" :
-                    attendanceMap[formattedDate] === "absent" ? "bg-red-500" :
-                    attendanceMap[formattedDate] === "halfDay" ? "bg-yellow-500" :
-                    attendanceMap[formattedDate] === "medical" ? "bg-blue-500" :
+                    statusMap[attendanceMap[formattedDate]] === "Present" ? "bg-green-500" :
+                    statusMap[attendanceMap[formattedDate]]  === "Absent" ? "bg-red-500" :
+                    statusMap[attendanceMap[formattedDate]]  === "Half Day" ? "bg-yellow-500" :
+                    statusMap[attendanceMap[formattedDate]]  === "Medical" ? "bg-blue-500" :
                     "bg-gray-500" // Default color for unexpected statuses
                   }`}
                 ></span>

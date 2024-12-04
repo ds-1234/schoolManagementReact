@@ -7,6 +7,7 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import AddBtn from '../../../Reusable_components/AddBtn'
+import BASE_URL from '../../../conf/conf';
 
 
 function Homework() {
@@ -122,7 +123,7 @@ function Homework() {
   const fetchData = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/homework/getHomeworkList',
+      url: `${BASE_URL}/homework/getHomeworkList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -140,7 +141,7 @@ function Homework() {
   const fetchCls = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/class/getClassList',
+      url: `${BASE_URL}/class/getClassList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -162,7 +163,7 @@ function Homework() {
   const fetchSub = () => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/subject/getSubjectList',
+      url: `${BASE_URL}/subject/getSubjectList`,
       headers: {
         'Content-Type': 'application/json',
       },

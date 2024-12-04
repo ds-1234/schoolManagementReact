@@ -123,7 +123,13 @@ function AddTransport() {
             <input
               type="text"
               id="phone"
-              {...register("phone" , {required : "Phone Number is required"})}
+              {...register('phone', {
+                required: 'Phone number is required',
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: 'Phone number must be 10 digits',
+                },
+              })}
               className="block w-full  border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 bg-[#f3f4f6] py-1 px-1"
             />
                 {errors.phone && (

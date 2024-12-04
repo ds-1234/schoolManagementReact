@@ -18,7 +18,7 @@ function Notice() {
         const sortedNotices = response.data.data.sort(
           (a, b) => new Date(a.noticeDate) - new Date(b.noticeDate) // Sort by newest date
         );
-        setNotices(sortedNotices.slice(0, 2)); // Display top 3 notices
+        setNotices(sortedNotices.slice(0, 2));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching notices:", error);
@@ -54,9 +54,9 @@ function Notice() {
               <div className="flex flex-col ">
                 <h3 className="text-medium font-bold text-gray-800">{notice.noticeTitle}</h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  Added on: {new Date(notice.noticeDate).toLocaleDateString()}
+                  Notice on: {new Date(notice.noticeDate).toLocaleDateString()}
                 </p>
-                <p className="text-gray-700 mt-2 text-sm line-clamp-2">
+                <p className="text-gray-700 mt-2 text-sm line-clamp-2 ">
                   {notice.noticeDetails || "No additional description available."}
                 </p>
               </div>

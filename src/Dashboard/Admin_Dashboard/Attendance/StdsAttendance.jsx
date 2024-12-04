@@ -11,6 +11,68 @@ const StdsAttendance = () => {
   const [students, setStudents] = useState([]);
   const [attendanceMap, setAttendanceMap] = useState({});
   const [uniqueDates, setUniqueDates] = useState([]);
+  const [statusMap, setStatusMap] = useState({});
+
+  // Fetch attendance statuses
+  const fetchAttendanceStatuses = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendanceStatus`, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      // Transform the response into a usable status map
+      const statuses = response.data.data.reduce((map, { id, attendanceStatus }) => {
+        map[id] = attendanceStatus;
+        return map;
+      }, {});
+
+      setStatusMap(statuses);
+    } catch (error) {
+      console.error('Error fetching attendance statuses:', error);
+    }
+  };
+
+  // Fetch attendance data
+  const fetchAttendanceData = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/attendance/getAttendanceList`, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const filteredAttendance = response.data.data.filter(
+        (entry) => entry.className === classItem.id
+      );
+
+      const dateSet = new Set() 
+      const newAttendanceMap = {};
+      filteredAttendance.forEach(({ attendanceDate, attendanceStatusList }) => {
+        const formattedDate = new Date(attendanceDate).toLocaleDateString();
+
+        dateSet.add(formattedDate); 
+
+        attendanceStatusList.forEach(({ studentId, attendanceStatusId }) => {
+          if (!newAttendanceMap[studentId]) {
+            newAttendanceMap[studentId] = {};
+          }
+          newAttendanceMap[studentId][formattedDate] = attendanceStatusId ;
+        });
+      });
+
+      setAttendanceMap(newAttendanceMap);
+      setUniqueDates([...dateSet]);
+    } catch (error) {
+      console.error('Error fetching attendance data:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchAttendanceStatuses(); 
+      await fetchAttendanceData()
+    };
+
+    fetchData();
+  }, [classItem]);
 
   // Fetch students based on classItem
   const fetchStudents = async () => {
@@ -26,64 +88,21 @@ const StdsAttendance = () => {
     }
   };
 
-  // Fetch attendance data
-  const fetchAttendance = async () => {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${BASE_URL}/attendance/getAttendanceList`,
-        headers: { "Content-Type": "application/json" }
-      });
-
-      const filterClass = response.data.data.filter(data => data.className === classItem.id);
-
-      // Create a new map for attendance data
-      const newAttendanceMap = {};
-      const dateSet = new Set();
-
-      filterClass.forEach((data) => {
-        const attendanceStatus = data.attendenceStatus
-          .replace(/(\d+)=/g, '"$1":')  // Format string as a valid JSON
-          .replace(/([a-zA-Z]+)/g, '"$1"'); 
-
-        const attendanceObject = JSON.parse(attendanceStatus);
-        const formattedDate = new Date(data.attendanceDate).toLocaleDateString();
-
-        dateSet.add(formattedDate);  // Collect unique dates
-
-        // Map student attendance by date
-        Object.keys(attendanceObject).forEach(studentId => {
-          if (!newAttendanceMap[studentId]) {
-            newAttendanceMap[studentId] = {};
-          }
-          newAttendanceMap[studentId][formattedDate] = attendanceObject[studentId];
-        });
-      });
  
-      setAttendanceMap(newAttendanceMap);
-      setUniqueDates([...dateSet]);
-
-      console.log(newAttendanceMap);
-      console.log(uniqueDates);
-    } catch (error) {
-      console.error("Error fetching attendance data:", error);
-    }
-  };
 
   useEffect(() => {
     fetchStudents();
-    fetchAttendance();
   }, [classItem]);
 
   const formatAttendance = (status) => {
     switch (status) {
-      case 'present':
+      case 'Present':
         return <span className="text-green-400 font-bold">P</span>;
-      case 'absent':
+      case 'Absent':
         return <span className="text-red-400 font-bold">A</span>;
-      case 'halfDay':
+      case 'Half Day':
         return <span className="text-yellow-400 font-bold">HD</span>;
-      case 'medical':
+      case 'Medical':
         return <span className="text-blue-400 font-bold">M</span>;
       default:
         return '-';
@@ -116,8 +135,7 @@ const StdsAttendance = () => {
     ...sortedUniqueDates.map(date => ({
       name: date,
       selector: row => {
-        const studentId = row.id.toString();
-        return formatAttendance(attendanceMap[studentId]?.[date] || '-'); 
+        return formatAttendance(statusMap[attendanceMap[row.id]?.[date]] || '-'); 
       },
       width: '120px'
     })),
@@ -131,11 +149,11 @@ const StdsAttendance = () => {
       </div>
       
       <Labels/>
-      <div className="overflow-x-auto max-w-7xl">  {/* Enable horizontal scrolling */}
+      <div className="overflow-x-auto max-w-7xl"> 
         <Table
           columns={columns}  
           data={students}    
-          searchOptions={[{ label: 'Student Name', value: 'name' }]}  // Optional search options
+          searchOptions={[{ label: 'Student Name', value: 'name' }]} 
         />
       </div>
     </div>

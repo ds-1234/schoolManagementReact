@@ -23,7 +23,8 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   const [classes , setClasses] = useState([]) ;
   const [schools , setSchools] = useState([]) ;
   const [selectedSchl , setSelectedSchl] = useState('') ;
-  // const [selectedCls , setSelectedCls] = useState([]) ;
+  const [selectedClass , setSelectedClass] = useState('') ;
+  const [clsDets , setClsDets] = useState(null);
   const [subjects , setSubjects] = useState([]) ;
   const [classSubjectRows, setClassSubjectRows] = useState([{ classId: '', subjectId: '' }]);
   const [teacherData , setTeacherData] = useState(null) 
@@ -48,11 +49,24 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
       setSubjects(subjectRes.data.data);
       setDepartments(deptRes.data.data) ;
       setDesignations(destRes.data.data)
+      setSelectedClass(classRes.data.data.find((cls) => cls.primaryTeacher === userId)?.id)
       
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  useEffect(() => {
+    if(selectedClass){
+      axios.get(`${BASE_URL}/class/getClass/${selectedClass}`)
+        .then((response) => {
+          setClsDets(response.data.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching class details:', error);
+        });
+    }
+  } , [selectedClass])
 
   useEffect(() => {
     fetchOptions();
@@ -110,6 +124,9 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
     })
     .then((response) => {
       axios.post(`${BASE_URL}/user/updateUser` ,  {...basicTchData , school : selectedSchl}) ;
+      if(selectedClass){
+        axios.post(`${BASE_URL}/class/createClass` ,  {...clsDets , primaryTeacher :  userId}) ;
+      }
       toast.success("User Updated Successfully !")
       handleNext()
     })
@@ -252,7 +269,7 @@ const fetchBasicDets = async() => {
             </select>
         </div>
 
-        <div className="flex flex-col px-2 w-1/2">
+        <div className="flex flex-col px-2 w-1/2 mb-4">
             <label htmlFor="school" className='text-gray-900 font-medium'>School Branch <span className='text-red-700 font-bold'>*</span></label>
             <select
             id="school"
@@ -268,6 +285,22 @@ const fetchBasicDets = async() => {
             ))}
             </select>
         </div>
+
+        <div className="flex flex-col px-2 w-1/2 mb-4">
+            <label htmlFor="classTeacher" className="block text-gray-900 font-semibold ">Class Teacher</label>
+            <select  
+              id="classTeacher" 
+              value={selectedClass}
+              className={`py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none`}
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              <option value="">Select Class</option>
+              {classes.map((cls) => (
+                <option key={cls.id} value={cls.id}>{cls.name} - {cls.section}</option>
+              ))}
+            </select>
+          </div>
+
 
         <div className="flex flex-col gap-2 mt-5">
         {classSubjectRows.map((row, index) => (

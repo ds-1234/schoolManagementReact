@@ -27,7 +27,10 @@ function StdNotice() {
     try {
       const response = await axios.get(`${BASE_URL}/notice/getNoticeList`);
       const filteredData = response.data.data.filter(item =>item.role === user.role  || item.role === 0);
-      setNotices(filteredData);
+      const sortedNotices = filteredData.sort(
+        (a, b) => new Date(a.noticeDate) - new Date(b.noticeDate) // Sort by newest date
+      );
+      setNotices(sortedNotices);
     } catch (error) {
       console.error('Error fetching notices:', error);
     }
