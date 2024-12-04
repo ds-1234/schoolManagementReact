@@ -1,83 +1,128 @@
-import React, { useState } from 'react';
+import React , {useEffect , useState} from 'react'
+import BASE_URL from '../../../conf/conf';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../../Reusable_components/Button';
+import axios from 'axios';
+import StdEventCalendar from '../../../Reusable_components/StdEventCalendar';
 
-function Schedules() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+function Schedules({userTypeImages}) {
+  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
-  // Functions to navigate between months
-  const handlePrevMonth = () => {
-    const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-    setCurrentDate(prevMonth);
-  };
+    const [events , setEvents] = useState([])
+    const navigate = useNavigate() ;
 
-  const handleNextMonth = () => {
-    const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-    setCurrentDate(nextMonth);
-  };
-
-  // Get the formatted month and year
-  const formattedMonthYear = currentDate.toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
-
-  // Generate the dates for the current month
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-  const firstDayOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-
-  const dates = [];
-  for (let i = 0; i < firstDayOfWeek; i++) {
-    dates.push(null); // Empty slots for days of the previous month
-  }
-  for (let day = 1; day <= daysInMonth; day++) {
-    dates.push(day);
-  }
-
-  // Render the calendar
-  return (
-    <div className="p-6 w-full bg-gray-100 rounded-lg shadow-lg">
-
-    <div className="flex  flex-col items-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Schedules</h1>
-      <div className="flex items-center justify-between w-full max-w-md mb-4">
-        <button
-          onClick={handlePrevMonth}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          &lt;
-        </button>
-        <span className="text-lg font-semibold">{formattedMonthYear}</span>
-        <button
-          onClick={handleNextMonth}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          &gt;
-        </button>
-      </div>
-      <div className="grid grid-cols-7 gap-2 text-center w-full max-w-md">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="font-medium">
-            {day}
-          </div>
-        ))}
-        {dates.map((date, index) => (
-          <div
-            key={index}
-            className={`${
-              date
-                ? 'py-2 rounded cursor-pointer hover:bg-blue-100'
-                : 'py-2 bg-gray-100'
-            }`}
-            onClick={() =>
-              date && alert(`Selected date: ${date} ${formattedMonthYear}`)
+    const fetchEvents = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/events/getEventList`); // Fetch all events
+            // setEvents(response.data.data);
+          
+            if (response.data.success) {
+              // Step 1: Filter events that include role 0
+              const eventsWithRole0 = response.data.data.filter(item => 
+                item.role.includes(0)
+              );
+              console.log(eventsWithRole0, 'eventsWithRole0');
+              
+              // Step 2: Set events that contain role 0
+              setEvents(eventsWithRole0);
+        
+              // Step 3: Filter events that do not contain role 0 based on user.id and className
+              const filteredEvents = response.data.data.filter(item => 
+                !item.role.includes(0) && 
+                (Array.isArray(item.className) && item.className.some(classId => user.className.includes(classId)) || 
+                Array.isArray(item.user) && item.user.includes(user.id))
+              );
+        
+              console.log(filteredEvents, 'filteredEvents');
+        
+              // Merge the two sets of events if you want both to be displayed together
+              const allFilteredEvents = [...eventsWithRole0, ...filteredEvents];
+              setEvents(allFilteredEvents);
+        
             }
-          >
-            {date}
+
+
+        } catch (error) {
+          console.error("Error fetching events:", error);
+        }
+      };
+    
+      useEffect(() => {
+        fetchEvents() ;
+      } , [])
+
+      const today = new Date();
+
+  return (
+    <div className="bg-white flex flex-col p-5 rounded-md mt-5">
+        <div className="flex justify-between items-center">
+          <h1 className="text-lg text-blue-950 font-bold">Events</h1>
+          <Button label="View More" className="text-sm py-0 px-0" onClick={() => navigate('/studentDashboard/StdEvent')} />
+        </div>
+
+        <StdEventCalendar events={events}/>
+
+         {/* Events List */}
+  <div className="mt-10">
+    <h1 className="text-xl text-black font-semibold mb-5">Upcoming Events</h1>
+    {events.length > 0? (
+      events.map((event) => (
+        <div
+          key={event.id}
+          className="flex items-start bg-gray-50 shadow-md rounded-lg p-4"
+        >
+
+          {/* Event Details */}
+          <div className={`flex flex-col w-full pl-4 border-l-2 ${event.isActive ? "border-l-blue-500" : "border-l-red-500" }`}>
+            <h2 className="text-lg font-semibold text-gray-800">
+              {event.eventTitle}
+            </h2>
+            <div className="flex justify-between items-center border-b-1 mb-2">
+            <p className="text-sm text-gray-500 mt-1 mb-1">
+            <i className="fas fa-calendar"></i>  
+            {(() => {
+              const startDate = new Date(event.startDate);
+              const endDate = event.endDate ? new Date(event.endDate) : null;
+
+              if (startDate >= today) {
+                // If the event's start date is today or in the future
+                return startDate.toLocaleDateString();
+              } else if (endDate && endDate >= today) {
+                // If the event is ongoing (end date is in the future)
+                return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+              } else {
+                // Event is in the past, no need to show
+                return null;
+              }
+            })()}
+            </p>
+            {console.log(event,'evenrsdsf')}
+            <p className="text-sm text-gray-500 mt-1 mb-1">
+              <i className="fas fa-clock"></i> {event.startTime} - {event.endTime}
+            </p>
+            </div>
+            <p className="text-sm text-gray-600 mt-2">{event.message}</p>
+
+            {/* Participants (if needed) */}
+            <div className="flex mt-3 space-x-2">
+              {event.role.map((role, index) => (
+                <img
+                  key={index}
+                  src={userTypeImages[role === 3 ? "Student" : "Teacher"]} // Adjust mapping if needed
+                  alt="role"
+                  className="w-8 h-8 rounded-full"
+                />
+              ))}
+            </div>
           </div>
-        ))}
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-500 text-sm">No upcoming events.</p>
+    )}
+  </div>
       </div>
-    </div>
-    </div>
-  );
+  )
 }
 
-export default Schedules;
+export default Schedules
