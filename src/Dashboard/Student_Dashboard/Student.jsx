@@ -80,7 +80,7 @@ function Student() {
 
       {/* Section: Class Faculties */}
       <div className="flex flex-col mt-6">
-        <ClassFaculties />
+        <ClassFaculties className={user.className?user.className[0]:''}/>
       </div>
 
       {/* Section: Leave Status */}
