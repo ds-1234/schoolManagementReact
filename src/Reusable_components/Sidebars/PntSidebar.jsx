@@ -5,8 +5,8 @@ import { faHouse , faChildren } from '@fortawesome/free-solid-svg-icons';
 
 function PntSidebar() {
   return (
-    <div className='bg-[#051f3e] fixed h-screen '>
-      <nav className="p-5 h-full overflow-y-auto scrollbar-hide">
+    <div>
+      <nav className="p-5 h-full overflow-y-auto scrollbar-hide bg-[#051f3e] fixed text-white ">
       <ul>
         {/* Dashboard Section */}
        <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">

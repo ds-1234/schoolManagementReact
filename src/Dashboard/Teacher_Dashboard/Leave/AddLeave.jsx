@@ -90,6 +90,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       reset()
       setSelectedLeaveType('')
       setSelectedAdmin('') 
+      setEditorData('')
       onClose();
 
     } catch (error) {
@@ -98,6 +99,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       reset()
       setSelectedLeaveType('')
       setSelectedAdmin('') 
+      setEditorData('')
     }
   };
 

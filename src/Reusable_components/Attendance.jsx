@@ -64,11 +64,11 @@ function Attendance() {
   return (
     <div className="py-2">
       <button
-        className="flex items-center px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition"
+        className="flex items-center px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition ml-8 xl:ml-0"
         onClick={handleAtt}
       >
-        <FontAwesomeIcon icon={faClock} className="mr-2" /> {/* Attendance icon */}
-        Punch In
+        <FontAwesomeIcon icon={faClock} className="md:mr-2" /> {/* Attendance icon */}
+        <p className='hidden md:block'>Punch In</p>
       </button>
     </div>
   );
