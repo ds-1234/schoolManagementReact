@@ -8,6 +8,7 @@ import BASE_URL from '../../../../conf/conf';
 import { useForm } from 'react-hook-form';
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+import ToggleButton from '../../../../Reusable_components/ToggleButton'
 
 function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole , userId}) {
 
@@ -29,6 +30,8 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [stdDropdown , setStdDropdown] = useState(false) ;
   const [selectedStds , setSelectedStds] = useState([]) ;
   const [stds , setStds] = useState([]) ;
+  const [value , setValue] = useState(true) ;
+  const [users , setUsers] = useState([]) ;
 
 
   const fetchLocationData = async() => {
@@ -86,6 +89,9 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         if (!selectedCountry) setSelectedCountry(userData.country);
         if (!selectedState) setSelectedState(userData.state);
         if (!selectedCity) setSelectedCity(userData.city);
+        if(selectedRole === 5 && userData.isParent){
+          setSelectedStds(userData.isParent)          
+        }
   
         reset(formattedData);
       }
@@ -95,19 +101,20 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
     }
   };
 
-  const fetchStds = () => {
+  const fetchStds = async() => {
     try {
-      const res = axios.get(`${BASE_URL}/user/getUserList`);
+      const res = await axios.get(`${BASE_URL}/user/getUserList`);
+      setUsers(res.data.data);
       setStds(res.data.data.filter((std) => std.role === 3 && std.isParent === null && std.isActive === true));
     } catch (err) {
       console.log(err);
     }
   };
 
-  if(selectedRole === 5){
-    fetchStds();
-  }
-
+  useEffect(() => {
+    fetchStds() ;
+  } , [])
+  
   // UseEffect to ensure proper order
   useEffect(() => {
     const initializeData =  () => {
@@ -133,14 +140,19 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         country: data.country ,
         state: data.state ,
         city: data.city ,
-        dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null
+        dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null,
+        isActive : (selectedRole != 3 && selectedRole != 4) ?  value : false 
       }
     })
     .then((response) => {
       if(selectedRole === 5){
         const updatePromises = selectedStds.map(async(stdId) => {
-        const {data : stdData} = await axios.get(`${BASE_URL}/user/getUser/${stdId}`) ;
-        await axios.post(`${BASE_URL}/user/createUser`, { ...stdData , isParent: [userId] } , {
+        const data = await axios.get(`${BASE_URL}/user/getUser/${stdId}`) ;
+        const payload = {
+         ...data.data.data ,
+         isParent: [userId]
+        }
+        await axios.post(`${BASE_URL}/user/updateUser`,  payload, {
           headers: {'Content-Type' : 'application/json'} 
         })
       });
@@ -169,6 +181,12 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
     });
   };
 
+  console.log("Student List (stds):", stds);
+
+  console.log("Selected Student IDs (selectedStds):", selectedStds);
+console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id === id)));
+
+
   return (
     <div>
       {/* Map Parent to Children */}
@@ -181,8 +199,15 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             setStdDropdown(!stdDropdown)
           }}
         >
-          <p>{selectedStds?.length === 0? 'Select students' : selectedStds?.map(id => stds.find(std => std.id === id)?.firstName).join(', ')}</p>
-          <FontAwesomeIcon icon={faAngleDown} />
+    <p>
+    {selectedStds?.length === 0
+    ? 'Select students'
+    : selectedStds
+        .map((id) => stds.find((std) => std.id === id)?.firstName)
+        .filter((name) => name) 
+        .join(', ')}
+    </p>
+ <FontAwesomeIcon icon={faAngleDown} />
         </div>
         {stdDropdown && (
           <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
@@ -449,6 +474,20 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
             />
             {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
           </div> */}
+
+          {selectedRole != 3 && selectedRole != 4 && (
+              <div className="mb-2">
+              <label className="mb-2" htmlFor="active">
+                Status 
+              </label>
+              <ToggleButton
+                isOn={value}
+                handleToggle={() => setValue(!value)}
+                id="active"
+                register={register}
+              />
+          </div>
+          )}
       </form>
 
       <div className="flex justify-between mt-4">

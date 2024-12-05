@@ -131,14 +131,23 @@ const LeaveRequest = () => {
     },
   ];
 
-  const fetchLeaves = async() => {
+  const fetchLeaves = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/leaves/getLeavesApplicationList`)
-      setLeaves(res.data.data)
+      const res = await axios.get(`${BASE_URL}/leaves/getLeavesApplicationList`);
+      const sortedLeaves = res.data.data.sort((a, b) => {
+        const statusOrder = {
+          PENDING: 1,
+          APPROVED: 2,
+          REJECTED: 3,
+        };
+        return statusOrder[a.leaveStatus] - statusOrder[b.leaveStatus];
+      });
+      setLeaves(sortedLeaves);
     } catch (error) {
-      toast.error('Error in fetching requests') ;
+      toast.error('Error in fetching requests');
     }
-  }
+  };
+  
 
   useEffect(() => {
     fetchLeaves()

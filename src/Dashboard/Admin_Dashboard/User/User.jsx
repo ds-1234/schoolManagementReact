@@ -145,27 +145,23 @@ const column = [
   }
 
   // Handle Search Logic
-  const handleSearch = (query, checkboxRefs) => {
+  const handleSearch = (query, selectedColumn) => {
     if (!query) {
       setUser(filterUser);
       return;
     }
   
-    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
-
-    const filteredData = filterUser.filter((row) =>
-      selectedFields.some((field) => {
-        if (field == 'role') {
-          const roleName = roleMapping[row.role];
-          return roleName?.toLowerCase().includes(query.toLowerCase());
-        } else {
-          return row[field]?.toString().toLowerCase().includes(query.toLowerCase());
-        }
-      })
-    );
+    const filteredData = filterUser.filter((row) => {
+      if (selectedColumn === 'role') {
+        const roleName = roleMapping[row.role];
+        return roleName?.toLowerCase().includes(query.toLowerCase());
+      }
+      return row[selectedColumn]?.toString().toLowerCase().includes(query.toLowerCase());
+    });
   
     setUser(filteredData);
   };
+  
 
   // handle clear button logic
   const handleClear = () => {

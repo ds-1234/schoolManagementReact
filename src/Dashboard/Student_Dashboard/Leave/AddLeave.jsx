@@ -102,6 +102,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       reset()
       setSelectedLeaveType('')
       setSelectedTeacher('') 
+      setEditorData('')
       onClose();
 
     } catch (error) {
@@ -110,6 +111,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       reset()
       setSelectedLeaveType('')
       setSelectedTeacher('') 
+      setEditorData('')
     }
   };
 
