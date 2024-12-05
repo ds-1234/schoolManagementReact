@@ -7,6 +7,8 @@ const ExamClasses = () => {
   const navigate = useNavigate();
   const { examType = "Unknown", classNames = [] } = location.state || {};
   const [examTypeName, setExamTypeName] = useState("");
+  const [classNamestr, setClassNamestr] = useState([]);
+
 
 
   const handleTileClick = (className) => {
@@ -42,6 +44,30 @@ const ExamClasses = () => {
       console.error("Error fetching exam type data:", error);
     }
   };
+  const fetchClassName = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/class/getClassList"
+      );
+
+      if (response.data.success) {
+        const clasdata = response.data.data;
+        // const classres = clasdata.find((type) => type.id === className);
+        setClassNamestr(clasdata);
+      }
+    } catch (error) {
+      console.error("Error fetching class data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClassName();
+  }, []);
+
+  const getclassNameById = (id) => {
+    const cls = classNamestr.find((type) => type.id == id);
+    return cls ? cls.name : "Unknown";
+  };
 
   return (
     <div>
@@ -68,7 +94,7 @@ const ExamClasses = () => {
               className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-lg shadow-lg cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl"
               onClick={() => handleTileClick(className)}
             >
-              <p className="font-semibold text-lg">Class: {className}</p>
+              <p className="font-semibold text-lg">Class: {getclassNameById(className)}</p>
             </div>
           ))}
         </div>
