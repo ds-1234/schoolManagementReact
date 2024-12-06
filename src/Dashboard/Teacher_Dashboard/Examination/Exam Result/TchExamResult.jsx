@@ -6,8 +6,13 @@ const TchExamResult = () => {
   const [exams, setExams] = useState([]);
   const [examTypes, setExamTypes] = useState([]);
   const navigate = useNavigate();
+  const [classNamestr, setClassNamestr] = useState([]);
+
 
   const teacherData = JSON.parse(sessionStorage.getItem("teacherData"));
+  useEffect(() => {
+    fetchClassName();
+  }, []);
 
   useEffect(() => {
     fetchExamTypes();
@@ -45,9 +50,29 @@ const TchExamResult = () => {
       });
   };
 
+  const fetchClassName = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/class/getClassList"
+      );
+
+      if (response.data.success) {
+        const clasdata = response.data.data;
+        // const classres = clasdata.find((type) => type.id === className);
+        setClassNamestr(clasdata);
+      }
+    } catch (error) {
+      console.error("Error fetching class data:", error);
+    }
+  };
+
   const getExamTypeNameById = (examTypeId) => {
     const examType = examTypes.find((type) => type.id == examTypeId);
     return examType ? examType.examTypeName : "Unknown";
+  };
+  const getclassNameById = (id) => {
+    const cls = classNamestr.find((type) => type.id == id);
+    return cls ? cls.name : "Unknown";
   };
 
   // Group exams by examType and collect unique classNames

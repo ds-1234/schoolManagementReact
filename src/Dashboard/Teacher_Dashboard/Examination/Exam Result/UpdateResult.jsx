@@ -32,7 +32,7 @@ const UpdateResult = () => {
           (user) =>
             user.role === 3 &&
             user.isActive === true &&
-            user.className.includes(className)
+            user.className == className
         );
 
         setUserList(filteredUsers);

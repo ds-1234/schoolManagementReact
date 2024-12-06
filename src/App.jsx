@@ -124,6 +124,7 @@ import LeaveTab from './Dashboard/Teacher_Dashboard/Leave/LeaveTab';
 import LeaveRequest from './Dashboard/Teacher_Dashboard/Leave/LeaveRequest';
 import LeaveTabApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveTabApp'
 import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveRequestApp';
+import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 
 
 
@@ -246,6 +247,7 @@ function App() {
             <Route path = 'stdExamResult' element = {<StdExamResult/>}/>
             <Route path = 'leaves' element = {<LeaveTabs/>}/>
             <Route path = 'leaves/:status' element={<LeaveCategoryPage/>}/>
+            <Route path = 'ExamDetails' element={<ExamDetails/>}/>
           </Route>
 
           {/* Teacher Dashboard Routes */}
