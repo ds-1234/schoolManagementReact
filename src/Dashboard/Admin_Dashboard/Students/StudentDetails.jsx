@@ -143,7 +143,7 @@ function StudentDetails() {
       <p className="mt-2">
         Dashboard /
         <NavLink to="/admin"> Admin </NavLink>/
-        <NavLink to='/admin/allStudents'> Students </NavLink> /
+        <NavLink to='/admin/activeUser'> Users </NavLink> /
         <span className="text-[#ffae01] font-semibold">Profile</span>
       </p>
 

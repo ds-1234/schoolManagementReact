@@ -203,7 +203,7 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
     {selectedStds?.length === 0
     ? 'Select students'
     : selectedStds
-        .map((id) => stds.find((std) => std.id === id)?.firstName)
+        .map((id) => users.find((std) => std.id === id)?.firstName)
         .filter((name) => name) 
         .join(', ')}
     </p>

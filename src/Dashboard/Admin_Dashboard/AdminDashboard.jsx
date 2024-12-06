@@ -15,7 +15,7 @@ const AdminDashboard = () => {
 
   return (
     <Layout>
-     <div className="relative flex gap-5 2xl:gap-5 2xl:m-0 overflow-hidden">
+     <div className="relative flex gap-10 2xl:gap-5 2xl:m-0 overflow-hidden">
         {/* Sidebar */}
         <div
           className={`fixed top-0 left-0 z-40 h-full w-3/4  transform ${

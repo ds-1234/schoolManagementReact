@@ -36,7 +36,7 @@ function Student() {
     };
 
   return (
-    <div className="flex flex-col mt-20 space-y-10 px-5">
+    <div className="flex flex-col mt-20 space-y-10">
       {/* Top Section: Profile */}
       <div className="flex">
         {/* Profile Component in the Left Corner */}

@@ -102,7 +102,7 @@ function AcademicDets() {
             ...data , 
             userId : userId ,
             rollNumber : parseInt(data.rollNumber) ,
-            className:   [data.className]
+            className:   initialData.className[0] === data.className? data.className : [parseInt(data.className)]
           }
           await axios({
               method:"Post",
