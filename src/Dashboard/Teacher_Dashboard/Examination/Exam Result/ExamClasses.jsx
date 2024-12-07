@@ -75,16 +75,17 @@ const ExamClasses = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-          Exam Type: {examTypeName}
+          {/* Exam Type: {examTypeName} */}
+          Class List
         </h1>
         {/* <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Exam Result</h1> */}
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
+        {/* <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> / */}
         <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
-        <span className="text-[#ffae01] font-semibold"> Update Result</span>
+        <span className="text-[#ffae01] font-semibold">  Class List</span>
       </p>
-        <p className="mt-2 text-gray-600">Select a class to view details:</p>
+        {/* <p className="mt-2 text-gray-600">Select a class to view details:</p> */}
 
         {/* Class Name Tiles */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

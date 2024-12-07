@@ -197,13 +197,13 @@ const UpdateResult = () => {
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-        Exam Result
+        Add Exam Result
       </h1>
       <p className="mt-2">
         Dashboard /
-        <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> /
+        {/* <NavLink to="/teacherDashboard"> Teacher Dashboard </NavLink> / */}
         <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
-        <span className="text-[#ffae01] font-semibold"> Update Result</span>
+        <span className="text-[#ffae01] font-semibold"> Add Exam Result</span>
       </p>
 
       <h2 className="mt-6 text-xl font-semibold text-black">
