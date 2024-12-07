@@ -232,7 +232,7 @@ function ExamResults() {
       <div className=' h-full mb-10'>
         <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Result</h1>
         <p className='pl-0 mt-2'>
-        Dashboard /<NavLink to='/admin/user'> Admin </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
+       <NavLink to='/admin/user'>  Dashboard </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
         <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
       </p>        {/* <AddBtn onAddClick={openAddPopup}/> */}
         <Table 

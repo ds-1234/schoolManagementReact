@@ -146,7 +146,7 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
             {/* Approval Status */}
             <div>
               <span className="font-semibold">Approval Status:</span>
-              {leaveDetails.leaveStatus === 'APPROVED' ? 
+              {leaveDetails.leaveStatus === 'APPROVED' || leaveDetails.leaveStatus === 'REJECTED' ? 
               <div 
               className="border py-1 px-2 bg-gray-50 rounded-md mt-2"
               readOnly >

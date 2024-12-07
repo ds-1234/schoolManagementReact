@@ -165,7 +165,7 @@ console.log(filteredClasses,'classes')
   return (
     <div className="mb-6">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Profile</h1>
-      <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/activeUser'> Users </NavLink>/ <span className='text-[#ffae01] font-semibold'>Teacher Profile</span> </p>
+      <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/<NavLink to = '/admin/activeUser'> Users </NavLink>/ <span className='text-[#ffae01] font-semibold'>Teacher Profile</span> </p>
 
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">

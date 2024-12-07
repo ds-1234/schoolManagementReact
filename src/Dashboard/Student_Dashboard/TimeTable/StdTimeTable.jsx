@@ -58,7 +58,7 @@ const StdTimetable = () => {
   return (
     <div className='flex flex-col justify-start pl-0'>
         <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Time Table</h1>
-        <p className='mt-2'>Dashboard /<NavLink to='/studentDashboard'> Student </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
+        <p className='mt-2'><NavLink to='/studentDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time Table</span> </p>
 
         <div>
             <h2 className="text-lg mb-4 text-black font-semibold mt-5">
