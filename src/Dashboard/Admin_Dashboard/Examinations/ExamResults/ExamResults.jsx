@@ -7,11 +7,13 @@ import BASE_URL from "../../../../conf/conf";
 const ExamResults = () => {
   const location = useLocation();
   const { className, filteredData, examTypeId } = location.state || {};
-  console.log(filteredData,'filteredData')
+  console.log(filteredData, 'filteredData');
 
   const [examResults, setExamResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userList, setUserList] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     const fetchExamAndProcessData = async () => {
@@ -22,7 +24,7 @@ const ExamResults = () => {
 
         // Filter exams by examTypeId and className
         const filteredExams = exams.filter(
-          (exam) => exam.examName == examTypeId && exam.className == className
+          (exam) => exam.examName === examTypeId && exam.className === className
         );
 
         // Extract all subjects from filtered exams
@@ -40,12 +42,12 @@ const ExamResults = () => {
                 ? student
                 : null;
             return {
-              subjectName: `Subject ${subject.subject}`,
+              subjectName: `${subject.subject}`,
               marks: examResult ? examResult.examMarks : "NULL",
               remarks: examResult ? examResult.remarks : "NULL",
             };
           });
-          console.log(studentResults,'studentresulr')
+          console.log(studentResults, 'studentResults');
 
           return {
             studentId: student.studentId,
@@ -62,11 +64,46 @@ const ExamResults = () => {
       }
     };
 
-    fetchExamAndProcessData();
-  }, [filteredData, className, examTypeId]);
+    const fetchSubjectsAndUsers = async () => {
+      try {
+        // Fetch subjects
+        const subjectResponse = await axios.get("http://localhost:8080/subject/getSubjectList");
+        if (subjectResponse.data.success) {
+          const subjectData = subjectResponse.data.data;
+          setSubjects(subjectData || []);
+        }
+        
+        // Fetch user data
+        const userResponse = await fetch("http://localhost:8080/user/getUserList");
+        const data = await userResponse.json();
+        if (data.success && data.data) {
+          const filteredUsers = data.data.filter(
+            (user) => user.role === 3 && user.isActive === true
+          );
+          setUserList(filteredUsers);
+        }
+      } catch (error) {
+        console.error("Error fetching subject/user data:", error);
+      }
+    };
+
+    fetchExamAndProcessData(); // Fetch exams and process data
+    fetchSubjectsAndUsers(); // Fetch subjects and user data
+
+  }, [filteredData, className, examTypeId]); // This ensures effects are run based on dependency changes
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+
+  const getStudentNameById = (id) => {
+    const std = userList.find((type) => type.id === id);
+    return std ? std.firstName : "Unknown";
+  };
+
+  const getSubjectNameById = (id) => {
+    const sub = subjects.find((type) => type.id == id);
+    return sub ? sub.subject : "Unknown";
+  };
 
   const columns = [
     {
@@ -76,12 +113,12 @@ const ExamResults = () => {
     },
     {
       name: "Student ID",
-      selector: (row) => row.studentId,
+      selector: (row) => getStudentNameById(row.studentId),
       sortable: true,
     },
     {
       name: "Subject",
-      selector: (row) => row.subjectName,
+      selector: (row) => getSubjectNameById(row.subjectName),
       sortable: true,
     },
     {
@@ -102,12 +139,11 @@ const ExamResults = () => {
         Exam Result
       </h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/admin"> Admin </NavLink>/
-        <NavLink to="/admin/ExamTypeTiles"> Exam Type </NavLink>/
-        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Class List </NavLink>/{" "}
+        Dashboard /<NavLink to="/admin"> Admin </NavLink>/ 
+        <NavLink to="/admin/ExamTypeTiles"> Exam Type </NavLink>/ 
+        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Class List </NavLink>/{" "} 
         <span className="text-[#ffae01] font-semibold">Exam Result</span>
       </p>
-      {/* <h1 className="text-2xl font-semibold">Exam Results</h1> */}
       {examResults.length > 0 ? (
         <Table
           columns={columns}
