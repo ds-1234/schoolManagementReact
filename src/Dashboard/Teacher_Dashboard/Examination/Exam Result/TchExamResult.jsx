@@ -107,10 +107,10 @@ const TchExamResult = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Result</h1>
         <p className="mt-2 text-gray-600">
           Dashboard /
-          <NavLink to="/teacherDashboard">
+          {/* <NavLink to="/teacherDashboard">
             Teacher Dashboard
-          </NavLink>{" "}
-          / <span className="text-yellow-500 font-semibold">Exam Result</span>
+          </NavLink>{" "} */}
+           <span className="text-yellow-500 font-semibold">Exam Result</span>
         </p>
 
         {/* Exam Tiles */}
