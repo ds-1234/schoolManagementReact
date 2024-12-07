@@ -7,6 +7,8 @@ import BASE_URL from "../../../../conf/conf";
 const ExamResults = () => {
   const location = useLocation();
   const { className, filteredData, examTypeId } = location.state || {};
+  console.log(filteredData,'filteredData')
+
   const [examResults, setExamResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +22,7 @@ const ExamResults = () => {
 
         // Filter exams by examTypeId and className
         const filteredExams = exams.filter(
-          (exam) => exam.examName === examTypeId && exam.className === className
+          (exam) => exam.examName == examTypeId && exam.className == className
         );
 
         // Extract all subjects from filtered exams
@@ -43,6 +45,7 @@ const ExamResults = () => {
               remarks: examResult ? examResult.remarks : "NULL",
             };
           });
+          console.log(studentResults,'studentresulr')
 
           return {
             studentId: student.studentId,
@@ -95,8 +98,15 @@ const ExamResults = () => {
 
   return (
     <div className="mt-8">
-                              <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Class List</h1>
-                              <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/ExamTypeTiles'> Exam Type </NavLink>/<NavLink to = '/admin/ExamTypeTiles/ClassNameTiles'> Classname </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Result</span> </p>
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
+        Class List
+      </h1>
+      <p className="mt-2">
+        Dashboard /<NavLink to="/admin"> Admin </NavLink>/
+        <NavLink to="/admin/ExamTypeTiles"> Exam Type </NavLink>/
+        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Classname </NavLink>/{" "}
+        <span className="text-[#ffae01] font-semibold">Exam Result</span>
+      </p>
       <h1 className="text-2xl font-semibold">Exam Results</h1>
       {examResults.length > 0 ? (
         <Table
