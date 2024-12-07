@@ -124,7 +124,7 @@ const TchExamResult = () => {
               <p className="font-semibold text-lg">
                 Exam Type: {getExamTypeNameById(examType)}
               </p>
-              <p className="text-sm">Classes: {classNames.join(", ")}</p>
+              {/* <p className="text-sm">Classes: {classNames.join(", ")}</p> */}
             </div>
           ))}
         </div>
