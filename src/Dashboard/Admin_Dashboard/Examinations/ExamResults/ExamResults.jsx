@@ -104,7 +104,7 @@ const ExamResults = () => {
       <p className="mt-2">
         Dashboard /<NavLink to="/admin"> Admin </NavLink>/
         <NavLink to="/admin/ExamTypeTiles"> Exam Type </NavLink>/
-        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Classname </NavLink>/{" "}
+        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Class List </NavLink>/{" "}
         <span className="text-[#ffae01] font-semibold">Exam Result</span>
       </p>
       {/* <h1 className="text-2xl font-semibold">Exam Results</h1> */}

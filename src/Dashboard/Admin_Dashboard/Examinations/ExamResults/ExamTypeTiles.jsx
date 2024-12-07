@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate i
 
 const ExamTypeTiles = () => {
   const [examResults, setExamResults] = useState([]);
+  const [examTypes, setExamTypes] = useState([]);
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
@@ -38,6 +39,27 @@ const ExamTypeTiles = () => {
     ...new Set(examResults.map((exam) => exam.examData.examType)),
   ];
 
+  const fetchExamTypes = () => {
+    axios
+      .get("http://localhost:8080/examType/getExamTypeList")
+      .then((response) => {
+        if (response.data.success) {
+          setExamTypes(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching exam types:", error);
+      });
+  };
+  useEffect(()=>{
+    fetchExamTypes();
+  })
+
+  const getExamTypeNameById = (examTypeId) => {
+    const examType = examTypes.find((type) => type.id == examTypeId);
+    return examType ? examType.examTypeName : "Unknown";
+  };
+
   return (
     <div>
                 <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Type</h1>
@@ -46,7 +68,7 @@ const ExamTypeTiles = () => {
       {uniqueExamTypes.map((examTypeId) => {
         // Filter the data to get exam information for the current examTypeId
         const examType = examResults.filter((exam) => exam.examData.examType === examTypeId);
-        const examTypeName = `Exam Type ${examTypeId}`;  // Customize this if you have names for exam types
+        const examTypeName = `Exam Type ${getExamTypeNameById(examTypeId)}`;  // Customize this if you have names for exam types
 
         return (
           <div
