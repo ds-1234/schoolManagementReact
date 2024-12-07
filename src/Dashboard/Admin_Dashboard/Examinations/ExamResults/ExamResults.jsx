@@ -5,62 +5,62 @@ import { useLocation } from "react-router-dom";
 const ExamResults = () => {
   const location = useLocation();
   const { className, filteredData, examTypeId } = location.state || {};
-  console.log(filteredData,'filteredDataresultx')
   const [examResults, setExamResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchClassSubjectData = async () => {
+    const fetchExamAndProcessData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/teacherInfo/getClassSubjectInfo/${className}`
+        // Fetch exams
+        const examResponse = await axios.get("http://localhost:8080/exam/getExam");
+        const exams = examResponse.data.data;
+
+        // Filter exams by examTypeId and className
+        const filteredExams = exams.filter(
+          (exam) => exam.examName == examTypeId && exam.className == className
         );
-        const classSubjectData = response.data.data;
-    
-        // Filter data to find matching subjects
-        const matchingSubjects = classSubjectData.filter((item) =>
-          filteredData.filter(
-            (filteredItem) =>
-              Number(filteredItem.subjectId) === Number(item.subjectId)
-          )
-        );
-    
-        console.log(matchingSubjects, "Matching Subjects");
-    
-        // Generate results for each student in filteredData and each subject in matchingSubjects
+
+        // Extract all subjects from filtered exams
+        const subjects = filteredExams.flatMap((exam) => exam.subjectWiseExamList);
+
+        // Create unique subject list
+        const uniqueSubjects = [...new Map(subjects.map((item) => [item.subject, item])).values()];
+        console.log(uniqueSubjects,'uniqueSubjects')
+
+        // Generate results for each student
         const results = filteredData.map((student) => {
-          const studentResults = matchingSubjects.map((subject) => {
+          const studentResults = uniqueSubjects.map((subject) => {
             const examResult =
               student.examData &&
-              Number(student.examData.subjectId) === Number(subject.subjectId)
-                ? student.examData
+              Number(student.examData.subjectId) == Number(subject.subject)
+                ? student
                 : null;
-    
                 return {
-                  subjectName: `Subject ${subject.subjectId}`,
+                  subjectName: `Subject ${subject.subject}`,
                   marks: examResult ? examResult.examMarks : "NULL",
                   remarks: examResult ? examResult.remarks : "NULL",
                 };
               });
               console.log(studentResults,'studentResults')
-    
+              console.log(filteredData,'filteredData')
+
           return {
             studentId: student.studentId,
             results: studentResults,
           };
         });
-    
-        console.log(results, "Generated Results");
+
         setExamResults(results);
       } catch (err) {
-        setError("Failed to fetch class subject data.");
+        setError("Failed to fetch exam data.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchClassSubjectData()
+
+    fetchExamAndProcessData();
   }, [filteredData, className, examTypeId]);
 
   if (loading) return <p>Loading...</p>;
@@ -74,31 +74,26 @@ const ExamResults = () => {
           <thead>
             <tr>
               <th className="px-4 py-2">Student ID</th>
-              {examResults[0].results.map((result, index) => (
-                <th key={index} className="px-4 py-2">
-                  {result.subjectName} {/* Subject name column */}
-                </th>
-              ))}
+              <th className="px-4 py-2">Subject</th>
               <th className="px-4 py-2">Marks</th>
               <th className="px-4 py-2">Remarks</th>
             </tr>
           </thead>
           <tbody>
-            {examResults.map((examResult, index) => (
-              <tr key={index} className="border-t">
-                <td className="px-4 py-2">{examResult.studentId}</td>
-                {examResult.results.map((result, index) => (
-                  <td key={index} className="px-4 py-2">
-                    {result.marks || "NULL"}
-                  </td>
-                ))}
-                {examResult.results.map((result, index) => (
-                  <td key={index} className="px-4 py-2">
-                    {result.remarks || "NULL"}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {examResults.map((examResult, index) =>
+              examResult.results.map((result, idx) => (
+                <tr key={`${index}-${idx}`} className="border-t">
+                  {idx == 0 && (
+                    <td rowSpan={examResult.results.length} className="px-4 py-2">
+                      {examResult.studentId}
+                    </td>
+                  )}
+                  <td className="px-4 py-2">{result.subjectName}</td>
+                  <td className="px-4 py-2">{result.marks}</td>
+                  <td className="px-4 py-2">{result.remarks}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       ) : (
