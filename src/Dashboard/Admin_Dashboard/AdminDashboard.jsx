@@ -1,17 +1,40 @@
-import React , {useState} from 'react';
+import React , {useState , useEffect} from 'react';
 import {Outlet } from 'react-router-dom';
 import Layout from '../../Reusable_components/Layout';
 import Sidebar from '../../Reusable_components/Sidebars/Sidebar';
 import HeaderBar from '../../Reusable_components/HeaderBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes , faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
+
+  const handleScroll = () => {
+    if (window.scrollY > 200) {
+      setShowScrollToTop(true);
+    } else {
+      setShowScrollToTop(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <Layout>
@@ -46,6 +69,16 @@ const AdminDashboard = () => {
             onClick={toggleSidebar}
           ></div>
         )}
+
+         {/* Scroll to Top Button */}
+      {showScrollToTop && (
+        <button
+          className="fixed bottom-5 right-5 z-50 p-3 w-12 h-12 font-bold rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition duration-300"
+          onClick={scrollToTop}
+        >
+          <FontAwesomeIcon icon={faArrowUp} />
+        </button>
+      )}
       </div>
     </Layout>
   );

@@ -59,7 +59,7 @@ const ClassSelect = () => {
   return (
     <div className='flex flex-col justify-start pl-0'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Attendance</h1>
-    <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/  <span className='text-[#ffae01] font-semibold'>Classes</span> </p>
+    <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/  <span className='text-[#ffae01] font-semibold'>Classes</span> </p>
     <div className='mt-10'>
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Classes</h2>
       <div className="grid grid-cols-3 pb-5">

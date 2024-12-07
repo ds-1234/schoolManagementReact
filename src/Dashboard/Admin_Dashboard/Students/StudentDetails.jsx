@@ -141,8 +141,7 @@ function StudentDetails() {
     <div className="mb-6">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Student Profile</h1>
       <p className="mt-2">
-        Dashboard /
-        <NavLink to="/admin"> Admin </NavLink>/
+        <NavLink to="/admin"> Dashboard </NavLink>/
         <NavLink to='/admin/activeUser'> Users </NavLink> /
         <span className="text-[#ffae01] font-semibold">Profile</span>
       </p>

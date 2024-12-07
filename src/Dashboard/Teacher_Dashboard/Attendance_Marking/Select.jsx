@@ -10,7 +10,7 @@ const SelectTile = () => {
   return (
     <div className='flex flex-col justify-start pl-0'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Attendance</h1>
-    <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/  <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
+    <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/  <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
     <div className='flex items-center justify-center mt-24 mb-5 gap-10'>
       {/* Students Tile */}
       <div 

@@ -57,7 +57,7 @@ const TeacherPage = () => {
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Time Table</h1>
       <p className='mt-2'>
-        Dashboard / <NavLink to='/admin'>Admin</NavLink> / <NavLink to='/admin/home'>Home</NavLink> /{' '}
+        <NavLink to='/admin'>Dashboard</NavLink> / <NavLink to='/admin/home'>Home</NavLink> /{' '}
         <span className='text-[#ffae01] font-semibold'>Teachers</span>
       </p>
       <div className='mt-10'>
