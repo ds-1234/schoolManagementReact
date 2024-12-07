@@ -50,7 +50,7 @@ const ClassNameTiles = () => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
         Class List
       </h1>

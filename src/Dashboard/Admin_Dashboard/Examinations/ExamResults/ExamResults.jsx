@@ -97,9 +97,9 @@ const ExamResults = () => {
   ];
 
   return (
-    <div className="mt-8">
+    <div className="">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-        Class List
+        Exam Result
       </h1>
       <p className="mt-2">
         Dashboard /<NavLink to="/admin"> Admin </NavLink>/
@@ -107,7 +107,7 @@ const ExamResults = () => {
         <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Classname </NavLink>/{" "}
         <span className="text-[#ffae01] font-semibold">Exam Result</span>
       </p>
-      <h1 className="text-2xl font-semibold">Exam Results</h1>
+      {/* <h1 className="text-2xl font-semibold">Exam Results</h1> */}
       {examResults.length > 0 ? (
         <Table
           columns={columns}
