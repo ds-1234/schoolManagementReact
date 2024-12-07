@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
+import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 
 const ExamTypeTiles = () => {
   const [examResults, setExamResults] = useState([]);
@@ -27,7 +27,7 @@ const ExamTypeTiles = () => {
     const filteredExamData = examResults.filter(
       (exam) => exam.examData.examType === examTypeId
     );
-    navigate("/admin/ClassNameTiles", {
+    navigate("/admin/ExamTypeTiles/ClassNameTiles", {
       state: { examData: filteredExamData, examTypeId: examTypeId }, // Send filtered data and examTypeId
     });
     console.log(filteredExamData, 'filteredExamData');
@@ -39,6 +39,9 @@ const ExamTypeTiles = () => {
   ];
 
   return (
+    <div>
+                <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Type</h1>
+                <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Type</span> </p>
     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {uniqueExamTypes.map((examTypeId) => {
         // Filter the data to get exam information for the current examTypeId
@@ -56,6 +59,7 @@ const ExamTypeTiles = () => {
           </div>
         );
       })}
+    </div>
     </div>
   );
 };

@@ -172,7 +172,6 @@ function App() {
             <Route path="examinations" element={<ExamType />} />
             <Route path="examSchedule" element={<ExamSchedule />} />
             <Route path="examAttendance" element={<ExamAttendance />} />
-            <Route path="examResults" element={<ExamResults />} />
             <Route path="grade" element={<Grade />} />
             <Route path="home" element={<HomePage />} />
             <Route path="classes" element={<ClassPage />} />
@@ -225,7 +224,8 @@ function App() {
             <Route path = 'leaves' element = {<LeaveTabApp/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequestApp/>}/>
             <Route path = 'ExamTypeTiles' element= {<ExamTypeTiles/>}/>
-            <Route path = 'ClassNameTiles' element= {<ClassNameTiles/>}/>
+            <Route path = 'ExamTypeTiles/ClassNameTiles' element= {<ClassNameTiles/>}/>
+            <Route path="ExamTypeTiles/ClassNameTiles/examResults" element={<ExamResults />} />
           </Route>
 
           {/* Student Dashboard Routes */}

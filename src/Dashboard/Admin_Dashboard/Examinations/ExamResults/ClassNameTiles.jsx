@@ -1,10 +1,11 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const ClassNameTiles = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { examData,examTypeId } = location.state || {}; // Retrieve the exam data passed from ExamTypeTiles
+//   console.log(examData,'examData')
 console.log(examData,'Examdata')
   // Get unique class names from the filtered exam data
   const uniqueClassNames = [
@@ -16,11 +17,13 @@ console.log(examData,'Examdata')
     const filteredData = examData.filter((exam) => exam.examData.className == className);
     console.log(filteredData,'classfromtile')
     console.log(className,'classNametile')
-    navigate("/admin/ExamResults", { state: { className, filteredData,examTypeId } });
+    navigate("/admin/ExamTypeTiles/ClassNameTiles/examResults", { state: { className, filteredData,examTypeId } });
   };
 
   return (
     <div className="mt-8">
+                        <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Class List</h1>
+                        <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/ExamTypeTiles'> ExamType </NavLink>/ <span className='text-[#ffae01] font-semibold'>Classname</span> </p>
       <h1 className="text-2xl font-semibold">Class Names for Exam Type</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {examData ? (

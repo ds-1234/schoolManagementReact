@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Table from "../../../../Reusable_components/Table";
 import BASE_URL from "../../../../conf/conf";
 
@@ -95,6 +95,8 @@ const ExamResults = () => {
 
   return (
     <div className="mt-8">
+                              <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Class List</h1>
+                              <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<NavLink to = '/admin/ExamTypeTiles'> Exam Type </NavLink>/<NavLink to = '/admin/ExamTypeTiles/ClassNameTiles'> Classname </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Result</span> </p>
       <h1 className="text-2xl font-semibold">Exam Results</h1>
       {examResults.length > 0 ? (
         <Table
