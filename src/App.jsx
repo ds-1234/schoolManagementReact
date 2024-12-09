@@ -125,6 +125,8 @@ import LeaveRequest from './Dashboard/Teacher_Dashboard/Leave/LeaveRequest';
 import LeaveTabApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveTabApp'
 import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveRequestApp';
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
+import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
+import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
 
 
 
@@ -170,7 +172,6 @@ function App() {
             <Route path="examinations" element={<ExamType />} />
             <Route path="examSchedule" element={<ExamSchedule />} />
             <Route path="examAttendance" element={<ExamAttendance />} />
-            <Route path="examResults" element={<ExamResults />} />
             <Route path="grade" element={<Grade />} />
             <Route path="home" element={<HomePage />} />
             <Route path="classes" element={<ClassPage />} />
@@ -222,6 +223,9 @@ function App() {
             <Route path = 'StaffAttendance' element= {<StaffAttendance/>}/> 
             <Route path = 'leaves' element = {<LeaveTabApp/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequestApp/>}/>
+            <Route path = 'ExamTypeTiles' element= {<ExamTypeTiles/>}/>
+            <Route path = 'ExamTypeTiles/ClassNameTiles' element= {<ClassNameTiles/>}/>
+            <Route path="ExamTypeTiles/ClassNameTiles/examResults" element={<ExamResults />} />
           </Route>
 
           {/* Student Dashboard Routes */}

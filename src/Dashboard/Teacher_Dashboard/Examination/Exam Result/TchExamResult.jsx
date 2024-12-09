@@ -106,10 +106,12 @@ const TchExamResult = () => {
         {/* Header */}
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Result</h1>
         <p className="mt-2 text-gray-600">
-          <NavLink to="/teacherDashboard">
-            Dashboard
-          </NavLink>{" "}
-          / <span className="text-yellow-500 font-semibold">Exam Result</span>
+          Dashboard /
+          {/* <NavLink to="/teacherDashboard">
+            Teacher Dashboard
+          </NavLink>{" "} */}
+           <span className="text-yellow-500 font-semibold">Exam Result</span>
+
         </p>
 
         {/* Exam Tiles */}
@@ -123,7 +125,7 @@ const TchExamResult = () => {
               <p className="font-semibold text-lg">
                 Exam Type: {getExamTypeNameById(examType)}
               </p>
-              <p className="text-sm">Classes: {classNames.join(", ")}</p>
+              {/* <p className="text-sm">Classes: {classNames.join(", ")}</p> */}
             </div>
           ))}
         </div>

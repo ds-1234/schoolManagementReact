@@ -1,232 +1,138 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import Table from '../../../../Reusable_components/Table';
-import deleteIcon from '../../../../assets/delete.png'
-import edit from '../../../../assets/edit.png'
-import { NavLink } from 'react-router-dom';
-import AddBtn from '../../../../Reusable_components/AddBtn'
-import BASE_URL from '../../../../conf/conf';
-// import AddExamResult from './AddExamResult';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { NavLink, useLocation } from "react-router-dom";
+import Table from "../../../../Reusable_components/Table";
+import BASE_URL from "../../../../conf/conf";
 
+const ExamResults = () => {
+  const location = useLocation();
+  const { className, filteredData, examTypeId } = location.state || {};
+  console.log(filteredData, 'filteredData');
 
-function ExamResults() {
-  const user = JSON.parse(sessionStorage.getItem('user'));
-    const [data, setData] = useState([]);
-    const [filterData , setFilterData] = useState([])
-    const [student , setStudent] = useState([])
-    const [classes , setClasses] = useState([])
-    const [subject , setSubject] = useState([])
-    // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-    // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-    // const [editGradeId , setEditGradeId] = useState(null)
-  
-    
-    // const openAddPopup = () => setIsAddPopupOpen(true);
-    // const closeAddPopup = () => setIsAddPopupOpen(false);
-  
-    // const openEditPopup = (id) => {
-    //   setEditGradeId(id);
-    //   setIsEditPopupOpen(true);
-    // };
-  
-    // const closeEditPopup = () => {
-    //   setEditGradeId(null);
-    //   setIsEditPopupOpen(false);
-    // };
+  const [examResults, setExamResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userList, setUserList] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
-    // useEffect(() => {
-    //   if (isAddPopupOpen || isEditPopupOpen) {
-    //     document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-    //   } else {
-    //     document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
-    //   }
-  
-    //   return () => {
-    //     document.body.style.overflow = 'auto';  // Cleanup on unmount
-    //   };
-    // }, [isAddPopupOpen, isEditPopupOpen]);
-
-
-      // Fetch class data from the API
-  const fetchClasses = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/class/getClassList`);
-      if (response.data && response.data.success) {
-        setClasses(response.data.data);  // Store class data
-      }
-      
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-    }
-  };
-
-  // Fetch exam type data from the API
-  const fetchUser = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/user/getUserList`);
-      if (response.data && response.data.success) {
-        setStudent(response.data.data);  // Store exam type data
-      }
-    } catch (error) {
-      console.error('Error fetching exam types:', error);
-    }
-  };
-  // Fetch exam type data from the API
-  const fetchSubject = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
-      if (response.data && response.data.success) {
-        setSubject(response.data.data);  // Store exam type data
-      }
-    } catch (error) {
-      console.error('Error fetching exam types:', error);
-    }
-  };
-
-  // Fetch all data on component mount
   useEffect(() => {
-    fetchData();
-    fetchClasses();
-    fetchSubject();
-    fetchUser();
-  }, []);
+    const fetchExamAndProcessData = async () => {
+      try {
+        // Fetch exams
+        const examResponse = await axios.get(`${BASE_URL}/exam/getExam`);
+        const exams = examResponse.data.data;
 
-    // Map class ID to class name
-    const getClassNameById = (classId) => {
-      console.log(classId,'classid')
-      console.log(classes,'classes')
-      const classObj = classes.find((cls) => cls.id === classId);
-      return classObj ? `${classObj.name} ${classObj.section}` : 'Unknown Class';
-    };
-  
-    // Map exam type ID to exam type name
-    const getStudentNameById = (userId) => {
-      // console.log(examTypes,'examtypes')
-      // console.log(examTypeId,'examtypeid')
-      const stu = student.find((std) => std.id === userId);
-      return stu ? stu.firstName : 'Unknown Exam Type';
-    };
-    // Map exam type ID to exam type name
-    const getSubjectNameById = (subjectId) => {
-      // console.log(examTypes,'examtypes')
-      // console.log(examTypeId,'examtypeid')
-      const sub = subject.find((sb) => sb.id === subjectId);
-      return sub ? sub.subject : 'Unknown Exam Type';
-    };
+        // Filter exams by examTypeId and className
+        const filteredExams = exams.filter(
+          (exam) => exam.examName === examTypeId && exam.className === className
+        );
 
+        // Extract all subjects from filtered exams
+        const subjects = filteredExams.flatMap((exam) => exam.subjectWiseExamList);
 
-  
-    const fetchData = () => {
-      axios({
-        method: "GET",
-        url: `${BASE_URL}/exam/getExamResult`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // withCredentials: true,
-      })
-        .then((response) => {
-          console.log("Data from API:", response.data.data);
-          setData(response.data.data);
-          setFilterData(response.data.data) ;
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
+        // Create unique subject list
+        const uniqueSubjects = [...new Map(subjects.map((item) => [item.subject, item])).values()];
+
+        // Generate results for each student
+        const results = filteredData.map((student) => {
+          const studentResults = uniqueSubjects.map((subject) => {
+            const examResult =
+              student.examData &&
+              Number(student.examData.subjectId) === Number(subject.subject)
+                ? student
+                : null;
+            return {
+              subjectName: `${subject.subject}`,
+              marks: examResult ? examResult.examMarks : "NULL",
+              remarks: examResult ? examResult.remarks : "NULL",
+            };
+          });
+          console.log(studentResults, 'studentResults');
+
+          return {
+            studentId: student.studentId,
+            results: studentResults,
+          };
         });
+
+        setExamResults(results);
+      } catch (err) {
+        setError("Failed to fetch exam data.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
-  
-    useEffect(() => {
-      fetchData() ;
-    } , []);
-  
-    useEffect(() => {
-      setData(data);  
-      setFilterData(data); 
-    }, []);
-    
-  const column = [
+
+    const fetchSubjectsAndUsers = async () => {
+      try {
+        // Fetch subjects
+        const subjectResponse = await axios.get("http://localhost:8080/subject/getSubjectList");
+        if (subjectResponse.data.success) {
+          const subjectData = subjectResponse.data.data;
+          setSubjects(subjectData || []);
+        }
+        
+        // Fetch user data
+        const userResponse = await fetch("http://localhost:8080/user/getUserList");
+        const data = await userResponse.json();
+        if (data.success && data.data) {
+          const filteredUsers = data.data.filter(
+            (user) => user.role === 3 && user.isActive === true
+          );
+          setUserList(filteredUsers);
+        }
+      } catch (error) {
+        console.error("Error fetching subject/user data:", error);
+      }
+    };
+
+    fetchExamAndProcessData(); // Fetch exams and process data
+    fetchSubjectsAndUsers(); // Fetch subjects and user data
+
+  }, [filteredData, className, examTypeId]); // This ensures effects are run based on dependency changes
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  const getStudentNameById = (id) => {
+    const std = userList.find((type) => type.id === id);
+    return std ? std.firstName : "Unknown";
+  };
+
+  const getSubjectNameById = (id) => {
+    const sub = subjects.find((type) => type.id == id);
+    return sub ? sub.subject : "Unknown";
+  };
+
+  const columns = [
     {
-      name: 'SR.No',
-      selector: (row,idx) => idx+1,
+      name: "SR.No",
+      selector: (row, idx) => idx + 1,
       sortable: false,
     },
     {
-      name: 'Class Name',
-      selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
+      name: "Student ID",
+      selector: (row) => getStudentNameById(row.studentId),
       sortable: true,
     },
     {
-      name: 'Student Name',
-      selector: (row) => getStudentNameById(row.studentId),  // Use the helper function to get class name
+      name: "Subject",
+      selector: (row) => getSubjectNameById(row.subjectName),
       sortable: true,
     },
     {
-      name: 'Subject Name',
-      selector: (row) => getSubjectNameById(row.subjectId),  // Use the helper function to get class name
+      name: "Marks",
+      selector: (row) => row.marks,
       sortable: true,
     },
     {
-      name: 'Subject Marks',
-      selector: row => row.subjectMarks,
+      name: "Remarks",
+      selector: (row) => row.remarks,
       sortable: true,
     },
-    {
-      name: 'Remarks',
-      selector: row => row.remarks,
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: row => (
-        <div className='flex gap-2'>
-          <button
-          onClick={() => openEditPopup(row.id)}
-        >
-          <img src={edit} alt="Edit" className='h-8' />
-        </button>
-  
-        <button>
-          <img src={deleteIcon} alt="Delete" className='h-8' />
-        </button>
-        </div>
-      ),
-    },
-  ]
-  
-  // const handleFilter = (event) => {
-  //   const newData = filterData.filter(row=>row.subject.toLowerCase().includes(event.target.value.toLowerCase()))
-  //   setData(newData);
-  // }
-  
-  const handleSearch = (query, checkboxRefs) => {
-    if (!query) {
-      setData(filterData);
-      return;
-    }
-  
-    const selectedFields = Object.keys(checkboxRefs)
-      .filter((key) => checkboxRefs[key].checked);
-  
-    const filteredData = filterData.filter((row) =>
-      selectedFields.some((field) => {
-        return row[field]?.toLowerCase().includes(query.toLowerCase())
-        
-      }
-      )
-    );
-  
-    setData(filteredData);
-  };
-  
-  // handle clear button logic
-  const handleClear = () => {
-    setData(filterData);  // Reset to original data
-  };
-  
-  const searchOptions = [
-    { label: 'Class Name', value: 'name' },
-    { label: 'Section', value: 'section' }
   ];
+
   
     return (
       <div className=' h-full mb-10'>
@@ -257,16 +163,32 @@ function ExamResults() {
                       fetchData(); // Refresh data when add popup closes
                     }} 
 
-                      /> */}
-  
-        {/* <EditClass
-          isOpen={isEditPopupOpen}
-          onClose={closeEditPopup}
-          GradeId={editGradeId}
-          onSuccess={fetchData} // Refresh data after editing
-        /> */}
-      </div>
-    );
-}
+  return (
+    <div className="">
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
+        Exam Result
+      </h1>
+      <p className="mt-2">
+        Dashboard /<NavLink to="/admin"> Admin </NavLink>/ 
+        <NavLink to="/admin/ExamTypeTiles"> Exam Type </NavLink>/ 
+        <NavLink to="/admin/ExamTypeTiles/ClassNameTiles"> Class List </NavLink>/{" "} 
+        <span className="text-[#ffae01] font-semibold">Exam Result</span>
+      </p>
+      {examResults.length > 0 ? (
+        <Table
+          columns={columns}
+          data={examResults.flatMap((examResult) =>
+            examResult.results.map((result) => ({
+              studentId: examResult.studentId,
+              ...result,
+            }))
+          )}
+        />
+      ) : (
+        <p className="mt-4">No results found for the selected criteria.</p>
+      )}
+    </div>
+  );
+};
 
-export default ExamResults
+export default ExamResults;
