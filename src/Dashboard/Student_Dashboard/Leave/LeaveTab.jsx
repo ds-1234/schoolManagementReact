@@ -9,7 +9,7 @@ import LeaveCategoryPage from "./LeaveCategoryPage"; // Assuming LeaveCategoryPa
 
 const LeaveTab = () => {
   const [leaves, setLeaves] = useState([]);
-  const [activeTab, setActiveTab] = useState("PENDING"); // Set initial tab to Pending
+  const [activeTab, setActiveTab] = useState("pending"); // Set initial tab to Pending
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -29,20 +29,20 @@ const LeaveTab = () => {
     }
   };
 
-  const filteredLeaves = leaves.filter((leave) => leave.leaveStatus === activeTab);
+  const filteredLeaves = leaves.filter((leave) => leave.leaveStatus?.toLowerCase() === activeTab);
 
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Leave Applications</h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/studentDashboard"> Student </NavLink>/ <span className="text-[#ffae01] font-semibold">Leaves</span>
+        <NavLink to="/studentDashboard"> Dashboard </NavLink>/ <span className="text-[#ffae01] font-semibold">Leaves</span>
       </p>
 
       <AddBtn onAddClick={openAddPopup} />
 
       {/* Tabs Navigation */}
       <div className="flex space-x-6 mt-8 border-b-2 pb-2">
-        {["PENDING", "APPROVED", "REJECTED"].map((status) => (
+        {["pending", "approved", "rejected"].map((status) => (
           <button
             key={status}
             className={`pb-2 px-4 ${

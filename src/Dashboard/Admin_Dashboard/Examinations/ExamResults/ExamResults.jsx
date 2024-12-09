@@ -133,6 +133,36 @@ const ExamResults = () => {
     },
   ];
 
+  
+    return (
+      <div className=' h-full mb-10'>
+        <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Exam Result</h1>
+        <p className='pl-0 mt-2'>
+       <NavLink to='/admin/user'>  Dashboard </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
+        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
+      </p>        {/* <AddBtn onAddClick={openAddPopup}/> */}
+        <Table 
+        columns={column}
+        data={data}
+        searchOptions={searchOptions}
+        onSearch={handleSearch}
+        handleClear={handleClear}
+        />
+  
+        {/* <AddClassPopup
+          isOpen={isAddPopupOpen} 
+          onClose={() => {
+            closeAddPopup();
+            fetchData(); // Refresh data when add popup closes
+          }} 
+          /> */}
+          {/* <AddExamResult
+                    isOpen={isAddPopupOpen} 
+                    onClose={() => {
+                      closeAddPopup();
+                      fetchData(); // Refresh data when add popup closes
+                    }} 
+
   return (
     <div className="">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">

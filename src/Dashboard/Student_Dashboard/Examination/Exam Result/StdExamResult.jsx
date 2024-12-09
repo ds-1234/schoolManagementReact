@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../../../conf/conf';
 
 function StdExamResult() {
@@ -64,7 +64,7 @@ function StdExamResult() {
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Exam Results</h1>
       <p className="mt-2">
-        Student_Dashboard / <span className="text-[#ffae01] font-semibold">Exam Results</span>
+        <NavLink to={navigate('/studentDashboard')}>Dashboard /</NavLink><span className="text-[#ffae01] font-semibold">Exam Results</span>
       </p>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -90,6 +90,7 @@ const ExamClasses = () => {
             <span className="text-[#ffae01] font-semibold"> Class List</span>
           </p>
 
+
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {classNames.map((className, index) => (
               <div

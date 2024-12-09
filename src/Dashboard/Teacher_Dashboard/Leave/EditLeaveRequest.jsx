@@ -146,6 +146,13 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
             {/* Approval Status */}
             <div>
               <span className="font-semibold">Approval Status:</span>
+              {leaveDetails.leaveStatus === 'APPROVED' || leaveDetails.leaveStatus === 'REJECTED' ? 
+              <div 
+              className="border py-1 px-2 bg-gray-50 rounded-md mt-2"
+              readOnly >
+                {leaveStatus.toUpperCase()}
+              </div> 
+                : 
               <div className="flex gap-4 mt-2">
                 <label className="flex items-center gap-2">
                   <input
@@ -178,6 +185,7 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
                   Rejected
                 </label>
               </div>
+              }
             </div>
 
             {/* Rejection Reason */}
@@ -201,14 +209,14 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
             )}
 
             {/* Submit Button */}
-            <div className="mt-4 mb-4">
+            {leaveDetails.leaveStatus != 'APPROVED' && <div className="mt-4 mb-4">
               <Button
                 type="button"
                 className="w-full text-center mb-2"
                 label={"Submit"}
                 onClick={handleSubmit}
               />
-            </div>
+            </div>}
           </div>
         ) : (
           <div>Loading...</div>

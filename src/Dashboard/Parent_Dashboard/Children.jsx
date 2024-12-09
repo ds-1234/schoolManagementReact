@@ -42,8 +42,7 @@ function Children() {
     <div className="p-6 mt-4">
       <h2 className="text-2xl font-semibold text-black">Children Details</h2>
       <p className="mt-2 mb-10">
-        Dashboard /
-        <NavLink to="/parentsDashboard"> Parent </NavLink>/
+        <NavLink to="/parentsDashboard">Dashboard </NavLink>/
         <span className="text-[#ffae01] font-semibold"> Children</span>
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">

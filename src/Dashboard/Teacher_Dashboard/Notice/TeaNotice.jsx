@@ -60,7 +60,7 @@ function TeaNotice() {
 
     <div className='h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Notice Board</h1>
-       <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Notice Board</span> </p>
+       <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Notice Board</span> </p>
 
       
       <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">

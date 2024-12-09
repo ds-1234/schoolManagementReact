@@ -218,7 +218,7 @@ const Attendance = () => {
     <div className='h-full mb-10'>
       <div className="flex flex-col mb-6">
         <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>{`Attendance: ${classItem.name} - ${classItem.section}`}</h1>
-        <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/ <NavLink to = '/teacherDashboard/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
+        <p className='mt-2'><NavLink to = '/teacherDashboard'>Dashboard </NavLink>/ <NavLink to = '/teacherDashboard/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
       </div>
       <span className="text-lg absolute top-20 right-10">{`Date: ${today}`}</span>
       <Table

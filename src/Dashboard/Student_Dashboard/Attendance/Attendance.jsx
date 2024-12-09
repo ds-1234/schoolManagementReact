@@ -73,7 +73,7 @@ function Attendance() {
   return (
     <div>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Attendance</h1>
-       <p className=' mt-2'>Dashboard /<NavLink to = '/studentDashboard'> Student </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p> 
+       <p className=' mt-2'><NavLink to = '/studentDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p> 
 
 
       <div className="flex items-center justify-around bg-white p-2 rounded-xl w-1/3 absolute right-5 top-32">

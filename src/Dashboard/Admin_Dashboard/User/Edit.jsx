@@ -113,7 +113,7 @@ useEffect(() => {
           <FontAwesomeIcon icon={faAngleDown} />
         </div>
         {dropdownOpen && (
-          <div className="absolute bg-white border rounded-lg flex flex-col w-1/3 overflow-y-scroll h-24">
+          <div className="absolute z-10 bg-white border rounded-lg flex flex-col w-1/3 max-h-24 overflow-y-auto shadow-md">
             {roles.map(role => (
             <div
             key={role.id}

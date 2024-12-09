@@ -134,7 +134,21 @@ const LeaveRequest = () => {
   const fetchLeaves = async() => {
     try {
       const res = await axios.get(`${BASE_URL}/leaves/getLeavesApplicationList`)
-      setLeaves(res.data.data.filter((leave) => leave.leaveAuthoriserId === user.id ))
+      const filteredLeaves = res.data.data.filter(
+        (leave) => leave.leaveAuthoriserId === user.id
+      );
+  
+      // Sorting logic
+      const sortedLeaves = filteredLeaves.sort((a, b) => {
+        const statusOrder = {
+          PENDING: 1,
+          APPROVED: 2,
+          REJECTED: 3,
+        };
+        return statusOrder[a.leaveStatus] - statusOrder[b.leaveStatus];
+      });
+  
+      setLeaves(sortedLeaves);
     } catch (error) {
       toast.error('Error in fetching requests') ;
     }
@@ -149,7 +163,7 @@ const LeaveRequest = () => {
     <div className='h-full mb-10'>
 
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Leave Request</h1>
-      <p className='mt-2'>Dashboard /<NavLink to = '/teacherDashboard'> Teacher </NavLink>/ <span className='text-[#ffae01] font-semibold'>Leave Request</span> </p>
+      <p className='mt-2'><NavLink to = '/teacherDashboard'>Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Leave Request</span> </p>
     
       <Table columns={columns} data={leaves} />
 

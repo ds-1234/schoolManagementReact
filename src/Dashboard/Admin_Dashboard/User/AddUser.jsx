@@ -117,37 +117,49 @@ const AddUser = () => {
   }
 
     // Fetch countries
-    useEffect(() => {
-      axios.get(`${BASE_URL}/area/getCountryList`)
-        .then((response) => {
-          setCountries(response.data.data)
-        })
-        .catch((error) => console.error("Error fetching countries:", error));
-    }, []);
+    const fetchLocationData = async() => {
+      await axios({
+        method:'GET' ,
+        url: `${BASE_URL}/area/getCountryList` ,
+        headers: {'Content-Type' : 'application/json'} 
+      })
+      .then((res) => {
+        setCountries(res.data.data) ;
+      })
+      .catch((err) => {
+        console.log("Error in fetching countries" , err);
+      })
+    }
 
-    // Fetch states when country changes
     useEffect(() => {
-      if (selectedCountry) {
+      const fetchStates = () => {
         axios.get(`${BASE_URL}/area/getStateList/${selectedCountry}`)
-          .then((response) => {  
-            setStates(response.data.data)
-            console.log(states);
-            
-          })
-          .catch((error) => console.error("Error fetching states:", error));
+        .then((res) => {
+          setStates(res.data.data) ;
+        })
+        .catch((err) => console.error(err)) 
       }
-    }, [selectedCountry]);
   
-    // Fetch cities when state changes
-    useEffect(() => {
-      if (selectedState) {
+      const fetchCities = () => {
         axios.get(`${BASE_URL}/area/getCitiesList/${selectedState}`)
-          .then((response) => {
-            setCities(response.data.data)
-          })
-          .catch((error) => console.error("Error fetching cities:", error));
+        .then((res) => {
+          setCities(res.data.data) ;
+        })
+        .catch((err) => console.error(err)) 
       }
-    }, [selectedCountry, selectedState]);
+      
+      if(selectedCountry){
+        fetchStates() ;
+      }
+  
+      if(selectedState){
+        fetchCities() ;
+      }
+    } , [selectedCountry , selectedState])
+
+    useEffect(() => {
+      fetchLocationData() ;
+    } , [])
 
   const handleRoleChange = (e) => {  
     const selectedRole = e.target.value ;

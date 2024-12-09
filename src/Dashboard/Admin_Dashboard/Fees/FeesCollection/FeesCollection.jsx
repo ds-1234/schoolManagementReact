@@ -230,7 +230,7 @@ const fetchData = () => {
     <div className="h-full mr-8 mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Fees Collection</h1>
       <p className="mt-2">
-        Dashboard /<NavLink to="/admin"> Admin </NavLink>/
+        <NavLink to="/admin"> Dashboard </NavLink>/
         <NavLink to="/admin/feesgrp"> Fees Group </NavLink>/ 
         <span className="text-[#ffae01] font-semibold">Fees Collection</span>
       </p>
