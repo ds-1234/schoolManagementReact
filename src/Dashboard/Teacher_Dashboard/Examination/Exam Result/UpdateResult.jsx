@@ -3,6 +3,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../../Reusable_components/Button";
 import Table from "../../../../Reusable_components/Table";
+import edit from '../../../../assets/edit.png';
+
 
 const UpdateResult = () => {
     const location = useLocation();
@@ -168,7 +170,7 @@ const UpdateResult = () => {
         cell: (row) => (
           <input
             type="number"
-            className="border p-1 rounded w-40 text-center"
+            className="border p-1 rounded  text-center"
             placeholder="Enter marks"
             value={row.examMarks || ""}
             onChange={(e) => handleMarksChange(row.studentId, e.target.value)}
@@ -182,7 +184,7 @@ const UpdateResult = () => {
         cell: (row) => (
           <input
             type="text"
-            className="border p-1 rounded w-full text-center"
+            className="border p-1 rounded  text-center"
             placeholder="Enter remarks"
             value={row.remarks || ""}
             onChange={(e) => handleRemarksChange(row.studentId, e.target.value)}
@@ -190,6 +192,24 @@ const UpdateResult = () => {
         ),
         sortable: true,
         wrap: true,
+      },
+      {
+        name: 'Action',
+        cell: (row) => (
+          <div className="flex gap-2">
+            <button 
+            // onClick={() => openEditPopup(row.id)}
+            >
+              <img src={edit} alt="Edit" className="h-8" />
+            </button>
+            {/* <button
+            // onClick={()=>handleDelete(row.id)}
+            >
+              <img src={deleteIcon} alt="Delete" className="h-8" />
+            </button> */}
+          </div>
+        ),
+      //   width: '200px', 
       },
     ];
   
