@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 
 function ExamDetails() {
@@ -75,7 +75,8 @@ function ExamDetails() {
         / Exam Details
       </p> */}
             <p className="mt-2">
-        Student_Dashboard /<span onClick={() => navigate(-1)}>Exam Results</span>/ <span className="text-[#ffae01] font-semibold"> Results</span>
+            <NavLink to = '/studentDashboard'> Dashboard </NavLink> / <NavLink to = '/studentDashboard/stdExamResult'> Exam Results </NavLink> /      <span className="text-[#ffae01] font-semibold">Exam Results</span>
+
       </p>
 
       <div className="mt-8">
