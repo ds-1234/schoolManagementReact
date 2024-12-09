@@ -38,7 +38,7 @@ const ClassNameTiles = () => {
   // Handle class tile click to navigate to ExamResults page with filtered data
   const handleClassClick = (className) => {
     const filteredData = examData.filter(
-      (exam) => exam.examData.className === className
+      (exam) => exam.examData.className == className
     );
 
     // Store data in sessionStorage for later use (e.g., going back from ExamResults)
@@ -46,6 +46,7 @@ const ClassNameTiles = () => {
     sessionStorage.setItem("examTypeId", examTypeId);
 
     // Navigate to ExamResults page
+    console.log(filteredData,'filtercheck')
     navigate("/admin/ExamTypeTiles/ClassNameTiles/examResults", {
       state: { className, filteredData, examTypeId },
     });

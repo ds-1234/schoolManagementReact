@@ -24,12 +24,11 @@ const ExamResults = () => {
 
         // Filter exams by examTypeId and className
         const filteredExams = exams.filter(
-          (exam) => exam.examName === examTypeId && exam.className === className
+          (exam) => exam.examName == examTypeId && exam.className == className
         );
 
         // Extract all subjects from filtered exams
         const subjects = filteredExams.flatMap((exam) => exam.subjectWiseExamList);
-
         // Create unique subject list
         const uniqueSubjects = [...new Map(subjects.map((item) => [item.subject, item])).values()];
 
