@@ -14,9 +14,10 @@ const UpdateResult = () => {
   
     const [userList, setUserList] = useState([]);
     const [examResults, setExamResults] = useState([]);
-    const [subjects, setSubjects] = useState("");
-    const [classNamestr, setClassNamestr] = useState("");
-    const [examTypeName, setExamTypeName] = useState("");
+    const [subjects, setSubjects] = useState([]);
+    const [classNamestr, setClassNamestr] = useState([]);
+    const [examTypeName, setExamTypeName] = useState([]);
+    const [studentName, setStudentName] = useState([]);
     const [initialExamResults, setInitialExamResults] = useState([]);
 
   
@@ -160,8 +161,8 @@ const UpdateResult = () => {
         sortable: false,
       },
       {
-        name: "Student Id",
-        selector: (row) => row.studentId,
+        name: "Student ",
+        selector: (row) => getStudentNameById(row.studentId),
         sortable: true,
         wrap: true,
       },
@@ -212,6 +213,88 @@ const UpdateResult = () => {
       //   width: '200px', 
       },
     ];
+
+    const fetchExamType = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+    
+          if (response.data.success) {
+            const examTypeData = response.data.data;
+            const ExamTyperes = examTypeData.find((type) => type.id == examType);
+            const examName = ExamTyperes?.examTypeName;
+            console.log(examName, 'examName');
+    
+            if (examName) {
+                setExamTypeName(examName);
+            } else {
+              console.error("Exam type not found for the selected exam ID.");
+            }
+          } else {
+            console.error("Failed to fetch exam type data.");
+          }
+        } catch (error) {
+          console.error("Error fetching exam type data:", error);
+        }
+      };
+    
+      // Fetch Class List from the server
+      const fetchClassName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/class/getClassList");
+    
+          if (response.data.success) {
+            const clasdata = response.data.data;
+            setClassNamestr(clasdata);
+          }
+        } catch (error) {
+          console.error("Error fetching class data:", error);
+        }
+      };
+      const fetchStudentName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/user/getUserList");
+    
+          if (response.data.success) {
+            const std = response.data.data;
+            setStudentName(std);
+          }
+        } catch (error) {
+          console.error("Error fetching User data:", error);
+        }
+      };
+      const fetchSubjectName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+    
+          if (response.data.success) {
+            const sub = response.data.data;
+            setSubjects(sub);
+          }
+        } catch (error) {
+          console.error("Error fetching Subject data:", error);
+        }
+      };
+
+      useEffect(() => {
+        fetchExamType();
+        fetchClassName();
+        fetchStudentName()
+        fetchSubjectName()
+      }, [examType]); 
+
+      const getclassNameById = (id) => {
+        const cls = classNamestr.find((type) => type.id == id);
+        return cls ? cls.name : "Unknown";
+      };
+      const getStudentNameById = (id) => {
+        const std = studentName.find((type) => type.id == id);
+        return std ? std.firstName : "Unknown";
+      };
+      console.log(examTypeName,'examTypeName')
+      const getSubjectNameById = (id) => {
+        const sub = subjects.find((type) => type.id == id);
+        return sub ? sub.subject : "Unknown";
+      };
   
     return (
       <div className="h-full mb-10">
@@ -227,7 +310,7 @@ const UpdateResult = () => {
       </p>
 
       <h2 className="mt-6 text-xl font-semibold text-black">
-        Update Marks of {classNamestr} for {subjects} in {examTypeName}
+        Update Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)}   in {examTypeName}
       </h2>
 
   
