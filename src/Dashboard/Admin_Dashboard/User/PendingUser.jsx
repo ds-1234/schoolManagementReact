@@ -124,25 +124,19 @@ const column = [
   }
 
   // Handle Search Logic
-  const handleSearch = (query, checkboxRefs) => {
+  const handleSearch = (query, selectedColumn) => {
     if (!query) {
       setUser(filterUser);
       return;
     }
   
-    const selectedFields = Object.keys(checkboxRefs).filter((key) => checkboxRefs[key].checked);
-  
-      const filteredData = filterUser.filter((row) =>
-        selectedFields.some((field) => {
-          if (field === 'role') {
-            const roleName = roleMapping[row.role];
-          return roleName?.toLowerCase().includes(query.toLowerCase());
-          }else{
-            return row[field]?.toLowerCase().includes(query.toLowerCase())
-          }
-        }
-        )
-      );
+    const filteredData = filterUser.filter((row) => {
+      if (selectedColumn === 'role') {
+        const roleName = roleMapping[row.role];
+        return roleName?.toLowerCase().includes(query.toLowerCase());
+      }
+      return row[selectedColumn]?.toString().toLowerCase().includes(query.toLowerCase());
+    });
   
     setUser(filteredData);
   };
@@ -173,7 +167,7 @@ const column = [
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Pending Users</h1>
-       <p className=' mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/<span className='text-[#ffae01] font-semibold'> Pending_Users</span> </p>
+       <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/<span className='text-[#ffae01] font-semibold'> Pending Users</span> </p>
        <AddBtn onAddClick={handleClick}/>
       <Table
          columns={column}

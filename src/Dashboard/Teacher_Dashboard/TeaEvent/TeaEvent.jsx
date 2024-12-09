@@ -252,7 +252,7 @@ const handleWeekChange = (direction) => {
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Event</h1>
       <p className='mt-2'>
-        Dashboard / <NavLink to='/teacherDashboard'> Teacher Dashboard </NavLink> /
+       <NavLink to='/teacherDashboard'> Dashboard </NavLink> /
         <span className='text-[#ffae01] font-semibold'> Event</span>
       </p>
 

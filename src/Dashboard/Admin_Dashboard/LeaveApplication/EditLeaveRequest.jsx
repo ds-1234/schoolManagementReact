@@ -92,19 +92,19 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-gray-800">
-      <div className="bg-white p-6 py-2 rounded-lg w-full max-w-md relative">
+      <div className="bg-white p-6 py-5 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
         >
           &times;
         </button>
-        <h2 className="text-2xl font-bold mb-4 mt-2 text-center text-[#042954]">
+        <h2 className="text-2xl font-bold mb-4  text-center text-[#042954]">
           Approve Request
         </h2>
 
         {leaveDetails ? (
-          <div className="space-y-8">
+          <div className="space-y-4">
             {/* Submitted By */}
             <div className="grid grid-cols-2 gap-4 bg-gray-200 p-4 rounded-md">
               <div className="flex flex-col">
@@ -139,7 +139,7 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
             <div>
               <span className="font-semibold">Reason:</span>{" "}
               <div
-              className="mt-1"
+              className="border py-1 px-2 bg-gray-50 rounded-md mt-1"
               dangerouslySetInnerHTML={{ __html: leaveDetails.leaveReason }}
               />
             </div>
@@ -147,6 +147,13 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
             {/* Approval Status */}
             <div>
               <span className="font-semibold">Approval Status:</span>
+              {leaveDetails.leaveStatus === 'APPROVED' || leaveDetails.leaveStatus === 'REJECTED' ? 
+              <div 
+              className="border py-1 px-2 bg-gray-50 rounded-md mt-2"
+              readOnly >
+                {leaveStatus.toUpperCase()}
+              </div> 
+                : 
               <div className="flex gap-4 mt-2">
                 <label className="flex items-center gap-2">
                   <input
@@ -178,7 +185,7 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
                   />
                   Rejected
                 </label>
-              </div>
+              </div>}
             </div>
 
             {/* Rejection Reason */}
@@ -190,6 +197,11 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
                 >
                   Reason for Rejection *
                 </label>
+                {leaveDetails.leaveStatus === 'REJECTED' ?
+                <div
+                className="border py-1 px-2 bg-gray-50 rounded-md mt-1"
+                >{leaveDetails.leaveRejectionReason} </div>
+                :
                 <textarea
                   id="rejectionReason"
                   value={rejectedReason}
@@ -197,19 +209,19 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
                   className="w-full border rounded-lg p-2"
                   rows={3}
                   placeholder="Enter reason for rejection"
-                />
+                />}
               </div>
             )}
 
             {/* Submit Button */}
-            <div className="mt-4 mb-4">
+            {leaveDetails.leaveStatus == 'PENDING' && <div className="mt-4 mb-4">
               <Button
                 type="button"
                 className="w-full text-center mb-2"
                 label={"Submit"}
                 onClick={handleSubmit}
               />
-            </div>
+            </div>}
           </div>
         ) : (
           <div>Loading...</div>

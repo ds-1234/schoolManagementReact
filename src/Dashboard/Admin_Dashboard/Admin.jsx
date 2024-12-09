@@ -115,7 +115,7 @@ function Admin() {
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admin Dashboard</h1>
-       <p className=' mt-2'>Dashboard / <span className='text-[#ffae01] font-semibold'>Admin</span></p>
+       <p className=' mt-2'><span className='text-[#ffae01] font-semibold'>Dashboard</span></p>
 
       {/* Welcome Section */}
       <div className="bg-[#ffae01] text-white px-6 py-4 rounded-md mb-6 mt-6">

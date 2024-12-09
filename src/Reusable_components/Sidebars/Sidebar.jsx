@@ -20,8 +20,8 @@ const Sidebar = () => {
   };
  
   return (
-    <div className='bg-[#051f3e] fixed h-screen '>
-      <nav className="p-5 h-full overflow-y-auto scrollbar-hide">
+    <div>
+      <nav className="p-5 h-full overflow-y-auto scrollbar-hide bg-[#051f3e] fixed text-white">
         <ul>
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink to={'/admin'} className={({ isActive }) =>
@@ -272,13 +272,18 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('students')}
+              onClick={() => {
+                toggleDropdown('students')
+                
+                  setUserId(null)
+                  setCurrentStep(1)
+                }}
             >
-              <div className='flex items-center justify-start gap-1'>
-                <FontAwesomeIcon  icon={faChildren} className=" mr-2 text-[#ffae01]" />
+              <div className='flex items-center justify-center gap-1'>
+                <FontAwesomeIcon  icon={faChildren} className="text-[#ffae01] mr-2" />
                 Students
               </div>
-              <FontAwesomeIcon icon={renderAngleIcon('students')} className="mr-3" onClick={() => toggleDropdown('students')} />
+              <FontAwesomeIcon icon={renderAngleIcon('students')} className="mr-1" onClick={() => toggleDropdown('students')} />
             </NavLink>
             {openDropdown == 'students' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">

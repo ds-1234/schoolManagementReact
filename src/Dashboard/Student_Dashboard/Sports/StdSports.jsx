@@ -60,7 +60,7 @@ const StdSports = () => {
   return (
 <div className='flex flex-col justify-start pl-0'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Sports</h1>
-    <p className='mt-2'>Dashboard /<NavLink to = '/studentDashboard'> Student </NavLink>/  <span className='text-[#ffae01] font-semibold'>Sports</span> </p>
+    <p className='mt-2'><NavLink to = '/studentDashboard'> Dashboard </NavLink>/  <span className='text-[#ffae01] font-semibold'>Sports</span> </p>
     <div className='grid grid-cols-2 gap-4 mt-10 mb-5'>{console.log(player,'player')}
         {player.map((item, index) => (
           <div 

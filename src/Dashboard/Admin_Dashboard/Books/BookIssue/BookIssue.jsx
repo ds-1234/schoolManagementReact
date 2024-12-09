@@ -288,7 +288,7 @@ const searchOptions = [
     <div className=' h-full mb-10'>
 
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Book Issue List</h1>
-      <p className='mt-2'>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Book Issue</span> </p>
+      <p className='mt-2'><NavLink to = '/admin'> Dashboard  </NavLink>/ <span className='text-[#ffae01] font-semibold'>Book Issue</span> </p>
 
       <Table
       columns={column}

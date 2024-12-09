@@ -27,7 +27,7 @@ const TimetableGrid = ({timetableData}) => {
 
   // Fetch subject data
   const fetchSub = async () => {
-    await axios.get('http://localhost:8080/subject/getSubjectList')
+    await axios.get(`${BASE_URL}/subject/getSubjectList`)
       .then((response) => {
         const subjects = {};
         response.data.data.forEach((sub) => {
@@ -42,7 +42,7 @@ const TimetableGrid = ({timetableData}) => {
 
   // Fetch user (teacher) data
   const fetchUsers = async() => {
-   await axios.get('http://localhost:8080/user/getUserList')
+   await axios.get(`${BASE_URL}/user/getUserList`)
       .then((response) => {
         const users = {};
         response.data.data.forEach((tch) => {

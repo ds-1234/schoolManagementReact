@@ -145,7 +145,7 @@ const StdsAttendance = () => {
     <div className='h-full mb-10'>
       <div className="flex flex-col mb-6">
         <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>{`Attendance: ${classItem.name} - ${classItem.section}`}</h1>
-        <p className='mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/ <NavLink to='/admin/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
+        <p className='mt-2'><NavLink to='/admin'>Dashboard </NavLink>/ <NavLink to='/admin/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
       </div>
       
       <Labels/>

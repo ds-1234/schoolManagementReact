@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TeacherTTGrid from '../../Admin_Dashboard/TimeTable/Teacher/TeacherTTGrid';
+import BASE_URL from '../../../conf/conf';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Timetable = () => {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate() ;
 
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/timeTable/getTimeTable`);
+        const response = await axios.get(`${BASE_URL}/timeTable/getTimeTable`);
         console.log(response.data.data);
         
         // Filter timetable for specific teacher based on teacherId
@@ -42,7 +45,7 @@ const Timetable = () => {
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Teacher Timetable</h1>
       <p className='mt-2'>
-        Dashboard /
+        <NavLink to={navigate('/teacherDashboard')}>Dashboard /</NavLink>
         <span className='text-[#ffae01] font-semibold'>Teacher Timetable</span>
       </p>
 

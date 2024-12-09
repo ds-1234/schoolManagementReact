@@ -137,8 +137,7 @@ const Profile = () => {
     <div className="mb-6">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Profile</h1>
       <p className="mt-2">
-        Dashboard /
-        <NavLink to="/studentDashboard"> Student </NavLink>/
+        <NavLink to="/studentDashboard"> Dashboard </NavLink>/
         <span className="text-[#ffae01] font-semibold">Profile</span>
       </p>
       

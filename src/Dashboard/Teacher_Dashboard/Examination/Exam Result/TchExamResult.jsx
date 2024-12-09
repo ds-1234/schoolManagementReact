@@ -111,6 +111,7 @@ const TchExamResult = () => {
             Teacher Dashboard
           </NavLink>{" "} */}
            <span className="text-yellow-500 font-semibold">Exam Result</span>
+
         </p>
 
         {/* Exam Tiles */}
