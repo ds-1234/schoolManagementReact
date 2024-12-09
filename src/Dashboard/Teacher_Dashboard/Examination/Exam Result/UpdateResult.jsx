@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../../Reusable_components/Button";
+import Table from "../../../../Reusable_components/Table";
 
 const UpdateResult = () => {
   const location = useLocation();
@@ -17,6 +18,8 @@ const UpdateResult = () => {
 
   const { className = "Unknown", examType = "Unknown" } = location.state || {};
   const teacherId = user.id;
+  console.log(className,'className')
+  console.log(examType,'examType')
 
   const subjectId = teacherData?.classSubjectEntity?.find(
     (entry) => entry.classId == className
@@ -194,6 +197,69 @@ const UpdateResult = () => {
     }
   };
 
+
+  const column = [
+    {
+      name: 'SR.No',
+      selector: (row, idx) => idx + 1,
+      sortable: false,
+    //   width: '300px', 
+    },
+    {
+      name: 'Student Id',
+      selector: (row) => row.studentId,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'examMarks',
+      selector: (row) => row.examMarks,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    {
+      name: 'Remarks',
+      selector: (row) => row.remarks,
+      sortable: true,
+      wrap: true, 
+    //   width: '300px', 
+    },
+    // {
+    //   name: 'Description',
+    //   selector: (row) => row.description,
+    //   sortable: true,
+    //   wrap: true,
+    //   width: '300px', 
+    // },
+    // {
+    //     name: 'Status',
+    //     selector: row => (
+    //       <StatusButton isActive={row.isActive} />
+    //     ),
+    //     sortable: true,
+    //     // width: '117px',
+    //           // wrap: true, 
+    //   },
+    // {
+    //   name: 'Action',
+    //   cell: (row) => (
+    //     <div className="flex gap-2">
+    //       <button onClick={() => openEditPopup(row.id)}>
+    //         <img src={edit} alt="Edit" className="h-8" />
+    //       </button>
+    //       <button
+    //       onClick={()=>handleDelete(row.id)}
+    //       >
+    //         <img src={deleteIcon} alt="Delete" className="h-8" />
+    //       </button>
+    //     </div>
+    //   ),
+    //   width: '300px', 
+    // },
+  ];
+
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
@@ -210,7 +276,7 @@ const UpdateResult = () => {
         Update Marks of {classNamestr} for {subjects} in {examTypeName}
       </h2>
 
-      <div className="container mt-4">
+      {/* <div className="container mt-4">
         <table className="min-w-full table-auto border-collapse border border-gray-200 bg-white">
           <thead>
             <tr>
@@ -265,7 +331,15 @@ const UpdateResult = () => {
             Save Changes
           </Button>
         </div>
-      </div>
+      </div> */}
+            <Table 
+      columns={column}
+      data={examResults}
+    //   searchOptions={searchOptions}
+    //   onSearch={handleSearch}
+    //   handleClear={handleClear}
+    //   onAddClick={openAddPopup}
+      />
     </div>
   );
 };
