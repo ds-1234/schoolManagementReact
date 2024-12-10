@@ -4,6 +4,7 @@ import axios from "axios";
 import Button from "../../../../Reusable_components/Button";
 import Table from "../../../../Reusable_components/Table";
 import edit from '../../../../assets/edit.png';
+import EditablePopup from "./EditablePopup";
 
 
 const UpdateResult = () => {
@@ -153,6 +154,24 @@ const UpdateResult = () => {
     const isSubmitButtonVisible = initialExamResults.every(
         (result) => result.examMarks === "" && result.remarks === ""
       );
+
+      const [isPopupOpen, setIsPopupOpen] = useState(false);
+      const [selectedResult, setSelectedResult] = useState(null);
+    
+      const handleEditClick = (result) => {
+        setSelectedResult(result);
+        setIsPopupOpen(true);
+      };
+    
+      const handleSaveChangesInPopup = (id, marks, remarks) => {
+        setExamResults((prevResults) =>
+          prevResults.map((result) =>
+            result.studentId === id
+              ? { ...result, examMarks: marks, remarks: remarks }
+              : result
+          )
+        );
+      };
   
     const column = [
       {
@@ -195,22 +214,12 @@ const UpdateResult = () => {
         wrap: true,
       },
       {
-        name: 'Action',
+        name: "Action",
         cell: (row) => (
-          <div className="flex gap-2">
-            <button 
-            // onClick={() => openEditPopup(row.id)}
-            >
-              <img src={edit} alt="Edit" className="h-8" />
-            </button>
-            {/* <button
-            // onClick={()=>handleDelete(row.id)}
-            >
-              <img src={deleteIcon} alt="Delete" className="h-8" />
-            </button> */}
-          </div>
+          <button onClick={() => handleEditClick(row)}>
+            <img src={edit} alt="Edit" className="h-8" />
+          </button>
         ),
-      //   width: '200px', 
       },
     ];
 
@@ -298,6 +307,7 @@ const UpdateResult = () => {
   
     return (
       <div className="h-full mb-10">
+        
         <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
           Add Exam Result
         </h1>
@@ -315,6 +325,15 @@ const UpdateResult = () => {
 
   
         <Table columns={column} data={examResults} />
+        {isPopupOpen && selectedResult && (
+        <EditablePopup
+          examResultId={selectedResult.studentId}
+          marks={selectedResult.examMarks}
+          remarks={selectedResult.remarks}
+          onSave={handleSaveChangesInPopup}
+          onClose={() => setIsPopupOpen(false)}
+        />
+      )}
   
         {isSubmitButtonVisible && (
           <div className="flex justify-end mt-4">
