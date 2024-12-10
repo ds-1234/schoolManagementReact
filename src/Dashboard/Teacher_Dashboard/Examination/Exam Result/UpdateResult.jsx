@@ -3,6 +3,9 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../../Reusable_components/Button";
 import Table from "../../../../Reusable_components/Table";
+import edit from '../../../../assets/edit.png';
+import EditablePopup from "./EditablePopup";
+
 
 const UpdateResult = () => {
     const location = useLocation();
@@ -12,9 +15,10 @@ const UpdateResult = () => {
   
     const [userList, setUserList] = useState([]);
     const [examResults, setExamResults] = useState([]);
-    const [subjects, setSubjects] = useState("");
-    const [classNamestr, setClassNamestr] = useState("");
-    const [examTypeName, setExamTypeName] = useState("");
+    const [subjects, setSubjects] = useState([]);
+    const [classNamestr, setClassNamestr] = useState([]);
+    const [examTypeName, setExamTypeName] = useState([]);
+    const [studentName, setStudentName] = useState([]);
     const [initialExamResults, setInitialExamResults] = useState([]);
 
   
@@ -150,6 +154,24 @@ const UpdateResult = () => {
     const isSubmitButtonVisible = initialExamResults.every(
         (result) => result.examMarks === "" && result.remarks === ""
       );
+
+      const [isPopupOpen, setIsPopupOpen] = useState(false);
+      const [selectedResult, setSelectedResult] = useState(null);
+    
+      const handleEditClick = (result) => {
+        setSelectedResult(result);
+        setIsPopupOpen(true);
+      };
+    
+      const handleSaveChangesInPopup = (id, marks, remarks) => {
+        setExamResults((prevResults) =>
+          prevResults.map((result) =>
+            result.studentId === id
+              ? { ...result, examMarks: marks, remarks: remarks }
+              : result
+          )
+        );
+      };
   
     const column = [
       {
@@ -158,8 +180,8 @@ const UpdateResult = () => {
         sortable: false,
       },
       {
-        name: "Student Id",
-        selector: (row) => row.studentId,
+        name: "Student ",
+        selector: (row) => getStudentNameById(row.studentId),
         sortable: true,
         wrap: true,
       },
@@ -168,7 +190,7 @@ const UpdateResult = () => {
         cell: (row) => (
           <input
             type="number"
-            className="border p-1 rounded w-40 text-center"
+            className="border p-1 rounded  text-center"
             placeholder="Enter marks"
             value={row.examMarks || ""}
             onChange={(e) => handleMarksChange(row.studentId, e.target.value)}
@@ -182,7 +204,7 @@ const UpdateResult = () => {
         cell: (row) => (
           <input
             type="text"
-            className="border p-1 rounded w-full text-center"
+            className="border p-1 rounded  text-center"
             placeholder="Enter remarks"
             value={row.remarks || ""}
             onChange={(e) => handleRemarksChange(row.studentId, e.target.value)}
@@ -191,10 +213,101 @@ const UpdateResult = () => {
         sortable: true,
         wrap: true,
       },
+      {
+        name: "Action",
+        cell: (row) => (
+          <button onClick={() => handleEditClick(row)}>
+            <img src={edit} alt="Edit" className="h-8" />
+          </button>
+        ),
+      },
     ];
+
+    const fetchExamType = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+    
+          if (response.data.success) {
+            const examTypeData = response.data.data;
+            const ExamTyperes = examTypeData.find((type) => type.id == examType);
+            const examName = ExamTyperes?.examTypeName;
+            console.log(examName, 'examName');
+    
+            if (examName) {
+                setExamTypeName(examName);
+            } else {
+              console.error("Exam type not found for the selected exam ID.");
+            }
+          } else {
+            console.error("Failed to fetch exam type data.");
+          }
+        } catch (error) {
+          console.error("Error fetching exam type data:", error);
+        }
+      };
+    
+      // Fetch Class List from the server
+      const fetchClassName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/class/getClassList");
+    
+          if (response.data.success) {
+            const clasdata = response.data.data;
+            setClassNamestr(clasdata);
+          }
+        } catch (error) {
+          console.error("Error fetching class data:", error);
+        }
+      };
+      const fetchStudentName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/user/getUserList");
+    
+          if (response.data.success) {
+            const std = response.data.data;
+            setStudentName(std);
+          }
+        } catch (error) {
+          console.error("Error fetching User data:", error);
+        }
+      };
+      const fetchSubjectName = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+    
+          if (response.data.success) {
+            const sub = response.data.data;
+            setSubjects(sub);
+          }
+        } catch (error) {
+          console.error("Error fetching Subject data:", error);
+        }
+      };
+
+      useEffect(() => {
+        fetchExamType();
+        fetchClassName();
+        fetchStudentName()
+        fetchSubjectName()
+      }, [examType]); 
+
+      const getclassNameById = (id) => {
+        const cls = classNamestr.find((type) => type.id == id);
+        return cls ? cls.name : "Unknown";
+      };
+      const getStudentNameById = (id) => {
+        const std = studentName.find((type) => type.id == id);
+        return std ? std.firstName : "Unknown";
+      };
+      console.log(examTypeName,'examTypeName')
+      const getSubjectNameById = (id) => {
+        const sub = subjects.find((type) => type.id == id);
+        return sub ? sub.subject : "Unknown";
+      };
   
     return (
       <div className="h-full mb-10">
+        
         <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
           Add Exam Result
         </h1>
@@ -207,11 +320,20 @@ const UpdateResult = () => {
       </p>
 
       <h2 className="mt-6 text-xl font-semibold text-black">
-        Update Marks of {classNamestr} for {subjects} in {examTypeName}
+        Update Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)}   in {examTypeName}
       </h2>
 
   
         <Table columns={column} data={examResults} />
+        {isPopupOpen && selectedResult && (
+        <EditablePopup
+          examResultId={selectedResult.studentId}
+          marks={selectedResult.examMarks}
+          remarks={selectedResult.remarks}
+          onSave={handleSaveChangesInPopup}
+          onClose={() => setIsPopupOpen(false)}
+        />
+      )}
   
         {isSubmitButtonVisible && (
           <div className="flex justify-end mt-4">

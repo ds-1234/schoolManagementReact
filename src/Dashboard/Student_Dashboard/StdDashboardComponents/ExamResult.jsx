@@ -74,6 +74,7 @@ function ExamResult() {
         const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
         if (response.data.success) {
           setExamTypeName(response.data.data);
+          setExamTypeFilter(response.data.data[0].id)
         }
       } catch (error) {
         console.error('Error fetching Exam Type:', error);
