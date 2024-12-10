@@ -13,6 +13,7 @@ const ExamResults = () => {
   const [error, setError] = useState(null);
   const [userList, setUserList] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [subjectsName, setSubjectsName] = useState([]);
 
   useEffect(() => {
     const fetchExamAndProcessData = async () => {
@@ -77,6 +78,29 @@ const ExamResults = () => {
     fetchUsers();
   }, [filteredData, className, examTypeId]);
 
+  const fetchSubjectName = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+
+      if (response.data.success) {
+        const subdata = response.data.data;
+        setSubjectsName(subdata);
+      }
+    } catch (error) {
+      console.error("Error fetching Subject data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjectName();
+  }, [filteredData]); 
+
+  const getSubjectNameById = (id) => {
+    const sub = subjectsName.find((type) => type.id == id);
+    return sub ? sub.subject : "Unknown";
+  };
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -92,7 +116,7 @@ const ExamResults = () => {
       sortable: true,
     },
     ...subjects.map((subject) => ({
-      name: subject.subject, // Use subject names as column headers
+      name: getSubjectNameById(subject.subject), // Use subject names as column headers
       selector: (row) => {
         const subjectResult = row.results.find(
           (result) => result.subjectName == subject.subject

@@ -67,7 +67,7 @@ const ClassNameTiles = () => {
   useEffect(() => {
     // fetchExamType();
     fetchClassName();
-  }, [examData]); // Fetching data only when the examType changes
+  }, [examData]); 
 
   const getclassNameById = (id) => {
     // console.log(classNamestr,'classnamestvsdkwfh')
