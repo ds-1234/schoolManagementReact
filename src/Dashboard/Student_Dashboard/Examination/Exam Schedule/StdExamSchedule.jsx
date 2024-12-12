@@ -146,11 +146,6 @@ const StdExamSchedule = () => {
       selector: (row, idx) => idx + 1,
       sortable: false,
     },
-    // {
-    //   name: 'Class Name',
-    //   selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
-    //   sortable: true,
-    // },
     {
       name: 'Exam Name',
       selector: (row) => getExamTypeNameById(row.examName),  // Use the helper function to get exam type name
