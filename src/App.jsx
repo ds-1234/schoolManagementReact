@@ -130,6 +130,7 @@ import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults
 import TchExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchExamSchedule';
 import StdExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdExamSchedule';
 import StdClassWiseExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdClassWiseExamSchedule';
+import ParentExamSchedule from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentExamSchedule';
 
 
 
@@ -301,6 +302,7 @@ function App() {
           >
             <Route index element={<Parent />} />
             <Route path = 'childDetail' element ={<Children/>} />
+            <Route path = 'ParentExamSchedule' element ={<ParentExamSchedule/>} />
           </Route>
         {/* Guest Dashboard Routes */}
         <Route
