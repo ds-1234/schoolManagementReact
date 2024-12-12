@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -74,7 +74,11 @@ const StdClassWiseExamSchedule = () => {
 
   return (
     <div className="flex flex-col justify-start pl-0">
-      <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">{className}'s Exam Schedule</h2>
+      {/* <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">{className}'s Exam Schedule</h2> */}
+            <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Exam Schedule</h1>
+            <p className='pl-0 mt-2'>
+              <NavLink to='/studentDashboard'> Dashboard </NavLink>/<NavLink to='/studentDashboard/stdExamResult'> Examinations </NavLink>/<NavLink to='/studentDashboard/StdExamSchedule'> Exam Schedule </NavLink>/ <span className='text-[#ffae01] font-semibold'>Schedule By Exam Name</span>
+            </p>
       <Table columns={columns} data={subjectWiseExamList} />
     </div>
   );
