@@ -18,6 +18,7 @@ const ParentExamSchedule = () => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [selectedExam, setSelectedExam] = useState(null);
   const [className, setClassName] = useState(null);
+  const [uniqueClasses, setUniqueClasses] = useState(null);
 
   // Open/Close popup for adding a new exam schedule
   const openAddPopup = () => setIsAddPopupOpen(true);
@@ -86,6 +87,7 @@ const ParentExamSchedule = () => {
       console.log(classNames,'classNames');
       const uniqueClassNames = [...new Set(classNames)];
       console.log('Unique Class Names:', uniqueClassNames);
+      setUniqueClasses(uniqueClassNames)
       return uniqueClassNames;
     } catch (error) {
       console.error('Error fetching userList or filtering data:', error);
@@ -106,79 +108,30 @@ const ParentExamSchedule = () => {
   const fetchExamSchedule = async () => {
     try {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       const response = await axios.get(`${BASE_URL}/exam/getExam`);
       const data = response.data.data;
       
       if (response.data && response.data.success) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        const teacherData = JSON.parse(sessionStorage.getItem('teacherData'));
+         const classnames = fetchUserListAndClassNames()
+        //  console.log(classnames,'classnamesin parent')
         // setExamSchedule(data);
-        if (teacherData && teacherData.classSubjectEntity) {
+        if (uniqueClasses) {
           // Step 2: Extract classSubjectEntity and filter for non-null classId
-          const classSubjectEntity = teacherData.classSubjectEntity;
-          const validClassIds = classSubjectEntity
-            .filter(entity => entity.classId !== null)
-            .map(entity => entity.classId);
-            console.log(validClassIds,'validClassIds')
+          // const classSubjectEntity = teacherData.classSubjectEntity;
+          // const validClassIds = classSubjectEntity
+          //   .filter(entity => entity.classId !== null)
+          //   .map(entity => entity.classId);
+          //   console.log(validClassIds,'validClassIds')
           
           // Step 3: Ensure unique classIds
-          const uniqueClassIds = [...new Set(validClassIds)];
-          console.log(uniqueClassIds,'uniqueClassIds')
-          console.log(data,'data')
+          // const uniqueClassIds = [...new Set(validClassIds)];
+          // console.log(uniqueClassIds,'uniqueClassIds')
+          // console.log(data,'data')
 
   
           // Step 4: Filter fetchExamSchedule data
           const filteredExamSchedule = data.filter(
-            schedule => uniqueClassIds.includes(schedule.className.toString())
+            schedule => uniqueClasses.includes(schedule.className)
           );
           
           console.log(filteredExamSchedule,'filteredExamSchedule')
