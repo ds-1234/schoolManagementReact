@@ -121,7 +121,7 @@ function OfficeDets() {
        <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Office Details</h2>
-    <form className="grid grid-cols-3 mt-5 gap-6">
+    <form className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-5 gap-6">
         <div className="flex flex-col px-1">
             <DatePicker 
             name={'admissionDate'}
@@ -191,14 +191,14 @@ function OfficeDets() {
             />
         </div>
     </form>
-    <div className='flex justify-between items-center'>
+    <div className='flex justify-between items-center xl:mt-5 mt-10'>
     <button onClick={() => handlePrevStep()}>
-            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+            <h1 className=' font-semibold text-medium cursor-pointer'>
                 <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
                 Back
             </h1>
       </button>
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 flex justify-end space-x-4 ">
             <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {
                 reset() 

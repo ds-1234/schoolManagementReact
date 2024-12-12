@@ -122,14 +122,14 @@ function DocsDets() {
         className={"hidden"}
       />
 
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center mt-10 lg:mt-5'>
         <button onClick={() => handlePrevStep()}>
-          <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+          <h1 className='font-semibold text-medium cursor-pointer'>
             <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
             Back
           </h1>
         </button>
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 flex justify-end space-x-4 ">
           <Button type='submit' label="Submit" onClick={handleSubmit(onSubmit)} />
           <Button onClick={() => {
             reset();

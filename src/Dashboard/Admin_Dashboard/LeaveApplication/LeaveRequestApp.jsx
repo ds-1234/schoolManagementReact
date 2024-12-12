@@ -50,7 +50,7 @@ const LeaveRequest = () => {
         leaveTypes?.forEach((type) => {
           mapping[type.id] = type.leaveType;
         });
-        console.log(mapping);
+        // console.log(mapping);
         
         setLeaveTypeMap(mapping);
       })
@@ -65,7 +65,7 @@ const LeaveRequest = () => {
         users?.forEach((type) => {
           mapping[type.id] = type.firstName + " " + type.lastName;
         });
-        console.log(mapping);
+        // console.log(mapping);
         
         setUserMap(mapping);
       })
@@ -112,6 +112,7 @@ const LeaveRequest = () => {
       name: "Status",
       selector: (row) => <LeaveCategoryStatusBtn status={row.leaveStatus} />,
       sortable: true,
+      width: '150px'
     },
     {
       name: 'Action',

@@ -115,8 +115,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md relative py-5 px-5 ">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
@@ -162,7 +162,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
             <select  
               id="classTeacher" 
               value={selectedTeacher}
-              className={`w-full  rounded-lg border py-2 px-2`}
+              className={`w-full rounded-lg border py-2 px-2`}
               onChange={(e) => setSelectedTeacher(e.target.value)}
             >
               <option value="">Select Teacher</option>

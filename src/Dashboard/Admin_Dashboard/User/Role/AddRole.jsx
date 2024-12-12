@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
 // import { useNavigate } from 'react-router-dom';
 
 const AddRole = ({ isOpen, onClose }) => {
@@ -41,7 +42,7 @@ const AddRole = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
         method:"POST",
-        url : `http://localhost:8080/role/createRole`,
+        url : `${BASE_URL}/role/createRole`,
         data: {
             name : data.role ,
         },
@@ -66,7 +67,7 @@ const AddRole = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5 ">
        <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

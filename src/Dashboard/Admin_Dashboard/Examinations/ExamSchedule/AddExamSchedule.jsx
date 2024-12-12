@@ -206,7 +206,7 @@ fetchClassList    // setFilteredSubjects([])
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out p-4">
       <div className="bg-white p-4 rounded-xl w-full max-w-4xl relative shadow-lg animate-fadeIn">
         <button
           onClick={onClose}
@@ -220,7 +220,7 @@ fetchClassList    // setFilteredSubjects([])
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Fixed dropdowns for Class and Exam Type */}
           <div className="mb-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Class Dropdown */}
               <div>
                 <label className="block text-sm font-semibold mb-1">Class</label>
@@ -259,7 +259,7 @@ fetchClassList    // setFilteredSubjects([])
           <div className="border-t border-gray-200 bg-gray-200 p-2 rounded-lg max-h-[60vh] overflow-y-auto"> {/* Scrollable Area */}
           <div className="mb-4">
               {fields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-6 gap-4 mb-4">
+                <div key={field.id} className="grid lg:grid-cols-6 md:grid-cols-5 sm:grid-cols-4 grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-semibold mb-1">Subject</label>
                     <select

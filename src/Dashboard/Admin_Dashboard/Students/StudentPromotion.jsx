@@ -184,7 +184,7 @@ function StudentPromotion() {
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto  bg-white rounded-xl shadow-md space-y-6 my-5">
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6">
           <div>
             <label className="block text-base font-medium text-gray-700 mb-1">Current Session *</label>
             <input

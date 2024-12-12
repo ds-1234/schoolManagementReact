@@ -127,6 +127,7 @@ import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveR
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
 import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
+import UserHome from './Dashboard/Admin_Dashboard/User/UserHome';
 
 
 
@@ -152,6 +153,8 @@ function App() {
             }
           >
             <Route index element={<Admin />} />
+            <Route path='user' element={<UserHome moduleSelected={'user'}/>}/>
+            <Route path='config' element={<UserHome moduleSelected={'conf'}/>}/>
             <Route path="school" element={<School />} />
             <Route path="subject" element={<Subject />} />
             <Route path="books" element={<Book />} />

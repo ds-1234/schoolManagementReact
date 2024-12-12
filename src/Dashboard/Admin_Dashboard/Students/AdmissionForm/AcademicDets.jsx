@@ -131,7 +131,7 @@ function AcademicDets() {
        <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Academic Details</h2>
-    <form  className="grid grid-cols-4 mt-5 gap-6">
+    <form  className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 mt-5 gap-6">
         <div className="flex flex-col px-1">
             <label htmlFor="school">School Branch <span className='text-red-700 font-bold'>*</span></label>
             <select
@@ -190,18 +190,18 @@ function AcademicDets() {
 
     <div className='flex justify-between items-center'>
     <button onClick={() => handlePrevStep()}>
-            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+            <h1 className='xl:mt-5 mt-10 font-semibold text-medium cursor-pointer'>
                 <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
                 Back
             </h1>
     </button>
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 flex justify-end md:space-x-4 space-x-2 xl:mt-5 mt-10">
             <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {
                 reset() 
                 navigate('/admin/allStudents')
             }} 
-            label="Cancel" className='px-8 bg-[#ffae01] hover:bg-[#042954]'/>
+            label="Cancel" className='md:px-8 bg-[#ffae01] hover:bg-[#042954]'/>
         </div>
     </div>
 </div>

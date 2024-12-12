@@ -299,7 +299,7 @@ console.log("Filtered Class Names:", filteredClassNames);
     
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out p-5">
       <div className="bg-white p-4 rounded-xl w-full max-w-xl relative shadow-lg animate-fadeIn overflow-y-auto max-h-screen">
         <button onClick={handleClose} className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900 focus:outline-none">
           &times;

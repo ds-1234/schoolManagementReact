@@ -3,6 +3,10 @@ import axios from "axios";
 import BASE_URL from "../../../conf/conf";
 import Button from "../../../Reusable_components/Button";
 import { useNavigate } from "react-router-dom";
+import NotificationIcon from "../../../assets/Icons/NotificationIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const Leaves = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -18,7 +22,7 @@ const Leaves = () => {
         );
         // Filter to only include pending requests and limit to 3 requests
         const pendingRequests = response.data.data
-          .filter((leave) => leave.leaveStatus === "pending")
+          .filter((leave) => leave.leaveStatus === "PENDING")
           .slice(0, 3); // Limit to max 3
         setLeaveRequests(pendingRequests);
       } catch (error) {
@@ -62,9 +66,28 @@ const Leaves = () => {
       });
 } , [])
 
+const handleSubmit = async(id , value) => {
+  await axios({
+    method: 'POST' , 
+    url: `${BASE_URL}/leaves/updateLeavesStatus` ,
+    data: {
+      id: id,
+      leaveStatus: value 
+    },
+    headers: {'Content-Type' : 'application/json'}
+  }).then((response) => {
+    toast.success("Leave Request Updated Successfully !")
+  }).catch((err) => {
+    toast.error("Error in Leave Request") 
+  })
+}
+
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md ">
+      <NotificationIcon
+        notificationCount={leaveRequests.length}
+      />
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-lg font-bold text-blue-950">Leave Requests</h2>
         <Button label="View More" onClick={() => navigate('/admin/leaveRequest')}/>
@@ -87,18 +110,18 @@ const Leaves = () => {
                   </div>
                 </div>
 
-              <div className="flex">
+              <div className="flex gap-5">
                 <button
-                  className=" text-white w-8 h-8 rounded-full"
-                  title="Approve"
+                  className="text-green-500 text-2xl"
+                  onClick={() => handleSubmit(leave.id , "APPROVED")}
                 >
-                  ✅
+                  <FontAwesomeIcon icon={faCircleCheck} />
                 </button>
                 <button
-                  className=" text-white w-8 h-8 rounded-full "
-                  title="Reject"
+                  className="text-red-500 text-2xl "
+                  onClick={() => handleSubmit(leave.id , "REJECTED")}
                 >
-                  ❌
+                  <FontAwesomeIcon icon={faCircleXmark} />
                 </button>
               </div>
               </div>
