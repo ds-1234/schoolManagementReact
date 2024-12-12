@@ -127,6 +127,7 @@ import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveR
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
 import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
+import TchExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchExamSchedule';
 
 
 
@@ -282,6 +283,7 @@ function App() {
             <Route path='ExamClasses' element={<ExamClasses/>} />
             <Route path = 'leaves' element = {<LeaveTab/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequest/>}/>
+            <Route path = 'tchExamSchedule' element= {<TchExamSchedule/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}
