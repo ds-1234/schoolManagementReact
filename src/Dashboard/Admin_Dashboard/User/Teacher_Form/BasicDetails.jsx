@@ -194,7 +194,7 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
         <div className="mb-6 mt-4 relative">
         <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
         <div 
-          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center w-1/2"
+          className="border rounded-lg cursor-pointer p-2 flex justify-between items-center md:w-1/2 w-full"
           onClick={() => {
             setStdDropdown(!stdDropdown)
           }}
@@ -210,7 +210,7 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
  <FontAwesomeIcon icon={faAngleDown} />
         </div>
         {stdDropdown && (
-          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col w-1/2">
+          <div className="absolute bg-white border rounded-lg mt-1 flex flex-col md:w-1/2 w-full">
             {stds.map(std => (
               <label key={std.id} className="px-4 py-2 hover:bg-gray-100 flex items-center">
                 <input
@@ -228,7 +228,7 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
       )}
 
       <h3 className="text-xl font-semibold mb-2 text-gray-900">Basic Details</h3>
-      <form  className='grid grid-cols-4 mt-5 gap-6'>
+      <form  className='grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 mt-5 gap-6'>
         <div className="flex flex-col px-1">
           <label htmlFor="firstName">First Name <span className='text-red-700 font-bold'>*</span></label>
           <input

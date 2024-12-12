@@ -60,10 +60,10 @@ function NoticeBoard() {
 
       <AddBtn onAddClick={addClick}/>
       
-      <div className="p-12 max-w-7xl mx-auto bg-white space-y-2 my-10">
+      <div className="p-12 rounded-md  mx-auto bg-white space-y-2 my-5">
       
  {/* Search Inputs */}
-<div className="flex gap-4 mb-6 ">
+<div className="flex gap-2 mb-6 sm:flex-nowrap flex-wrap">
   <input
     // type="date"
     placeholder="Search by Date..."
@@ -82,7 +82,7 @@ function NoticeBoard() {
         e.target.value = formatDateToDDMMYYYY(value);
       }
     }}
-    className="border p-4 text-lg rounded-xl w-full"  
+    className="border p-2  rounded-xl sm:w-full w-1/2"  
     value={searchDate}
     onChange={(e) => setSearchDate(e.target.value)}
   />
@@ -90,13 +90,13 @@ function NoticeBoard() {
   <input
     type="text"
     placeholder="Search by Title..."
-    className="border p-4 text-lg rounded-xl w-full"  
+    className="border p-2 rounded-xl sm:w-full w-1/2"  
     value={searchTitle}
     onChange={(e) => setSearchTitle(e.target.value)}
   />
   <Button
   label = 'Search'
-    className="bg-yellow-500 text-white px-6 py-4 text-lg "  
+    className="bg-yellow-500 text-white px-2 py-2"  
     onClick={handleSearch}
   >
     Search
@@ -105,7 +105,7 @@ function NoticeBoard() {
 
 
       {/* Notice List */}
-      <div className='grid gap-6'>
+      <div className='grid gap-4'>
           {notices.map((notice,index) => (
             <Tile
               key={notice.id}

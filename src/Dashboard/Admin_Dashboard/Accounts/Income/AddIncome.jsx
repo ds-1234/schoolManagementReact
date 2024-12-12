@@ -89,13 +89,13 @@ const handleSelectPaymentMethod = (method) => {
 
   return (
     <div className='pl-0 h-full'>
-      <h1 className='text-lg md:text-2xl pl-20 pt-8 font-semibold text-black'>Add Income</h1>
-      <p className='pl-20 mt-2'>Dashboard /<NavLink to='/admin'> Admin </NavLink>/<NavLink to='/admin/expenses'> Expenses </NavLink>/ <NavLink to='/admin/income'> Income </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Income</span></p>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Add Income</h1>
+      <p className=' mt-2'><NavLink to='/admin'> Dashboard </NavLink>/<NavLink to='/admin/expenses'> Expenses </NavLink>/ <NavLink to='/admin/income'> Income </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Income</span></p>
 
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl my-20 ml-24">
+      <div className=" mx-auto p-6 bg-white shadow-md rounded-xl my-20 ">
         <h2 className="text-2xl font-semibold mb-6 text-black">Add New Income</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* Income Name */}
             <div>
               <label className="block text-sm font-medium mb-2 text-black" htmlFor="incomeName">

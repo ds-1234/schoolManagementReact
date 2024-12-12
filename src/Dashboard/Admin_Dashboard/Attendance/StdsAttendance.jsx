@@ -148,7 +148,9 @@ const StdsAttendance = () => {
         <p className='mt-2'><NavLink to='/admin'>Dashboard </NavLink>/ <NavLink to='/admin/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
       </div>
       
+      <div className='mt-10'>
       <Labels/>
+      </div>
       <div className="overflow-x-auto max-w-7xl"> 
         <Table
           columns={columns}  

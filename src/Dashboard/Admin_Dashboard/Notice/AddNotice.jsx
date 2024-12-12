@@ -86,13 +86,12 @@ function AddNotice() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto bg-white rounded-xl shadow-md  my-10">
       <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
-      
-      <p className=' '>Dashboard /<NavLink to='/admin'> Admin </NavLink>/<NavLink to='/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span></p>
+      <p className='mb-5'><NavLink to='/admin'> Dashboard </NavLink>/<NavLink to='/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span></p>
 
       {/* Radio buttons for "Notice For" */}
-      <div className="col-span-2">
+      <div className="col-span-2 ">
         <label className="block text-sm font-medium text-gray-700">Notice For *</label>
         <div className="mt-2 space-y-2">
           <div className='inline ml-4'>
@@ -132,7 +131,7 @@ function AddNotice() {
       </div>
 
       {/* Title and Details */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700">Title *</label>
           <input {...register('title', { required: true })} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base bg-[#f3f4f6] py-1 px-1" />

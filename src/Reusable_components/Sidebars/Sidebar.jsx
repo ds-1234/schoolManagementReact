@@ -37,7 +37,7 @@ const Sidebar = () => {
            {/* User Section */}
            <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/activeUser"
+              to="/admin/user"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -80,7 +80,7 @@ const Sidebar = () => {
           {/* Conf Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/role"
+              to="/admin/config"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
@@ -248,22 +248,6 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
-
-
-          {/* Books Section
-          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/books"
-              className={({ isActive }) =>
-                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-              <FontAwesomeIcon icon={faBookAtlas} className="mr-4 text-[#ffae01]" />
-              Library
-            </NavLink>
-          </li> */}
-
-          
 
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
@@ -766,10 +750,6 @@ const Sidebar = () => {
             )}
           </li>
 
-
-
-
-
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
@@ -827,22 +807,6 @@ const Sidebar = () => {
               
             </NavLink>
           </li>
-             {/* StaffAttendance Section */}
-             {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/StaffAttendance"
-              className={({ isActive }) =>
-                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
-                Staff Attendance
-              
-            </NavLink>
-          </li> */}
-
-
-
 
         </ul>
       </nav>

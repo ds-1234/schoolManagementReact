@@ -67,30 +67,33 @@ const TeacherTTGrid = ({ timetableData }) => {
   
 
   return (
-    <div className='flex flex-nowrap justify-evenly gap-4 bg-white pb-10 pt-4 rounded-lg'>
-      {daysOfWeek.map((day) => (
-        <div key={day}>
-          <h3 className='text-base font-semibold text-[#202C4B] mb-4'>{day}</h3>
-          <div className='space-y-4'>
-            {transformedTimetable[day] ? (
-              transformedTimetable[day].map((slot, index) => (
-                <div key={index} className={`${slot.color} text-gray-900 p-4 rounded-lg shadow-lg space-y-2`}>
-                  <div className='flex items-center space-x-3'>
-                    <span className='text-sm font-semibold'>
-                      <i className='far fa-clock'></i> {slot.time}
-                    </span>
-                  </div>
-                  <p className='font-medium'>Subject: {slot.subject}</p>
-                  <p className='font-medium'>Class: {slot.className} - {slot.section}</p>
+    <div className="overflow-x-auto bg-white rounded-lg">
+  <div className="flex md:flex-nowrap justify-evenly gap-4 pb-10 p-4">
+    {daysOfWeek.map((day) => (
+      <div key={day} className="min-w-[200px]"> {/* Ensure consistent column width */}
+        <h3 className="text-base font-semibold text-[#202C4B] mb-4">{day}</h3>
+        <div className="space-y-4">
+          {transformedTimetable[day] ? (
+            transformedTimetable[day].map((slot, index) => (
+              <div key={index} className={`${slot.color} text-gray-900 p-4 rounded-lg shadow-lg space-y-2`}>
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm font-semibold">
+                    <i className="far fa-clock"></i> {slot.time}
+                  </span>
                 </div>
-              ))
-            ) : (
-              <p className='text-gray-500 italic'>No classes</p>
-            )}
-          </div>
+                <p className="font-medium">Subject: {slot.subject}</p>
+                <p className="font-medium">Class: {slot.className}-{slot.section}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 italic">No classes</p>
+          )}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+  </div>
+</div>
+
   );
 };
 

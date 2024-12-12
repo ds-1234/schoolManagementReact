@@ -138,7 +138,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
   };
 
   return (
-<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out">
+<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out p-4">
   <div className="bg-white p-4 rounded-xl w-full max-w-4xl relative shadow-lg animate-fadeIn">
     <button onClick={onClose} className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900 focus:outline-none">
       &times;
@@ -149,7 +149,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="border-t border-gray-200 bg-gray-200 p-2 rounded-lg">
         <div className="mb-4">
-          <ul className="flex space-x-4">
+          <ul className="flex md:space-x-4 space-x-2 md:flex-nowrap flex-wrap justify-evenly">
             {daysOfWeek.map((day) => (
               <li key={day}>
                 <button
@@ -168,7 +168,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
         <div className="border-t border-gray-200 pt-1"></div>
         <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
           {fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-5 gap-4 mb-4">
+            <div key={field.id} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-semibold mb-1">Subject</label>
                 <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300" {...register(`days.${activeDay}.${index}.subject`)}>

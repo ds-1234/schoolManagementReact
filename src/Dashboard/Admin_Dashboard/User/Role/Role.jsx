@@ -139,7 +139,10 @@ const searchOptions = [
   return (
     <div className='h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Role</h1>
-      <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Role</span> </p>
+      <p className=' mt-2'>
+        <NavLink to = '/admin'> Dashboard </NavLink>/ 
+        <NavLink to = '/admin/config'> Configuration </NavLink>/ 
+        <span className='text-[#ffae01] font-semibold'>Role</span> </p>
       <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
