@@ -70,8 +70,34 @@ const TchExamSchedule = () => {
     try {
       const response = await axios.get(`${BASE_URL}/exam/getExam`);
       const data = response.data.data;
+      
       if (response.data && response.data.success) {
-        setExamSchedule(data);
+        const teacherData = JSON.parse(sessionStorage.getItem('teacherData'));
+        // setExamSchedule(data);
+        if (teacherData && teacherData.classSubjectEntity) {
+          // Step 2: Extract classSubjectEntity and filter for non-null classId
+          const classSubjectEntity = teacherData.classSubjectEntity;
+          const validClassIds = classSubjectEntity
+            .filter(entity => entity.classId !== null)
+            .map(entity => entity.classId);
+            console.log(validClassIds,'validClassIds')
+          
+          // Step 3: Ensure unique classIds
+          const uniqueClassIds = [...new Set(validClassIds)];
+          console.log(uniqueClassIds,'uniqueClassIds')
+          console.log(data,'data')
+
+  
+          // Step 4: Filter fetchExamSchedule data
+          const filteredExamSchedule = data.filter(
+            schedule => uniqueClassIds.includes(schedule.className.toString())
+          );
+          
+          console.log(filteredExamSchedule,'filteredExamSchedule')
+  
+          // Step 5: Set the filtered data
+          setExamSchedule(filteredExamSchedule);
+        }
       }
     } catch (error) {
       console.error('Error fetching exam schedule:', error);
@@ -148,7 +174,7 @@ const TchExamSchedule = () => {
             <img src={edit} alt="Edit" className='h-8' />
           </button>
           <button
-            onClick={() => onDelete(row.id)}
+            // onClick={() => onDelete(row.id)}
 
           >
             <img src={deleteIcon} alt="Delete" className='h-8' />

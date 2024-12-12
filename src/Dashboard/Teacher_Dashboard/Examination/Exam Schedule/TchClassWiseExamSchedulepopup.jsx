@@ -149,7 +149,7 @@ const [subject, setSubject] = useState([]);  // State for exam types
           </button>
 
           <button
-            onClick={() => onDelete(row.id)}
+            // onClick={() => onDelete(row.id)}
 
           >            <img src={deleteIcon} alt="Delete" className="h-8" />
           </button>
