@@ -222,14 +222,14 @@ const UpdateResult = () => {
       sortable: true,
       wrap: true,
     },
-    {
-      name: "Action",
-      cell: (row) => (
-        <button onClick={() => handleEditClick(row)}>
-          <img src={edit} alt="Edit" className="h-8" />
-        </button>
-      ),
-    },
+    // {
+    //   name: "Action",
+    //   cell: (row) => (
+    //     <button onClick={() => handleEditClick(row)}>
+    //       <img src={edit} alt="Edit" className="h-8" />
+    //     </button>
+    //   ),
+    // },
   ];
 
   const fetchExamType = async () => {
@@ -319,17 +319,17 @@ const UpdateResult = () => {
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-        Add Exam Result
+         Exam Result
       </h1>
       <p className="mt-2">
         <NavLink to="/teacherDashboard"> Dashboard </NavLink> /
         <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
         <NavLink to="/teacherDashboard/ExamClasses"> Class List </NavLink> /
-        <span className="text-[#ffae01] font-semibold"> Add Exam Result</span>
+        <span className="text-[#ffae01] font-semibold">  Exam Result</span>
       </p>
 
       <h2 className="mt-6 text-xl font-semibold text-black">
-        Update Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)} in {examTypeName}
+         Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)} in {examTypeName}
       </h2>
       <Table columns={column} data={examResults} />
 
