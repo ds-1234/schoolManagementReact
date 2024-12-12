@@ -75,17 +75,7 @@ const StdExamSchedule = () => {
         const user = JSON.parse(sessionStorage.getItem('user'));
         // setExamSchedule(data);
         if (user && user.className) {
-          // Step 2: Extract classSubjectEntity and filter for non-null classId
-          // const classSubjectEntity = teacherData.classSubjectEntity;
-          // const validClassIds = classSubjectEntity
-          //   .filter(entity => entity.classId !== null)
-          //   .map(entity => entity.classId);
-          //   console.log(validClassIds,'validClassIds')
-          
-          // Step 3: Ensure unique classIds
-          // const uniqueClassIds = [...new Set(validClassIds)];
-          // console.log(uniqueClassIds,'uniqueClassIds')
-          // console.log(data,'data')
+
 
   
           // Step 4: Filter fetchExamSchedule data
@@ -156,16 +146,17 @@ const StdExamSchedule = () => {
       selector: (row, idx) => idx + 1,
       sortable: false,
     },
-    {
-      name: 'Class Name',
-      selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
-      sortable: true,
-    },
+    // {
+    //   name: 'Class Name',
+    //   selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
+    //   sortable: true,
+    // },
     {
       name: 'Exam Name',
       selector: (row) => getExamTypeNameById(row.examName),  // Use the helper function to get exam type name
       sortable: true,
     },
+
     {
       name: 'Action',
       cell: (row) => (
