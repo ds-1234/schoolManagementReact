@@ -129,6 +129,7 @@ import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/
 import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
 import TchExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchExamSchedule';
 import StdExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdExamSchedule';
+import StdClassWiseExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdClassWiseExamSchedule';
 
 
 
@@ -255,7 +256,8 @@ function App() {
             <Route path = 'leaves/:status' element={<LeaveCategoryPage/>}/>
             <Route path = 'ExamDetails' element={<ExamDetails/>}/>
             <Route path = 'StdExamSchedule' element={<StdExamSchedule/>}/>
-          </Route>
+            <Route path="stdClassWiseExamSchedule" element={<StdClassWiseExamSchedule />} />
+            </Route>
 
           {/* Teacher Dashboard Routes */}
           <Route

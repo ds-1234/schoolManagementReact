@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
-import StdClassWiseExamSchedulepopup from './StdClassWiseExamSchedulepopup';
 
 const StdExamSchedule = () => {
   const [examSchedule, setExamSchedule] = useState([]);
   const [examTypes, setExamTypes] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [className, setClassName] = useState(null);
+  const navigate = useNavigate(); // Initialize the navigate function
 
-  const openEditPopup = (exam, className) => {
-    setClassName(className);
-    setSelectedExam(exam);
-    setIsEditPopupOpen(true);
-  };
-
-  const closeEditPopup = () => {
-    setClassName(null);
-    setIsEditPopupOpen(false);
-    setSelectedExam(null);
+  const openExamSchedulePage = (exam, className) => {
+    // Navigate to the stdClassWiseExamSchedule page with state
+    navigate('/studentDashboard/stdClassWiseExamSchedule', { state: { subjectWiseExamList: exam.subjectWiseExamList, className } });
   };
 
   const fetchExamSchedule = async () => {
@@ -84,8 +74,7 @@ const StdExamSchedule = () => {
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Exam Schedule</h1>
       <p className='pl-0 mt-2'>
-        <NavLink to='/studentDashboard'> Dashboard </NavLink>/<NavLink to='/studentDashboard/stdExamResult'> Examinations </NavLink>/
-        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
+        <NavLink to='/studentDashboard'> Dashboard </NavLink>/<NavLink to='/studentDashboard/stdExamResult'> Examinations </NavLink>/ <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
       </p>
 
       {/* Tiles for Exam Names */}
@@ -94,8 +83,8 @@ const StdExamSchedule = () => {
           <div
             key={idx}
             className='p-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg transform hover:scale-105 hover:z-10 transition-transform duration-300 ease-in-out cursor-pointer overflow-hidden'
-            onClick={() => openEditPopup(exam, getClassNameById(exam.className))}
-            style={{ transformOrigin: 'center' }} // Ensures the tile scales from the center
+            onClick={() => openExamSchedulePage(exam, getClassNameById(exam.className))}
+            style={{ transformOrigin: 'center' }}
           >
             <h2 className='text-2xl font-bold text-white'>{getExamTypeNameById(exam.examName)}</h2>
             <p className='text-sm text-gray-200 mt-2'>{getClassNameById(exam.className)}</p>
@@ -105,16 +94,6 @@ const StdExamSchedule = () => {
           </div>
         ))}
       </div>
-
-      {/* Class Wise Exam Schedule Popup */}
-      {selectedExam && (
-        <StdClassWiseExamSchedulepopup
-          subjectWiseExamList={selectedExam.subjectWiseExamList}
-          className={className}
-          isOpen={isEditPopupOpen}
-          onClose={closeEditPopup}
-        />
-      )}
     </div>
   );
 };
