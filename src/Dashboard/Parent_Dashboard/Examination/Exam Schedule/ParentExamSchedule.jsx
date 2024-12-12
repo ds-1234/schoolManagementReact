@@ -7,8 +7,7 @@ import Table from '../../../../Reusable_components/Table';
 import deleteIcon from '../../../../assets/delete.png';
 import edit from '../../../../assets/edit.png';
 import ParentClassWiseExamSchedulepopup from './ParentClassWiseExamSchedulepopup';
-// import AddExamSchedule from './AddExamSchedule';
-// import TchClassWiseExamSchedulepopup from './ParentClassWiseExamSchedulepopup';
+
 
 const ParentExamSchedule = () => {
   const [loading, setLoading] = useState(true);
@@ -66,13 +65,101 @@ const ParentExamSchedule = () => {
       });
   }
 
+
+
+
+
+
+
+
+  const fetchUserListAndClassNames = async () => {
+    try {
+      const StudentIds = JSON.parse(sessionStorage.getItem('user'))?.isParent || [];
+      console.log(StudentIds,'StudentIds')
+
+      const response = await axios.get(`${BASE_URL}/user/getUserList`); 
+      const res = response.data.data
+      console.log(res,'stdresponse')
+      const filteredUsers = res.filter(user => StudentIds.includes(user.id));
+      console.log(filteredUsers,'filteredUsers')
+      const classNames = filteredUsers.map(user => user.className).flat();
+      console.log(classNames,'classNames');
+      const uniqueClassNames = [...new Set(classNames)];
+      console.log('Unique Class Names:', uniqueClassNames);
+      return uniqueClassNames;
+    } catch (error) {
+      console.error('Error fetching userList or filtering data:', error);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
   // Fetch exam schedule data from the API
   const fetchExamSchedule = async () => {
     try {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       const response = await axios.get(`${BASE_URL}/exam/getExam`);
       const data = response.data.data;
       
       if (response.data && response.data.success) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const teacherData = JSON.parse(sessionStorage.getItem('teacherData'));
         // setExamSchedule(data);
         if (teacherData && teacherData.classSubjectEntity) {
@@ -134,6 +221,7 @@ const ParentExamSchedule = () => {
     fetchExamSchedule();
     fetchClasses();
     fetchExamTypes();
+    fetchUserListAndClassNames()
   }, []);
 
   // Map class ID to class name
