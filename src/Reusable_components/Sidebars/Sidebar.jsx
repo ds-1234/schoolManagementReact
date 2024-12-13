@@ -209,7 +209,7 @@ const Sidebar = () => {
           {/* Library Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/books"
+              to="/admin/library"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -252,7 +252,7 @@ const Sidebar = () => {
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/admissionForm'}
+            to={'/admin/students'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -384,7 +384,7 @@ const Sidebar = () => {
           {/* Examinations Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/Examinations"
+              to="/admin/exam"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -488,7 +488,7 @@ const Sidebar = () => {
           {/* accounts Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/Expenses"
+              to="/admin/accounts"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -600,7 +600,7 @@ const Sidebar = () => {
           {/* Leaves Section */}
        <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/leaves"
+              to="/admin/leaveModule"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -645,7 +645,7 @@ const Sidebar = () => {
           {/* Sports Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/sports'}
+            to={'/admin/sportModule'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -661,7 +661,7 @@ const Sidebar = () => {
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
-                    to="/admin/Sports"
+                    to="/admin/sports"
                     className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
@@ -687,7 +687,7 @@ const Sidebar = () => {
           {/* Hostel Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/hostel'}
+            to={'/admin/hostelModule'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -753,7 +753,7 @@ const Sidebar = () => {
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/feesgrp"
+              to="/admin/fees"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }

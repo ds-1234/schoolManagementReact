@@ -226,7 +226,7 @@ function Income() {
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Income</h1>
       <p className='mt-2'>
         <NavLink to='/admin'> Dashboard </NavLink>/
-        <NavLink to='/admin/expenses'> Expenses </NavLink>/
+         <NavLink to = '/admin/accounts'> Accounts </NavLink>/ 
         <span className='text-[#ffae01] font-semibold'>Income</span>
       </p>
 

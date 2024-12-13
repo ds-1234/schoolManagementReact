@@ -162,7 +162,8 @@ const ExamSchedule = () => {
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Exam Schedule</h1>
       <p className='pl-0 mt-2'>
-        <NavLink to='/admin/user'> Dashboard </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
+        <NavLink to='/admin'> Dashboard </NavLink>/
+        <NavLink to='/admin/exam'> Examinations </NavLink>/ 
         <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
       </p>
 
