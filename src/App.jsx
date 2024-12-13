@@ -127,7 +127,7 @@ import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveR
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
 import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
-import UserHome from './Dashboard/Admin_Dashboard/User/UserHome';
+import UserHome from './Reusable_components/Home';
 
 
 
@@ -155,6 +155,14 @@ function App() {
             <Route index element={<Admin />} />
             <Route path='user' element={<UserHome moduleSelected={'user'}/>}/>
             <Route path='config' element={<UserHome moduleSelected={'conf'}/>}/>
+            <Route path='students' element={<UserHome moduleSelected={'students'}/>}/>
+            <Route path='library' element={<UserHome moduleSelected={'library'}/>}/>
+            <Route path='exam' element={<UserHome moduleSelected={'exam'}/>}/>
+            <Route path='accounts' element={<UserHome moduleSelected={'accounts'}/>}/>
+            <Route path='leaveModule' element={<UserHome moduleSelected={'leaveApp'}/>}/>
+            <Route path='sportModule' element={<UserHome moduleSelected={'sports'}/>}/>
+            <Route path='hostelModule' element={<UserHome moduleSelected={'hostel'}/>}/>
+            <Route path='fees' element={<UserHome moduleSelected={'fees'}/>}/>
             <Route path="school" element={<School />} />
             <Route path="subject" element={<Subject />} />
             <Route path="books" element={<Book />} />

@@ -173,7 +173,10 @@ const column = [
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>Pending Students</h1>
-       <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Students</span> </p>
+       <p className=' mt-2'>
+        <NavLink to = '/admin'> Dashboard </NavLink>/ 
+        <NavLink to = '/admin/students'> Students </NavLink>/
+        <span className='text-[#ffae01] font-semibold'>Pending Admission Form</span> </p>
 
       <Table
          columns={column}
