@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const FetchData = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook to navigate
 
   useEffect(() => {
     // Retrieve the 'isParents' array from sessionStorage
-    const users = JSON.parse(sessionStorage.getItem('user')) ; // Default to an empty array if not available
-    const isParents =  users.isParent || []
+    const users = JSON.parse(sessionStorage.getItem('user')) || {}; // Default to an empty object if not available
+    const isParents = users.isParent || [];
 
     // Fetching data from the API
     fetch('http://localhost:8080/user/getUserList') // Replace with your actual API endpoint
@@ -34,6 +36,13 @@ const FetchData = () => {
       });
   }, []);
 
+  const handleTileClick = (user) => {
+    // Send the selected user data (including className) using the state
+    const classId = user.className[0] 
+    navigate('/parentsDashboard/ParentClassExamSchedulePage', { state: { classId } });
+    console.log(user,'userinsdu')
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -42,7 +51,11 @@ const FetchData = () => {
       <h1 className="text-2xl font-bold text-center mb-6">Filtered User List (Students with Active Status)</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {users.map(user => (
-          <div key={user.id} className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white">
+          <div
+            key={user.id}
+            className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white cursor-pointer"
+            onClick={() => handleTileClick(user)} // Send entire user data on click
+          >
             <h3 className="text-xl font-semibold text-center text-blue-500">{user.firstName}</h3>
             <p className="text-center text-gray-700">{user.className}</p> {/* Assuming className is available */}
           </div>
