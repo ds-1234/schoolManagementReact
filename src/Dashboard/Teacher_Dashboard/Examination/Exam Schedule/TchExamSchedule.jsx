@@ -8,6 +8,8 @@ const TchExamSchedule = () => {
   const [classes, setClasses] = useState([]); // State for classes
   const [examSchedule, setExamSchedule] = useState([]); // State for exam schedule
   const navigate = useNavigate();
+  const [classesName, setClassesName] = useState([]); // State for classes
+
 
   // Fetch exam schedule data from the API
   // const fetchExamSchedule = async () => {
@@ -50,10 +52,32 @@ const TchExamSchedule = () => {
     }
   };
 
+  const fetchClassName = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/class/getClassList`); // Replace with your actual API endpoint
+      if (response.data && response.data.success) {
+        const activeClasses = response.data.data.filter((cls) => cls.isActive); // Filter active classes
+        setClassesName(activeClasses);
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get class name by ID
+  const getClassNameById = (id) => {
+    console.log(classesName,'classesname')
+    const classData = classesName.find((cls) => cls.id == id);
+    return classData ? `${classData.name}` : 'Class not found';
+  };
+
   // Fetch all data on component mount
   useEffect(() => {
     // fetchExamSchedule();
     fetchClasses();
+    fetchClassName()
   }, []);
 
   // Handle tile click
@@ -76,7 +100,7 @@ const TchExamSchedule = () => {
             className="p-4 border rounded shadow-md bg-white hover:bg-gray-100 cursor-pointer"
             onClick={() => handleTileClick(cls.id)}
           >
-            <h2 className="text-lg font-semibold text-gray-800">{cls.id}</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{getClassNameById(cls.id)}</h2>
             {/* <p className="text-sm text-gray-600">Section: {cls.section}</p> */}
           </div>
         ))}
