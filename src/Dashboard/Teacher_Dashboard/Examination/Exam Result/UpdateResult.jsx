@@ -328,8 +328,8 @@ const UpdateResult = () => {
         <span className="text-[#ffae01] font-semibold"> Exam Result</span>
       </p>
   
-      <div className="bg-white shadow-md rounded-lg p-6 mt-6 mx-auto max-w-full">
-      <h2 className="mt-6 text-xl font-semibold text-black">
+      <div className="bg-white shadow-md rounded-lg p-6 mt-2 mx-auto max-w-full">
+      <h2 className="mt-2 text-xl font-semibold text-black">
         Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)} in {examTypeName}
       </h2>
   
