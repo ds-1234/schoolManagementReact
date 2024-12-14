@@ -84,20 +84,20 @@ const ExamResults = () => {
       try {
         const payload = { className, examType: examTypeId };
         console.log(payload,'payload')
-        const response = await axios.get(`${BASE_URL}/exam/getExamResultForAdmin`, {
-          headers: {
-            'Content-Type': 'application/json', 
-          },
-          data: {
+        const response = await axios.post(`${BASE_URL}/exam/getExamResultForAdmin`, {
+          // headers: {
+          //   'Content-Type': 'application/json', 
+          // },
+          // // payload
+          // data: {
             className: className,
             examType: examTypeId,
-          },
+          // },
         });
   
         if (response.data.success && response.data.data) {
           const data = response.data.data;
   
-          // Transform data into a table-friendly format
           const results = Object.entries(data).map(([studentName, subjects]) => ({
             studentName,
             subjects,
