@@ -131,6 +131,8 @@ import TchExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Sche
 import StdExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdExamSchedule';
 import StdClassWiseExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdClassWiseExamSchedule';
 import ParentExamSchedule from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentExamSchedule';
+import ClassExamSchedulePage from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/ClassExamSchedulePage';
+import TchClassExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchClassExamSchedule';
 
 
 
@@ -289,6 +291,8 @@ function App() {
             <Route path = 'leaves' element = {<LeaveTab/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequest/>}/>
             <Route path = 'tchExamSchedule' element= {<TchExamSchedule/>}/>
+            <Route path = 'ClassExamSchedulePage' element= {<ClassExamSchedulePage/>}/>
+            <Route path = 'TchClassExamSchedule' element= {<TchClassExamSchedule/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}

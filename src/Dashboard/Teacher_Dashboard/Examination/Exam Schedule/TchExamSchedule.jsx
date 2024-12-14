@@ -1,213 +1,86 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
-import AddBtn from '../../../../Reusable_components/AddBtn';
-import Table from '../../../../Reusable_components/Table';
-import deleteIcon from '../../../../assets/delete.png';
-import edit from '../../../../assets/edit.png';
-// import AddExamSchedule from './AddExamSchedule';
-import TchClassWiseExamSchedulepopup from './TchClassWiseExamSchedulepopup';
 
 const TchExamSchedule = () => {
   const [loading, setLoading] = useState(true);
-  const [examSchedule, setExamSchedule] = useState([]);
-  const [examTypes, setExamTypes] = useState([]);  // State for exam types
-  const [classes, setClasses] = useState([]);  // State for classes
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [className, setClassName] = useState(null);
-
-  // Open/Close popup for adding a new exam schedule
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => {
-    setIsAddPopupOpen(false)
-    fetchExamSchedule() ;
-  };
-
-  // Open/Close popup for editing an exam schedule
-  const openEditPopup = (exam,className) => {
-    setClassName(className)
-    setSelectedExam(exam);
-    setIsEditPopupOpen(true);
-    fetchExamSchedule() ;
-
-  };
-
-  const closeEditPopup = () => {
-    setClassName(null)
-    setIsEditPopupOpen(false);
-    setSelectedExam(null);
-    fetchExamSchedule() ;
-
-  };
-
-  const onDelete = (id) => {
-    axios({
-      method: "POST",
-      url:`${BASE_URL}/exam/deleteExam/${id}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    })
-      .then((response) => {
-        console.log("Data from API:", response.data);
-        fetchExamSchedule() ;
-  
-  
-      })
-      .catch((error) => {
-        console.error("Error Deleting data:", error);
-        fetchExamSchedule() ;
-  
-      });
-  }
+  const [classes, setClasses] = useState([]); // State for classes
+  const [examSchedule, setExamSchedule] = useState([]); // State for exam schedule
+  const navigate = useNavigate();
 
   // Fetch exam schedule data from the API
-  const fetchExamSchedule = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/exam/getExam`);
-      const data = response.data.data;
-      
-      if (response.data && response.data.success) {
-        const teacherData = JSON.parse(sessionStorage.getItem('teacherData'));
-        // setExamSchedule(data);
-        if (teacherData && teacherData.classSubjectEntity) {
-          // Step 2: Extract classSubjectEntity and filter for non-null classId
-          const classSubjectEntity = teacherData.classSubjectEntity;
-          const validClassIds = classSubjectEntity
-            .filter(entity => entity.classId !== null)
-            .map(entity => entity.classId);
-            console.log(validClassIds,'validClassIds')
-          
-          // Step 3: Ensure unique classIds
-          const uniqueClassIds = [...new Set(validClassIds)];
-          console.log(uniqueClassIds,'uniqueClassIds')
-          console.log(data,'data')
-
-  
-          // Step 4: Filter fetchExamSchedule data
-          const filteredExamSchedule = data.filter(
-            schedule => uniqueClassIds.includes(schedule.className.toString())
-          );
-          
-          console.log(filteredExamSchedule,'filteredExamSchedule')
-  
-          // Step 5: Set the filtered data
-          setExamSchedule(filteredExamSchedule);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching exam schedule:', error);
-    }
-  };
+  // const fetchExamSchedule = async () => {
+  //   try {
+  //     const response = await axios.get(`${BASE_URL}/exam/getExam`);
+  //     if (response.data && response.data.success) {
+  //       setExamSchedule(response.data.data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching exam schedule:', error);
+  //   }
+  // };
 
   // Fetch class data from the API
   const fetchClasses = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/class/getClassList`);
-      if (response.data && response.data.success) {
-        setClasses(response.data.data);  // Store class data
+      const teacherData = JSON.parse(sessionStorage.getItem('teacherData'));
+      if (teacherData && teacherData.classSubjectEntity) {
+        const classSubjectEntity = teacherData.classSubjectEntity;
+
+        // Filter and map valid classes
+        const validClasses = classSubjectEntity
+          .filter((entity) => entity.classId !== null)
+          .map((entity) => ({
+            id: entity.classId,
+            name: entity.className,
+            section: entity.classSection,
+          }));
+
+        // Ensure unique classes
+        const uniqueClasses = Array.from(
+          new Map(validClasses.map((cls) => [cls.id, cls])).values()
+        );
+        console.log(uniqueClasses,'uniqueClasses')
+
+        setClasses(uniqueClasses);
       }
     } catch (error) {
       console.error('Error fetching classes:', error);
     }
   };
 
-  // Fetch exam type data from the API
-  const fetchExamTypes = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
-      if (response.data && response.data.success) {
-        setExamTypes(response.data.data);  // Store exam type data
-      }
-    } catch (error) {
-      console.error('Error fetching exam types:', error);
-    }
-  };
-
   // Fetch all data on component mount
   useEffect(() => {
-    fetchExamSchedule();
+    // fetchExamSchedule();
     fetchClasses();
-    fetchExamTypes();
   }, []);
 
-  // Map class ID to class name
-  const getClassNameById = (classId) => {
-    const classObj = classes.find((cls) => cls.id === classId);
-    return classObj ? `${classObj.name} ${classObj.section}` : 'Unknown Class';
+  // Handle tile click
+  const handleTileClick = (classId) => {
+    navigate('/teacherDashboard/ClassExamSchedulePage', { state: { classId } }); // Navigate with state
   };
-
-  // Map exam type ID to exam type name
-  const getExamTypeNameById = (examTypeId) => {
-    console.log(examTypes,'examtypes')
-    console.log(examTypeId,'examtypeid')
-    const examType = examTypes.find((type) => type.id === examTypeId);
-    return examType ? examType.examTypeName : 'Unknown Exam Type';
-  };
-
-  // Table columns definition
-  const columns = [
-    {
-      name: 'SR.No',
-      selector: (row, idx) => idx + 1,
-      sortable: false,
-    },
-    {
-      name: 'Class Name',
-      selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
-      sortable: true,
-    },
-    {
-      name: 'Exam Name',
-      selector: (row) => getExamTypeNameById(row.examName),  // Use the helper function to get exam type name
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: (row) => (
-        <div className='flex gap-2'>
-          <button onClick={() => openEditPopup(row , getClassNameById(row.className))}>
-            <img src={edit} alt="Edit" className='h-8' />
-          </button>
-          <button
-            // onClick={() => onDelete(row.id)}
-
-          >
-            <img src={deleteIcon} alt="Delete" className='h-8' />
-          </button>
-        </div>
-      ),
-    },
-  ];
 
   return (
-    <div className='flex flex-col justify-start pl-0'>
-      <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Exam Schedule</h1>
-      <p className='pl-0 mt-2'>
-        <NavLink to='/admin/user'> Dashboard </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
-        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
+    <div className="flex flex-col justify-start pl-0">
+      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Schedule</h1>
+      <p className="pl-0 mt-2">
+        <NavLink to="/teacherDashboard"> Dashboard </NavLink>/<NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/
+        <span className="text-[#ffae01] font-semibold">Exam Schedule</span>
       </p>
 
-      {/* <AddBtn onAddClick={openAddPopup} /> */}
-      
-      <Table columns={columns} data={examSchedule} />
-
-      {/* Add Exam Schedule Popup */}
-      {/* <AddExamSchedule isOpen={isAddPopupOpen} onClose={closeAddPopup} /> */}
-
-      {/* Class Wise Exam Schedule Popup */}
-      {selectedExam && (
-        <TchClassWiseExamSchedulepopup
-          subjectWiseExamList={selectedExam.subjectWiseExamList} // Pass the subjectWiseExamList of the selected exam
-          className={className} // Pass the className of the selected exam
-          isOpen={isEditPopupOpen}
-          onClose={closeEditPopup}
-        />
-      )}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+        {classes.map((cls) => (
+          <div
+            key={cls.id}
+            className="p-4 border rounded shadow-md bg-white hover:bg-gray-100 cursor-pointer"
+            onClick={() => handleTileClick(cls.id)}
+          >
+            <h2 className="text-lg font-semibold text-gray-800">{cls.id}</h2>
+            {/* <p className="text-sm text-gray-600">Section: {cls.section}</p> */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
