@@ -63,9 +63,9 @@ const ParentClassExamSchedulePage = () => {
       {/* <h1>Exam Details for Class ID: {classId}</h1> */}
             <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Class Schedule</h1>
             <p className="pl-0 mt-2">
-              <NavLink to="/teacherDashboard"> Dashboard </NavLink>/
+              <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
               {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
-              <NavLink to="/teacherDashboard/tchExamSchedule"> Exam Schedule </NavLink>/
+              <NavLink to="/parentsDashboard/ParentExamSchedule"> Exam Schedule </NavLink>/
               <span className="text-[#ffae01] font-semibold">Class Schedule</span>
             </p>
       <div className='mt-6' style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>

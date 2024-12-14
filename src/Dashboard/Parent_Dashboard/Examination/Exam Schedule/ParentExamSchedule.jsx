@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const FetchData = () => {
   const [users, setUsers] = useState([]);
@@ -48,8 +48,13 @@ const FetchData = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">Filtered User List (Students with Active Status)</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+           <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Schedule</h1>
+            <p className="pl-0 mt-2">
+              <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
+              {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
+              {/* <NavLink to="/teacherDashboard/tchExamSchedule"> Exam Schedule </NavLink>/ */}
+              <span className="text-[#ffae01] font-semibold">Exam Schedule</span>
+            </p>      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {users.map(user => (
           <div
             key={user.id}
