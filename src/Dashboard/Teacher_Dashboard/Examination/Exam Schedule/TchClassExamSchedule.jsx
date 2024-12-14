@@ -91,10 +91,12 @@ const TchClassExamSchedule = () => {
   return (
     <div className="container mx-auto p-4">
       {/* <h2 className="text-2xl font-bold text-center text-[#042954]">{classId}'s Exam Schedule</h2> */}
-            <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Schedule</h1>
+            <h1 className="text-lg md:text-2xl font-semibold text-black mt-5"> Schedule</h1>
             <p className="pl-0 mt-2">
-              <NavLink to="/teacherDashboard"> Dashboard </NavLink>/<NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/<NavLink to="/teacherDashboard/tchExamSchedule"> Exam Schedule </NavLink>/<NavLink to="/teacherDashboard/ClassExamSchedulePage"> Class Schedule </NavLink>/
-              <span className="text-[#ffae01] font-semibold">Class Schedule</span>
+              <NavLink to="/teacherDashboard"> Dashboard </NavLink>/
+              {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
+              <NavLink to="/teacherDashboard/tchExamSchedule"> Exam Schedule </NavLink>/<NavLink to="/teacherDashboard/ClassExamSchedulePage"> Class Schedule </NavLink>/
+              <span className="text-[#ffae01] font-semibold"> Schedule</span>
             </p>
       <Table
         columns={columns}
