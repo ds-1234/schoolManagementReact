@@ -1,257 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import BASE_URL from '../../../../conf/conf';
-import AddBtn from '../../../../Reusable_components/AddBtn';
-import Table from '../../../../Reusable_components/Table';
-import deleteIcon from '../../../../assets/delete.png';
-import edit from '../../../../assets/edit.png';
-import ParentClassWiseExamSchedulepopup from './ParentClassWiseExamSchedulepopup';
 
-
-const ParentExamSchedule = () => {
+const FetchData = () => {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [examSchedule, setExamSchedule] = useState([]);
-  const [examTypes, setExamTypes] = useState([]);  // State for exam types
-  const [classes, setClasses] = useState([]);  // State for classes
-  const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [className, setClassName] = useState(null);
-  const [uniqueClasses, setUniqueClasses] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Open/Close popup for adding a new exam schedule
-  const openAddPopup = () => setIsAddPopupOpen(true);
-  const closeAddPopup = () => {
-    setIsAddPopupOpen(false)
-    fetchExamSchedule() ;
-  };
-
-  // Open/Close popup for editing an exam schedule
-  const openEditPopup = (exam,className) => {
-    setClassName(className)
-    setSelectedExam(exam);
-    setIsEditPopupOpen(true);
-    fetchExamSchedule() ;
-
-  };
-
-  const closeEditPopup = () => {
-    setClassName(null)
-    setIsEditPopupOpen(false);
-    setSelectedExam(null);
-    fetchExamSchedule() ;
-
-  };
-
-  const onDelete = (id) => {
-    axios({
-      method: "POST",
-      url:`${BASE_URL}/exam/deleteExam/${id}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // withCredentials: true,
-    })
-      .then((response) => {
-        console.log("Data from API:", response.data);
-        fetchExamSchedule() ;
-  
-  
-      })
-      .catch((error) => {
-        console.error("Error Deleting data:", error);
-        fetchExamSchedule() ;
-  
-      });
-  }
-
-
-
-
-
-
-
-
-  const fetchUserListAndClassNames = async () => {
-    try {
-      const StudentIds = JSON.parse(sessionStorage.getItem('user'))?.isParent || [];
-      console.log(StudentIds,'StudentIds')
-
-      const response = await axios.get(`${BASE_URL}/user/getUserList`); 
-      const res = response.data.data
-      console.log(res,'stdresponse')
-      const filteredUsers = res.filter(user => StudentIds.includes(user.id));
-      console.log(filteredUsers,'filteredUsers')
-      const classNames = filteredUsers.map(user => user.className).flat();
-      console.log(classNames,'classNames');
-      const uniqueClassNames = [...new Set(classNames)];
-      console.log('Unique Class Names:', uniqueClassNames);
-      setUniqueClasses(uniqueClassNames)
-      return uniqueClassNames;
-    } catch (error) {
-      console.error('Error fetching userList or filtering data:', error);
-    }
-  };
-
-
-
-
-
-
-
-
-
-
-
-  // Fetch exam schedule data from the API
-  const fetchExamSchedule = async () => {
-    try {
-
-      const response = await axios.get(`${BASE_URL}/exam/getExam`);
-      const data = response.data.data;
-      
-      if (response.data && response.data.success) {
-         const classnames = fetchUserListAndClassNames()
-        //  console.log(classnames,'classnamesin parent')
-        // setExamSchedule(data);
-        if (uniqueClasses) {
-          // Step 2: Extract classSubjectEntity and filter for non-null classId
-          // const classSubjectEntity = teacherData.classSubjectEntity;
-          // const validClassIds = classSubjectEntity
-          //   .filter(entity => entity.classId !== null)
-          //   .map(entity => entity.classId);
-          //   console.log(validClassIds,'validClassIds')
-          
-          // Step 3: Ensure unique classIds
-          // const uniqueClassIds = [...new Set(validClassIds)];
-          // console.log(uniqueClassIds,'uniqueClassIds')
-          // console.log(data,'data')
-
-  
-          // Step 4: Filter fetchExamSchedule data
-          const filteredExamSchedule = data.filter(
-            schedule => uniqueClasses.includes(schedule.className)
-          );
-          
-          console.log(filteredExamSchedule,'filteredExamSchedule')
-  
-          // Step 5: Set the filtered data
-          setExamSchedule(filteredExamSchedule);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching exam schedule:', error);
-    }
-  };
-
-  // Fetch class data from the API
-  const fetchClasses = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/class/getClassList`);
-      if (response.data && response.data.success) {
-        setClasses(response.data.data);  // Store class data
-      }
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-    }
-  };
-
-  // Fetch exam type data from the API
-  const fetchExamTypes = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
-      if (response.data && response.data.success) {
-        setExamTypes(response.data.data);  // Store exam type data
-      }
-    } catch (error) {
-      console.error('Error fetching exam types:', error);
-    }
-  };
-
-  // Fetch all data on component mount
   useEffect(() => {
-    fetchExamSchedule();
-    fetchClasses();
-    fetchExamTypes();
-    fetchUserListAndClassNames()
+    // Retrieve the 'isParents' array from sessionStorage
+    const users = JSON.parse(sessionStorage.getItem('user')) ; // Default to an empty array if not available
+    const isParents =  users.isParent || []
+
+    // Fetching data from the API
+    fetch('http://localhost:8080/user/getUserList') // Replace with your actual API endpoint
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Filter data (role == 3, isActive == true, and matching IDs with isParents)
+        const filteredUsers = data.data.filter(user =>
+          user.role === 3 &&
+          user.isActive === true &&
+          isParents.includes(user.id) // Check if user id exists in isParents
+        );
+        setUsers(filteredUsers); // Set the filtered users
+        setLoading(false);
+      })
+      .catch(error => {
+        setError(error);
+        setLoading(false);
+      });
   }, []);
 
-  // Map class ID to class name
-  const getClassNameById = (classId) => {
-    const classObj = classes.find((cls) => cls.id === classId);
-    return classObj ? `${classObj.name} ${classObj.section}` : 'Unknown Class';
-  };
-
-  // Map exam type ID to exam type name
-  const getExamTypeNameById = (examTypeId) => {
-    console.log(examTypes,'examtypes')
-    console.log(examTypeId,'examtypeid')
-    const examType = examTypes.find((type) => type.id === examTypeId);
-    return examType ? examType.examTypeName : 'Unknown Exam Type';
-  };
-
-  // Table columns definition
-  const columns = [
-    {
-      name: 'SR.No',
-      selector: (row, idx) => idx + 1,
-      sortable: false,
-    },
-    {
-      name: 'Class Name',
-      selector: (row) => getClassNameById(row.className),  // Use the helper function to get class name
-      sortable: true,
-    },
-    {
-      name: 'Exam Name',
-      selector: (row) => getExamTypeNameById(row.examName),  // Use the helper function to get exam type name
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: (row) => (
-        <div className='flex gap-2'>
-          <button onClick={() => openEditPopup(row , getClassNameById(row.className))}>
-            <img src={edit} alt="Edit" className='h-8' />
-          </button>
-          <button
-            // onClick={() => onDelete(row.id)}
-
-          >
-            <img src={deleteIcon} alt="Delete" className='h-8' />
-          </button>
-        </div>
-      ),
-    },
-  ];
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className='flex flex-col justify-start pl-0'>
-      <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Exam Schedule</h1>
-      <p className='pl-0 mt-2'>
-        <NavLink to='/admin/user'> Dashboard </NavLink>/<NavLink to='/admin/Examinations'> Examinations </NavLink>/ 
-        <span className='text-[#ffae01] font-semibold'>Exam Schedule</span>
-      </p>
-
-      {/* <AddBtn onAddClick={openAddPopup} /> */}
-      
-      <Table columns={columns} data={examSchedule} />
-
-      {/* Add Exam Schedule Popup */}
-      {/* <AddExamSchedule isOpen={isAddPopupOpen} onClose={closeAddPopup} /> */}
-
-      {/* Class Wise Exam Schedule Popup */}
-      {selectedExam && (
-        <ParentClassWiseExamSchedulepopup
-          subjectWiseExamList={selectedExam.subjectWiseExamList} // Pass the subjectWiseExamList of the selected exam
-          className={className} // Pass the className of the selected exam
-          isOpen={isEditPopupOpen}
-          onClose={closeEditPopup}
-        />
-      )}
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-6">Filtered User List (Students with Active Status)</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {users.map(user => (
+          <div key={user.id} className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white">
+            <h3 className="text-xl font-semibold text-center text-blue-500">{user.firstName}</h3>
+            <p className="text-center text-gray-700">{user.className}</p> {/* Assuming className is available */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ParentExamSchedule;
+export default FetchData;
