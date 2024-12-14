@@ -334,7 +334,10 @@ const UpdateResult = () => {
       </h2>
   
       {/* Centralized White Box */}
-        <Table columns={column} data={examResults} />
+        <Table columns={column} data={examResults}
+        note = '*save the changes after update'
+        // className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-2"
+         />
   
         <div className="mt-4 text-center">
           <Button
