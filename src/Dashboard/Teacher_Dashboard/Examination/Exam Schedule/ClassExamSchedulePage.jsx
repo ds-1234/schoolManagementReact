@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
+
 
 const ClassExamSchedulePage = () => {
   const location = useLocation();
@@ -9,11 +11,13 @@ const ClassExamSchedulePage = () => {
   const [examData, setExamData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [examType, setEXamType] = useState(null);
 
   useEffect(() => {
     if (classId) {
       fetchExamData();
     }
+    fetchExamType()
   }, [classId]);
 
   const fetchExamData = async () => {
@@ -49,6 +53,26 @@ const ClassExamSchedulePage = () => {
     }
   };
 
+  const fetchExamType = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`); // Replace with your actual API endpoint
+      if (response.data && response.data.success) {
+        // const activeExamType = response.data.data.filter((cls) => cls.isActive); // Filter active classes
+        setEXamType(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get class name by ID
+  const getExamTypeById = (id) => {
+    const examtype = examType.find((exm) => exm.id == id);
+    return examtype ? `${examtype.examTypeName}` : 'Exam not found';
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (examData.length === 0) return <div>No exams found for this class.</div>;
@@ -82,7 +106,7 @@ const ClassExamSchedulePage = () => {
             }}
             onClick={() => handleExamClick(exam)}
           >
-            <h3>Exam Name: {exam.examName}</h3>
+            <h3>Exam Name:{getExamTypeById(exam.examName)}</h3>
           </div>
         ))}
       </div>

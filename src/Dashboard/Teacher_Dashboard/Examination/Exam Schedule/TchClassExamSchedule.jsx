@@ -23,6 +23,10 @@ const TchClassExamSchedule = () => {
       console.error('Error fetching exam types:', error);
     }
   };
+  const getSubjectById = (id) => {
+    const name = subject.find((sub) => sub.id == id);
+    return name ? `${name.subject}` : 'Subject not found';
+  };
 
   // Fetch the exam schedule data
   const fetchExamSchedule = async () => {
@@ -50,6 +54,7 @@ const TchClassExamSchedule = () => {
     return <p className="text-red-500">Class ID not provided.</p>;
   }
 
+
   const columns = [
     {
       name: 'SR.No',
@@ -58,7 +63,7 @@ const TchClassExamSchedule = () => {
     },
     {
       name: 'Subject',
-      selector: row => row.subject,
+      selector: row => getSubjectById(row.subject),
       sortable: true,
     },
     {
