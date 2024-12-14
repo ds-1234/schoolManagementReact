@@ -12,11 +12,11 @@ import network from '../assets/network.png';
 import event from '../assets/calendar.png';
 import attendance from '../assets/attendance.png';
 import library from '../assets/bookstore.png'
-import books from '../assets/books.png'
+import books from '../assets/books.jpg'
 import form from '../assets/form.png'
 import pendingForm from '../assets/document.png'
 import promotion from '../assets/kindergarten.png'
-import examType from '../assets/test.png'
+import examType from '../assets/exam.jpg'
 import score from '../assets/score.png'
 import rankings from '../assets/rankings.png'
 import spending from '../assets/spending.png'
@@ -31,6 +31,10 @@ import hostel from '../assets/hotel.png'
 import roomType from '../assets/room.png'
 import roomKey from '../assets/room-key.png'
 import feesGrp from '../assets/money.png'
+import collectFees from '../assets/collectFee.jpg'
+import expenseCat from '../assets/expenseCategory.jpg'
+import designation from '../assets/designation.jpg'
+import bookIssue from '../assets/bookIssue.jpg'
 
 function UserHome({ moduleSelected }) {
     const [module, setModule] = useState({ label: '', list: [] });
@@ -45,20 +49,20 @@ function UserHome({ moduleSelected }) {
         { label: 'School', icon: school, path: '/admin/school' },
         { label: 'Subject', icon: subject, path: '/admin/subject' },
         { label: 'Grade', icon: classImg, path: '/admin/class' },
-        { label: 'Designation', icon: bag, path: '/admin/designation' },
+        { label: 'Designation', icon: designation, path: '/admin/designation' },
         { label: 'Department', icon: network, path: '/admin/department' },
         { label: 'Event Category', icon: event, path: '/admin/eventcategory' },
         { label: 'Attendance Status', icon: attendance, path: '/admin/StaffAttendanceStatus' },
     ];
 
     const libraryModule = [
-        {label: 'Library Books' , icon: library, path: '/admin/books'},
-        {label: 'Book Issue' , icon: books, path: '/admin/bookissue'}
+        {label: 'Library Books' , icon: books, path: '/admin/books'},
+        {label: 'Book Issue' , icon: bookIssue, path: '/admin/bookissue'}
     ]
 
     const studentModule = [
         {label: 'Admission Form' , icon: form, path: '/admin/AdmissionForm'},
-        {label: 'Pending Admission Form' , icon: pendingForm, path: '/admin/pendingAdmissionForm'},
+        {label: 'Pending Form' , icon: pendingForm, path: '/admin/pendingAdmissionForm'},
         {label: 'Student Promotion' , icon: promotion , path: '/admin/studentPromotion'}
     ]
 
@@ -72,7 +76,7 @@ function UserHome({ moduleSelected }) {
 
     const accountsModule = [
         {label: 'Expenses' , icon: spending, path: '/admin/Expenses'},
-        {label: 'Expense Category' , icon: examType, path: '/admin/ExpenseCategory'},
+        {label: 'Expense Category' , icon: expenseCat, path: '/admin/ExpenseCategory'},
         {label: 'Income' , icon: salary , path: '/admin/income'},
         {label: 'Invoices' , icon: invoice , path: '/admin/Invoices'},
         {label: 'Invoice View' , icon: form, path: '/admin/Invoiceview'},
@@ -91,7 +95,7 @@ function UserHome({ moduleSelected }) {
 
     const feesModule = [
         {label: 'Fees Group' , icon: feesGrp, path: '/admin/feesgrp'},
-        {label: 'Collect Fees' , icon: salary, path: '/admin/feescollect'}
+        {label: 'Collect Fees' , icon: collectFees, path: '/admin/feescollect'}
     ]
 
     const hostelModule = [

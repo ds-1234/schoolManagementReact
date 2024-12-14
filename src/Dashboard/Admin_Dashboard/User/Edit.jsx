@@ -98,7 +98,7 @@ useEffect(() => {
   return (
     <div className=" mx-auto rounded-xl space-y-2 my-10">
       <h2 className="text-2xl font-bold text-[#042954]">Edit User</h2>
-      <p>Dashboard / <NavLink to='/admin'>Admin</NavLink> /<NavLink to='/admin/activeUser'> Users / </NavLink> <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
+      <p> <NavLink to='/admin'>Dashboard</NavLink> /<NavLink to='/admin/activeUser'> Users / </NavLink> <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
 
     <div className="bg-white rounded-lg w-full mb-10 p-10 mt-5">
         {/* Role Input */}

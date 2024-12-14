@@ -86,29 +86,13 @@ function Subject() {
     {
       name: 'SR.No',
       selector: (row, idx) => idx + 1,
-      sortable: false,
-      // width: '300px', 
+      sortable: false, 
     },
     {
       name: 'Subject Name',
       selector: (row) => row.subject,
       sortable: true,
-      wrap: true, 
-      // width: '300px', 
     },
-    // {
-    //   name: 'Subject Description',
-    //   selector: (row) => (
-    //     <div 
-    //     dangerouslySetInnerHTML={{ __html: applyTailwindClassesToDescription(row.description) }} 
-    //       className="subject-description"
-    //     />
-    //   ),
-    //   sortable: true,
-    //   wrap: true,
-    //   width: '300px', 
-    // },
-    
     {
       name: 'Action',
       cell: (row) => (
@@ -120,8 +104,7 @@ function Subject() {
             <img src={deleteIcon} alt="Delete" className="h-8" />
           </button>
         </div>
-      ),
-      width: '300px', 
+      ), 
     },
   ];
 
