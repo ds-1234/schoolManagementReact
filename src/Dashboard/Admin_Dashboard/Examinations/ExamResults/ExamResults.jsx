@@ -16,67 +16,107 @@ const ExamResults = () => {
   const [subjectsName, setSubjectsName] = useState([]);
 
   useEffect(() => {
-    const fetchExamAndProcessData = async () => {
+    // const fetchExamAndProcessData = async () => {
+    //   try {
+    //     const examResponse = await axios.get(`${BASE_URL}/exam/getExam`);
+    //     const exams = examResponse.data.data;
+
+    //     const filteredExams = exams.filter(
+    //       (exam) => exam.examName == examTypeId && exam.className == className
+    //     );
+
+    //     const subjectList = filteredExams.flatMap((exam) => exam.subjectWiseExamList);
+    //     const uniqueSubjects = [
+    //       ...new Map(subjectList.map((item) => [item.subject, item])).values(),
+    //     ];
+
+    //     const results = filteredData.map((student) => {
+    //       const studentResults = uniqueSubjects.map((subject) => {
+    //         const examResult =
+    //           student.examData &&
+    //           Number(student.examData.subjectId) === Number(subject.subject)
+    //             ? student
+    //             : null;
+    //         return {
+    //           subjectName: `${subject.subject}`,
+    //           marks: examResult ? examResult.examMarks : "NULL",
+    //         };
+    //       });
+    //       return {
+    //         studentId: student.studentId,
+    //         results: studentResults,
+    //       };
+    //     });
+
+    //     setExamResults(results);
+    //     setSubjects(uniqueSubjects);
+    //     console.log(uniqueSubjects,'uniqueSubjects')
+    //   } catch (err) {
+    //     setError("Failed to fetch exam data.");
+    //     console.error(err);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    // const fetchUsers = async () => {
+    //   try {
+    //     const userResponse = await fetch("http://localhost:8080/user/getUserList");
+    //     const data = await userResponse.json();
+    //     if (data.success && data.data) {
+    //       const filteredUsers = data.data.filter(
+    //         (user) => user.role === 3 && user.isActive === true
+    //       );
+    //       setUserList(filteredUsers);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //   }
+    // };
+
+    // fetchExamAndProcessData();
+    // fetchUsers();
+
+    const fetchExamResults = async () => {
+      setLoading(true);
+      setError(null);
+  
       try {
-        const examResponse = await axios.get(`${BASE_URL}/exam/getExam`);
-        const exams = examResponse.data.data;
-
-        const filteredExams = exams.filter(
-          (exam) => exam.examName == examTypeId && exam.className == className
-        );
-
-        const subjectList = filteredExams.flatMap((exam) => exam.subjectWiseExamList);
-        const uniqueSubjects = [
-          ...new Map(subjectList.map((item) => [item.subject, item])).values(),
-        ];
-
-        const results = filteredData.map((student) => {
-          const studentResults = uniqueSubjects.map((subject) => {
-            const examResult =
-              student.examData &&
-              Number(student.examData.subjectId) === Number(subject.subject)
-                ? student
-                : null;
-            return {
-              subjectName: `${subject.subject}`,
-              marks: examResult ? examResult.examMarks : "NULL",
-            };
-          });
-          return {
-            studentId: student.studentId,
-            results: studentResults,
-          };
+        const payload = { className, examType: examTypeId };
+        console.log(payload,'payload')
+        const response = await axios.get(`${BASE_URL}/exam/getExamResultForAdmin`, {
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+          data: {
+            className: className,
+            examType: examTypeId,
+          },
         });
-
-        setExamResults(results);
-        setSubjects(uniqueSubjects);
-        console.log(uniqueSubjects,'uniqueSubjects')
+  
+        if (response.data.success && response.data.data) {
+          const data = response.data.data;
+  
+          // Transform data into a table-friendly format
+          const results = Object.entries(data).map(([studentName, subjects]) => ({
+            studentName,
+            subjects,
+          }));
+  
+          setExamResults(results);
+        } else {
+          setError("No results found.");
+        }
       } catch (err) {
-        setError("Failed to fetch exam data.");
+        setError("Failed to fetch exam results.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
+    fetchExamResults()
 
-    const fetchUsers = async () => {
-      try {
-        const userResponse = await fetch("http://localhost:8080/user/getUserList");
-        const data = await userResponse.json();
-        if (data.success && data.data) {
-          const filteredUsers = data.data.filter(
-            (user) => user.role === 3 && user.isActive === true
-          );
-          setUserList(filteredUsers);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchExamAndProcessData();
-    fetchUsers();
-  }, [filteredData, className, examTypeId]);
+  }, [ className, examTypeId]);
 
   const fetchSubjectName = async () => {
     try {
@@ -109,22 +149,46 @@ const ExamResults = () => {
     return std ? std.firstName : "Unknown";
   };
 
+  // const columns = [
+  //   {
+  //     name: "Student Name",
+  //     selector: (row) => getStudentNameById(row.studentId),
+  //     sortable: true,
+  //   },
+  //   ...subjects.map((subject) => ({
+  //     name: getSubjectNameById(subject.subject), // Use subject names as column headers
+  //     selector: (row) => {
+  //       const subjectResult = row.results.find(
+  //         (result) => result.subjectName == subject.subject
+  //       );
+  //       return subjectResult ? subjectResult.marks : "NULL";
+  //     },
+  //     sortable: true,
+  //   })),
+  // ];
+
   const columns = [
     {
       name: "Student Name",
-      selector: (row) => getStudentNameById(row.studentId),
+      selector: (row) => row.studentName,
       sortable: true,
     },
-    ...subjects.map((subject) => ({
-      name: getSubjectNameById(subject.subject), // Use subject names as column headers
+    ...examResults[0]?.subjects.map((subject, index) => ({
+      name: subject.subjectName,
       selector: (row) => {
-        const subjectResult = row.results.find(
-          (result) => result.subjectName == subject.subject
+        const subjectData = row.subjects.find(
+          (sub) => sub.subjectName == subject.subjectName
         );
-        return subjectResult ? subjectResult.marks : "NULL";
+        return subjectData ? subjectData.examMarks : "NULL";
       },
       sortable: true,
     })),
+    // {
+    //   name: "Remarks",
+    //   selector: (row) =>
+    //     row.subjects.map((sub) => sub.remarks).join(", "),
+    //   sortable: false,
+    // },
   ];
 
   return (
