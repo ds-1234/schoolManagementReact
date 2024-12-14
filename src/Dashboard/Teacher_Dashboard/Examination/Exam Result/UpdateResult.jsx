@@ -319,37 +319,42 @@ const UpdateResult = () => {
   return (
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">
-         Exam Result
+        Exam Result
       </h1>
       <p className="mt-2">
         <NavLink to="/teacherDashboard"> Dashboard </NavLink> /
-        <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink>/
+        <NavLink to="/teacherdashboard/tchExamResult"> Exam Result </NavLink> /
         <NavLink to="/teacherDashboard/ExamClasses"> Class List </NavLink> /
-        <span className="text-[#ffae01] font-semibold">  Exam Result</span>
+        <span className="text-[#ffae01] font-semibold"> Exam Result</span>
       </p>
-
+  
+      <div className="bg-white shadow-md rounded-lg p-6 mt-6 mx-auto max-w-full">
       <h2 className="mt-6 text-xl font-semibold text-black">
-         Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)} in {examTypeName}
+        Marks of Class {getclassNameById(className)} for {getSubjectNameById(subjectId)} in {examTypeName}
       </h2>
-      <Table columns={column} data={examResults} />
-
-      <div className="mt-4">
-        <Button
-          text="Save"
-          onClick={handleSaveChanges}
-          disabled={isSubmitButtonVisible}
-        />
+  
+      {/* Centralized White Box */}
+        <Table columns={column} data={examResults} />
+  
+        <div className="mt-4 text-center">
+          <Button
+            text="Save"
+            onClick={handleSaveChanges}
+            disabled={isSubmitButtonVisible}
+          />
+        </div>
+  
+        {isPopupOpen && (
+          <EditablePopup
+            result={selectedResult}
+            onSave={handleSaveChangesInPopup}
+            onClose={() => setIsPopupOpen(false)}
+          />
+        )}
       </div>
-
-      {isPopupOpen && (
-        <EditablePopup
-          result={selectedResult}
-          onSave={handleSaveChangesInPopup}
-          onClose={() => setIsPopupOpen(false)}
-        />
-      )}
     </div>
   );
+  
 };
 
 export default UpdateResult;

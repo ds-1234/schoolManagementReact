@@ -133,7 +133,9 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
 
               {/* Clear Button */}
               <Button onClick={clearFilters} className="mt-0 bg-[#ffae01] hover:bg-[#042954]" label="Clear" />
+              {/* hello */}
             </div>
+
 
             <DataTable
               columns={columns}
