@@ -81,7 +81,7 @@ function Admin() {
     return Object.entries(tileData.data).map(([key, value]) => (
       <div
         key={key}
-        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
+        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200 "
       >
         <h1 className="text-lg font-bold text-blue-950 mb-2">{key}</h1>
         <div className="flex items-center gap-2">
@@ -104,9 +104,9 @@ function Admin() {
         
 
         {/* Active/Inactive Counts */}
-        <div className="flex justify-between w-full mt-2 border-t-2 border-gray-200">
-          <p className="text-sm text-green-600 pt-2">Active: {value.activeCount}</p>
-          <p className="text-sm text-red-600 pt-2">Inactive: {value.inactiveCount}</p>
+        <div className="flex justify-between w-full mt-2 border-t-2 border-gray-200 sm:text-xs text-sm">
+          <p className=" text-green-600 pt-2 ">Active: {value.activeCount}</p>
+          <p className=" text-red-600 pt-2">Inactive: {value.inactiveCount}</p>
         </div>
       </div>
     ));
@@ -129,7 +129,7 @@ function Admin() {
       </div>
 
       {/* Tiles Section */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {loading ? <p>Loading...</p> : renderTiles()}
       </div>
 

@@ -45,7 +45,7 @@ const AdminDashboard = () => {
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out xl:static xl:transform-none xl:w-1/6`}
         >
-          <Sidebar />
+          <Sidebar setIsSidebarOpen={setIsSidebarOpen}/>
         </div>
 
         {/* Toggle Button */}

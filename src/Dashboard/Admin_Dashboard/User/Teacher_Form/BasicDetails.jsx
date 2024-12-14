@@ -141,7 +141,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         state: data.state ,
         city: data.city ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null,
-        isActive : (selectedRole != 3 && selectedRole != 4) ?  value : false 
+        isActive : data.isActive == true ? true : value  
       }
     })
     .then((response) => {
