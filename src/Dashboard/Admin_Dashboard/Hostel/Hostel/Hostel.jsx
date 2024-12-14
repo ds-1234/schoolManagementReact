@@ -218,7 +218,10 @@ const searchOptions = [
   return (
     <div className=' h-full mb-10 mr-2'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Hostel List</h1>
-      <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Hostel</span> </p>
+      <p className=' mt-2'>
+        <NavLink to = '/admin'> Dashboard </NavLink>/ 
+        <NavLink to="/admin/hostelModule"> Hostel </NavLink>/
+        <span className='text-[#ffae01] font-semibold'>Hostel List</span> </p>
       <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}

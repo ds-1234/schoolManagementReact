@@ -216,7 +216,10 @@ const searchOptions = [
   return (
     <div className=' h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Fees Group</h1>
-      <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Fees Group</span> </p>
+      <p className=' mt-2'>
+        <NavLink to = '/admin'> Dashboard </NavLink>/ 
+        <NavLink to="/admin/fees"> Fees </NavLink>/ 
+        <span className='text-[#ffae01] font-semibold'>Fees Group</span> </p>
       <AddBtn onAddClick={openAddPopup}/>
       <Table 
       columns={column}
