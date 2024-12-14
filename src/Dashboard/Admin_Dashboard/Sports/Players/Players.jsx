@@ -208,7 +208,7 @@ function Players() {
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Players</h1>
       <p className="mt-2">
         <NavLink to="/admin"> Dashboard  </NavLink>/
-        <NavLink to="/admin/Sports"> Sports </NavLink>/ 
+        <NavLink to="/admin/sportModule"> Sports </NavLink>/
         <span className="text-[#ffae01] font-semibold">Players</span>
       </p>
       <AddBtn onAddClick={openAddPopup} />

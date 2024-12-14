@@ -231,7 +231,7 @@ const Sidebar = () => {
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Library
+                    Library Books
                   </NavLink>
                 </li>
                 <li>
@@ -667,7 +667,7 @@ const Sidebar = () => {
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Sports
+                    Sports List
                   </NavLink>
                 </li>
                 <li>
@@ -709,7 +709,7 @@ const Sidebar = () => {
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Hostel
+                    Hostel List
                   </NavLink>
                 </li>
                 <li>

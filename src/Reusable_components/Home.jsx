@@ -23,6 +23,14 @@ import spending from '../assets/spending.png'
 import salary from '../assets/salary.png'
 import invoice from '../assets/invoice.png'
 import transaction from '../assets/transaction.png'
+import leaves from '../assets/list.png'
+import approve from '../assets/process.png'
+import players from '../assets/players.png'
+import sport from '../assets/basketball.png'
+import hostel from '../assets/hotel.png'
+import roomType from '../assets/room.png'
+import roomKey from '../assets/room-key.png'
+import feesGrp from '../assets/money.png'
 
 function UserHome({ moduleSelected }) {
     const [module, setModule] = useState({ label: '', list: [] });
@@ -44,7 +52,7 @@ function UserHome({ moduleSelected }) {
     ];
 
     const libraryModule = [
-        {label: 'Library' , icon: library, path: '/admin/books'},
+        {label: 'Library Books' , icon: library, path: '/admin/books'},
         {label: 'Book Issue' , icon: books, path: '/admin/bookissue'}
     ]
 
@@ -71,6 +79,27 @@ function UserHome({ moduleSelected }) {
         {label: 'Transactions' , icon: transaction, path: '/admin/Transactions'}
     ]
 
+    const leaveModule = [
+        {label: 'List of Leaves' , icon: leaves, path: '/admin/leaves'},
+        {label: 'Approve Request' , icon: approve, path: '/admin/leaveRequest'}
+    ]
+
+    const sportModule = [
+        {label: 'Sports List' , icon: sport, path: '/admin/sports'},
+        {label: 'Players' , icon: players, path: '/admin/players'}
+    ]
+
+    const feesModule = [
+        {label: 'Fees Group' , icon: feesGrp, path: '/admin/feesgrp'},
+        {label: 'Collect Fees' , icon: salary, path: '/admin/feescollect'}
+    ]
+
+    const hostelModule = [
+        {label: 'Hostel List' , icon: hostel, path: '/admin/hostel'},
+        {label: 'Room Type' , icon: roomType, path: '/admin/roomtype'},
+        {label: 'Hostel Rooms' , icon: roomKey, path: '/admin/hostelrooms'}
+    ]
+
     useEffect(() => {
         if (moduleSelected === 'user') {
             setModule({ label: 'User', list: userModule });
@@ -84,6 +113,14 @@ function UserHome({ moduleSelected }) {
             setModule({ label: 'Examinations', list: examModule });
         }else if (moduleSelected === 'accounts') {
             setModule({ label: 'Accounts', list: accountsModule });
+        }else if (moduleSelected === 'leaveApp') {
+            setModule({ label: 'Leaves', list: leaveModule });
+        }else if (moduleSelected === 'sports') {
+            setModule({ label: 'Sports', list: sportModule });
+        }else if (moduleSelected === 'hostel') {
+            setModule({ label: 'Hostel', list: hostelModule });
+        }else if (moduleSelected === 'fees') {
+            setModule({ label: 'Fees', list: feesModule });
         }else {
             setModule({ label: 'Unknown Module', list: [] }); // Default handling
         }
