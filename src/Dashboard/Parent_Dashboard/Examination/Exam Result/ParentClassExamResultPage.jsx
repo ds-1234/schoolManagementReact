@@ -44,6 +44,11 @@ const ParentClassExamResultPage = () => {
   if (error) return <div>Error: {error}</div>;
   if (examResults.length === 0) return <div>No results found for this student and class.</div>;
 
+  // Get unique exam types
+  const uniqueExamTypes = [
+    ...new Set(examResults.map((result) => result.examData.examType)),
+  ];
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Class Result</h1>
@@ -53,17 +58,15 @@ const ParentClassExamResultPage = () => {
         <span className="text-[#ffae01] font-semibold">Class Result</span>
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-        {examResults.map((result) => (
+        {uniqueExamTypes.map((examType) => (
           <div
-            key={result.id}
+            key={examType}
             className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white cursor-pointer"
-            onClick={() => handleTileClick(result.examData.examType)} // Navigate on click
+            onClick={() => handleTileClick(examType)} // Navigate on click
           >
             <h3 className="text-xl font-semibold text-center text-blue-500">
-              Exam Type: {result.examData.examType}
+              Exam Type: {examType}
             </h3>
-            {/* <p className="text-center text-gray-700">Marks: {result.examMarks}</p> */}
-            {/* <p className="text-center text-gray-700">Remarks: {result.remarks}</p> */}
           </div>
         ))}
       </div>
