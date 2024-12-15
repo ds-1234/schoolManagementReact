@@ -352,7 +352,7 @@ const handleWeekChange = (direction) => {
           onClick={() => handleCategorySelect(category.id, category.eventCatColorCode)}
           // style={{ color: category.eventCatColorCode }}
         >
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center ">
           {/* Dot */}
           <span 
             className="inline-block w-2 h-2 rounded-full " 
