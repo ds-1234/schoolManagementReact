@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const ParentClassExamResultPage = () => {
   const location = useLocation();
@@ -46,8 +46,12 @@ const ParentClassExamResultPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Class Results</h1>
-
+      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Class Result</h1>
+      <p className="pl-0 mt-2">
+        <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
+        <NavLink to="/parentsDashboard/ParentExamRes"> Child Result </NavLink>/
+        <span className="text-[#ffae01] font-semibold">Class Result</span>
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {examResults.map((result) => (
           <div

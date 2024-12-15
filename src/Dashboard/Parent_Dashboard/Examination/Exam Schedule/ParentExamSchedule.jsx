@@ -77,7 +77,8 @@ const FetchData = () => {
               {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
               {/* <NavLink to="/teacherDashboard/tchExamSchedule"> Exam Schedule </NavLink>/ */}
               <span className="text-[#ffae01] font-semibold">Exam Schedule</span>
-            </p>      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
+            </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {users.map(user => (
           <div
             key={user.id}

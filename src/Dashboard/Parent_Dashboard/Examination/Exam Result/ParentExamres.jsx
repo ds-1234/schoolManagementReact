@@ -72,7 +72,7 @@ const ParentExamres = () => {
       <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Child Result</h1>
       <p className="pl-0 mt-2">
         <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
-        <span className="text-[#ffae01] font-semibold">Exam Result</span>
+        <span className="text-[#ffae01] font-semibold">Child Result</span>
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {users.map(user => (
