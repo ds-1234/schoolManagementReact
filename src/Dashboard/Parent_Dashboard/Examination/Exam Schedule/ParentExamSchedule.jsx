@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -5,6 +6,7 @@ const FetchData = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [className, setClassName] = useState([]);
   const navigate = useNavigate(); // Hook to navigate
 
   useEffect(() => {
@@ -25,9 +27,9 @@ const FetchData = () => {
         const filteredUsers = data.data.filter(user =>
           user.role === 3 &&
           user.isActive === true &&
-          isParents.includes(user.id) // Check if user id exists in isParents
+          isParents.includes(user.id) 
         );
-        setUsers(filteredUsers); // Set the filtered users
+        setUsers(filteredUsers); 
         setLoading(false);
       })
       .catch(error => {
@@ -35,6 +37,27 @@ const FetchData = () => {
         setLoading(false);
       });
   }, []);
+
+  const fetchclasses = () => {
+    axios
+      .get("http://localhost:8080/class/getClassList")
+      .then((response) => {
+        if (response.data.success) {
+          setClassName(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching Class :", error);
+      });
+  };
+  useEffect(()=>{
+    fetchclasses();
+  })
+
+  const getClassNameById = (id) => {
+    const res = className.find((type) => type.id == id);
+    return res ? `${res.name}-${res.section}` : "Unknown";
+  };
 
   const handleTileClick = (user) => {
     // Send the selected user data (including className) using the state
@@ -62,7 +85,7 @@ const FetchData = () => {
             onClick={() => handleTileClick(user)} // Send entire user data on click
           >
             <h3 className="text-xl font-semibold text-center text-blue-500">{user.firstName}</h3>
-            <p className="text-center text-gray-700">{user.className}</p> {/* Assuming className is available */}
+            <p className="text-center text-gray-700">{getClassNameById(user.className)}</p> {/* Assuming className is available */}
           </div>
         ))}
       </div>
