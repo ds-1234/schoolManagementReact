@@ -199,7 +199,7 @@ const UpdateResult = () => {
       cell: (row) => (
         <input
           type="number"
-          className="border p-1 rounded  text-center"
+          className="border  h-10 rounded  text-center"
           placeholder="Enter marks"
           value={row.examMarks || ""}
           onChange={(e) => handleMarksChange(row.studentId, e.target.value)}
@@ -213,7 +213,7 @@ const UpdateResult = () => {
       cell: (row) => (
         <input
           type="text"
-          className="border p-1 rounded  text-center"
+          className="border  h-10 rounded  "
           placeholder="Enter remarks"
           value={row.remarks || ""}
           onChange={(e) => handleRemarksChange(row.studentId, e.target.value)}
