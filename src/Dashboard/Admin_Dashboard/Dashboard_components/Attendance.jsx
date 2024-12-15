@@ -16,11 +16,12 @@ ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 function Attendance() {
   const [attendanceData, setAttendanceData] = useState([]);
-  const [staffAttendance , setStaffAttendance] = useState([]) ;
+  const [staffAttendance, setStaffAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState("Students");
-  const navigate = useNavigate()
-  const [statusMap , setStatusMap] = useState([]) 
+  const [selectedFilter, setSelectedFilter] = useState("Today");
+  const [statusMap, setStatusMap] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAttendanceData = async () => {
@@ -51,14 +52,39 @@ function Attendance() {
     fetchAttendanceData();
   }, []);
 
+  // Filter data based on the selected filter
+  const applyFilter = (data) => {
+    const today = new Date();
+    return data.filter((entry) => {
+      const attendanceDate = new Date(entry.attendanceDate);
+      switch (selectedFilter) {
+        case "Today" :  return attendanceDate.toDateString() === today.toDateString();
+        case "Yesterday":
+          return (
+            attendanceDate.toDateString() ===
+            new Date(today.setDate(today.getDate() - 1)).toDateString()
+          );
+        case "Last 7 days":
+          const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 7);
+        return attendanceDate >= sevenDaysAgo && attendanceDate <= today;
+        case "This Month":
+          return (
+            attendanceDate.getMonth() === today.getMonth() &&
+            attendanceDate.getFullYear() === today.getFullYear()
+          );
+        case "This Year":
+          return attendanceDate.getFullYear() === today.getFullYear();
+        default:
+          return true;
+      }
+    });
+  };
+
   // Filter attendance data based on the selected tab
   const filterDataByCategory = () => {
-    if (selectedTab === "Students") {
-      return attendanceData ;
-    } else if (selectedTab === "Staff") {
-      return staffAttendance ;
-    }
-    return [];
+    const data = selectedTab === "Students" ? attendanceData : staffAttendance;
+    return applyFilter(data);
   };
 
   // Process attendance data to calculate status counts
@@ -66,19 +92,17 @@ function Attendance() {
     const statusCounts = {
       present: 0,
       absent: 0,
-      'half day' : 0 ,
+      "half day": 0,
       medical: 0,
-      other: 0, 
+      other: 0,
     };
 
-   
     filteredData.forEach((entry) => {
-      if (selectedTab === "Students" && Array.isArray(entry.attendenceStatusList)) {
-        // Traverse all attendanceStatusList entries
-        entry.attendenceStatusList.forEach((statusItem) => {
+      if (selectedTab === "Students" && Array.isArray(entry.attendanceStatusList)) {
+        entry.attendanceStatusList.forEach((statusItem) => {
           const statusId = statusItem.attendanceStatusId;
           const status = statusMap[statusId]?.toLowerCase() || "other";
-  
+
           if (statusCounts[status] !== undefined) {
             statusCounts[status]++;
           } else {
@@ -86,9 +110,7 @@ function Attendance() {
           }
         });
       } else if (selectedTab === "Staff") {
-        const statusString = entry.attendanceStatus;
-        const status = statusMap[statusString]?.toLowerCase() || "other";
-  
+        const status = entry.attendanceStatus.toLowerCase();
         if (statusCounts[status] !== undefined) {
           statusCounts[status]++;
         } else {
@@ -96,7 +118,7 @@ function Attendance() {
         }
       }
     });
-  
+
     return statusCounts;
   };
 
@@ -106,7 +128,7 @@ function Attendance() {
     const statusCounts = processAttendanceData(filteredData);
 
     return {
-      labels: ["Present", "Absent","Half Day" , "Medical", "Other"],
+      labels: ["Present", "Absent", "Half Day", "Medical", "Other"],
       datasets: [
         {
           label: "Attendance Status",
@@ -117,8 +139,8 @@ function Attendance() {
             statusCounts.medical,
             statusCounts.other,
           ],
-          backgroundColor: ["#87f542", "#FF6384", "#FFCE56", "#36A2EB" , "#A9A9A9"],
-          hoverBackgroundColor: ["#87f542", "#FF6384", "#FFCE56", "#36A2EB" , "#A9A9A9"],
+          backgroundColor: ["#87f542", "#f22424", "#FFCE56", "#36A2EB", "#A9A9A9"],
+          hoverBackgroundColor: ["#87f542", "#f22424", "#FFCE56", "#36A2EB", "#A9A9A9"],
         },
       ],
     };
@@ -126,11 +148,28 @@ function Attendance() {
 
   return (
     <div className="mt-5 rounded-md p-5 bg-white">
+      <div className="flex justify-between items-center">
       <h1 className="text-lg text-blue-950 font-bold mb-4">Attendance</h1>
 
-      {/* Tabs for Students, Staff */}
+  {/* Date Filter */}
+  <div className="mb-4">
+    <select
+      className="border rounded px-4 py-2"
+      value={selectedFilter}
+      onChange={(e) => setSelectedFilter(e.target.value)}
+    >
+      <option value="Today">Today</option>
+      <option value="Yesterday">Yesterday</option>
+      <option value="Last 7 days">Last 7 days</option>
+      <option value="This Month">This Month</option>
+      <option value="This Year">This Year</option>
+    </select>
+</div>
+      </div>
+
+      {/* Tabs for Students and Staff */}
       <div className="flex space-x-4 border-b mb-10 mt-6">
-        {["Students",  "Staff"].map((tab) => (
+        {["Students", "Staff"].map((tab) => (
           <button
             key={tab}
             className={`pb-2 px-4 border-b-2 ${
@@ -143,8 +182,9 @@ function Attendance() {
         ))}
       </div>
 
+
       {/* Pie Chart Section */}
-      <div className="mt-6 mb-6 flex justify-center border-2 ">
+      <div className="mt-6 mb-6 flex justify-center border-2">
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -168,9 +208,9 @@ function Attendance() {
         )}
       </div>
 
-     <div className="flex justify-end mt-10">
-     <Button label="View More" onClick={() => navigate('/admin/select')}/>
-     </div>
+      <div className="flex justify-end mt-10">
+        <Button label="View More" onClick={() => navigate("/admin/select")} />
+      </div>
     </div>
   );
 }
