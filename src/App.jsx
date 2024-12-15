@@ -127,6 +127,17 @@ import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveR
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
 import ClassNameTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ClassNameTiles';
+import TchExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchExamSchedule';
+import StdExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdExamSchedule';
+import StdClassWiseExamSchedule from './Dashboard/Student_Dashboard/Examination/Exam Schedule/StdClassWiseExamSchedule';
+import ParentExamSchedule from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentExamSchedule';
+import ClassExamSchedulePage from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/ClassExamSchedulePage';
+import TchClassExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchClassExamSchedule';
+import ParentClassExamSchedulePage from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentClassExamSchedulePage';
+import ParentClassExamSchedule from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentClassExamSchedule';
+import ParentExamres from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamres';
+import ParentClassExamResultPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentClassExamResultPage';
+import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamDetailsPage';
 import UserHome from './Reusable_components/Home';
 
 
@@ -263,7 +274,9 @@ function App() {
             <Route path = 'leaves' element = {<LeaveTabs/>}/>
             <Route path = 'leaves/:status' element={<LeaveCategoryPage/>}/>
             <Route path = 'ExamDetails' element={<ExamDetails/>}/>
-          </Route>
+            <Route path = 'StdExamSchedule' element={<StdExamSchedule/>}/>
+            <Route path="stdClassWiseExamSchedule" element={<StdClassWiseExamSchedule />} />
+            </Route>
 
           {/* Teacher Dashboard Routes */}
           <Route
@@ -293,6 +306,9 @@ function App() {
             <Route path='ExamClasses' element={<ExamClasses/>} />
             <Route path = 'leaves' element = {<LeaveTab/>}/>
             <Route path = 'leaveRequest' element= {<LeaveRequest/>}/>
+            <Route path = 'tchExamSchedule' element= {<TchExamSchedule/>}/>
+            <Route path = 'ClassExamSchedulePage' element= {<ClassExamSchedulePage/>}/>
+            <Route path = 'TchClassExamSchedule' element= {<TchClassExamSchedule/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}
@@ -306,6 +322,12 @@ function App() {
           >
             <Route index element={<Parent />} />
             <Route path = 'childDetail' element ={<Children/>} />
+            <Route path = 'ParentExamSchedule' element ={<ParentExamSchedule/>} />
+            <Route path = 'ParentClassExamSchedulePage' element ={<ParentClassExamSchedulePage/>} />
+            <Route path = 'ParentClassExamSchedule' element ={<ParentClassExamSchedule/>} />
+            <Route path = 'ParentExamRes' element ={<ParentExamres/>} />
+            <Route path = 'ParentClassExamResultPage' element ={<ParentClassExamResultPage/>} />
+            <Route path = 'ParentExamDetailsPage' element ={<ParentExamDetailsPage/>} />
           </Route>
         {/* Guest Dashboard Routes */}
         <Route

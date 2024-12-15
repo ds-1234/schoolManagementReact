@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear , className,conditionalRowStyles=''}) => {
+const Table = ({ columns, data, searchOptions, onSearch, handleClear , className,conditionalRowStyles='' , note =''}) => {
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -133,7 +133,9 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
 
               {/* Clear Button */}
               <Button onClick={clearFilters} className="mt-0 bg-[#ffae01] hover:bg-[#042954]" label="Clear" />
-            </div>
+              <p className="text-red-500 mt-2">{`${note}`}</p>
+              </div>
+
 
             <DataTable
               columns={columns}
