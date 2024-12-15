@@ -9,6 +9,7 @@ const ParentClassExamSchedulePage = () => {
   const [examData, setExamData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [examTypes, setExamTypes] = useState(null);
 
   useEffect(() => {
     if (classId) {
@@ -49,6 +50,27 @@ const ParentClassExamSchedulePage = () => {
     }
   };
 
+  const fetchExamTypes = () => {
+    axios
+      .get("http://localhost:8080/examType/getExamTypeList")
+      .then((response) => {
+        if (response.data.success) {
+          setExamTypes(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching exam types:", error);
+      });
+  };
+  useEffect(()=>{
+    fetchExamTypes();
+  })
+
+  const getExamTypeNameById = (examTypeId) => {
+    const examType = examTypes.find((type) => type.id == examTypeId);
+    return examType ? examType.examTypeName : "Unknown";
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (examData.length === 0) return <div>No exams found for this class.</div>;
@@ -82,7 +104,7 @@ const ParentClassExamSchedulePage = () => {
             }}
             onClick={() => handleExamClick(exam)}
           >
-            <h3>Exam Name: {exam.examName}</h3>
+            <h3>Exam Name: {getExamTypeNameById(exam.examName)}</h3>
           </div>
         ))}
       </div>

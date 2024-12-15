@@ -10,6 +10,7 @@ const ParentClassExamResultPage = () => {
   const [examResults, setExamResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [examTypes, setExamTypes] = useState([]);
 
   useEffect(() => {
     if (classId && userId) {
@@ -40,6 +41,27 @@ const ParentClassExamResultPage = () => {
     navigate('/parentsDashboard/ParentExamDetailsPage', { state: { classId, userId, examType } });
   };
 
+  const fetchExamTypes = () => {
+    axios
+      .get("http://localhost:8080/examType/getExamTypeList")
+      .then((response) => {
+        if (response.data.success) {
+          setExamTypes(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching exam types:", error);
+      });
+  };
+  useEffect(()=>{
+    fetchExamTypes();
+  })
+
+  const getExamTypeNameById = (examTypeId) => {
+    const examType = examTypes.find((type) => type.id == examTypeId);
+    return examType ? examType.examTypeName : "Unknown";
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (examResults.length === 0) return <div>No results found for this student and class.</div>;
@@ -65,7 +87,7 @@ const ParentClassExamResultPage = () => {
             onClick={() => handleTileClick(examType)} // Navigate on click
           >
             <h3 className="text-xl font-semibold text-center text-blue-500">
-              Exam Type: {examType}
+              Exam Type: {getExamTypeNameById(examType)}
             </h3>
           </div>
         ))}
