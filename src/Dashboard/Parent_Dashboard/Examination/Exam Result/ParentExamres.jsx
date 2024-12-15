@@ -69,7 +69,7 @@ const ParentExamres = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Result</h1>
+      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Child Result</h1>
       <p className="pl-0 mt-2">
         <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
         <span className="text-[#ffae01] font-semibold">Exam Result</span>

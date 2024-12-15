@@ -46,7 +46,7 @@ const ParentClassExamResultPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Results</h1>
+      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Class Results</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
         {examResults.map((result) => (
