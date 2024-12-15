@@ -138,6 +138,7 @@ import ParentClassExamSchedule from './Dashboard/Parent_Dashboard/Examination/Ex
 import ParentExamres from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamres';
 import ParentClassExamResultPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentClassExamResultPage';
 import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamDetailsPage';
+import UserHome from './Reusable_components/Home';
 
 
 
@@ -163,6 +164,16 @@ function App() {
             }
           >
             <Route index element={<Admin />} />
+            <Route path='user' element={<UserHome moduleSelected={'user'}/>}/>
+            <Route path='config' element={<UserHome moduleSelected={'conf'}/>}/>
+            <Route path='students' element={<UserHome moduleSelected={'students'}/>}/>
+            <Route path='library' element={<UserHome moduleSelected={'library'}/>}/>
+            <Route path='exam' element={<UserHome moduleSelected={'exam'}/>}/>
+            <Route path='accounts' element={<UserHome moduleSelected={'accounts'}/>}/>
+            <Route path='leaveModule' element={<UserHome moduleSelected={'leaveApp'}/>}/>
+            <Route path='sportModule' element={<UserHome moduleSelected={'sports'}/>}/>
+            <Route path='hostelModule' element={<UserHome moduleSelected={'hostel'}/>}/>
+            <Route path='fees' element={<UserHome moduleSelected={'fees'}/>}/>
             <Route path="school" element={<School />} />
             <Route path="subject" element={<Subject />} />
             <Route path="books" element={<Book />} />

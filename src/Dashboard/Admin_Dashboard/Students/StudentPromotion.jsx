@@ -180,11 +180,13 @@ function StudentPromotion() {
     <div className='h-full mb-10'>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Student Promotion</h1>
       <p className=' mt-2'>
-        <NavLink to='/admin'> Admin </NavLink>/<span className='text-[#ffae01] font-semibold'> Student Promotion</span>
+        <NavLink to='/admin'> Dashboard </NavLink>/
+        <NavLink to = '/admin/students'> Students </NavLink>/
+        <span className='text-[#ffae01] font-semibold'> Student Promotion</span>
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto  bg-white rounded-xl shadow-md space-y-6 my-5">
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6">
           <div>
             <label className="block text-base font-medium text-gray-700 mb-1">Current Session *</label>
             <input

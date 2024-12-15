@@ -49,7 +49,7 @@ const ClassAttendance = () => {
     <p className='mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <NavLink to='/admin/select'> Home  </NavLink>/  <span className='text-[#ffae01] font-semibold'>Classes</span> </p>
     <div className='mt-10'>
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Classes</h2>
-      <div className="grid grid-cols-4 gap-5 pb-2 mx-20">
+      <div className="flex justify-center items-center gap-5 flex-wrap">
         {classes.map((classItem, index) => (
           <div
             key={index}

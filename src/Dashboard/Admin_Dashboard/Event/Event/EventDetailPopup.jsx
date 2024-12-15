@@ -71,21 +71,21 @@ function EventDetailPopup({ event, onClose, catColor }) {
   if (!event) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 transform transition-all duration-300 border-4 relative">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 md:p-0 p-4">
+      <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 transform transition-all duration-300 border-4 relative md:text-xl text-base">
         <button
-          className="absolute top-5 right-14 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none flex items-center"
+          className="absolute top-5 right-14  font-bold text-gray-600 hover:text-gray-800 focus:outline-none flex items-center"
           onClick={() => {
             console.log("Download event details");
           }}
         >
-          <span className="mr-2">Download</span>
+          <span className="mr-2 md:block hidden">Download</span>
           <FontAwesomeIcon icon={faDownload} className="w-5 h-5" />
         </button>
 
         <button
           onClick={onClose}
-          className="absolute top-5 right-4 text-xl font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
+          className="absolute top-5 right-4 font-bold text-gray-600 hover:text-gray-800 focus:outline-none"
         >
           <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
         </button>
@@ -95,43 +95,47 @@ function EventDetailPopup({ event, onClose, catColor }) {
             className="inline-block w-3 h-3 rounded-full mr-2" 
             style={{ backgroundColor: catColor }}
           ></span>
-          <h2 className="text-2xl font-bold">{eventCategoryTitle}</h2>
+          <h2 className="md:text-2xl text-medium font-bold">{eventCategoryTitle}</h2>
         </div>
 
         <div className="mb-4">
-          <h2 className="text-4xl font-bold mb-2">{event.eventTitle}</h2>
-          <div className="flex items-center text-s text-gray-700">
-            <svg
-              className="w-4 h-4 mr-1 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 4V3m-9 8h10m-5 4h5M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
+          <h2 className="md:text-4xl text-2xl  font-bold mb-2">{event.eventTitle}</h2>
+          <div className="flex md:items-center justify-between md:flex-row flex-col text-sm text-gray-700">
+            <div className='flex items-center'>
+              <svg
+                className="w-4 h-4 mr-1 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M8 7V3m8 4V3m-9 8h10m-5 4h5M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
 
-            <span className="mr-4">{event.startDate}-{event.endDate}</span>
+              <span className="mr-4">{event.startDate}-{event.endDate}</span>
+            </div>
+           <div className='flex items-center'>
             <svg
-              className="w-4 h-4 mr-1 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 7V3m8 4V3m-9 8h10m-5 4h5M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
-            <span>{event.startTime} - {event.endTime}</span>
+                className="w-4 h-4 mr-1 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M8 7V3m8 4V3m-9 8h10m-5 4h5M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+              <span>{event.startTime} - {event.endTime}</span>
+           </div>
           </div>
         </div>
 

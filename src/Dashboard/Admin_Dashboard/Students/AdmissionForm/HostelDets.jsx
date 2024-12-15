@@ -115,11 +115,14 @@ function HostelDets() {
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
-      <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+      <p className=' mt-2'>
+        <NavLink to = '/admin'> Dashboard </NavLink>/
+        <NavLink to = '/admin/students'> Students </NavLink>/
+        <span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
        <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Hostel Information</h2>
-        <form  className="grid grid-cols-4 mt-5 gap-6">
+        <form  className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 mt-5 gap-6 ">
           <div className="flex flex-col px-1">
             <label htmlFor="buildingName">Building Name</label>
             <select
@@ -151,14 +154,14 @@ function HostelDets() {
           </div>
 
         </form>
-        <div className='flex justify-between items-center'>
+        <div className='flex justify-between items-center lg:mt-5 mt-10'>
         <button onClick={() => handlePrevStep()}>
-            <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+            <h1 className=' font-semibold text-medium cursor-pointer'>
                 <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
                 Back
             </h1>
         </button>
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 flex justify-end space-x-4">
             <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {
                 reset() 

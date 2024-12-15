@@ -217,9 +217,11 @@ function Sports() {
 
   return (
     <div className="h-full mr-8 mb-10">
-      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Sports</h1>
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Sports List</h1>
       <p className="mt-2">
-        <NavLink to="/admin"> Dashboard  </NavLink>/ <span className="text-[#ffae01] font-semibold">Sports</span>
+        <NavLink to="/admin"> Dashboard  </NavLink>/ 
+         <NavLink to="/admin/sportModule"> Sports </NavLink>/
+         <span className="text-[#ffae01] font-semibold">Sports List</span>
       </p>
       <AddBtn onAddClick={openAddPopup} />
 

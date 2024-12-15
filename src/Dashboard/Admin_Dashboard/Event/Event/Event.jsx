@@ -231,8 +231,8 @@ const handleWeekChange = (direction) => {
         <span className='text-[#ffae01] font-semibold'> Event</span>
       </p>
 
-      <div className="flex items-start w-full mt-10">
-      <div className="w-7/12 mr-5 bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
+      <div className="flex items-start gap-10 mt-10 flex-wrap lg:flex-nowrap ">
+      <div className="lg:w-1/2 w-full bg-white rounded-xl p-4 border-l-4 shadow-md ]"> {/* Set a specific height */}          {/* <Calendar attendanceMap={attendanceMap} /> */}
           <AddBtn onAddClick={openAddPopup} />
           <div className="flex space-x-2  mb-4 mt-4">
           <Button
@@ -313,7 +313,7 @@ const handleWeekChange = (direction) => {
        </div>
         {console.log(eventDates,'events date')}
 
-        <div className="w-5/12 bg-white rounded-xl p-4">
+        <div className="lg:w-1/2 w-full  bg-white rounded-xl p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className='text-lg md:text-xl font-semibold text-black'>Events</h2>
             <div className="relative" ref={dropdownRef}>

@@ -111,7 +111,10 @@ function DocsDets() {
   return (
     <div>
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
-      <p className='mt-2'><NavLink to='/admin'> Dashboard </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span></p>
+      <p className='mt-2'>
+        <NavLink to='/admin'> Dashboard </NavLink>/
+        <NavLink to = '/admin/students'> Students </NavLink>/
+        <span className='text-[#ffae01] font-semibold'>Admission form</span></p>
 
       <ProgressIndicator currentStep={currentStep} />
       <h2 className="col-span-4 mt-8 text-xl font-semibold text-black">Documents Required</h2>
@@ -122,14 +125,14 @@ function DocsDets() {
         className={"hidden"}
       />
 
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center mt-10 lg:mt-5'>
         <button onClick={() => handlePrevStep()}>
-          <h1 className='mt-6 font-semibold text-medium cursor-pointer'>
+          <h1 className='font-semibold text-medium cursor-pointer'>
             <FontAwesomeIcon icon={faAngleDoubleLeft} className='mr-1'/>
             Back
           </h1>
         </button>
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 flex justify-end space-x-4 ">
           <Button type='submit' label="Submit" onClick={handleSubmit(onSubmit)} />
           <Button onClick={() => {
             reset();

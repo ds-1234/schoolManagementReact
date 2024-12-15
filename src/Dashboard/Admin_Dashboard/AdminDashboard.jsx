@@ -38,14 +38,14 @@ const AdminDashboard = () => {
 
   return (
     <Layout>
-     <div className="relative flex gap-10 2xl:gap-5 2xl:m-0 overflow-hidden">
+    <div className="relative flex overflow-hidden">
         {/* Sidebar */}
         <div
           className={`fixed top-0 left-0 z-40 h-full w-3/4  transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out xl:static xl:transform-none xl:w-1/6`}
         >
-          <Sidebar />
+          <Sidebar setIsSidebarOpen={setIsSidebarOpen}/>
         </div>
 
         {/* Toggle Button */}
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
         </button>
 
         {/* Main Content */}
-        <div className="w-full xl:mr-10 p-4 xl:p-0">
+        <div className="w-full xl:w-5/6 xl:mr-10 p-4 xl:p-0">
           <HeaderBar />
           <Outlet />
         </div>
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
         )}
 
          {/* Scroll to Top Button */}
-      {showScrollToTop && (
+        {showScrollToTop && (
         <button
           className="fixed bottom-5 right-5 z-50 p-3 w-12 h-12 font-bold rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition duration-300"
           onClick={scrollToTop}
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
         </button>
       )}
       </div>
-    </Layout>
+   </Layout>
   );
 };
 

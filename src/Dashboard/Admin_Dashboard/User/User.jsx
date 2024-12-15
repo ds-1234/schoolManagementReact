@@ -52,21 +52,21 @@ const column = [
         <button
         onClick={() => navigate('/admin/studentDetails' , {state: {userId : row.userId}})}
         >
-        <img src={view} alt="view" className='h-8' />
+        <img src={view} alt="view" className='h-6 lg:h-8' />
         </button>
         :
         row.role == 4?
         <button
         onClick={() => navigate('/admin/TchDetails' , {state: {userId : row.id}})}
         >
-        <img src={view} alt="view" className='h-8' />
+        <img src={view} alt="view" className='h-6 lg:h-8' />
         </button>
         :
         row.role == 5?
         <button
         onClick={() => navigate('/admin/ViewParent' , {state: {userId : row.id}})}
         >
-        <img src={view} alt="view" className='h-8' />
+        <img src={view} alt="view" className='h-6 lg:h-8' />
         </button>
         :
         <div className='h-8 w-8'>
@@ -78,18 +78,18 @@ const column = [
         <button
         onClick={() => (handleEditClick(row.id , row.role , row.userId))}
         >
-        <img src={edit} alt="Edit" className='h-8' />
+        <img src={edit} alt="Edit" className='h-6 lg:h-8' />
         </button>
         :
         <button
         onClick={() => (handleEditClick(row.id , row.role , row.userId))}
         >
-        <img src={edit} alt="Edit" className='h-8' />
+        <img src={edit} alt="Edit" className='h-6 lg:h-8' />
         </button>
       }
 
       <button>
-        <img src={deleteIcon} alt="Delete" className='h-8' />
+        <img src={deleteIcon} alt="Delete" className='h-6 lg:h-8' />
       </button>
       </div>
     ),
@@ -190,7 +190,9 @@ const column = [
   return (
     <div className='pl-0 h-full mb-10'>
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Active Users</h1>
-       <p className=' mt-2'><NavLink to = '/admin'>Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Active Users</span> </p>
+       <p className=' mt-2'><NavLink to = '/admin'>Dashboard </NavLink>/ 
+       <NavLink to = '/admin/user'> User </NavLink>/
+       <span className='text-[#ffae01] font-semibold'>Active Users</span> </p>
        <AddBtn onAddClick={handleClick}/>
       <Table
          columns={column}

@@ -202,10 +202,13 @@ const searchOptions = [
 ];
 
   return (
-    <div className=' h-full mb-10 mr-10'>
+    <div className=' h-full mb-10'>
 
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Expenses</h1>
-      <p className='mt-2'> <NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Expenses</span> </p>
+      <p className='mt-2'> 
+        <NavLink to = '/admin'> Dashboard </NavLink>/
+         <NavLink to = '/admin/accounts'> Accounts </NavLink>/  
+      <span className='text-[#ffae01] font-semibold'>Expenses</span> </p>
       <AddBtn onAddClick={handleAddClick}/>
       <Table
       columns={column}

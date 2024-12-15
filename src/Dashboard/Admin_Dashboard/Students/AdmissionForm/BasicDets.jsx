@@ -132,11 +132,14 @@ const {
   return (
     <div>
         <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
-        <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/<span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
+        <p className=' mt-2'>
+          <NavLink to = '/admin'> Dashboard </NavLink>/
+          <NavLink to = '/admin/students'> Students </NavLink>/
+          <span className='text-[#ffae01] font-semibold'>Admission form</span> </p>
          <ProgressIndicator currentStep={currentStep} />
     <div className='bg-white mt-10 p-5 rounded-xl'>
     <h2 className="text-xl font-semibold text-black ">Basic Details</h2>
-    <form  className="grid grid-cols-4 mt-5 gap-6">
+    <form  className="grid md:grid-cols-4 sm:grid-cols-2 grid-col-1 mt-5 md:gap-6 gap-4">
 
         {/* Input Fields */}
         <div className="flex flex-col px-1">
@@ -145,7 +148,7 @@ const {
                 type="text"
                 id="firstName"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('firstName', { required: 'First Name is required' })}
             />
             {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span> }
@@ -157,7 +160,7 @@ const {
                 type="text"
                 id="lastName"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('lastName', { required: 'Last Name is required' })}
             />
             {errors.lastName && <span className="text-red-500 text-sm">{errors.lastName.message}</span> }
@@ -169,7 +172,7 @@ const {
                 type="email"
                 id="email"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('email', {
                 required: 'Email is required',
                 pattern: {
@@ -187,7 +190,7 @@ const {
                 type="phone"
                 id="phone"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('phone', {
                 required: 'Phone number is required',
                 pattern: {
@@ -205,7 +208,7 @@ const {
                 type="text"
                 id="fatherName"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.fatherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.fatherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('fatherName', { required: 'Father\'s Name is required' })}
             />
             {errors.fatherName && <span className="text-red-500 text-sm">{errors.fatherName.message}</span>}
@@ -217,7 +220,7 @@ const {
                 type="text"
                 id="motherName"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.motherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.motherName ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('motherName', { required: 'Mother\'s Name is required' })}
             />
             {errors.motherName && <span className="text-red-500 text-sm">{errors.motherName.message}</span>}
@@ -227,7 +230,7 @@ const {
             <label htmlFor="gender">Gender <span className='text-red-700 font-bold'>*</span> </label>
             <select
                 id="gender"
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.gender ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('gender', { required: 'Gender is required' })}
             >
                 <option value="" className='hidden'>Gender</option>
@@ -244,7 +247,7 @@ const {
             label={"Date of Birth"}
             register={register}
             required={true}
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('dateOfBirth' , {required: 'Date of birth is required'})}
             />
             {errors.dateOfBirth && <span className="text-red-500 text-sm">{errors.dateOfBirth.message}</span>}
@@ -255,7 +258,7 @@ const {
           <label htmlFor="country">Country <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="country"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('country', { required: 'Country is required' })}
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
@@ -273,7 +276,7 @@ const {
           <label htmlFor="state">State <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="state"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('state', { required: 'State is required' })}
             value={selectedState}
             onChange={(e) => setSelectedState(e.target.value)}
@@ -291,7 +294,7 @@ const {
           <label htmlFor="city">City/Village <span className='text-red-700 font-bold'>*</span></label>
           <select
             id="city"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('city', { required: 'City is required' })}
             value={selectedCity}
             onChange={(e) => setSelectedCity(e.target.value)}
@@ -310,7 +313,7 @@ const {
                 type="text"
                 id="houseNumber"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.houseNumber ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.houseNumber ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('houseNumber', { required: 'House Number is required' })}
             />
             {errors.houseNumber && <span className="text-red-500 text-sm">{errors.houseNumber.message}</span>}
@@ -322,7 +325,7 @@ const {
                 type="text"
                 id="street"
                 placeholder=""
-                className={`py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none`}
+                className={`py-1 px-3  w-5/6 sm:w-auto rounded-lg bg-gray-100 border focus:outline-none`}
                 {...register('street')}
             />
             </div>
@@ -333,7 +336,7 @@ const {
                 type="text"
                 id="pinCode"
                 placeholder=''
-                className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+                className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.pinCode ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
                 {...register('pinCode', { 
                 required: 'Pincode is required'  , 
                 pattern: {
@@ -350,7 +353,7 @@ const {
         <label htmlFor="bloodGroup">Blood Group</label>
         <select
             id="bloodGroup"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.bloodGroup ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.bloodGroup ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('bloodGroup')}
         >
             <option value="">Select Blood Group</option>
@@ -370,7 +373,7 @@ const {
         <label htmlFor="religion">Religion</label>
         <select
             id="religion"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.relegion ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.relegion ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('religion')}
         >
             <option value="">Select Religion</option>
@@ -390,7 +393,7 @@ const {
         <label htmlFor="caste">Caste Category</label>
         <select
             id="caste"
-            className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.casteCategory ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.casteCategory ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
             {...register('casteCategory')}
         >
             <option value="">Select Caste Category</option>
@@ -404,7 +407,7 @@ const {
         </div>
     </form>
 
-        <div className="col-span-2 flex justify-end space-x-4 mt-5">
+        <div className="col-span-2 w-5/6 sm:w-auto flex justify-end space-x-4 mt-5">
             <Button type='submit' label="Save & Continue" className='' onClick={handleSubmit(onSubmit)} />
             <Button onClick={() => {
                 reset() 

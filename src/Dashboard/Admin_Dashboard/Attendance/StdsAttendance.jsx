@@ -116,20 +116,20 @@ const StdsAttendance = () => {
         name: 'SR.No',
         selector: (row, idx) => idx + 1,
         sortable: false,
-        style: { position: 'sticky', left: '0px', zIndex: 2, backgroundColor: 'white' }
+        // style: { position: 'sticky', left: '0px', zIndex: 2, backgroundColor: 'white' }
       },
       {
         name: 'Roll No',
         selector: (row) => row.rollNumber,
         sortable: false,
-       style: { position: 'sticky', left: '50px', zIndex: 2, backgroundColor: 'white' }
+      //  style: { position: 'sticky', left: '50px', zIndex: 2, backgroundColor: 'white' }
       },
       {
         name: 'Student Name',
         selector: (row) => row.firstName + ' ' + row.lastName,
         sortable: true,
-        style: { position: 'sticky', left: '100px', zIndex: 2, backgroundColor: 'white' } , 
-        width: '180px'
+        // style: { position: 'sticky', left: '100px', zIndex: 2, backgroundColor: 'white' } , 
+        // width: '180px'
       },
     // Dynamically add date columns
     ...sortedUniqueDates.map(date => ({
@@ -137,7 +137,7 @@ const StdsAttendance = () => {
       selector: row => {
         return formatAttendance(statusMap[attendanceMap[row.id]?.[date]] || '-'); 
       },
-      width: '120px'
+      // width: '120px'
     })),
   ];
 
@@ -148,7 +148,9 @@ const StdsAttendance = () => {
         <p className='mt-2'><NavLink to='/admin'>Dashboard </NavLink>/ <NavLink to='/admin/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
       </div>
       
+      <div className='mt-10'>
       <Labels/>
+      </div>
       <div className="overflow-x-auto max-w-7xl"> 
         <Table
           columns={columns}  

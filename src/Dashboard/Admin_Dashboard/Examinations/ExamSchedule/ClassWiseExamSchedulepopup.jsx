@@ -176,7 +176,7 @@ const [subject, setSubject] = useState([]);  // State for exam types
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-5xl relative">
             <button
               onClick={onClose}

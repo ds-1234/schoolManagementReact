@@ -98,7 +98,7 @@ useEffect(() => {
   return (
     <div className=" mx-auto rounded-xl space-y-2 my-10">
       <h2 className="text-2xl font-bold text-[#042954]">Edit User</h2>
-      <p>Dashboard / <NavLink to='/admin'>Admin</NavLink> / <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
+      <p> <NavLink to='/admin'>Dashboard</NavLink> /<NavLink to='/admin/activeUser'> Users / </NavLink> <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
 
     <div className="bg-white rounded-lg w-full mb-10 p-10 mt-5">
         {/* Role Input */}
@@ -106,14 +106,14 @@ useEffect(() => {
         <label htmlFor="role" className="block text-gray-900 font-semibold">Role <span className='text-red-700 font-bold'>*</span></label>
 
         <div
-          className="border rounded-lg cursor-pointer  flex justify-between items-center w-1/2 p-2"
+          className="border rounded-lg cursor-pointer  flex justify-between items-center md:w-1/2 w-full p-2"
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
           <p>{selectedRole ? roles.find(role => role.id === parseInt(selectedRole))?.name : "Select Role"}</p>
           <FontAwesomeIcon icon={faAngleDown} />
         </div>
         {dropdownOpen && (
-          <div className="absolute z-10 bg-white border rounded-lg flex flex-col w-1/3 max-h-24 overflow-y-auto shadow-md">
+          <div className="absolute z-10 bg-white border rounded-lg flex flex-col md:w-1/3 w-2/3 max-h-24 overflow-y-auto shadow-md">
             {roles.map(role => (
             <div
             key={role.id}

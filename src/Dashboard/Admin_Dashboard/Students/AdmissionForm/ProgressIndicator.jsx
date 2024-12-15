@@ -14,7 +14,7 @@ const ProgressIndicator = () => {
   ];
 
   return (
-    <div className="flex justify-start items-center mt-8">
+    <div className="flex xl:flex-nowrap flex-wrap xl:gap-0 gap-2 justify-start items-center mt-8">
       {steps.map((step) => (
         <div
           key={step.id}

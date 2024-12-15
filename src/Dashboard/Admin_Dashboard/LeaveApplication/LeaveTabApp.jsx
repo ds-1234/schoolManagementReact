@@ -35,7 +35,9 @@ const LeaveTab = () => {
     <div className="h-full mb-10">
       <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Leave Applications</h1>
       <p className="mt-2">
-        <NavLink to="/admin"> Dashboard  </NavLink>/ <span className="text-[#ffae01] font-semibold">Leaves</span>
+        <NavLink to="/admin"> Dashboard  </NavLink>/
+        <NavLink to="/admin/leaveModule"> Leave </NavLink>/
+         <span className="text-[#ffae01] font-semibold">Leaves List</span>
       </p>
 
       <AddBtn onAddClick={openAddPopup} />

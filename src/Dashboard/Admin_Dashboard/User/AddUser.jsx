@@ -22,6 +22,7 @@ const AddUser = () => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+  const [selectedRole , setSelectedRole] = useState('') ;
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity , setSelectedCity] = useState('') ;
@@ -33,51 +34,31 @@ const AddUser = () => {
     reset
   } = useForm();
 
-  useEffect(() => {
-    const fetchRoles = async() =>{
-      await axios({
-        method:"GET" , 
-        url: `${BASE_URL}/role/getRoleList` , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setRoles(res.data.data) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
-
-    const fetchStds = async() =>{
-      await axios({
-        method:"GET" , 
-        url: `${BASE_URL}/user/getUserList` , 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        setStds(res.data.data.filter((std) => (std.role === 3 && std.isActive === true && std.isParent == null))) ;
-      })
-      .catch(err => {
-        console.log(err , 'error:');
-      })
-    }
-   fetchRoles()
-   fetchStds()
-  } , []);
+    useEffect(() => {
+      const fetchInitialData = async () => {
+        try {
+          const [rolesResponse, stdsResponse] = await Promise.all([
+            axios.get(`${BASE_URL}/role/getRoleList`),
+            axios.get(`${BASE_URL}/user/getUserList`)
+          ]);
+          setRoles(rolesResponse.data.data);          
+          setStds(
+            stdsResponse.data.data.filter((std) => std.role === 3 && std.isActive && !std.isParent)
+          );
+        } catch (error) {
+          console.error(error, 'Error fetching initial data');
+        }
+      };
+      fetchInitialData();
+    }, []);
+    
   
 
   const onSubmit = async(data) => {
-    const selectedRoles = roles.find(role => role.id === parseInt(data.role));
-
     const userData = {
       ...data , 
-      role: selectedRoles.id,
-      isParent : selectedRoles.id === 5 ? selectedStds : null ,
+      role: selectedRole,
+      isParent : selectedRole === 5 ? selectedStds : null ,
       isActive: data.active = value, 
     }
   
@@ -161,13 +142,13 @@ const AddUser = () => {
       fetchLocationData() ;
     } , [])
 
-  const handleRoleChange = (e) => {  
-    const selectedRole = e.target.value ;
-    console.log(selectedRole);
-    if(selectedRole == 5){
-      setDropdownIsVisible(true) ;
-    }
-  }
+  // const handleRoleChange = (e) => {  
+  //   setSelectedRole(e.target.value)
+  //   console.log(selectedRole);
+  //   if(selectedRole == 5){
+  //     setDropdownIsVisible(true) ;
+  //   }
+  // }
 
   const handleCheckboxChange = (stdId) => {
     setSelectedStds((prevSelected) => {
@@ -180,14 +161,14 @@ const AddUser = () => {
   };
 
   return (
-    <div className="p-10 mx-auto ml-19.5 bg-white rounded-xl shadow-md space-y-6 my-10 ">
+    <div className="p-10 mx-auto bg-white rounded-xl shadow-md space-y-2 my-10 ">
 
         <h2 className="text-2xl font-bold text-[#042954]  ">Add New User</h2>
-        <p className=' '>Dashboard /<NavLink to = '/admin'> Admin </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add User</span> </p>
+        <p><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add User</span> </p>
       
       <div className="bg-white rounded-lg w-full">
         <h2 className="text-xl font-semibold text-black  mt-10">Basic Details</h2>
-        <form  className="grid grid-cols-4 mt-5 gap-6">
+        <form  className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 mt-5 gap-6 ">
 
           {/* Input Fields */}
           <div className="flex flex-col px-1">
@@ -469,23 +450,21 @@ const AddUser = () => {
         <div className="mt-4">
             <select
               id="role"
-              className={`w-1/2 px-3 py-2 border ${errors.roles ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              rows="4"
-              onMouseLeave={handleRoleChange}
-              {...register('role', { required: 'Role Field is required' })}
+              className={`md:w-1/2 w-full px-3 py-2 border  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={selectedRole}
+              onChange={(e) =>setSelectedRole(e.target.value)  }
             >
                 <option value="" hidden>Select a Role</option>
-              {roles.map(role => (
+              {roles?.map(role => (
                 <option key={role.id} value={role.id}>
                   {role.name}
                 </option>
               ))}
             </select>
-            {errors.roles && <p className="text-red-500 text-sm mt-1">{errors.roles.message}</p>}
           </div>
 
           {/* Map Parent to Children */}
-          {dropdownIsVisible && (
+          {selectedRole == 5 ? 
             <div className="mb-4 mt-4 relative">
             <label htmlFor="student" className="block text-black font-semibold mb-2">Student Mapping</label>
             <div 
@@ -512,7 +491,9 @@ const AddUser = () => {
               </div>
             )}
           </div>
-          )}
+          :
+          ''
+          }
         
 
         {/* Submit Button */}

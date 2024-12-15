@@ -93,8 +93,8 @@ useEffect(() => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-10">
+       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
@@ -102,9 +102,9 @@ useEffect(() => {
           &times;
         </button>
       
-      <form onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold text-center mb-6 text-[#042954]">Edit Transport</h2>
-        <div className="mb-4">
+      <form onSubmit={handleSubmit} className='flex flex-col gap-1'>
+        <h2 className="text-2xl font-bold text-center mb-4 text-[#042954]">Edit Transport</h2>
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">Route Name</label>
           <input
             type="text"
@@ -115,7 +115,7 @@ useEffect(() => {
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">Vehicle Number</label>
           <input
             name="vehicleNumber"
@@ -125,7 +125,7 @@ useEffect(() => {
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">Driver Name</label>
           <input
             name="driverName"
@@ -135,7 +135,7 @@ useEffect(() => {
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">License Number</label>
           <input
             name="licenseNumber"
@@ -145,7 +145,7 @@ useEffect(() => {
             required
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
           <input
             name="phone"
@@ -156,7 +156,7 @@ useEffect(() => {
           />
         </div>
 
-        <div className="mb-6">
+        <div>
           {/* <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
           <select
             name="isActive"

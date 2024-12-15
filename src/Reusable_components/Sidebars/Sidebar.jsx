@@ -5,7 +5,7 @@ import { faHouse, faAngleDown, faAngleRight, faSchool, faBookOpen, faUser, faPen
 import {useStepContext} from '../../hooks/StepContext'
 import { useUserContext } from '../../hooks/UserContext';
 
-const Sidebar = () => {
+const Sidebar = ({setIsSidebarOpen}) => {
 
   const {setUserId} = useUserContext()
   const [openDropdown, setOpenDropdown] = useState(null)
@@ -18,7 +18,12 @@ const Sidebar = () => {
   const renderAngleIcon = (dropdown) => {
     return openDropdown === dropdown ? faAngleDown : faAngleRight;
   };
+
+  const handleNavClick = () => {
+    setIsSidebarOpen(false); 
+  };
  
+
   return (
     <div>
       <nav className="p-5 h-full overflow-y-auto scrollbar-hide bg-[#051f3e] fixed text-white">
@@ -37,11 +42,14 @@ const Sidebar = () => {
            {/* User Section */}
            <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/activeUser"
+              to="/admin/user"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('user')} 
+              onClick={() => {
+                toggleDropdown('user')
+                handleNavClick()
+              }} 
             >
               <div className='flex items-center justify-start gap-1'>
               <FontAwesomeIcon icon={faUser} className="mr-3 text-[#ffae01]" />
@@ -80,11 +88,14 @@ const Sidebar = () => {
           {/* Conf Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/role"
+              to="/admin/config"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'bg-[#002b52] text-[#ffae01] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('conf')}
+              onClick={() => {
+                toggleDropdown('conf')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start'>
               <FontAwesomeIcon icon={faSliders} className=" text-[#ffae01]" />
@@ -209,11 +220,14 @@ const Sidebar = () => {
           {/* Library Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/books"
+              to="/admin/library"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('library')}
+              onClick={() =>{
+                toggleDropdown('library')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
@@ -231,7 +245,7 @@ const Sidebar = () => {
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Library
+                    Library Books
                   </NavLink>
                 </li>
                 <li>
@@ -249,32 +263,16 @@ const Sidebar = () => {
             )}
           </li>
 
-
-          {/* Books Section
-          <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/books"
-              className={({ isActive }) =>
-                `flex items-center hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-              <FontAwesomeIcon icon={faBookAtlas} className="mr-4 text-[#ffae01]" />
-              Library
-            </NavLink>
-          </li> */}
-
-          
-
           {/* Student Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/admissionForm'}
+            to={'/admin/students'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
               onClick={() => {
                 toggleDropdown('students')
-                
+                handleNavClick()
                   setUserId(null)
                   setCurrentStep(1)
                 }}
@@ -359,6 +357,7 @@ const Sidebar = () => {
              <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/select"
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -373,6 +372,7 @@ const Sidebar = () => {
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/transport"
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -386,6 +386,7 @@ const Sidebar = () => {
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/notice"
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -400,11 +401,14 @@ const Sidebar = () => {
           {/* Examinations Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/Examinations"
+              to="/admin/exam"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('exam')}
+              onClick={() => {
+                toggleDropdown('exam')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start'>
                 <FontAwesomeIcon icon={faFileLines} className=" text-[#ffae01] text-sm" />
@@ -477,6 +481,7 @@ const Sidebar = () => {
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
               to="/admin/home"
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
@@ -490,6 +495,7 @@ const Sidebar = () => {
        <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
         <NavLink
           to="/admin/homework"
+          onClick={handleNavClick}
           className={({ isActive }) =>
             `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
           }
@@ -504,11 +510,14 @@ const Sidebar = () => {
           {/* accounts Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/Expenses"
+              to="/admin/accounts"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('accounts')}
+              onClick={() => {
+                toggleDropdown('accounts')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-3 text-[#ffae01]" />
@@ -595,6 +604,7 @@ const Sidebar = () => {
                     className={({ isActive }) =>
                       `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
                     }
+                    onClick={handleNavClick}
                   >
                       <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
                       Holidays
@@ -607,6 +617,7 @@ const Sidebar = () => {
                     className={({ isActive }) =>
                       `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
                     }
+                    onClick={handleNavClick}
                   >
                       <FontAwesomeIcon icon={faFile} className="mr-3 text-[#ffae01]" />
                       Leave Type
@@ -616,11 +627,14 @@ const Sidebar = () => {
           {/* Leaves Section */}
        <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/leaves"
+              to="/admin/leaveModule"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('leaveApp')} 
+              onClick={() => {
+                toggleDropdown('leaveApp')
+                handleNavClick()
+              }} 
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
@@ -661,11 +675,14 @@ const Sidebar = () => {
           {/* Sports Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/sports'}
+            to={'/admin/sportModule'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('sports')}
+              onClick={() => {
+                toggleDropdown('sports')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faVolleyball} className="mr-1 text-[#ffae01]" />
@@ -677,13 +694,13 @@ const Sidebar = () => {
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
                 <li>
                   <NavLink
-                    to="/admin/Sports"
+                    to="/admin/sports"
                     className={({ isActive }) =>
                       `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Sports
+                    Sports List
                   </NavLink>
                 </li>
                 <li>
@@ -703,11 +720,14 @@ const Sidebar = () => {
           {/* Hostel Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-            to={'/admin/hostel'}
+            to={'/admin/hostelModule'}
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('hostel')}
+              onClick={() => {
+                toggleDropdown('hostel')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faHotel} className="mr-1 text-[#ffae01]" />
@@ -725,7 +745,7 @@ const Sidebar = () => {
                     }
                   >
                     <FontAwesomeIcon icon={faAngleRight} />
-                    Hostel
+                    Hostel List
                   </NavLink>
                 </li>
                 <li>
@@ -766,18 +786,17 @@ const Sidebar = () => {
             )}
           </li>
 
-
-
-
-
           {/* Fees Section */}
           <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
             <NavLink
-              to="/admin/feesgrp"
+              to="/admin/fees"
               className={({ isActive }) =>
                 `flex items-center justify-between hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
-              onClick={() => toggleDropdown('fees')}
+              onClick={() => {
+                toggleDropdown('fees')
+                handleNavClick()
+              }}
             >
               <div className='flex items-center justify-start gap-1'>
                 <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
@@ -821,28 +840,13 @@ const Sidebar = () => {
               className={({ isActive }) =>
                 `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
               }
+              onClick={handleNavClick}
             >
                 <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
                 Event
               
             </NavLink>
           </li>
-             {/* StaffAttendance Section */}
-             {/* <li className="mb-4 pb-2 text-base font-medium border-b border-gray-300">
-            <NavLink
-              to="/admin/StaffAttendance"
-              className={({ isActive }) =>
-                `flex items-center  hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
-              }
-            >
-                <FontAwesomeIcon icon={faClipboardUser} className="mr-4 text-[#ffae01]" />
-                Staff Attendance
-              
-            </NavLink>
-          </li> */}
-
-
-
 
         </ul>
       </nav>

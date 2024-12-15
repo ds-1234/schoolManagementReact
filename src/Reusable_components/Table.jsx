@@ -88,7 +88,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
 
   return (
     <div>
-      <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-10">
+      <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-5">
         <div className="rounded-lg text-black">
           <div>
             {/* Search Section */}
@@ -125,7 +125,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
                 type="text"
                 placeholder="Search..."
                 ref={searchInputRef}
-                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 w-1/4"
+                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 md:w-1/3 w-1/2"
               />
 
               {/* Search Button */}

@@ -81,7 +81,7 @@ function Admin() {
     return Object.entries(tileData.data).map(([key, value]) => (
       <div
         key={key}
-        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200"
+        className="p-4 py-4 rounded-lg bg-white flex flex-col justify-start shadow-md hover:shadow-lg transform hover:-translate-y-2 transition-all duration-200 "
       >
         <h1 className="text-lg font-bold text-blue-950 mb-2">{key}</h1>
         <div className="flex items-center gap-2">
@@ -104,9 +104,9 @@ function Admin() {
         
 
         {/* Active/Inactive Counts */}
-        <div className="flex justify-between w-full mt-2 border-t-2 border-gray-200">
-          <p className="text-sm text-green-600 pt-2">Active: {value.activeCount}</p>
-          <p className="text-sm text-red-600 pt-2">Inactive: {value.inactiveCount}</p>
+        <div className="flex justify-between w-full mt-2 border-t-2 border-gray-200 sm:text-xs text-sm">
+          <p className=" text-green-600 pt-2 ">Active: {value.activeCount}</p>
+          <p className=" text-red-600 pt-2">Inactive: {value.inactiveCount}</p>
         </div>
       </div>
     ));
@@ -119,47 +119,49 @@ function Admin() {
 
       {/* Welcome Section */}
       <div className="bg-[#ffae01] text-white px-6 py-4 rounded-md mb-6 mt-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row md:justify-between  gap-4">
+          <div className="flex flex-col">
           <h2 className="text-xl font-bold">Welcome Back , {user.gender === 'Female' ? 'Ms.' : 'Mr.'} {user.firstName} </h2>
-          <p>Updated Recently on {tileData?.timestamp}</p>
+          <p>Have a Good day at work</p>
+          </div>
+          {/* <p>Updated Recently on {tileData?.timestamp}</p> */}
         </div>
-        <p>Have a Good day at work</p>
       </div>
 
       {/* Tiles Section */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {loading ? <p>Loading...</p> : renderTiles()}
       </div>
 
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-wrap md:flex-nowrap">
         {/*Event Schedule Section*/ }
-        <div className="w-1/2">
+        <div className="md:w-1/2 w-full">
           <Events userTypeImages={userTypeImages} />
         </div>
 
         {/* Attendance View */}
-        <div className="w-1/2">
+        <div className="md:w-1/2 w-full">
           <Attendance />
         </div>
 
        
       </div>
 
-      <div className="grid grid-cols-2 mt-5 gap-4">
+      <div className="flex mt-5 gap-4 flex-wrap md:flex-nowrap">
         {/* Fees Collection */}
-        <div>
+        <div className="md:w-1/2 w-full">
           <FeesCollection/>
         </div>
-        <div>
+        <div className="md:w-1/2 w-full">
           <Notice/>
         </div>
       </div>
 
 
       {/* Financial Overview */}
-      <div className="flex gap-5 mt-10">
-        <div className="flex flex-col gap-2 w-1/2">
+      <div className="flex gap-5 flex-wrap lg:flex-nowrap mt-10">
+        <div className="flex flex-col gap-2 lg:w-1/2 md:w-2/3 w-full">
           {/* Earnings Card */}
         <ChartCard
           title="Total Earnings"
@@ -178,14 +180,14 @@ function Admin() {
         </div>
 
 
-        <div className="flex flex-col gap-4 w-1/4"> 
+        <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:w-1/4 w-full "> 
           <StatCard title="Total Earnings" value="$64,522.24" percentage="1.2" isPositive={true} />
           <StatCard title="Total Expenses" value="$60,522.24" percentage="1.2" isPositive={false} />
           <StatCard title="Total Fees Collected" value="$25,000.02" percentage="1.2" isPositive={true} />
           <StatCard title="Fine Collected Till Date" value="$4,56.64" percentage="1.2" isPositive={false} />
         </div>
 
-        <div className="flex  flex-col gap-5">
+        <div className="flex flex-col gap-5 w-full lg:w-auto">
           <QuickLinks/>
           <Leaves/>
         </div>
