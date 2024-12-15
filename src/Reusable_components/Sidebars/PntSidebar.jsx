@@ -60,6 +60,17 @@ function PntSidebar() {
                   </NavLink>
                   {openDropdown=='exam' && (
                     <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
+                                            <li>
+                        <NavLink
+                          to="/parentsDashboard/ParentExamSchedule"
+                          className={({ isActive }) =>
+                            `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                          }
+                        >
+                          <FontAwesomeIcon icon={faAngleRight} />
+                          Exam Schedule
+                        </NavLink>
+                      </li>
                       <li>
                         <NavLink
                           to="/parentsDashboard/ParentExamRes"
@@ -72,17 +83,7 @@ function PntSidebar() {
                         </NavLink>
                       </li>
       
-                      <li>
-                        <NavLink
-                          to="/parentsDashboard/ParentExamSchedule"
-                          className={({ isActive }) =>
-                            `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
-                          }
-                        >
-                          <FontAwesomeIcon icon={faAngleRight} />
-                          Exam Schedule
-                        </NavLink>
-                      </li>
+
                     </ul>
                   )}
             </li>
