@@ -10,6 +10,7 @@ const ParentExamDetailsPage = () => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [subjectsName, setSubjectsName] = useState([]);
 
   useEffect(() => {
     if (classId && userId && examType) {
@@ -38,6 +39,28 @@ const ParentExamDetailsPage = () => {
     }
   }, [classId, userId, examType]);
 
+  const fetchSubjectName = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+
+      if (response.data.success) {
+        const subdata = response.data.data;
+        setSubjectsName(subdata);
+      }
+    } catch (error) {
+      console.error("Error fetching Subject data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjectName();
+  }, []); 
+
+  const getSubjectNameById = (id) => {
+    const sub = subjectsName.find((type) => type.id == id);
+    return sub ? sub.subject : "Unknown";
+  };
+
   const columns = [
     {
       name: 'SR.No',
@@ -46,7 +69,7 @@ const ParentExamDetailsPage = () => {
     },
     {
       name: 'Subject',
-      selector: row => row.examData.subjectId,
+      selector: row => getSubjectNameById(row.examData.subjectId),
       sortable: true,
     },
     {

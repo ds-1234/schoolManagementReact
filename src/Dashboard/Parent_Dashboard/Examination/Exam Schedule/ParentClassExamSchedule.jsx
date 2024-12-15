@@ -9,6 +9,7 @@ const ParentClassExamSchedule = () => {
   const { exam,classId } = location.state || {}; // Access the exam data passed as state
   const [subject, setSubject] = useState([]); // State for exam types
   const [subjectWiseExamList, setSubjectWiseExamList] = useState([]);
+  const [subjectsName, setSubjectsName] = useState([]);
   console.log(classId,'classid final')
   console.log(exam,'exam final')
 
@@ -50,6 +51,28 @@ const ParentClassExamSchedule = () => {
     return <p className="text-red-500">Class ID not provided.</p>;
   }
 
+  const fetchSubjectName = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+
+      if (response.data.success) {
+        const subdata = response.data.data;
+        setSubjectsName(subdata);
+      }
+    } catch (error) {
+      console.error("Error fetching Subject data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjectName();
+  }, []); 
+
+  const getSubjectNameById = (id) => {
+    const sub = subjectsName.find((type) => type.id == id);
+    return sub ? sub.subject : "Unknown";
+  };
+
   const columns = [
     {
       name: 'SR.No',
@@ -58,7 +81,7 @@ const ParentClassExamSchedule = () => {
     },
     {
       name: 'Subject',
-      selector: row => row.subject,
+      selector: row => getSubjectNameById(row.subject),
       sortable: true,
     },
     {
