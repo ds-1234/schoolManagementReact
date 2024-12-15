@@ -135,6 +135,9 @@ import ClassExamSchedulePage from './Dashboard/Teacher_Dashboard/Examination/Exa
 import TchClassExamSchedule from './Dashboard/Teacher_Dashboard/Examination/Exam Schedule/TchClassExamSchedule';
 import ParentClassExamSchedulePage from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentClassExamSchedulePage';
 import ParentClassExamSchedule from './Dashboard/Parent_Dashboard/Examination/Exam Schedule/ParentClassExamSchedule';
+import ParentExamres from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamres';
+import ParentClassExamResultPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentClassExamResultPage';
+import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamDetailsPage';
 
 
 
@@ -311,6 +314,9 @@ function App() {
             <Route path = 'ParentExamSchedule' element ={<ParentExamSchedule/>} />
             <Route path = 'ParentClassExamSchedulePage' element ={<ParentClassExamSchedulePage/>} />
             <Route path = 'ParentClassExamSchedule' element ={<ParentClassExamSchedule/>} />
+            <Route path = 'ParentExamRes' element ={<ParentExamres/>} />
+            <Route path = 'ParentClassExamResultPage' element ={<ParentClassExamResultPage/>} />
+            <Route path = 'ParentExamDetailsPage' element ={<ParentExamDetailsPage/>} />
           </Route>
         {/* Guest Dashboard Routes */}
         <Route
