@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons'; // Import the attendance icon
+import axios from 'axios';
 
 function Attendance() {
   const navigate = useNavigate();
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
+  const [canPunchIn, setCanPunchIn] = useState(true);
+  const userId = user.id;
 
   function getFormattedIndianTime() {
     // Get the current time in Indian Standard Time (IST)
@@ -17,6 +20,8 @@ function Attendance() {
     const formattedTime = indianTime.toISOString().replace('Z', '');
     return formattedTime;
   }
+
+
 
   const handleAtt = async () => {
     if (user && user.id) {
@@ -46,6 +51,7 @@ function Attendance() {
 
             if (response.ok) {
               console.log('Attendance saved successfully');
+              setCanPunchIn(false)
             } else {
               console.error('Error saving attendance');
             }
@@ -61,8 +67,37 @@ function Attendance() {
     }
   };
 
+
+  useEffect(() => {
+    const checkAttendanceForToday = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/attendance/getStaffAttendance");
+        if (response.data.success) {
+          const attendanceData = response.data.data;
+
+          // Get today's date in IST (Indian Standard Time)
+          const now = new Date();
+          const indianTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+          const todayDate = indianTime.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+
+          // Check if any record exists for the current user and today's date
+          const hasPunchedInToday = attendanceData.some(
+            (record) => record.userTableId === userId && record.attendanceDate === todayDate
+          );
+
+          setCanPunchIn(!hasPunchedInToday); // Disable "Punch In" if a record exists
+        }
+      } catch (error) {
+        console.error("Error fetching attendance data:", error);
+      }
+    };
+
+    checkAttendanceForToday();
+  }, [userId]);
+
   return (
     <div className="py-2">
+      {canPunchIn ? (
       <button
         className="flex items-center px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition ml-8 xl:ml-0"
         onClick={handleAtt}
@@ -70,6 +105,9 @@ function Attendance() {
         <FontAwesomeIcon icon={faClock} className="md:mr-2" /> {/* Attendance icon */}
         <p className='hidden md:block'>Punch In</p>
       </button>
+      ):(
+           <p>punched</p>
+      )}
     </div>
   );
 }
