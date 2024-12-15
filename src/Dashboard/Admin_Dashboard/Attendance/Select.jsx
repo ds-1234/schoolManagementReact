@@ -12,7 +12,7 @@ const Select = () => {
     <div className='flex flex-col justify-start'>
     <h1 className='text-lg md:text-2xl  font-semibold text-black mt-5'>Attendance</h1>
     <p className='mt-2'><NavLink to = '/admin'> Dashboard  </NavLink>/  <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
-    <div className='flex flex-col sm:flex-row items-center justify-center mt-10 sm:mt-24 mb-5 gap-5'>
+    <div className='flex flex-row items-center justify-center mt-10 sm:mt-24 mb-5 gap-5'>
       <Tile label={'Students'} icon={studentImg} path={'/admin/classSelect'} />
       <Tile label={'Teachers'} icon={teacherImg} path={'/admin/StaffAttendance'} />
     </div>

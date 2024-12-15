@@ -180,7 +180,7 @@ function Admin() {
         </div>
 
 
-        <div className="flex flex-col gap-4 md:w-1/4 w-full"> 
+        <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:w-1/4 w-full "> 
           <StatCard title="Total Earnings" value="$64,522.24" percentage="1.2" isPositive={true} />
           <StatCard title="Total Expenses" value="$60,522.24" percentage="1.2" isPositive={false} />
           <StatCard title="Total Fees Collected" value="$25,000.02" percentage="1.2" isPositive={true} />
