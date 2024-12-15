@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import Table from '../../../../Reusable_components/Table';
 
 const ParentExamDetailsPage = () => {
   const location = useLocation();
@@ -37,29 +38,62 @@ const ParentExamDetailsPage = () => {
     }
   }, [classId, userId, examType]);
 
+  const columns = [
+    {
+      name: 'SR.No',
+      selector: (row, idx) => idx + 1,
+      sortable: false,
+    },
+    {
+      name: 'Subject',
+      selector: row => row.examData.subjectId,
+      sortable: true,
+    },
+    {
+      name: 'Exam Marks',
+      selector: row => row.examMarks,
+      sortable: true,
+    },
+    {
+      name: 'Remarks',
+      selector: row => row.remarks,
+      sortable: true,
+    },
+    // {
+    //   name: 'Duration',
+    //   selector: row => row.duration,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Max Marks',
+    //   selector: row => row.maxMarks,
+    //   sortable: true,
+    // },
+    // {
+    //   name: 'Min Marks',
+    //   selector: row => row.minMarks,
+    //   sortable: true,
+    // },
+  ];
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (filteredResults.length === 0) return <div>No exam details found for this selection.</div>;
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-lg md:text-2xl font-semibold text-black mt-5">Exam Details</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-        {filteredResults.map((result) => (
-          <div
-            key={result.id}
-            className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white"
-          >
-            <h3 className="text-xl font-semibold text-center text-blue-500">
-              Exam ID: {result.id}
-            </h3>
-            <p className="text-center text-gray-700">Marks: {result.examMarks}</p>
-            <p className="text-center text-gray-700">Remarks: {result.remarks}</p>
-            <p className="text-center text-gray-700">Subject ID: {result.examData.subjectId}</p>
-          </div>
-        ))}
-      </div>
+      {/* <h2 className="text-2xl font-bold text-center text-[#042954]">{classId}'s Exam Schedule</h2> */}
+            <h1 className="text-lg md:text-2xl font-semibold text-black mt-5"> Schedule</h1>
+            <p className="pl-0 mt-2">
+              <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
+              {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
+              <NavLink to="/parentsDashboard/ParentExamSchedule"> Exam Schedule </NavLink>/<NavLink to="/parentsDashboard/ParentClassExamSchedulePage"> Class Schedule </NavLink>/
+              <span className="text-[#ffae01] font-semibold"> Schedule</span>
+            </p>
+      <Table
+        columns={columns}
+        data={filteredResults}  // Adjust based on your data structure
+        />
     </div>
   );
 };
