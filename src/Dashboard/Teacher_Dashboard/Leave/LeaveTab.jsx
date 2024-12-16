@@ -38,30 +38,30 @@ const LeaveTab = () => {
 
   const fetchLeaveCounter = async () => {
     try {
-      // const response = await axios.get(`${BASE_URL}/hrm/getLeaveCounterDetailsById/${user.id}`);
-      const response = {
-        "data": [
-            {
-                "id": 3,
-                "leaveTypes": 1,
-                "leaveCount": 10,
-                "staffId": 1
-            },
-            {
-                "id": 4,
-                "leaveTypes": 2,
-                "leaveCount": 20,
-                "staffId": 1
-            },
-            {
-                "id": 5,
-                "leaveTypes": 3,
-                "leaveCount": 5,
-                "staffId": 1
-            }
-        ],
-    }
-      setLeaveCounter(response.data);
+      const response = await axios.get(`${BASE_URL}/hrm/getLeaveCounterDetailsById/${user.id}`);
+    //   const response = {
+    //     "data": [
+    //         {
+    //             "id": 3,
+    //             "leaveTypes": 1,
+    //             "leaveCount": 10,
+    //             "staffId": 1
+    //         },
+    //         {
+    //             "id": 4,
+    //             "leaveTypes": 2,
+    //             "leaveCount": 20,
+    //             "staffId": 1
+    //         },
+    //         {
+    //             "id": 5,
+    //             "leaveTypes": 3,
+    //             "leaveCount": 5,
+    //             "staffId": 1
+    //         }
+    //     ],
+    // }
+      setLeaveCounter(response.data.data);
     } catch (error) {
       toast.error("Error fetching leave counter details");
     }
