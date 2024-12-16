@@ -12,12 +12,18 @@ const LeaveTab = () => {
   const [activeTab, setActiveTab] = useState("PENDING"); // Set initial tab to Pending
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const user = JSON.parse(sessionStorage.getItem("user"));
+  const [leaveCounter, setLeaveCounter] = useState([]);
+  const [leaveTypeName, setLeaveTypeName] = useState([]);
+
+
 
   const openAddPopup = () => setIsAddPopupOpen(true);
   const closeAddPopup = () => setIsAddPopupOpen(false);
 
   useEffect(() => {
     fetchLeaves();
+    fetchLeaveCounter();
+    fetchLeaveType()
   }, []);
 
   const fetchLeaves = async () => {
@@ -27,6 +33,56 @@ const LeaveTab = () => {
     } catch (error) {
       toast.error("Error fetching leave applications");
     }
+  };
+
+  const fetchLeaveCounter = async () => {
+    try {
+      // const response = await axios.get(`${BASE_URL}/hrm/getLeaveCounterDetailsById/${user.id}`);
+      const response = {
+        "data": [
+            {
+                "id": 3,
+                "leaveTypes": 1,
+                "leaveCount": 10,
+                "staffId": 1
+            },
+            {
+                "id": 4,
+                "leaveTypes": 2,
+                "leaveCount": 20,
+                "staffId": 1
+            },
+            {
+                "id": 5,
+                "leaveTypes": 3,
+                "leaveCount": 5,
+                "staffId": 1
+            }
+        ],
+    }
+      setLeaveCounter(response.data);
+    } catch (error) {
+      toast.error("Error fetching leave counter details");
+    }
+  };
+
+
+  const fetchLeaveType = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/leaves/getLeavesList`); // Replace with your actual API endpoint
+      if (response.data && response.data.success) {
+        setLeaveTypeName(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching Leaves:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getLeaveTypeNameById = (id) => {
+    const leave = leaveTypeName.find((lev) => lev.id == id);
+    return leave ? `${leave.leaveType}` : 'Leave Type not found';
   };
 
   const filteredLeaves = leaves.filter((leave) => leave.leaveStatus === activeTab);
@@ -39,6 +95,31 @@ const LeaveTab = () => {
       </p>
 
       <AddBtn onAddClick={openAddPopup} />
+
+
+
+
+
+            {/* Leave Counter */}
+            <div className="mt-4 p-4 bg-gray-100 border rounded-md">
+        <h2 className="text-lg font-semibold text-black">Leave Count</h2>
+        <div className="flex flex-wrap mt-2">
+          {leaveCounter.map((leave) => (
+            <div
+              key={leave.id}
+              className="mr-4 mb-2 p-2 "
+            >
+              <span className="font-semibold text-gray-700">{getLeaveTypeNameById(leave.leaveTypes)}:</span>{" "}
+              <span className="text-blue-500">{leave.leaveCount}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+
+
+
 
       {/* Tabs Navigation */}
       <div className="flex space-x-6 mt-8 border-b-2 pb-2">
