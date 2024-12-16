@@ -14,6 +14,7 @@ const LeaveTab = () => {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const [leaveCounter, setLeaveCounter] = useState([]);
   const [leaveTypeName, setLeaveTypeName] = useState([]);
+  const [loading, setLoading] = useState([]);
 
 
 
@@ -102,7 +103,7 @@ const LeaveTab = () => {
 
             {/* Leave Counter */}
             <div className="mt-4 p-4 bg-gray-100 border rounded-md">
-        <h2 className="text-lg font-semibold text-black">Leave Count</h2>
+        <h2 className="text-lg font-semibold ml-2 text-black">Alloted Leaves</h2>
         <div className="flex flex-wrap mt-2">
           {leaveCounter.map((leave) => (
             <div
