@@ -9,6 +9,18 @@ function Attendance() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
   const [canPunchIn, setCanPunchIn] = useState(true);
   const userId = user.id;
+  const [loginTime, setLoginTime] = useState('');
+
+
+
+  const formatTime = (time) => {
+    const date = new Date(time);  // Parse the timestamp string
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+  
 
   function getFormattedIndianTime() {
     // Get the current time in Indian Standard Time (IST)
@@ -52,6 +64,10 @@ function Attendance() {
             if (response.ok) {
               console.log('Attendance saved successfully');
               setCanPunchIn(false)
+              const formattedSaveTime = formatTime(response.data.logindateTime);
+              setLoginTime(formattedSaveTime);
+
+
             } else {
               console.error('Error saving attendance');
             }
@@ -84,8 +100,15 @@ function Attendance() {
           const hasPunchedInToday = attendanceData.some(
             (record) => record.userTableId === userId && record.attendanceDate === todayDate
           );
-
-          setCanPunchIn(!hasPunchedInToday); // Disable "Punch In" if a record exists
+          const req = attendanceData.filter(
+            (record) => record.userTableId === userId && record.attendanceDate === todayDate
+          );
+          
+          console.log(req,'req')
+          setCanPunchIn(!hasPunchedInToday); 
+          const formattedGetTime = formatTime(req[0].logindateTime); // Access the first record's logindateTime
+          setLoginTime(formattedGetTime);
+          console.log(formattedGetTime,'formattedGetTime')
         }
       } catch (error) {
         console.error("Error fetching attendance data:", error);
@@ -93,7 +116,7 @@ function Attendance() {
     };
 
     checkAttendanceForToday();
-  }, [userId]);
+  }, [userId,canPunchIn]);
 
   return (
     <div className="py-2">
@@ -106,7 +129,7 @@ function Attendance() {
         <p className='hidden md:block'>Punch In</p>
       </button>
       ):(
-           <p>punched</p>
+           <p>Login:-{loginTime}</p>
       )}
     </div>
   );
