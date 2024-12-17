@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 
 const ParentClassExamSchedule = () => {
@@ -12,6 +12,8 @@ const ParentClassExamSchedule = () => {
   const [subjectsName, setSubjectsName] = useState([]);
   console.log(classId,'classid final')
   console.log(exam,'exam final')
+  const navigate = useNavigate();
+
 
   // Fetch subject list
   const fetchSubject = async () => {
@@ -118,8 +120,14 @@ const ParentClassExamSchedule = () => {
             <p className="pl-0 mt-2">
               <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
               {/* <NavLink to="/teacherDashboard/Examinations"> Examinations </NavLink>/ */}
-              <NavLink to="/parentsDashboard/ParentExamSchedule"> Exam Schedule </NavLink>/<NavLink to="/parentsDashboard/ParentClassExamSchedulePage"> Class Schedule </NavLink>/
-              <span className="text-[#ffae01] font-semibold"> Schedule</span>
+              <NavLink to="/parentsDashboard/ParentExamSchedule"> Exam Schedule </NavLink>/
+              <span
+    className="cursor-pointer  hover:underline"
+    onClick={() => navigate(-1)}
+  >
+    Class Schedule
+  </span>/
+                <span className="text-[#ffae01] font-semibold"> Schedule</span>
             </p>
       <Table
         columns={columns}
