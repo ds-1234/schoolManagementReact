@@ -52,7 +52,7 @@ const FetchData = () => {
   };
   useEffect(()=>{
     fetchclasses();
-  })
+  },[])
 
   const getClassNameById = (id) => {
     const res = className.find((type) => type.id == id);

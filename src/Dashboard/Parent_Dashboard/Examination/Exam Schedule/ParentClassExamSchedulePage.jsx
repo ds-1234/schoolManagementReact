@@ -64,7 +64,7 @@ const ParentClassExamSchedulePage = () => {
   };
   useEffect(()=>{
     fetchExamTypes();
-  })
+  },[])
 
   const getExamTypeNameById = (examTypeId) => {
     const examType = examTypes.find((type) => type.id == examTypeId);
