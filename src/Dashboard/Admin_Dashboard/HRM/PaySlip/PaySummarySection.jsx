@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import BASE_URL from "../../../../conf/conf";
+
 
 const PaySummarySection = () => {
   const [additionalFields, setAdditionalFields] = useState([]);
+  const [users, setUsers] = useState([]);
   const {
     register,
     formState: { errors },
+    setValue,
   } = useForm();
+
+  // Fetch users with role == 4
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/user/getUserList`);
+        const filteredUsers = response.data.data.filter(user => user.role == 4);
+        setUsers(filteredUsers);
+        console.log(filteredUsers,'filteredUsers')
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const handleAddField = () => {
     setAdditionalFields([
@@ -36,14 +56,21 @@ const PaySummarySection = () => {
       <div className="grid grid-cols-2 gap-6">
         {/* Employee Name */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Employee Name *</label>
-          <input
-            type="text"
+          <label className="w-1/3 font-medium">Employee Name *</label>
+          <select
             {...register('employeeName', { required: 'Employee Name is required' })}
             className={`py-2 px-3 rounded-lg bg-gray-100 border ${
               errors.employeeName ? 'border-red-500' : 'border-gray-300'
             } focus:outline-none w-2/3`}
-          />
+          >
+            {console.log(users,'users')}
+            <option value="">Select Employee</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.firstName} {user.lastName}
+              </option>
+            ))}
+          </select>
           {errors.employeeName && (
             <p className="text-red-500 text-sm">{errors.employeeName.message}</p>
           )}
@@ -51,7 +78,7 @@ const PaySummarySection = () => {
 
         {/* Employee ID */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Employee ID *</label>
+          <label className="w-1/3 font-medium">Employee ID *</label>
           <input
             type="text"
             {...register('employeeId', { required: 'Employee ID is required' })}
@@ -66,7 +93,7 @@ const PaySummarySection = () => {
 
         {/* Pay Period */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Pay Period *</label>
+          <label className="w-1/3 font-medium">Pay Period *</label>
           <input
             type="month"
             {...register('payPeriod', { required: 'Pay Period is required' })}
@@ -81,7 +108,7 @@ const PaySummarySection = () => {
 
         {/* Paid Days */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Paid Days *</label>
+          <label className="w-1/3 font-medium">Paid Days *</label>
           <input
             type="number"
             {...register('paidDays', { required: 'Paid Days are required' })}
@@ -96,7 +123,7 @@ const PaySummarySection = () => {
 
         {/* Loss of Pay Days */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Loss of Pay Days *</label>
+          <label className="w-1/3 font-medium">Loss of Pay Days *</label>
           <input
             type="number"
             {...register('lossOfPayDays', { required: 'Loss of Pay Days are required' })}
@@ -111,7 +138,7 @@ const PaySummarySection = () => {
 
         {/* Pay Date */}
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium ">Pay Date *</label>
+          <label className="w-1/3 font-medium">Pay Date *</label>
           <input
             type="date"
             {...register('payDate', { required: 'Pay Date is required' })}
