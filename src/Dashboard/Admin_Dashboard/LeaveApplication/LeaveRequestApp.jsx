@@ -135,19 +135,38 @@ const LeaveRequest = () => {
   const fetchLeaves = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/leaves/getLeavesApplicationList`);
-      const sortedLeaves = res.data.data.sort((a, b) => {
-        const statusOrder = {
-          PENDING: 1,
-          APPROVED: 2,
-          REJECTED: 3,
-        };
-        return statusOrder[a.leaveStatus] - statusOrder[b.leaveStatus];
-      });
+      const leaveApplications = res.data.data;
+  
+      // Fetch sender details for each leave application
+      const filteredLeaves = await Promise.all(
+        leaveApplications.map(async (leave) => {
+          const userRes = await axios.get(`${BASE_URL}/user/getUser/${leave.senderId}`);
+          const senderRole = userRes.data.data.role; 
+          
+          // Return the leave only if senderRole is not 3
+          return senderRole !== 3 ? leave : null;
+        })
+      );
+  
+      // Filter out null values and sort the leaves
+      const sortedLeaves = filteredLeaves
+        .filter((leave) => leave !== null)
+        .sort((a, b) => {
+          const statusOrder = {
+            PENDING: 1,
+            APPROVED: 2,
+            REJECTED: 3,
+          };
+          return statusOrder[a.leaveStatus] - statusOrder[b.leaveStatus];
+        });
+  
       setLeaves(sortedLeaves);
     } catch (error) {
+      console.error('Error in fetching requests', error);
       toast.error('Error in fetching requests');
     }
   };
+  
   
 
   useEffect(() => {

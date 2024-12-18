@@ -82,8 +82,8 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   const onSubmit = async (data) => {
     try {
       // First, upload the Resume and Photo files, if provided
-      const resumeUploaded = resumePath || await uploadDocument(data.resume?.[0], 'Resume') ;
-      const photoUploaded =  photoPath || await uploadDocument(data.photo?.[0], 'Photo') ;
+      const resumeUploaded = resumePath || (data.resume?.[0] && (await uploadDocument(data.resume[0], 'Resume')));
+    const photoUploaded = photoPath || (data.photo?.[0] && (await uploadDocument(data.photo[0], 'Photo')));
 
       // Only proceed with updating user data if both uploads were successful
       if (resumeUploaded && photoUploaded) {
