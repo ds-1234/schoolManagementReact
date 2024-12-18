@@ -139,8 +139,8 @@ import ParentExamres from './Dashboard/Parent_Dashboard/Examination/Exam Result/
 import ParentClassExamResultPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentClassExamResultPage';
 import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam Result/ParentExamDetailsPage';
 import UserHome from './Reusable_components/Home';
-
-
+import Payroll from './Dashboard/Admin_Dashboard/HRM/Payroll';
+import HrmForm from './Dashboard/Admin_Dashboard/HRM/hrmForm';
 
 function App() {
   return (
@@ -174,6 +174,9 @@ function App() {
             <Route path='sportModule' element={<UserHome moduleSelected={'sports'}/>}/>
             <Route path='hostelModule' element={<UserHome moduleSelected={'hostel'}/>}/>
             <Route path='fees' element={<UserHome moduleSelected={'fees'}/>}/>
+            <Route path = 'hrm' element = {<UserHome moduleSelected = {'hrm'}/>}/>
+            <Route path = 'hrm/payroll' element = {<Payroll/>} />
+            <Route path = 'hrm/payroll/form' element = {<HrmForm/>} />
             <Route path="school" element={<School />} />
             <Route path="subject" element={<Subject />} />
             <Route path="books" element={<Book />} />

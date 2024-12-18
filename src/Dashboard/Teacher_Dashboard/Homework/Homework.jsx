@@ -248,7 +248,7 @@ const searchOptions = [
   return (
     <div className='h-full mb-10'>
 
-      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Class Home Work</h1>
+      <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'> Home Work</h1>
       <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Homework</span> </p>
       <AddBtn onAddClick={openAddPopup}/>
       <Table

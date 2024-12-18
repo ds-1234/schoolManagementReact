@@ -104,6 +104,10 @@ function UserHome({ moduleSelected }) {
         {label: 'Hostel Rooms' , icon: roomKey, path: '/admin/hostelrooms'}
     ]
 
+    const hrmModule = [
+        {label: 'Payroll' , icon: feesGrp, path: '/admin/hrm/payroll'},
+    ]
+
     useEffect(() => {
         if (moduleSelected === 'user') {
             setModule({ label: 'User', list: userModule });
@@ -125,6 +129,8 @@ function UserHome({ moduleSelected }) {
             setModule({ label: 'Hostel', list: hostelModule });
         }else if (moduleSelected === 'fees') {
             setModule({ label: 'Fees', list: feesModule });
+        }else if (moduleSelected === 'hrm') {
+            setModule({ label: 'HRM', list: hrmModule });
         }else {
             setModule({ label: 'Unknown Module', list: [] }); // Default handling
         }
