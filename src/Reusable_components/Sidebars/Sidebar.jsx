@@ -879,6 +879,17 @@ const Sidebar = ({setIsSidebarOpen}) => {
                     Payroll
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/admin/PaySlip"
+                    className={({ isActive }) =>
+                      `flex items-center gap-1 hover:bg-[#063256] p-2 ${isActive ? 'bg-[#002b52] text-[#ffa901] font-bold rounded-xl' : ''}`
+                    }
+                  >
+                    <FontAwesomeIcon icon={faAngleRight} />
+                    Pay Slip
+                  </NavLink>
+                </li>
               </ul>
             )}
           </li>

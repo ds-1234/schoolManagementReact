@@ -141,6 +141,7 @@ import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam
 import UserHome from './Reusable_components/Home';
 import Payroll from './Dashboard/Admin_Dashboard/HRM/Payroll';
 import HrmForm from './Dashboard/Admin_Dashboard/HRM/hrmForm';
+import PaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/PaySlip';
 
 function App() {
   return (
@@ -176,7 +177,9 @@ function App() {
             <Route path='fees' element={<UserHome moduleSelected={'fees'}/>}/>
             <Route path = 'hrm' element = {<UserHome moduleSelected = {'hrm'}/>}/>
             <Route path = 'hrm/payroll' element = {<Payroll/>} />
+            <Route path = "PaySlip" element = {<PaySlip />} />
             <Route path = 'hrm/payroll/form' element = {<HrmForm/>} />
+
             <Route path="school" element={<School />} />
             <Route path="subject" element={<Subject />} />
             <Route path="books" element={<Book />} />
