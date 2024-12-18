@@ -9,7 +9,6 @@ const Timetable = () => {
   const [timetableData, setTimetableData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate() ;
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -42,12 +41,11 @@ const Timetable = () => {
   }
 
   return (
-    <div className='flex flex-col justify-start pl-0'>
-      <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Teacher Timetable</h1>
-      <p className='mt-2'>
-        <NavLink to={navigate('/teacherDashboard')}>Dashboard /</NavLink>
-        <span className='text-[#ffae01] font-semibold'>Teacher Timetable</span>
-      </p>
+    <div className='h-full mb-10'>
+    
+          <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Time Table</h1>
+          <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Time table</span> </p>
+         
 
       <div>
         <h2 className="text-lg mb-4 text-black font-semibold mt-5">

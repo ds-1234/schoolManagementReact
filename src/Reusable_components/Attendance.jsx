@@ -129,7 +129,11 @@ function Attendance() {
         <p className='hidden md:block'>Punch In</p>
       </button>
       ):(
-           <p>Login:-{loginTime}</p>
+        <button
+        className="flex items-center px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-blue-600 transition ml-8 xl:ml-0"
+      >
+        <p>Login: {loginTime}</p>
+      </button>
       )}
     </div>
   );

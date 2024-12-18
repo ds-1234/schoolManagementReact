@@ -18,13 +18,15 @@ const AddLeave = ({ isOpen, onClose }) => {
   const [leaveTypeList , setLeaveTypeList] = useState([])
   const [admins , setAdmins] = useState([])
   const [selectedAdmin , setSelectedAdmin] = useState('')
-  const user = JSON.parse(sessionStorage.getItem('user'))   
+  const user = JSON.parse(sessionStorage.getItem('user')) 
+  const [staffDetails , setStaffDetails] = useState({})   
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       fetchLeaveType() ;
       fetchAdmins() ;
+      fetchStaffDetails() ;
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -61,6 +63,15 @@ const AddLeave = ({ isOpen, onClose }) => {
     }
   };
 
+  const fetchStaffDetails = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${user.id}`);
+      setStaffDetails(response.data.data);
+    } catch (error) {
+      toast.error("Error fetching Leave Types");
+    }
+  }
+
 
   const handleOnClose = () => {
     onClose() ;
@@ -76,7 +87,7 @@ const AddLeave = ({ isOpen, onClose }) => {
       await axios.post(`${BASE_URL}/leaves/applyLeaves`, {
         senderId: user.id,
         leaveAuthoriserId: parseInt(selectedAdmin),
-        rollOrEmployeeId: user.rollNumber,
+        rollOrEmployeeId: staffDetails.employeeNumber,
         leaveType: parseInt(selectedLeaveType) , 
         leaveStartDate : data.leaveStartDate ,
         leaveEndDate: data.leaveEndDate ,

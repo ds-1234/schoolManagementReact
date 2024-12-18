@@ -89,6 +89,9 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         if (!selectedCountry) setSelectedCountry(userData.country);
         if (!selectedState) setSelectedState(userData.state);
         if (!selectedCity) setSelectedCity(userData.city);
+        if(userData.isActive != null){
+          setValue(userData.isActive) ;
+        }
         if(selectedRole === 5 && userData.isParent){
           setSelectedStds(userData.isParent)          
         }
@@ -141,7 +144,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
         state: data.state ,
         city: data.city ,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split("T")[0] : null,
-        isActive : data.isActive == true ? true : value  
+        isActive : value ,
       }
     })
     .then((response) => {
