@@ -1,14 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const IncomeDetailsSection = () => {
   const [leftAdditionalFields, setLeftAdditionalFields] = useState([]);
   const [rightAdditionalFields, setRightAdditionalFields] = useState([]);
+  const [grossEarning, setGrossEarning] = useState(0);
+  const [grossDeduction, setGrossDeduction] = useState(0);
   const {
     register,
+    watch,
     formState: { errors },
-    setValue,
   } = useForm();
+
+  const watchFields = watch();
+
+
+  useEffect(() => {
+    const calculateGrossEarning = () => {
+      const basic = parseFloat(watchFields.basic || 0);
+      const houseRentAllowance = parseFloat(watchFields.houseRentAllowance || 0);
+      const specialPayAllowance = parseFloat(watchFields.specialPayAllowance || 0);
+      const overTimePay = parseFloat(watchFields.overTimePay || 0);
+
+      const additionalEarnings = leftAdditionalFields.reduce(
+        (sum, field) => sum + parseFloat(field.value || 0),
+        0
+      );
+
+      setGrossEarning(
+        basic + houseRentAllowance + specialPayAllowance + overTimePay + additionalEarnings
+      );
+    };
+
+    const calculateGrossDeduction = () => {
+      const incomeTaxDeduction = parseFloat(watchFields.incomeTaxDeduction || 0);
+      const pfDeduction = parseFloat(watchFields.pfDeduction || 0);
+      const gratuityDeduction = parseFloat(watchFields.gratuityDeduction || 0);
+      const professionalTax = parseFloat(watchFields.professionalTax || 0);
+      const advancePay = parseFloat(watchFields.advancePay || 0);
+
+      const additionalDeductions = rightAdditionalFields.reduce(
+        (sum, field) => sum + parseFloat(field.value || 0),
+        0
+      );
+
+      setGrossDeduction(
+        incomeTaxDeduction + pfDeduction + gratuityDeduction + professionalTax + advancePay + additionalDeductions
+      );
+    };
+
+    calculateGrossEarning();
+    calculateGrossDeduction();
+  }, [watchFields, leftAdditionalFields, rightAdditionalFields]);
 
   const handleAddLeftField = () => {
     setLeftAdditionalFields([
@@ -151,6 +194,17 @@ const IncomeDetailsSection = () => {
           >
             <span className="text-xl">+</span> Add Additional Field
           </span>
+          
+        </div>
+                {/* Gross Earning */}
+                <div className="flex items-center gap-4 mt-4">
+          <label className="w-1/3 font-medium">Gross Earning</label>
+          <input
+            type="number"
+            value={grossEarning}
+            readOnly
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
         </div>
       </div>
 
@@ -263,6 +317,16 @@ const IncomeDetailsSection = () => {
           >
             <span className="text-xl">+</span> Add Additional Field
           </span>
+        </div>
+                {/* Gross Deduction */}
+                <div className="flex items-center gap-4 mt-4">
+          <label className="w-1/3 font-medium">Gross Deduction</label>
+          <input
+            type="number"
+            value={grossDeduction}
+            readOnly
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
         </div>
       </div>
     </div>
