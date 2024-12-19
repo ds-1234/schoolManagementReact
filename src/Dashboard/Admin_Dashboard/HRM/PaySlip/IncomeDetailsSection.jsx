@@ -14,6 +14,17 @@ const IncomeDetailsSection = () => {
 
   const watchFields = watch();
 
+  const netPayable = grossEarning - grossDeduction;
+
+  const numberToWords = (num) => {
+    // Basic function to convert numbers to words
+    const words = [
+      "Zero", "One", "Two", "Three", "Four", "Five",
+      "Six", "Seven", "Eight", "Nine", "Ten",
+      // Add more as needed...
+    ];
+    return words[num] || num.toString();
+  };
 
   useEffect(() => {
     const calculateGrossEarning = () => {
@@ -49,8 +60,14 @@ const IncomeDetailsSection = () => {
       );
     };
 
+    // const netPayable = grossEarning - grossDeduction;
+
+
+
     calculateGrossEarning();
     calculateGrossDeduction();
+
+
   }, [watchFields, leftAdditionalFields, rightAdditionalFields]);
 
   const handleAddLeftField = () => {
@@ -329,6 +346,28 @@ const IncomeDetailsSection = () => {
           />
         </div>
       </div>
+
+      <div className="p-6 font-sans">
+      {/* Net Payable Amount Heading and Amount */}
+      <div className="flex justify-between items-center border-b pb-4 mb-4">
+        <h2 className="text-2xl font-semibold">Net Payable Amount</h2>
+        <h2 className="text-2xl font-semibold text-gray-800">
+          ₹ {netPayable.toFixed(2)}
+        </h2>
+      </div>
+
+      {/* Gross Earnings - Gross Deductions */}
+      <p className="text-sm text-gray-600">
+        (Gross Earnings: ₹ {grossEarning.toFixed(2)} - Gross Deductions: ₹{" "}
+        {grossDeduction.toFixed(2)})
+      </p>
+
+      {/* Amount in Words */}
+      <p className="mt-4 text-lg">
+        <span className="font-bold">Amount in Words:</span>{" "}
+        <span className="text-gray-800">{numberToWords(netPayable)}</span>
+      </p>
+    </div>
     </div>
   );
 };
