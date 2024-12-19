@@ -3,24 +3,27 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import BASE_URL from "../../../../conf/conf";
 
-
 const PaySummarySection = () => {
   const [additionalFields, setAdditionalFields] = useState([]);
   const [users, setUsers] = useState([]);
+  const [payload, setPayload] = useState({});
   const {
     register,
     formState: { errors },
     setValue,
+    watch,
   } = useForm();
+
+  // Watch all the form fields to track changes
+  const formData = watch();
 
   // Fetch users with role == 4
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/user/getUserList`);
-        const filteredUsers = response.data.data.filter(user => user.role == 4);
+        const filteredUsers = response.data.data.filter(user => user.role === 4);
         setUsers(filteredUsers);
-        console.log(filteredUsers,'filteredUsers')
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -28,6 +31,60 @@ const PaySummarySection = () => {
     fetchUsers();
   }, []);
 
+  // Generate the payload whenever any field changes
+  useEffect(() => {
+    const generatePayload = async () => {
+      if (!formData.employeeName) return; // Do not generate if employee is not selected
+
+      // Get the selected user (employee)
+      const selectedUser = users.find(user => user.id == formData.employeeName);
+
+      // Fetch school details using the selected user's school ID
+      const schoolResponse = await axios.get(`${BASE_URL}/school/getSchoolList`);
+      const schoolData = schoolResponse.data.data.find(school => school.id == selectedUser.school);
+
+      // Fetch teacher info for the selected employee
+      const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
+      const teacherInfo = teacherInfoResponse.data.data.find(teacher => teacher.teacherId == selectedUser.id);
+
+      // Construct the payload
+      const newPayload = {
+        userTableId: formData.employeeName,
+        schoolName: schoolData?.name || '',
+        schoolAddress: schoolData?.houseNumber || '',
+        schoolCity: schoolData?.city || '',
+        schoolPincode: schoolData?.pinCode || '',
+        schoolCountry: schoolData?.country || '',
+        empName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+        payPeriod: formData.payPeriod,
+        lossOfPaydays: formData.lossOfPayDays,
+        employeeId: formData.employeeId,
+        paidDays: formData.paidDays,
+        payDate: formData.payDate,
+        dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024',  // Use the fetched date of joining
+        designation: teacherInfo?.designation || '',      // Use the fetched designation
+        department: teacherInfo?.department || '',        // Use the fetched department
+        paySummaryFieldList: additionalFields.map(field => ({
+          paySummaryFieldName: field.name,
+          paySummaryValue: field.value
+        }))
+      };
+
+      // Update the payload state
+      setPayload(newPayload);
+
+      // Log the updated payload
+      console.log('Updated Payload:', newPayload);
+    };
+
+    // Call the function to generate payload when formData changes
+    generatePayload();
+  }, 
+//   [formData, additionalFields, users]
+[]
+); // Trigger effect on formData, additionalFields, or users change
+
+  // Handle adding additional fields
   const handleAddField = () => {
     setAdditionalFields([
       ...additionalFields,
@@ -59,11 +116,8 @@ const PaySummarySection = () => {
           <label className="w-1/3 font-medium">Employee Name *</label>
           <select
             {...register('employeeName', { required: 'Employee Name is required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.employeeName ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.employeeName ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           >
-            {console.log(users,'users')}
             <option value="">Select Employee</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
@@ -82,9 +136,7 @@ const PaySummarySection = () => {
           <input
             type="text"
             {...register('employeeId', { required: 'Employee ID is required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.employeeId ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.employeeId ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           />
           {errors.employeeId && (
             <p className="text-red-500 text-sm">{errors.employeeId.message}</p>
@@ -97,9 +149,7 @@ const PaySummarySection = () => {
           <input
             type="month"
             {...register('payPeriod', { required: 'Pay Period is required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.payPeriod ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.payPeriod ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           />
           {errors.payPeriod && (
             <p className="text-red-500 text-sm">{errors.payPeriod.message}</p>
@@ -112,9 +162,7 @@ const PaySummarySection = () => {
           <input
             type="number"
             {...register('paidDays', { required: 'Paid Days are required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.paidDays ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.paidDays ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           />
           {errors.paidDays && (
             <p className="text-red-500 text-sm">{errors.paidDays.message}</p>
@@ -127,9 +175,7 @@ const PaySummarySection = () => {
           <input
             type="number"
             {...register('lossOfPayDays', { required: 'Loss of Pay Days are required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.lossOfPayDays ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.lossOfPayDays ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           />
           {errors.lossOfPayDays && (
             <p className="text-red-500 text-sm">{errors.lossOfPayDays.message}</p>
@@ -142,9 +188,7 @@ const PaySummarySection = () => {
           <input
             type="date"
             {...register('payDate', { required: 'Pay Date is required' })}
-            className={`py-2 px-3 rounded-lg bg-gray-100 border ${
-              errors.payDate ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none w-2/3`}
+            className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.payDate ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
           />
           {errors.payDate && (
             <p className="text-red-500 text-sm">{errors.payDate.message}</p>
@@ -161,9 +205,7 @@ const PaySummarySection = () => {
               type="text"
               placeholder="Name *"
               value={field.name}
-              onChange={(e) =>
-                handleFieldChange(field.id, 'name', e.target.value)
-              }
+              onChange={(e) => handleFieldChange(field.id, 'name', e.target.value)}
               required
               className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
             />
@@ -171,26 +213,32 @@ const PaySummarySection = () => {
               type="text"
               placeholder="Value *"
               value={field.value}
-              onChange={(e) =>
-                handleFieldChange(field.id, 'value', e.target.value)
-              }
+              onChange={(e) => handleFieldChange(field.id, 'value', e.target.value)}
               required
               className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
             />
             <button
+              type="button"
               onClick={() => handleDeleteField(field.id)}
-              className="py-1 px-3 bg-red-500 text-white rounded-lg"
+              className="text-red-500"
             >
               Delete
             </button>
           </div>
         ))}
-        <span
+        {/* <button
+          type="button"
           onClick={handleAddField}
-          className="text-blue-500 cursor-pointer flex items-center gap-2"
+          className="py-2 px-4 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
         >
-          <span className="text-xl">+</span> Add Additional Field
-        </span>
+          Add Field
+        </button> */}
+                  <span
+            onClick={handleAddField}
+            className="text-blue-500 cursor-pointer flex items-center gap-2"
+          >
+            <span className="text-xl">+</span> Add Additional Field
+          </span>
       </div>
     </div>
   );

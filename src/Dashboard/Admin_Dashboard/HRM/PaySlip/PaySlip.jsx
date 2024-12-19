@@ -4,8 +4,8 @@ import IncomeDetailsSection from './IncomeDetailsSection';
 
 const PaySlip = () => {
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc' }}>
-      <h1>Pay Slip</h1>
+    <div >
+      {/* <h1>Pay Slip</h1> */}
       {/* Employee Pay Summary Section */}
       <PaySummarySection />
       

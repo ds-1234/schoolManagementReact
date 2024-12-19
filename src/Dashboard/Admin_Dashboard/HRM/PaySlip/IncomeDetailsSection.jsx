@@ -1,11 +1,270 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const IncomeDetailsSection = () => {
+  const [leftAdditionalFields, setLeftAdditionalFields] = useState([]);
+  const [rightAdditionalFields, setRightAdditionalFields] = useState([]);
+  const {
+    register,
+    formState: { errors },
+    setValue,
+  } = useForm();
+
+  const handleAddLeftField = () => {
+    setLeftAdditionalFields([
+      ...leftAdditionalFields,
+      { id: Date.now(), name: '', value: '' },
+    ]);
+  };
+
+  const handleAddRightField = () => {
+    setRightAdditionalFields([
+      ...rightAdditionalFields,
+      { id: Date.now(), name: '', value: '' },
+    ]);
+  };
+
+  const handleLeftFieldChange = (id, field, value) => {
+    setLeftAdditionalFields(
+      leftAdditionalFields.map((fieldItem) =>
+        fieldItem.id === id ? { ...fieldItem, [field]: value } : fieldItem
+      )
+    );
+  };
+
+  const handleRightFieldChange = (id, field, value) => {
+    setRightAdditionalFields(
+      rightAdditionalFields.map((fieldItem) =>
+        fieldItem.id === id ? { ...fieldItem, [field]: value } : fieldItem
+      )
+    );
+  };
+
+  const handleDeleteLeftField = (id) => {
+    setLeftAdditionalFields(
+      leftAdditionalFields.filter((fieldItem) => fieldItem.id !== id)
+    );
+  };
+
+  const handleDeleteRightField = (id) => {
+    setRightAdditionalFields(
+      rightAdditionalFields.filter((fieldItem) => fieldItem.id !== id)
+    );
+  };
+
   return (
-    <div>
-      <h2>Income Details</h2>
-      {/* Add content for Income Details */}
-      <p>Details about income go here.</p>
+    <div className="grid grid-cols-2 gap-8 p-6 bg-white rounded-lg shadow-lg">
+      {/* Left Section */}
+      <div className="flex flex-col space-y-6">
+        <h2 className="text-xl font-bold mb-4">Income Details </h2>
+
+        <div className="flex items-center mb-2 gap-4">
+
+        <span className="w-1/3 text-lg font-semibold">Earnings </span>
+        <span className="w-1/3 text-lg ml-4 font-semibold">Amount </span>
+        </div>
+        <div className="flex items-center gap-4">
+
+          <label className="w-1/3 font-medium">Basic *</label>
+          <input
+            type="number"
+            {...register('basic', { required: 'Basic is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.basic && (
+            <p className="text-red-500 text-sm">{errors.basic.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">House Rent Allowance *</label>
+          <input
+            type="number"
+            {...register('houseRentAllowance', { required: 'House Rent Allowance is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.houseRentAllowance && (
+            <p className="text-red-500 text-sm">{errors.houseRentAllowance.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Special Pay Allowance *</label>
+          <input
+            type="number"
+            {...register('specialPayAllowance', { required: 'Special Pay Allowance is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.specialPayAllowance && (
+            <p className="text-red-500 text-sm">{errors.specialPayAllowance.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Over Time Pay *</label>
+          <input
+            type="number"
+            {...register('overTimePay', { required: 'Over Time Pay is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.overTimePay && (
+            <p className="text-red-500 text-sm">{errors.overTimePay.message}</p>
+          )}
+        </div>
+
+        {/* Additional Fields for Left Section */}
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-4">Additional Fields </h3>
+          {leftAdditionalFields.map((field) => (
+            <div key={field.id} className="flex items-center gap-4 mb-3">
+              <input
+                type="text"
+                placeholder="Name *"
+                value={field.name}
+                onChange={(e) =>
+                  handleLeftFieldChange(field.id, 'name', e.target.value)
+                }
+                required
+                className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
+              />
+              <input
+                type="text"
+                placeholder="Value *"
+                value={field.value}
+                onChange={(e) =>
+                  handleLeftFieldChange(field.id, 'value', e.target.value)
+                }
+                required
+                className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
+              />
+              <button
+                onClick={() => handleDeleteLeftField(field.id)}
+                className="py-1 px-3 bg-red-500 text-white rounded-lg"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <span
+            onClick={handleAddLeftField}
+            className="text-blue-500 cursor-pointer flex items-center gap-2"
+          >
+            <span className="text-xl">+</span> Add Additional Field
+          </span>
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className="flex flex-col space-y-6">
+        <h2 className="mb-4">-</h2>
+
+        <div className="flex items-center mb-2 gap-4">
+
+            <span className="w-1/3 text-lg font-semibold">Deductions </span>
+            <span className="w-1/3 text-lg ml-4 font-semibold">Amount </span>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Income Tax Deduction *</label>
+          <input
+            type="number"
+            {...register('incomeTaxDeduction', { required: 'Income Tax Deduction is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.incomeTaxDeduction && (
+            <p className="text-red-500 text-sm">{errors.incomeTaxDeduction.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">PF Deduction *</label>
+          <input
+            type="number"
+            {...register('pfDeduction', { required: 'PF Deduction is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.pfDeduction && (
+            <p className="text-red-500 text-sm">{errors.pfDeduction.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Gratuity Deduction *</label>
+          <input
+            type="number"
+            {...register('gratuityDeduction', { required: 'Gratuity Deduction is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.gratuityDeduction && (
+            <p className="text-red-500 text-sm">{errors.gratuityDeduction.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Professional Tax *</label>
+          <input
+            type="number"
+            {...register('professionalTax', { required: 'Professional Tax is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.professionalTax && (
+            <p className="text-red-500 text-sm">{errors.professionalTax.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="w-1/3 font-medium">Advance Pay *</label>
+          <input
+            type="number"
+            {...register('advancePay', { required: 'Advance Pay is required' })}
+            className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+          />
+          {errors.advancePay && (
+            <p className="text-red-500 text-sm">{errors.advancePay.message}</p>
+          )}
+        </div>
+
+        {/* Additional Fields for Right Section */}
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-4">Additional Fields </h3>
+          {rightAdditionalFields.map((field) => (
+            <div key={field.id} className="flex items-center gap-4 mb-3">
+              <input
+                type="text"
+                placeholder="Name *"
+                value={field.name}
+                onChange={(e) =>
+                  handleRightFieldChange(field.id, 'name', e.target.value)
+                }
+                required
+                className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
+              />
+              <input
+                type="text"
+                placeholder="Value *"
+                value={field.value}
+                onChange={(e) =>
+                  handleRightFieldChange(field.id, 'value', e.target.value)
+                }
+                required
+                className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
+              />
+              <button
+                onClick={() => handleDeleteRightField(field.id)}
+                className="py-1 px-3 bg-red-500 text-white rounded-lg"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <span
+            onClick={handleAddRightField}
+            className="text-blue-500 cursor-pointer flex items-center gap-2"
+          >
+            <span className="text-xl">+</span> Add Additional Field
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
