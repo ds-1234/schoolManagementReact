@@ -49,7 +49,7 @@ const PaySlip = () => {
 
       if (response.data.success) {
         console.log('Pay slip created successfully');
-        window.location.reload()
+        // window.location.reload()
       } else {
         console.error('Failed to create pay slip');
       }
