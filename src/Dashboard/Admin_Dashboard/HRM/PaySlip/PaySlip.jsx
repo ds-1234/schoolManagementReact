@@ -45,7 +45,7 @@ const PaySlip = () => {
   }, []);
 
   return (
-    <div>
+    <div className='bg-white border rounded-lg'>
       {/* Employee Pay Summary Section */}
       <PaySummarySection />
 

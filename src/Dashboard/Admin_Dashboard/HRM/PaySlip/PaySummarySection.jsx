@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import BASE_URL from "../../../../conf/conf";
@@ -31,58 +31,59 @@ const PaySummarySection = () => {
     fetchUsers();
   }, []);
 
-  // Generate the payload whenever any field changes
+  // Use ref to store previous formData and avoid infinite effect
+  const prevFormData = useRef();
   useEffect(() => {
-    const generatePayload = async () => {
-      if (!formData.employeeName) return; // Do not generate if employee is not selected
+    // Only run when formData has changed
+    if (JSON.stringify(formData) !== JSON.stringify(prevFormData.current)) {
+      prevFormData.current = formData;
+      generatePayload();
+    }
+  }, [formData, additionalFields, users]); // Trigger effect on formData, additionalFields, or users change
 
-      // Get the selected user (employee)
-      const selectedUser = users.find(user => user.id == formData.employeeName);
+  const generatePayload = async () => {
+    if (!formData.employeeName) return; // Do not generate if employee is not selected
 
-      // Fetch school details using the selected user's school ID
-      const schoolResponse = await axios.get(`${BASE_URL}/school/getSchoolList`);
-      const schoolData = schoolResponse.data.data.find(school => school.id == selectedUser.school);
+    // Get the selected user (employee)
+    const selectedUser = users.find(user => user.id == formData.employeeName);
 
-      // Fetch teacher info for the selected employee
-      const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
-      const teacherInfo = teacherInfoResponse.data.data.find(teacher => teacher.teacherId == selectedUser.id);
+    // Fetch school details using the selected user's school ID
+    const schoolResponse = await axios.get(`${BASE_URL}/school/getSchoolList`);
+    const schoolData = schoolResponse.data.data.find(school => school.id == selectedUser.school);
 
-      // Construct the payload
-      const newPayload = {
-        userTableId: formData.employeeName,
-        schoolName: schoolData?.name || '',
-        schoolAddress: schoolData?.houseNumber || '',
-        schoolCity: schoolData?.city || '',
-        schoolPincode: schoolData?.pinCode || '',
-        schoolCountry: schoolData?.country || '',
-        empName: `${selectedUser.firstName} ${selectedUser.lastName}`,
-        payPeriod: formData.payPeriod,
-        lossOfPaydays: formData.lossOfPayDays,
-        employeeId: formData.employeeId,
-        paidDays: formData.paidDays,
-        payDate: formData.payDate,
-        dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024',  // Use the fetched date of joining
-        designation: teacherInfo?.designation || '',      // Use the fetched designation
-        department: teacherInfo?.department || '',        // Use the fetched department
-        paySummaryFieldList: additionalFields.map(field => ({
-          paySummaryFieldName: field.name,
-          paySummaryValue: field.value
-        }))
-      };
+    // Fetch teacher info for the selected employee
+    const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
+    const teacherInfo = teacherInfoResponse.data.data.find(teacher => teacher.teacherId == selectedUser.id);
 
-      // Update the payload state
-      setPayload(newPayload);
-
-      // Log the updated payload
-      console.log('Updated Payload:', newPayload);
+    // Construct the payload
+    const newPayload = {
+      userTableId: formData.employeeName,
+      schoolName: schoolData?.name || '',
+      schoolAddress: schoolData?.houseNumber || '',
+      schoolCity: schoolData?.city || '',
+      schoolPincode: schoolData?.pinCode || '',
+      schoolCountry: schoolData?.country || '',
+      empName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+      payPeriod: formData.payPeriod,
+      lossOfPaydays: formData.lossOfPayDays,
+      employeeId: formData.employeeId,
+      paidDays: formData.paidDays,
+      payDate: formData.payDate,
+      dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024',  // Use the fetched date of joining
+      designation: teacherInfo?.designation || '',      // Use the fetched designation
+      department: teacherInfo?.department || '',        // Use the fetched department
+      paySummaryFieldList: additionalFields.map(field => ({
+        paySummaryFieldName: field.name,
+        paySummaryValue: field.value
+      }))
     };
 
-    // Call the function to generate payload when formData changes
-    generatePayload();
-  }, 
-//   [formData, additionalFields, users]
-[]
-); // Trigger effect on formData, additionalFields, or users change
+    // Update the payload state
+    setPayload(newPayload);
+
+    // Log the updated payload
+    console.log('Updated Payload:', newPayload);
+  };
 
   // Handle adding additional fields
   const handleAddField = () => {
@@ -108,6 +109,7 @@ const PaySummarySection = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
+        {/* {      console.log('Updated Payload:', newPayload)        } */}
       <h2 className="text-xl font-bold mb-6">Employee Pay Summary</h2>
 
       <div className="grid grid-cols-2 gap-6">
