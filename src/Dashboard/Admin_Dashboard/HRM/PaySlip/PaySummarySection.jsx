@@ -143,7 +143,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
       employeeId: formData.employeeId,
       paidDays: formData.paidDays,
       payDate: formData.payDate,
-      dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024', // Use the fetched date of joining
+      dateOfJoining: teacherInfo?.dateOfJoining || '2024-01-01', // Use the fetched date of joining
       designation: getDesignationNameById(teacherInfo?.designation) || '', // Use the fetched designation
       department: getDepartmentNameById(teacherInfo?.department) || '', // Use the fetched department
       paySummaryFieldList: additionalFields.map(field => ({
