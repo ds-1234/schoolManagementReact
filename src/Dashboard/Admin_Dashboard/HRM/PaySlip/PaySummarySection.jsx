@@ -32,7 +32,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
   };
   useEffect(()=>{
     fetchdepartment();
-  })
+  },[])
 
   const getDepartmentNameById = (id) => {
     const dep = department.find((type) => type.id == id);
@@ -52,7 +52,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
   };
   useEffect(()=>{
     fetchdesignation();
-  })
+  },[])
 
   const getDesignationNameById = (id) => {
     const des = designation.find((type) => type.id == id);
@@ -101,6 +101,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
     // Fetch school details using the selected user's school ID
     const schoolResponse = await axios.get(`${BASE_URL}/school/getSchoolList`);
     const schoolData = schoolResponse.data.data.find(school => school.id == selectedUser.school);
+    console.log(schoolData,'schoolData')
   
     // Fetch teacher info for the selected employee
     const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);

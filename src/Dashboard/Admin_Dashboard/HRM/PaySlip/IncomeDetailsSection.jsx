@@ -38,26 +38,26 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
     const netPay = totalGrossEarnings - totalGrossDeductions;
 
     return {
-      basicPayEarning: parseFloat(watchFields.basic || 0),
-      houseRentAllowEarning: parseFloat(watchFields.houseRentAllowance || 0),
-      specialPayAllowance: parseFloat(watchFields.specialPayAllowance || 0),
-      overTimePay: parseFloat(watchFields.overTimePay || 0),
+      basicPayEarning: parseFloat(watchFields.basic || 0).toString(),
+      houseRentAllowEarning: parseFloat(watchFields.houseRentAllowance || 0).toString(),
+      specialPayAllowance: parseFloat(watchFields.specialPayAllowance || 0).toString(),
+      overTimePay: parseFloat(watchFields.overTimePay || 0).toString().toString(),
       earningFieldsList: leftAdditionalFields.map((field) => ({
         earningFieldName: field.name,
         earningFieldValue: field.value
       })),
-      grossSalary: grossEarning,
-      incomeTaxDeduction: parseFloat(watchFields.incomeTaxDeduction || 0),
-      pfDeduction: parseFloat(watchFields.pfDeduction || 0),
-      gratuityDeduction: parseFloat(watchFields.gratuityDeduction || 0),
-      professionalTax: parseFloat(watchFields.professionalTax || 0),
-      advancePay: parseFloat(watchFields.advancePay || 0),
+      grossSalary: grossEarning.toString(),
+      incomeTaxDeduction: parseFloat(watchFields.incomeTaxDeduction || 0).toString(),
+      pfDeduction: parseFloat(watchFields.pfDeduction || 0).toString(),
+      gratuityDeduction: parseFloat(watchFields.gratuityDeduction || 0).toString(),
+      professionalTax: parseFloat(watchFields.professionalTax || 0).toString(),
+      advancePay: parseFloat(watchFields.advancePay || 0).toString(),
       deductionFieldsList: rightAdditionalFields.map((field) => ({
         deductionFieldName: field.name,
         deductionFieldValue: field.value
       })),
-      totalDeduction: grossDeduction,
-      totalNetPay: netPay,
+      totalDeduction: grossDeduction.toString(),
+      totalNetPay: netPay.toString(),
       netPayAmountInWords: numberToWords(netPay)
     };
   };
@@ -247,7 +247,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
                 className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
               />
               <input
-                type="text"
+                type="number"
                 placeholder="Value *"
                 value={field.value}
                 onChange={(e) =>
@@ -370,7 +370,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
                 className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
               />
               <input
-                type="text"
+                type="number"
                 placeholder="Value *"
                 value={field.value}
                 onChange={(e) =>

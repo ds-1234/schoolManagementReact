@@ -1,47 +1,77 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import BASE_URL from "../../../../conf/conf"; // Assuming this is your base URL
 import PaySummarySection from './PaySummarySection';
 import IncomeDetailsSection from './IncomeDetailsSection';
-import axios from 'axios';
-import BASE_URL from "../../../../conf/conf";
-
 
 const PaySlip = () => {
-
   const [incomePayload, setIncomePayload] = useState({});
   const [summaryPayload, setSummaryPayload] = useState({});
   const [user, setUser] = useState({});
-  const [reset, setReset] = useState(false); // State for reset functionality
-  const [teacherInfo, setTeacherInfo] = useState({}); // Holds teacher details
+  const [teacherInfo, setTeacherInfo] = useState({});
+  const [employerSignatureText, setEmployerSignatureText] = useState('');
 
+
+  // Fetch teacher info based on user ID
   const fetchDataAndFilterById = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
-
+      
       if (response.data.success) {
         const data = response.data.data;
-        console.log(data, 'Fetched Data');
-
-        // Filter the data for the specific ID
         const filteredData = data.find((item) => item.teacherId == user);
         setTeacherInfo(filteredData || {}); // Set filtered data or empty object
-        console.log(filteredData, 'Filtered Data');
       } else {
-        console.error(`Failed to fetch data`);
+        console.error('Failed to fetch teacher data');
       }
     } catch (error) {
-      console.error(`Error fetching data: ${error.message}`);
+      console.error('Error fetching teacher data:', error.message);
     }
   };
 
+  // Combine summary, income, and teacher data before sending
+  const combinePayloadAndSend = async () => {
+    try {
+      // Combine all data into one payload
+      const combinedPayload = {
+        ...summaryPayload,
+        ...incomePayload,
+        accountNumber: teacherInfo.accountNumber,
+        bankName: teacherInfo.bankName,
+        branchName: teacherInfo.branchName,
+        employerSignatureText: employerSignatureText
+      };
+
+      // Send combined payload to the API
+      const response = await axios.post(`${BASE_URL}/hrm/paySlipCreator`, combinedPayload);
+
+      if (response.data.success) {
+        console.log('Pay slip created successfully');
+        window.location.reload()
+      } else {
+        console.error('Failed to create pay slip');
+      }
+    } catch (error) {
+      console.error('Error sending pay slip data:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    // Trigger fetch on component mount
+    fetchDataAndFilterById();
+    setUser(summaryPayload.userTableId)
+    console.log(user,'user')
+  }, [summaryPayload]);
+
+  // Update payloads from sections
   const updatePayload = (newPayload) => {
     setIncomePayload(newPayload);
-    console.log(incomePayload,'incomePayload')
-
   };
+
   const updatePayloadsumm = (Payload) => {
     setSummaryPayload(Payload);
     setUser(Payload.userTableId)
-    console.log(summaryPayload,'summarypayload')
+
   };
 
   useEffect(() => {
@@ -51,34 +81,19 @@ const PaySlip = () => {
 
 
   }, [incomePayload,summaryPayload]);
-  
 
-
-  const handleReset = () => {
-    setPayload({});
-    setReset(true); // Indicate reset happened
+  const handleEmployerSignatureTextChange = (e) => {
+    setEmployerSignatureText(e.target.value);
   };
 
-  useEffect(() => {
-    fetchDataAndFilterById();
-    setUser(summaryPayload.userTableId)
-    console.log(summaryPayload, 'summaryPayloadin dfvdilbu')
-    console.log(user, 'user dfvdilbu')
-
-    console.log(teacherInfo, 'teacherinfo')
-  }, [summaryPayload]);
-
   return (
-    <div className=" p-6 bg-white rounded-lg shadow-lg">
+    <div className="p-6 bg-white rounded-lg shadow-lg">
       {/* Employee Pay Summary Section */}
-      <PaySummarySection onPayloadUpdate={updatePayloadsumm}/>
+      <PaySummarySection onPayloadUpdate={updatePayloadsumm} />
 
       {/* Income Details Section */}
       <IncomeDetailsSection onPayloadUpdate={updatePayload} />
-{    console.log(incomePayload,'incomePayload')
-}
-{    console.log(summaryPayload,'summarypayload')
-}
+
       {/* Bank Details Fields */}
       <div style={{ marginTop: '20px' }}>
         <h2>Bank Details</h2>
@@ -117,12 +132,24 @@ const PaySlip = () => {
           <input
             type="text"
             className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-2/3"
+            // value={teacherInfo.employerSignatureText || ''}
+            onChange={handleEmployerSignatureTextChange}  // Updates state when value changes
           />
         </div>
       </div>
 
+      {/* Button to generate and send payload */}
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={combinePayloadAndSend}  // Trigger payload generation and API call
+          className="text-white bg-blue-500 px-6 py-3 rounded hover:bg-blue-600"
+        >
+          Generate and Send Pay Slip
+        </button>
+      </div>
+
       {/* Reset Button */}
-      <button onClick={handleReset} className="mt-4 text-white bg-blue-500 px-4 py-2 rounded">
+      <button onClick={() => window.location.reload()} className="mt-4 text-white bg-blue-500 px-4 py-2 rounded">
         Reset
       </button>
     </div>
