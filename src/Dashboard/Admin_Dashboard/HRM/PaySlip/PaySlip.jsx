@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PaySummarySection from './PaySummarySection';
 import IncomeDetailsSection from './IncomeDetailsSection';
 
 const PaySlip = () => {
+    const [payload, setPayload] = useState({});
+    const [reset, setReset] = useState(false);  // State for reset functionality
+
+
+    console.log("Received Payload: ", payload);
+    const updatePayload = (newPayload) => {
+        setPayload(newPayload);
+    };
+    const handleReset = () => {
+        setPayload({});
+        setReset(true);  // Indicate reset happened
+    };
   return (
     <div >
       {/* <h1>Pay Slip</h1> */}
@@ -10,7 +22,9 @@ const PaySlip = () => {
       <PaySummarySection />
       
       {/* Income Details Section */}
-      <IncomeDetailsSection />
+      <IncomeDetailsSection onPayloadUpdate={updatePayload} />
+      <button onClick={handleReset}>Reset</button>
+{console.log(payload,'payload')}
       
       {/* Total Net Payable Section */}
       <div style={{ marginTop: '20px' }}>

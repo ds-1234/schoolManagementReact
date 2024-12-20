@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import PaySlip from './PaySlip';
 
-const IncomeDetailsSection = () => {
+const IncomeDetailsSection = ({ onPayloadUpdate }) => {
   const [leftAdditionalFields, setLeftAdditionalFields] = useState([]);
   const [rightAdditionalFields, setRightAdditionalFields] = useState([]);
+  const [grossSalary, setGrossSalary] = useState(0);
+  const [totalDeduction, setTotalDeduction] = useState(0);
+  const [totalNetPay, setTotalNetPay] = useState(0);
+  const [earningFieldsList, setEarningFieldsList] = useState([]);
+  const [deductionFieldsList, setDeductionFieldsList] = useState([]);
   const [grossEarning, setGrossEarning] = useState(0);
   const [grossDeduction, setGrossDeduction] = useState(0);
   const {
@@ -25,6 +31,68 @@ const IncomeDetailsSection = () => {
     ];
     return words[num] || num.toString();
   };
+
+  const generatePayload = () => {
+    const totalGrossEarnings = grossEarning + leftAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+    const totalGrossDeductions = grossDeduction + rightAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+    const netPay = totalGrossEarnings - totalGrossDeductions;
+
+    return {
+      basicPayEarning: parseFloat(watchFields.basic || 0),
+      houseRentAllowEarning: parseFloat(watchFields.houseRentAllowance || 0),
+      specialPayAllowance: parseFloat(watchFields.specialPayAllowance || 0),
+      overTimePay: parseFloat(watchFields.overTimePay || 0),
+      earningFieldsList: leftAdditionalFields.map((field) => ({
+        earningFieldName: field.name,
+        earningFieldValue: field.value
+      })),
+      grossSalary: totalGrossEarnings,
+      incomeTaxDeduction: parseFloat(watchFields.incomeTaxDeduction || 0),
+      pfDeduction: parseFloat(watchFields.pfDeduction || 0),
+      gratuityDeduction: parseFloat(watchFields.gratuityDeduction || 0),
+      professionalTax: parseFloat(watchFields.professionalTax || 0),
+      advancePay: parseFloat(watchFields.advancePay || 0),
+      deductionFieldsList: rightAdditionalFields.map((field) => ({
+        deductionFieldName: field.name,
+        deductionFieldValue: field.value
+      })),
+      totalDeduction: totalGrossDeductions,
+      totalNetPay: netPay,
+      netPayAmountInWords: numberToWords(netPay)
+    };
+  };
+
+  const handleReset = () => {
+    setGrossEarning(0);
+    setGrossDeduction(0);
+    setLeftAdditionalFields([]);
+    setRightAdditionalFields([]);
+    setGrossSalary(0);
+    setTotalDeduction(0);
+    setTotalNetPay(0);
+  };
+
+
+
+
+  useEffect(() => {
+    const totalGrossEarnings = grossEarning + leftAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+    const totalGrossDeductions = grossDeduction + rightAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+
+    setGrossSalary(totalGrossEarnings);
+    setTotalDeduction(totalGrossDeductions);
+
+    // Calculating Net Pay
+    const netPay = totalGrossEarnings - totalGrossDeductions;
+    setTotalNetPay(netPay);
+
+    // Send updated payload to parent
+    const updatedPayload = generatePayload();
+    onPayloadUpdate(updatedPayload);
+  }, [grossEarning, grossDeduction, leftAdditionalFields, rightAdditionalFields, onPayloadUpdate]);
+
+
+
 
   useEffect(() => {
     const calculateGrossEarning = () => {
