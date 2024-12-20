@@ -89,7 +89,11 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
     // Send updated payload to parent
     const updatedPayload = generatePayload();
     onPayloadUpdate(updatedPayload);
-  }, [ ]);
+  }, [ updatedPayload]);
+//   useEffect(() => {
+//     onPayloadUpdate(payload); // This sends the updated payload to the parent component
+//   }, [payload]); // Update when the payload state changes
+  
 
 
 

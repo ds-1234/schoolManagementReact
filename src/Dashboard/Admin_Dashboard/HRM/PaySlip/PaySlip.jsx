@@ -6,7 +6,8 @@ import axios from 'axios';
 const PaySlip = () => {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
-  const [payload, setPayload] = useState({});
+  const [incomePayload, setIncomePayload] = useState({});
+  const [summaryPayload, setSummaryPayload] = useState({});
   const [reset, setReset] = useState(false); // State for reset functionality
   const [teacherInfo, setTeacherInfo] = useState({}); // Holds teacher details
 
@@ -31,8 +32,22 @@ const PaySlip = () => {
   };
 
   const updatePayload = (newPayload) => {
-    setPayload(newPayload);
+    setIncomePayload(newPayload);
+    console.log(incomePayload,'incomePayload')
+
   };
+  const updatePayloadsumm = (newPayload) => {
+    setSummaryPayload(newPayload);
+    console.log(summaryPayload,'summarypayload')
+  };
+
+  useEffect(() => {
+    console.log('Payload in PaySlip:', incomePayload);
+    console.log(summaryPayload,'summarypayload')
+
+  }, [incomePayload,summaryPayload]);
+  
+
 
   const handleReset = () => {
     setPayload({});
@@ -47,11 +62,14 @@ const PaySlip = () => {
   return (
     <div className='bg-white border rounded-lg'>
       {/* Employee Pay Summary Section */}
-      <PaySummarySection />
+      <PaySummarySection onPayloadUpdate={updatePayloadsumm}/>
 
       {/* Income Details Section */}
       <IncomeDetailsSection onPayloadUpdate={updatePayload} />
-
+{    console.log(incomePayload,'incomePayload')
+}
+{    console.log(summaryPayload,'summarypayload')
+}
       {/* Bank Details Fields */}
       <div style={{ marginTop: '20px' }}>
         <h2>Bank Details</h2>

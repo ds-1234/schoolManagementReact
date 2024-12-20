@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import BASE_URL from "../../../../conf/conf";
 
-const PaySummarySection = () => {
+const PaySummarySection = ({ onPayloadUpdate }) => {
   const [additionalFields, setAdditionalFields] = useState([]);
   const [users, setUsers] = useState([]);
   const [payload, setPayload] = useState({});
@@ -82,20 +82,30 @@ const PaySummarySection = () => {
     }
   }, [formData, additionalFields, users]); // Trigger effect on formData, additionalFields, or users change
 
+  const resetForm = () => {
+    // Reset the form fields and payloads
+    setAdditionalFields([]);
+    setPayload({});
+    setDepartment([]);
+    setDesignation([]);
+    setUsers([]);
+    reset(); // Reset all the form data via react-hook-form
+  };
+
   const generatePayload = async () => {
     if (!formData.employeeName) return; // Do not generate if employee is not selected
-
+  
     // Get the selected user (employee)
     const selectedUser = users.find(user => user.id == formData.employeeName);
-
+  
     // Fetch school details using the selected user's school ID
     const schoolResponse = await axios.get(`${BASE_URL}/school/getSchoolList`);
     const schoolData = schoolResponse.data.data.find(school => school.id == selectedUser.school);
-
+  
     // Fetch teacher info for the selected employee
     const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
     const teacherInfo = teacherInfoResponse.data.data.find(teacher => teacher.teacherId == selectedUser.id);
-
+  
     // Construct the payload
     const newPayload = {
       userTableId: formData.employeeName,
@@ -110,21 +120,29 @@ const PaySummarySection = () => {
       employeeId: formData.employeeId,
       paidDays: formData.paidDays,
       payDate: formData.payDate,
-      dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024',  // Use the fetched date of joining
-      designation: getDesignationNameById(teacherInfo?.designation) || '',      // Use the fetched designation
-      department: getDepartmentNameById(teacherInfo?.department) || '',        // Use the fetched department
+      dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024', // Use the fetched date of joining
+      designation: getDesignationNameById(teacherInfo?.designation) || '', // Use the fetched designation
+      department: getDepartmentNameById(teacherInfo?.department) || '', // Use the fetched department
       paySummaryFieldList: additionalFields.map(field => ({
         paySummaryFieldName: field.name,
         paySummaryValue: field.value
       }))
     };
-
-    // Update the payload state
-    setPayload(newPayload);
-
-    // Log the updated payload
-    console.log('Updated Payload:', newPayload);
+  
+    console.log('Generated Payload inside generatePayload:', newPayload); // Log inside generatePayload
+    setPayload(newPayload); // Update the payload state
   };
+
+  useEffect(() => {
+    onPayloadUpdate(payload); // This sends the updated payload to the parent component
+  }, [payload]); // Update when the payload state changes
+  
+  
+
+    useEffect(() => {
+    //   const updatedPayload = generatePayload();
+      onPayloadUpdate(payload);
+    }, [ ]);
 
   // Handle adding additional fields
   const handleAddField = () => {
