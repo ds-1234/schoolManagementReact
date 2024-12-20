@@ -76,23 +76,10 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
 
   useEffect(() => {
-    // const totalGrossEarnings = grossEarning + leftAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
-    // const totalGrossDeductions = grossDeduction + rightAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
-
-    // setGrossSalary(totalGrossEarnings);
-    // setTotalDeduction(totalGrossDeductions);
-
-    // Calculating Net Pay
-    // const netPay = totalGrossEarnings - totalGrossDeductions;
-    // setTotalNetPay(netPay);
-
-    // Send updated payload to parent
     const updatedPayload = generatePayload();
     onPayloadUpdate(updatedPayload);
-  }, [ updatedPayload]);
-//   useEffect(() => {
-//     onPayloadUpdate(payload); // This sends the updated payload to the parent component
-//   }, [payload]); // Update when the payload state changes
+  }, [grossEarning, grossDeduction]);
+
   
 
 

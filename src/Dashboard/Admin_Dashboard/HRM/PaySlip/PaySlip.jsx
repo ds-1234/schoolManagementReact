@@ -36,8 +36,8 @@ const PaySlip = () => {
     console.log(incomePayload,'incomePayload')
 
   };
-  const updatePayloadsumm = (newPayload) => {
-    setSummaryPayload(newPayload);
+  const updatePayloadsumm = (Payload) => {
+    setSummaryPayload(Payload);
     console.log(summaryPayload,'summarypayload')
   };
 
