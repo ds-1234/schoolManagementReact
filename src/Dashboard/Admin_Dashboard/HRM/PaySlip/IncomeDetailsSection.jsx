@@ -46,7 +46,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         earningFieldName: field.name,
         earningFieldValue: field.value
       })),
-      grossSalary: totalGrossEarnings,
+      grossSalary: grossEarning,
       incomeTaxDeduction: parseFloat(watchFields.incomeTaxDeduction || 0),
       pfDeduction: parseFloat(watchFields.pfDeduction || 0),
       gratuityDeduction: parseFloat(watchFields.gratuityDeduction || 0),
@@ -56,7 +56,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         deductionFieldName: field.name,
         deductionFieldValue: field.value
       })),
-      totalDeduction: totalGrossDeductions,
+      totalDeduction: grossDeduction,
       totalNetPay: netPay,
       netPayAmountInWords: numberToWords(netPay)
     };
@@ -76,20 +76,20 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
 
   useEffect(() => {
-    const totalGrossEarnings = grossEarning + leftAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
-    const totalGrossDeductions = grossDeduction + rightAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+    // const totalGrossEarnings = grossEarning + leftAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
+    // const totalGrossDeductions = grossDeduction + rightAdditionalFields.reduce((sum, field) => sum + parseFloat(field.value || 0), 0);
 
-    setGrossSalary(totalGrossEarnings);
-    setTotalDeduction(totalGrossDeductions);
+    // setGrossSalary(totalGrossEarnings);
+    // setTotalDeduction(totalGrossDeductions);
 
     // Calculating Net Pay
-    const netPay = totalGrossEarnings - totalGrossDeductions;
-    setTotalNetPay(netPay);
+    // const netPay = totalGrossEarnings - totalGrossDeductions;
+    // setTotalNetPay(netPay);
 
     // Send updated payload to parent
     const updatedPayload = generatePayload();
     onPayloadUpdate(updatedPayload);
-  }, [grossEarning, grossDeduction, leftAdditionalFields, rightAdditionalFields, onPayloadUpdate]);
+  }, [ ]);
 
 
 
