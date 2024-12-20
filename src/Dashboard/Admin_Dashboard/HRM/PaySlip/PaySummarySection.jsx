@@ -167,7 +167,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
+    <div className="p-6 ">
         {/* {      console.log('Updated Payload:', newPayload)        } */}
       <h2 className="text-xl font-bold mb-6">Employee Pay Summary</h2>
 

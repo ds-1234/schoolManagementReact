@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PaySummarySection from './PaySummarySection';
 import IncomeDetailsSection from './IncomeDetailsSection';
 import axios from 'axios';
+import BASE_URL from "../../../../conf/conf";
+
 
 const PaySlip = () => {
 
@@ -13,7 +15,7 @@ const PaySlip = () => {
 
   const fetchDataAndFilterById = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/teacherInfo/getTeacherInfoList`);
+      const response = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
 
       if (response.data.success) {
         const data = response.data.data;

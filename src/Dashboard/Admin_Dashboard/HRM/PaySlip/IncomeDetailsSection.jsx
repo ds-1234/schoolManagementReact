@@ -172,7 +172,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-8 p-6 bg-white rounded-lg shadow-lg">
+    <div className="grid grid-cols-2 gap-8 p-6">
       {/* Left Section */}
       <div className="flex flex-col space-y-6">
         <h2 className="text-xl font-bold mb-4">Income Details </h2>
