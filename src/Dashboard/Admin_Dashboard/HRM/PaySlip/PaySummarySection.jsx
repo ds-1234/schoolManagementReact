@@ -16,6 +16,28 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
     watch,
   } = useForm();
 
+    // Calculate the current month (YYYY-MM format)
+    const getCurrentMonth = () => {
+        const date = new Date();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}`;
+      };
+    
+      // Calculate the last date of the current month
+      const getLastDateOfMonth = () => {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        date.setDate(0); // Last day of the current month
+        return date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      };
+
+      useEffect(() => {
+        // Set default values for payPeriod and payDate
+        setValue('payPeriod', getCurrentMonth());
+        setValue('payDate', getLastDateOfMonth());
+      }, [setValue]);
+
   // Watch all the form fields to track changes
   const formData = watch();
   const fetchdepartment = () => {
