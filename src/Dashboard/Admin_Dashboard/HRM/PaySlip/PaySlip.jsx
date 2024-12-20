@@ -4,6 +4,7 @@ import BASE_URL from "../../../../conf/conf"; // Assuming this is your base URL
 import PaySummarySection from './PaySummarySection';
 import IncomeDetailsSection from './IncomeDetailsSection';
 import { NavLink } from 'react-router-dom';
+import Button from '../../../../Reusable_components/Button';
 
 const PaySlip = () => {
   const [incomePayload, setIncomePayload] = useState({});
@@ -141,20 +142,28 @@ const PaySlip = () => {
         </div>
       </div>
 
-      {/* Button to generate and send payload */}
-      <div className="mt-6 flex justify-center">
-        <button
-          onClick={combinePayloadAndSend}  // Trigger payload generation and API call
-          className="text-white bg-blue-500 px-6 py-3 rounded hover:bg-blue-600"
-        >
-          Generate and Send Pay Slip
-        </button>
-      </div>
+{/* Button to generate and send payload */}
+<div className="mt-6 flex justify-between w-full">
+  {/* Reset Button */}
+  <Button
+    onClick={() => window.location.reload()}
+    className="text-white bg-blue-500 px-4 py-2 rounded"
+    label='Reset'
+  >
+    Reset
+  </Button>
 
-      {/* Reset Button */}
-      <button onClick={() => window.location.reload()} className="mt-4 text-white bg-blue-500 px-4 py-2 rounded">
-        Reset
-      </button>
+  {/* Generate and Send Pay Slip Button */}
+  <button
+    onClick={combinePayloadAndSend}  // Trigger payload generation and API call
+    className="text-white bg-blue-500 px-6 py-3 rounded-lg hover:bg-blue-600"
+  >
+    Generate and Send Pay Slip
+  </button>
+</div>
+
+
+
     </div>
   );
 };
