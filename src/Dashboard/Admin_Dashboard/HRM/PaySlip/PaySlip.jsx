@@ -4,10 +4,10 @@ import IncomeDetailsSection from './IncomeDetailsSection';
 import axios from 'axios';
 
 const PaySlip = () => {
-  const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
 
   const [incomePayload, setIncomePayload] = useState({});
   const [summaryPayload, setSummaryPayload] = useState({});
+  const [user, setUser] = useState({});
   const [reset, setReset] = useState(false); // State for reset functionality
   const [teacherInfo, setTeacherInfo] = useState({}); // Holds teacher details
 
@@ -20,7 +20,7 @@ const PaySlip = () => {
         console.log(data, 'Fetched Data');
 
         // Filter the data for the specific ID
-        const filteredData = data.find((item) => item.id === user.id);
+        const filteredData = data.find((item) => item.teacherId == user);
         setTeacherInfo(filteredData || {}); // Set filtered data or empty object
         console.log(filteredData, 'Filtered Data');
       } else {
@@ -38,12 +38,15 @@ const PaySlip = () => {
   };
   const updatePayloadsumm = (Payload) => {
     setSummaryPayload(Payload);
+    setUser(Payload.userTableId)
     console.log(summaryPayload,'summarypayload')
   };
 
   useEffect(() => {
     console.log('Payload in PaySlip:', incomePayload);
     console.log(summaryPayload,'summarypayload')
+    setUser(summaryPayload.userTableId)
+
 
   }, [incomePayload,summaryPayload]);
   
@@ -56,11 +59,15 @@ const PaySlip = () => {
 
   useEffect(() => {
     fetchDataAndFilterById();
+    setUser(summaryPayload.userTableId)
+    console.log(summaryPayload, 'summaryPayloadin dfvdilbu')
+    console.log(user, 'user dfvdilbu')
+
     console.log(teacherInfo, 'teacherinfo')
-  }, []);
+  }, [summaryPayload]);
 
   return (
-    <div className='bg-white border rounded-lg'>
+    <div className=" p-6 bg-white rounded-lg shadow-lg">
       {/* Employee Pay Summary Section */}
       <PaySummarySection onPayloadUpdate={updatePayloadsumm}/>
 
@@ -116,12 +123,6 @@ const PaySlip = () => {
       <button onClick={handleReset} className="mt-4 text-white bg-blue-500 px-4 py-2 rounded">
         Reset
       </button>
-
-      {/* Total Net Payable Section */}
-      <div style={{ marginTop: '20px' }}>
-        <h2>Total Net Payable</h2>
-        <p>The total net payable amount will be displayed here.</p>
-      </div>
     </div>
   );
 };
