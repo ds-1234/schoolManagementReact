@@ -22,14 +22,106 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
   const netPayable = grossEarning - grossDeduction;
 
-  const numberToWords = (num) => {
-    // Basic function to convert numbers to words
-    const words = [
-      "Zero", "One", "Two", "Three", "Four", "Five",
-      "Six", "Seven", "Eight", "Nine", "Ten",
-      // Add more as needed...
+  const convertNumberToWords = (number) => {
+    const units = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
     ];
-    return words[num] || num.toString();
+    const tens = [
+      "",
+      "Ten",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+    const teens = [
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+    const crore = "Crore";
+    const lakh = "Lakh";
+    const arab = "Arab";
+    const currency = "Rupees";
+    const paisa = "Paisa";
+    
+    if (number === 0) {
+      return "Zero " + currency;
+    }
+
+    let words = "";
+    
+    if (number >= 1000000000) {
+      words +=
+        convertNumberToWords(Math.floor(number / 1000000000)) +
+        " " +
+        arab +
+        " ";
+      number %= 1000000000;
+    }
+    if (number >= 10000000) {
+      words +=
+        convertNumberToWords(Math.floor(number / 10000000)) + " " + crore + " ";
+      number %= 10000000;
+    }
+
+    if (number >= 100000) {
+      words +=
+        convertNumberToWords(Math.floor(number / 100000)) + " " + lakh + " ";
+      number %= 100000;
+    }
+
+    if (number >= 1000) {
+      words += convertNumberToWords(Math.floor(number / 1000)) + " Thousand ";
+      number %= 1000;
+    }
+
+    if (number >= 100) {
+      words += convertNumberToWords(Math.floor(number / 100)) + " Hundred ";
+      number %= 100;
+    }
+
+    if (number >= 20) {
+      words += tens[Math.floor(number / 10)] + " ";
+      number %= 10;
+    } else if (number >= 10) {
+      console.log(number);
+      words += teens[number - 10] + " ";
+      number = 0;
+      console.log(words);
+    }
+
+    if (number > 0) {
+      words += units[number] + " ";
+    }
+    const decimalPart = Math.round((number % 1) * 100);
+    console.log(decimalPart);
+    if (decimalPart > 0) {
+      words += "and" + decimalPart + " " + paisa + "only ";
+    }
+    
+    console.log(words);
+    return words.trim() + " ";
   };
 
   const generatePayload = () => {
@@ -58,7 +150,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
       })),
       totalDeduction: grossDeduction.toString(),
       totalNetPay: netPay.toString(),
-      netPayAmountInWords: numberToWords(netPay)
+      netPayAmountInWords: convertNumberToWords(netPay)
     };
   };
 
@@ -424,7 +516,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
       {/* Amount in Words */}
       <p className="mt-4 text-lg">
         <span className="font-bold">Amount in Words:</span>{" "}
-        <span className="text-gray-800">{numberToWords(netPayable)}</span>
+        <span className="text-gray-800">{convertNumberToWords(netPayable)}</span>
       </p>
     </div>
     </div>
