@@ -7,6 +7,8 @@ const PaySummarySection = () => {
   const [additionalFields, setAdditionalFields] = useState([]);
   const [users, setUsers] = useState([]);
   const [payload, setPayload] = useState({});
+  const [department, setDepartment] = useState({});
+  const [designation, setDesignation] = useState({});
   const {
     register,
     formState: { errors },
@@ -16,8 +18,47 @@ const PaySummarySection = () => {
 
   // Watch all the form fields to track changes
   const formData = watch();
+  const fetchdepartment = () => {
+    axios
+      .get(`${BASE_URL}/department/getDepartmentList`)
+      .then((response) => {
+        if (response.data.success) {
+          setDepartment(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching :", error);
+      });
+  };
+  useEffect(()=>{
+    fetchdepartment();
+  })
 
-  // Fetch users with role == 4
+  const getDepartmentNameById = (id) => {
+    const dep = department.find((type) => type.id == id);
+    return dep ? dep.departmentName : id;
+  };
+  const fetchdesignation = () => {
+    axios
+      .get(`${BASE_URL}/designation/getDesignationList`)
+      .then((response) => {
+        if (response.data.success) {
+          setDesignation(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching:", error);
+      });
+  };
+  useEffect(()=>{
+    fetchdesignation();
+  })
+
+  const getDesignationNameById = (id) => {
+    const des = designation.find((type) => type.id == id);
+    return des ? des.designationName : id;
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -70,8 +111,8 @@ const PaySummarySection = () => {
       paidDays: formData.paidDays,
       payDate: formData.payDate,
       dateOfJoining: teacherInfo?.dateOfJoining || '18/12/2024',  // Use the fetched date of joining
-      designation: teacherInfo?.designation || '',      // Use the fetched designation
-      department: teacherInfo?.department || '',        // Use the fetched department
+      designation: getDesignationNameById(teacherInfo?.designation) || '',      // Use the fetched designation
+      department: getDepartmentNameById(teacherInfo?.department) || '',        // Use the fetched department
       paySummaryFieldList: additionalFields.map(field => ({
         paySummaryFieldName: field.name,
         paySummaryValue: field.value
