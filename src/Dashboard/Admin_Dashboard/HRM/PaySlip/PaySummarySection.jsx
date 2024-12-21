@@ -38,6 +38,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
         // Set default values for payPeriod and payDate
         setValue('payPeriod', getCurrentMonth());
         setValue('payDate', getFirstDateOfMonth());
+
       }, [setValue]);
 
   // Watch all the form fields to track changes
@@ -142,7 +143,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
       empName: `${selectedUser.firstName} ${selectedUser.lastName}`,
       payPeriod: formData.payPeriod,
       lossOfPaydays: formData.lossOfPayDays,
-      employeeId: formData.employeeId,
+      employeeId: teacherInfo?.employeeNumber,
       paidDays: formData.paidDays,
       payDate: formData.payDate,
       dateOfJoining: teacherInfo?.dateOfJoining || '2024-01-01', // Use the fetched date of joining
@@ -156,11 +157,14 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
   
     console.log('Generated Payload inside generatePayload:', newPayload); // Log inside generatePayload
     setPayload(newPayload); // Update the payload state
+    setValue('employeeId', teacherInfo?.employeeNumber);
+
   };
+
 
   useEffect(() => {
     onPayloadUpdate(payload); // This sends the updated payload to the parent component
-  }, [payload]); // Update when the payload state changes
+  }, [payload,setValue]); // Update when the payload state changes
   
   
 
@@ -220,6 +224,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
         <div className="flex items-center gap-4">
           <label className="w-1/3 font-medium">Employee ID *</label>
           <input
+          readOnly
             type="text"
             {...register('employeeId', { required: 'Employee ID is required' })}
             className={`py-2 px-3 rounded-lg bg-gray-100 border ${errors.employeeId ? 'border-red-500' : 'border-gray-300'} focus:outline-none w-2/3`}
