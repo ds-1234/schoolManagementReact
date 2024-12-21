@@ -84,7 +84,7 @@ function UserHome({ moduleSelected }) {
     ]
 
     const leaveModule = [
-        {label: 'List of Leaves' , icon: leaves, path: '/admin/leaves'},
+        // {label: 'List of Leaves' , icon: leaves, path: '/admin/leaves'},
         {label: 'Approve Request' , icon: approve, path: '/admin/leaveRequest'}
     ]
 

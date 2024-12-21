@@ -424,29 +424,6 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
             {errors.street && <span className="text-red-500 text-sm">{errors.street.message}</span>}
           </div>
 
-          {/* City
-          <div className="flex flex-col px-1 ">
-            <label htmlFor="city">City *</label>
-            <input
-              type="text"
-              id="city"
-              placeholder=""
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.city ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-              {...register('city', { required: 'City is required' })}
-            />
-            {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
-          </div>
-
-          <div className="flex flex-col px-1">
-            <label htmlFor="state">State *</label>
-            <input
-              type="text"
-              id="state"
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.state ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-              {...register('state', { required: 'State is required' })}
-            />
-            {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
-          </div>*/}
 
           <div className="flex flex-col px-1 ">
             <label htmlFor="pinCode">Pincode <span className='text-red-700 font-bold'>*</span></label>
@@ -466,17 +443,64 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
             {errors.pinCode && <span className="text-red-500 text-sm">{errors.pinCode.message}</span>}
           </div>
 
-          {/*<div className="flex flex-col px-1">
-            <label htmlFor="country">Country *</label>
-            <input
-              type="text"
-              id="country"
-              placeholder=""
-              className={`py-1 px-3 rounded-lg bg-gray-100 border ${errors.country ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
-              {...register('country', { required: 'Country is required' })}
-            />
-            {errors.country && <span className="text-red-500 text-sm">{errors.country.message}</span>}
-          </div> */}
+            {/* Blood Group Select */}
+        <div className="flex flex-col px-1">
+        <label htmlFor="bloodGroup">Blood Group</label>
+        <select
+            id="bloodGroup"
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.bloodGroup ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('bloodGroup')}
+        >
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+        </select>
+        </div>
+
+        {/* Religion Select */}
+        <div className="flex flex-col px-1">
+        <label htmlFor="religion">Religion</label>
+        <select
+            id="religion"
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.relegion ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('religion')}
+        >
+            <option value="">Select Religion</option>
+            <option value="Hinduism">Hinduism</option>
+            <option value="Islam">Islam</option>
+            <option value="Christianity">Christianity</option>
+            <option value="Sikhism">Sikhism</option>
+            <option value="Buddhism">Buddhism</option>
+            <option value="Jainism">Jainism</option>
+            <option value="Zoroastrianism">Zoroastrianism</option>
+            <option value="Other">Other</option>
+        </select>
+        </div>
+
+        {/* Caste Category Select */}
+        <div className="flex flex-col px-1">
+        <label htmlFor="caste">Caste Category</label>
+        <select
+            id="caste"
+            className={`py-1 px-3 w-5/6 sm:w-auto rounded-lg bg-gray-100 border ${errors.casteCategory ? 'border-red-500' : 'border-gray-300'} focus:outline-none`}
+            {...register('casteCategory')}
+        >
+            <option value="">Select Caste Category</option>
+            <option value="General">General</option>
+            <option value="SC">Scheduled Caste (SC)</option>
+            <option value="ST">Scheduled Tribe (ST)</option>
+            <option value="OBC">Other Backward Class (OBC)</option>
+            <option value="EWS">Economically Weaker Section (EWS)</option>
+            <option value="Other">Other</option>
+        </select>
+        </div>
+
 
           {selectedRole != 3 && selectedRole != 4 && (
               <div className="mb-2">
@@ -506,13 +530,13 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
         <button
           onClick={handleSubmit(onSubmit)}
-          hidden={selectedRole != 4}
+          hidden={selectedRole != 4 && selectedRole != 6}
           className="hover:bg-[#ffae01] bg-[#042954] text-white px-4 py-2 rounded-lg"
         >
           Save & Continue 
         </button>
         {
-        selectedRole != 4 ? <Button onClick={handleSubmit(onSubmit)} /> : ''
+        selectedRole != 4 && selectedRole != 6 ? <Button onClick={handleSubmit(onSubmit)} /> : ''
         }
             <Button onClick={() => { 
                 navigate('/admin/pendingUser')

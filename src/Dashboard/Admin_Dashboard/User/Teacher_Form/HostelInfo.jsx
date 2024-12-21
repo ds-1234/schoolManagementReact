@@ -53,10 +53,6 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
           });
       };
 
-      useEffect(() => {
-        fetchHostelOptions() ;
-        fetchData() ;
-      } , [])
 
       useEffect(() => {
         fetchHostelOptions() ;
@@ -72,7 +68,10 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
 
                 if (data) {
                     // If data exists, populate the form
-                    reset(data);
+                    reset({
+                      buildingName: data.buildingName, 
+                      roomNumber: data.roomNumber,    
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching user details:', error);
@@ -102,7 +101,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
           
             })
             .then((response)=>{
-              console.log('response' , response.data.data)
+              // console.log('response' , response.data.data)
               handleNext()
               reset()
           })
@@ -137,15 +136,13 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
           <div className="flex flex-col px-1">
             <label htmlFor="roomNumber">Room Number</label>
             <select
-             type="text"
              id="roomNumber"
-             placeholder=""
              className="py-1 px-3 rounded-lg bg-gray-100 border focus:outline-none"
               {...register('roomNumber')}
             >
               <option value="" hidden>Select Room </option>
               {hostelRoom.map(option => (
-                <option key={option.id} value={option.id}>{option.hostelRoomNumber}</option>
+                <option key={option.hostelRoomId} value={option.id}>{option.hostelRoomNumber}</option>
               ))}
             </select>
           </div>
@@ -165,7 +162,6 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
         <button
           onClick={handleSubmit(onSubmit)}
-          hidden={selectedRole != 4}
           className="hover:bg-[#ffae01] bg-[#042954] text-white px-4 py-2 rounded-lg"
         >
           Save & Continue 

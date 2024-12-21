@@ -42,7 +42,7 @@ useEffect(() => {
         if (userData.dateOfBirth === null && userData.role == 4) setCurrentStep(0);
 
         // Additional check for teacher info if role is 4
-        if (userData.role == 4) {
+        if (userData.role == 4 || userData.role == 6) {
           const res = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${userId}`);
           const teacherInfo = res.data.data ;
           if (teacherInfo.maritalStatus === null) setCurrentStep(1);
@@ -54,7 +54,7 @@ useEffect(() => {
           else setCurrentStep(7);
         }
 
-        if(userData.role != 4){
+        if(userData.role != 4 && userData.role != 6){
           setCurrentStep(0) ;
         }
       } catch (error) {
@@ -69,13 +69,13 @@ useEffect(() => {
     
     setSelectedRole(role); 
     setDropdownOpen(false);
-    if(role == 4){
+    if(role == 4 || role == 6){
         setCurrentStep(0) ; 
     }
   };
 
   const handleNext = () => {
-    if (selectedRole == 4 && currentStep < sections.length - 1) {
+    if ((selectedRole == 4 || selectedRole == 6) && currentStep < sections.length - 1) {
       setCurrentStep((prev) => prev + 1);
     }
   };

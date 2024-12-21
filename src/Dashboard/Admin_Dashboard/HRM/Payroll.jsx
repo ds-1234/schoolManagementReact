@@ -53,6 +53,15 @@ const column = [
       selector: (row,idx) => idx+1,
       sortable: false,
     },
+    ...(activeTab === "SUBMITTED"
+      ? [
+          {
+            name: 'Employee No.',
+            selector: row => row.employeeNumber,
+            sortable: true,
+          },
+        ]
+      : []) ,
     {
       name: 'Name',
       selector: row => row.details.firstName + " " +  row.details.lastName ,
@@ -90,7 +99,7 @@ const column = [
 
   return (
     <div className="h-full mb-10">
-      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">Leave Applications</h1>
+      <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">HRM Applications</h1>
       <p className="mt-2">
         <NavLink to="/admin"> Dashboard  </NavLink>/
         <NavLink to="/admin/hrm"> HRM </NavLink>/

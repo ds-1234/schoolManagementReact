@@ -41,7 +41,7 @@ const AddUser = () => {
             axios.get(`${BASE_URL}/role/getRoleList`),
             axios.get(`${BASE_URL}/user/getUserList`)
           ]);
-          setRoles(rolesResponse.data.data);          
+          setRoles(rolesResponse.data.data.filter((r) => r.id != 2));          
           setStds(
             stdsResponse.data.data.filter((std) => std.role === 3 && std.isActive && !std.isParent)
           );

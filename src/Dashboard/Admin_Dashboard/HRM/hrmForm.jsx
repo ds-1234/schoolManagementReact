@@ -5,6 +5,7 @@ import BASE_URL from "../../../conf/conf";
 import { toast } from "react-toastify";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Button from '../../../Reusable_components/Button'
+import DatePicker from '../../../Reusable_components/DatePicker'
 
 const HrmForm = () => {
   const [leaveTypes, setLeaveTypes] = useState([]); // Dynamic leave types
@@ -33,7 +34,7 @@ const HrmForm = () => {
       teacherId: teacherId, 
       leaveCounterDto: leaveTypes.map((leave) => ({
         leaveTypes: leave.id,
-        leaveCount: data[`leave_${leave.id}`], 
+        leaveCount: data[`leave_${leave.id}`] ? data[`leave_${leave.id}`] : 0, 
       })),
     };
 
@@ -115,6 +116,15 @@ const HrmForm = () => {
               </select>
               {errors.workShift && <p className="text-red-500">{errors.workShift.message}</p>}
             </div>
+
+            <DatePicker 
+            label={"Date of Joining"}
+            name={"dateOfJoining"}
+            register={register}
+            required={true}
+            labelClass={"block font-medium"}
+            className={`py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-full`}
+             />
 
             <div>
               <label className="block font-medium">Work Location <span className="text-red-500">*</span></label>
