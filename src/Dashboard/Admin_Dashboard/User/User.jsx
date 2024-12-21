@@ -44,6 +44,11 @@ const column = [
     sortable: true,
   },
   {
+    name: 'Role',
+    selector: row => roleMap[row.role],
+    sortable: true,
+  },
+  {
     name: 'Action',
     cell: row => (
       <div className='flex gap-2 justify-right'>
@@ -98,6 +103,7 @@ const column = [
 
   const [user, setUser] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
+  const [roleMap , setRoleMap] = useState({}) 
   const navigate = useNavigate()
 
   const fetchData = async() => {
@@ -116,6 +122,24 @@ const column = [
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+
+      axios({
+        method: 'GET',
+        url: `${BASE_URL}/role/getRoleList`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        const roles = res.data.data ;
+        const map = {} ;
+
+        roles?.forEach((role) => {
+          map[role.id] = role.name ;
+        })
+
+        setRoleMap(map) ;
+      })
   };
 
   useEffect(() => {

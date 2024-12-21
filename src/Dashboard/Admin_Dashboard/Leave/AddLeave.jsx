@@ -137,25 +137,25 @@ const AddLeave = ({ isOpen, onClose }) => {
               rows="4"
               {...register('description', { required: 'Description is required' })}
             ></textarea> */}
-                                                                  <CKEditor
-  editor={ClassicEditor}
-  data={editorData}
-  onChange={(event, editor) => {
-    const data = editor.getData();
-    setEditorData(data);
-  }}
-  onReady={(editor) => {
-    editor.ui.view.editable.element.style.minHeight = "100px";
- }}
- config={{
-  toolbar: [
-    'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
-    'link', 'blockQuote', 'undo', 'redo'
-    // Exclude 'imageUpload' to remove the icon
-  ],
-}}
+            <CKEditor
+              editor={ClassicEditor}
+              data={editorData}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditorData(data);
+              }}
+              onReady={(editor) => {
+                editor.ui.view.editable.element.style.minHeight = "100px";
+            }}
+            config={{
+              toolbar: [
+                'heading','bold', 'italic', 'underline', 'bulletedList', 'numberedList', 
+                'link', 'blockQuote', 'undo', 'redo'
+                // Exclude 'imageUpload' to remove the icon
+              ],
+            }}
 
-/>
+            />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 

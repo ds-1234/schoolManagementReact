@@ -7,11 +7,13 @@ import Labels from '../../../Reusable_components/Labels';
 import BASE_URL from '../../../conf/conf';
 
 const StdsAttendance = () => {
-  const { classItem } = useLocation().state; 
+  const { classItem } = useLocation().state;
   const [students, setStudents] = useState([]);
   const [attendanceMap, setAttendanceMap] = useState({});
   const [uniqueDates, setUniqueDates] = useState([]);
   const [statusMap, setStatusMap] = useState({});
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Default: Current Month
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default: Current Year
 
   // Fetch attendance statuses
   const fetchAttendanceStatuses = async () => {
@@ -20,7 +22,6 @@ const StdsAttendance = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Transform the response into a usable status map
       const statuses = response.data.data.reduce((map, { id, attendanceStatus }) => {
         map[id] = attendanceStatus;
         return map;
@@ -43,57 +44,71 @@ const StdsAttendance = () => {
         (entry) => entry.className === classItem.id
       );
 
-      const dateSet = new Set() 
       const newAttendanceMap = {};
       filteredAttendance.forEach(({ attendanceDate, attendanceStatusList }) => {
-        const formattedDate = new Date(attendanceDate).toLocaleDateString();
+        const dateObj = new Date(attendanceDate);
+        const formattedDate = dateObj.toLocaleDateString();
 
-        dateSet.add(formattedDate); 
-
-        attendanceStatusList.forEach(({ studentId, attendanceStatusId }) => {
-          if (!newAttendanceMap[studentId]) {
-            newAttendanceMap[studentId] = {};
-          }
-          newAttendanceMap[studentId][formattedDate] = attendanceStatusId ;
-        });
+        // Map attendance data to the corresponding student and date
+        if (dateObj.getMonth() + 1 === selectedMonth && dateObj.getFullYear() === selectedYear) {
+          attendanceStatusList.forEach(({ studentId, attendanceStatusId }) => {
+            if (!newAttendanceMap[studentId]) {
+              newAttendanceMap[studentId] = {};
+            }
+            newAttendanceMap[studentId][formattedDate] = attendanceStatusId;
+          });
+        }
       });
 
       setAttendanceMap(newAttendanceMap);
-      setUniqueDates([...dateSet]);
+      setUniqueDates(getAllDatesOfMonth(selectedYear, selectedMonth));
     } catch (error) {
       console.error('Error fetching attendance data:', error);
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchAttendanceStatuses(); 
-      await fetchAttendanceData()
-    };
-
-    fetchData();
-  }, [classItem]);
-
-  // Fetch students based on classItem
+  // Fetch student data
   const fetchStudents = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/user/getUserList`, {
         headers: { 'Content-Type': 'application/json' },
       });
-      const filteredStds = response.data.data.filter(user => user.role === 3);
-      const filteredStudents = filteredStds.filter((std) => std.className?.includes(classItem.id));
+      const filteredStudents = response.data.data.filter(
+        (user) => user.role === 3 && user.className?.includes(classItem.id)
+      );
       setStudents(filteredStudents);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
- 
+  // Generate all dates for the selected month
+  const getAllDatesOfMonth = (year, month) => {
+    const dates = [];
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month - 1, day);
+      dates.push(date.toLocaleDateString());
+    }
+    return dates;
+  };
+
+  // Fetch data whenever the selected month or year changes
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchAttendanceStatuses();
+      await fetchAttendanceData();
+    };
+
+    fetchData();
+  }, [classItem, selectedMonth, selectedYear]);
 
   useEffect(() => {
     fetchStudents();
   }, [classItem]);
 
+  // Format attendance status
   const formatAttendance = (status) => {
     switch (status) {
       case 'Present':
@@ -109,55 +124,81 @@ const StdsAttendance = () => {
     }
   };
 
-  const sortedUniqueDates = [...uniqueDates].sort((a, b) => new Date(b) - new Date(a));
-  // Columns for react-table
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  // Define table columns
   const columns = [
     {
-        name: 'SR.No',
-        selector: (row, idx) => idx + 1,
-        sortable: false,
-        // style: { position: 'sticky', left: '0px', zIndex: 2, backgroundColor: 'white' }
+      name: 'Student Name',
+      selector: (row) => `${row.firstName} ${row.lastName}`,
+      sortable: true,
+      cellStyle: {
+        position: 'sticky',
+        left: 0,
+        zIndex: 2,
+        backgroundColor: 'white',
+        width: '150px',
       },
-      {
-        name: 'Roll No',
-        selector: (row) => row.rollNumber,
-        sortable: false,
-      //  style: { position: 'sticky', left: '50px', zIndex: 2, backgroundColor: 'white' }
-      },
-      {
-        name: 'Student Name',
-        selector: (row) => row.firstName + ' ' + row.lastName,
-        sortable: true,
-        // style: { position: 'sticky', left: '100px', zIndex: 2, backgroundColor: 'white' } , 
-        // width: '180px'
-      },
-    // Dynamically add date columns
-    ...sortedUniqueDates.map(date => ({
-      name: date,
-      selector: row => {
-        return formatAttendance(statusMap[attendanceMap[row.id]?.[date]] || '-'); 
-      },
-      // width: '120px'
-    })),
+    },
+    ...uniqueDates.map((date) => {
+      const day = new Date(date).getDate(); // Extract day from the date
+      return {
+        name: day.toString(), // Display the day (1, 2, 3, etc.)
+        selector: (row) =>
+          formatAttendance(statusMap[attendanceMap[row.id]?.[date]] || '-'),
+        width: '60px',
+      };
+    }),
   ];
 
   return (
-    <div className='h-full mb-10'>
+    <div className="h-full mb-10">
       <div className="flex flex-col mb-6">
-        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>{`Attendance: ${classItem.name} - ${classItem.section}`}</h1>
-        <p className='mt-2'><NavLink to='/admin'>Dashboard </NavLink>/ <NavLink to='/admin/classSelect'> Classes </NavLink>/ <span className='text-[#ffae01] font-semibold'>Attendance</span> </p>
+        <h1 className="text-lg md:text-2xl pt-8 font-semibold text-black">{`Attendance: ${classItem.name} - ${classItem.section}`}</h1>
+        <p className="mt-2">
+          <NavLink to="/admin">Dashboard</NavLink> /{' '}
+          <NavLink to="/admin/classSelect"> Classes </NavLink> /{' '}
+          <span className="text-[#ffae01] font-semibold">Attendance</span>
+        </p>
+      </div>
+
+      <div className="flex items-center gap-4 mb-6">
+        <select
+          className="border border-gray-300 p-2 rounded-md"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+        >
+          {months.map((month, index) => (
+            <option key={index} value={index + 1}>
+              {month}
+            </option>
+          ))}
+        </select>
+        <select
+          className="border border-gray-300 p-2 rounded-md"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+        >
+          {Array.from({ length: 2 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="">
+        <Labels />
       </div>
       
-      <div className='mt-10'>
-      <Labels/>
-      </div>
-      <div className="overflow-x-auto max-w-7xl"> 
         <Table
-          columns={columns}  
-          data={students}    
-          searchOptions={[{ label: 'Student Name', value: 'name' }]} 
+          columns={columns}
+          data={students}
+          searchOptions={[{ label: 'Student Name', value: 'name' }]}
         />
-      </div>
     </div>
   );
 };

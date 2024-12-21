@@ -116,10 +116,11 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
         ...data,
         ...teacherData ,
         teacherId : userId,
+        maritalStatus: data.maritalStatus ,
         designation : parseInt(data.designation),
         department : parseInt(data.department),
-        languages: data.languages.map(lang => lang.value).join(','),
-        classSubjectEntity
+        languages: selectedRole == 4 ? data.languages.map(lang => lang.value).join(',') : null ,
+        classSubjectEntity : selectedRole == 4 ? classSubjectEntity : null
       }
     })
     .then((response) => {
@@ -222,18 +223,22 @@ const fetchBasicDets = async() => {
           </div>
 
        
-        <div className="flex flex-col px-1 mt-2 mb-5">
-          <label htmlFor="languages" className='text-gray-900 font-semibold text-xl'>Languages <span className='text-red-700 font-bold'>*</span></label>
-          <SelectDropdown
-            name="languages"
-            control={control}
-            options={languageOptions} 
-            isMulti={true}         
-            placeholder="Select languages..."
-            {...register('languages' , {required : "Languages are required" })}
-          />
-          {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
-        </div>
+        {
+          selectedRole == 4 && (
+            <div className="flex flex-col px-1 mt-2 mb-5">
+              <label htmlFor="languages" className='text-gray-900 font-semibold text-xl'>Languages <span className='text-red-700 font-bold'>*</span></label>
+              <SelectDropdown
+                name="languages"
+                control={control}
+                options={languageOptions} 
+                isMulti={true}         
+                placeholder="Select languages..."
+                {...register('languages' , {required : "Languages are required" })}
+              />
+              {errors.languages && <span className="text-red-500 text-sm">{errors.languages.message}</span>}
+            </div>
+          )
+        }
 
         <div className="flex flex-col px-2 w-1/2 mb-4">
             <label htmlFor="designation" className='text-gray-900 font-medium'>Designation</label>
@@ -286,7 +291,9 @@ const fetchBasicDets = async() => {
             </select>
         </div>
 
-        <div className="flex flex-col px-2 w-1/2 mb-4">
+        {
+          selectedRole == 4 && (
+            <div className="flex flex-col px-2 w-1/2 mb-4">
             <label htmlFor="classTeacher" className="block text-gray-900 font-semibold ">Class Teacher</label>
             <select  
               id="classTeacher" 
@@ -301,8 +308,12 @@ const fetchBasicDets = async() => {
             </select>
           </div>
 
+          )
+        }
 
-        <div className="flex flex-col gap-2 mt-5">
+        {
+          selectedRole == 4 && (
+            <div className="flex flex-col gap-2 mt-5">
         {classSubjectRows.map((row, index) => (
           <div key={index} className="flex gap-4 mb-2">
             <div className='flex flex-col gap-1'>
@@ -345,6 +356,8 @@ const fetchBasicDets = async() => {
           Add Class & Subject
         </button>
         </div>
+          )
+        }
 
         <div className="flex justify-between mt-4">
         <button
@@ -359,7 +372,6 @@ const fetchBasicDets = async() => {
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
         <button
           onClick={handleSubmit(onSubmit)}
-          hidden={selectedRole != 4}
           className="hover:bg-[#ffae01] bg-[#042954] text-white px-4 py-2 rounded-lg"
         >
           Save & Continue 

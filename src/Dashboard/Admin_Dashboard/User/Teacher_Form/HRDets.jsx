@@ -155,7 +155,6 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
         <div className="col-span-2 flex justify-end space-x-4 mt-5">
           <button
             onClick={handleSubmit(onSubmit)}
-            hidden={selectedRole !== 4}
             className="hover:bg-[#ffae01] bg-[#042954] text-white px-4 py-2 rounded-lg"
           >
             Save & Continue

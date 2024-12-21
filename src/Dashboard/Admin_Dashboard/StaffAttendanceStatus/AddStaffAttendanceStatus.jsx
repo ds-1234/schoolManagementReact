@@ -6,6 +6,7 @@ import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
 import 'react-toastify/dist/ReactToastify.css';
+import ColorPicker from '../../../Reusable_components/ColorPicker';
 
 const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
   const {
@@ -16,6 +17,12 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
   } = useForm();
 
   const [value, setValue] = useState(true);
+  const [color , setColor] = useState('#00000')
+
+  const handleColorChange = (newColor) => {
+    console.log('Selected color:', newColor);
+    setColor(newColor);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -45,6 +52,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
       data: {
         startTime: data.startTime,
         endTime: data.endTime,
+        colorCode : color ,
         attendanceStatus: data.attendanceStatus,
         isActive: value,
       },
@@ -62,6 +70,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
         console.log(err, 'error:');
         toast.error('Error adding new Data');
         onClose();
+        reset()
       });
   };
 
@@ -71,7 +80,10 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
-          onClick={onClose}
+          onClick={() => {
+            onClose()
+            reset()
+          }}
           className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900"
         >
           &times;
@@ -104,6 +116,11 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
             />
             {errors.endTime && <p className="text-red-500 text-sm mt-1">{errors.endTime.message}</p>}
           </div>
+
+          {/* Color Picker */}
+          <ColorPicker 
+          onChange={handleColorChange} 
+          label={"Pick a Color :"}/>
 
           {/* Attendance Status Input */}
           <div className="mb-4">

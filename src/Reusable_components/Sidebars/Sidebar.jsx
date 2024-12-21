@@ -644,7 +644,7 @@ const Sidebar = ({setIsSidebarOpen}) => {
             </NavLink>
             {openDropdown=='leaveApp' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">
-                <li>
+                {/* <li>
                   <NavLink
                     to="/admin/leaves"
                     className={({ isActive }) =>
@@ -654,7 +654,7 @@ const Sidebar = ({setIsSidebarOpen}) => {
                     <FontAwesomeIcon icon={faAngleRight} />
                     List of Leaves
                   </NavLink>
-                </li>
+                </li> */}
 
                 <li>
                   <NavLink

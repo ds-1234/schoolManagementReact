@@ -42,7 +42,7 @@ const DatePicker = ({ labelClass , name, label,register , required ,  className 
         onBlur={handleBlur}
         max={getCurrentDate()} // Restrict future dates
         onChange={onChange}
-        {...register(name, { required })}
+        {...(register && register(name, { required }))}
       />
     </div>
   );

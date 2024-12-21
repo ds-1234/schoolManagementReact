@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Table from '../../../Reusable_components/Table';
-import deleteIcon from '../../../assets/delete.png'
+// import deleteIcon from '../../../assets/delete.png'
 import edit from '../../../assets/edit.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
@@ -156,11 +156,11 @@ function StaffAttendanceStatus() {
           <img src={edit} alt="Edit" className='h-8' />
         </button>
   
-        <button
+        {/* <button
           onClick={()=>handleDelete(row.id)}
           >
             <img src={deleteIcon} alt="Delete" className="h-8" />
-          </button>
+          </button> */}
         </div>
       ),
     },

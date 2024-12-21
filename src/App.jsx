@@ -78,7 +78,7 @@ import ClassSelect from './Dashboard/Teacher_Dashboard/Attendance_Marking/ClassS
 import Attendance from './Dashboard/Teacher_Dashboard/Attendance_Marking/Attendance';
 import StdAttendance from './Dashboard/Student_Dashboard/Attendance/Attendance'
 import Select from './Dashboard/Admin_Dashboard/Attendance/Select';
-import TchsAttendance from './Dashboard/Admin_Dashboard/Attendance/TchsAttendance';
+// import TchsAttendance from './Dashboard/Admin_Dashboard/Attendance/TchsAttendance';
 import ClassAttendance from './Dashboard/Admin_Dashboard/Attendance/ClassSelect'
 import StdsAttendance from './Dashboard/Admin_Dashboard/Attendance/StdsAttendance';
 import BasicDets from './Dashboard/Admin_Dashboard/Students/AdmissionForm/BasicDets';
@@ -122,7 +122,7 @@ import ExamClasses from './Dashboard/Teacher_Dashboard/Examination/Exam Result/E
 import LeaveTab from './Dashboard/Teacher_Dashboard/Leave/LeaveTab';
 // import LeaveCategory from './Dashboard/Teacher_Dashboard/Leave/LeaveCategory';
 import LeaveRequest from './Dashboard/Teacher_Dashboard/Leave/LeaveRequest';
-import LeaveTabApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveTabApp'
+// import LeaveTabApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveTabApp'
 import LeaveRequestApp from './Dashboard/Admin_Dashboard/LeaveApplication/LeaveRequestApp';
 import ExamDetails from './Dashboard/Student_Dashboard/Examination/Exam Result/ExamDetails';
 import ExamTypeTiles from './Dashboard/Admin_Dashboard/Examinations/ExamResults/ExamTypeTiles';
@@ -229,7 +229,7 @@ function App() {
             <Route path='select' element = {<Select/>}/> 
             <Route path='classSelect' element={<ClassAttendance/>}/>
             <Route path='stdsAttendance/:className/:section' element = {<StdsAttendance/>}/>
-            <Route path='tchsAttendance' element = {<TchsAttendance/>}/>
+            {/* <Route path='tchsAttendance' element = {<TchsAttendance/>}/> */}
             <Route path = 'basic' element = {<BasicDets/>}/>
             <Route path = 'academic' element={<AcademicDets/>}/>
             <Route path='office' element= {<OfficeDets/>}/>
@@ -246,7 +246,7 @@ function App() {
             <Route path='StaffAttendanceStatus' element={<StaffAttendanceStatus/>}/>
             <Route path = 'ViewParent' element= {<ViewParent/>}/> 
             <Route path = 'StaffAttendance' element= {<StaffAttendance/>}/> 
-            <Route path = 'leaves' element = {<LeaveTabApp/>}/>
+            {/* <Route path = 'leaves' element = {<LeaveTabApp/>}/> */}
             <Route path = 'leaveRequest' element= {<LeaveRequestApp/>}/>
             <Route path = 'ExamTypeTiles' element= {<ExamTypeTiles/>}/>
             <Route path = 'ExamTypeTiles/ClassNameTiles' element= {<ClassNameTiles/>}/>

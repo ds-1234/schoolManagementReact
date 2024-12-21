@@ -144,7 +144,7 @@ const LeaveRequest = () => {
           const senderRole = userRes.data.data.role; 
           
           // Return the leave only if senderRole is not 3
-          return senderRole !== 3 ? leave : null;
+          return senderRole === 6 ? leave : null;
         })
       );
   
