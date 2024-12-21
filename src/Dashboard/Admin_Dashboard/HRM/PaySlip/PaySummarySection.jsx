@@ -26,18 +26,18 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
         return `${year}-${month}`;
       };
     
-      // Calculate the last date of the current month
-      const getLastDateOfMonth = () => {
-        const date = new Date();
-        date.setMonth(date.getMonth() + 1);
-        date.setDate(0); // Last day of the current month
-        return date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      };
+  // Calculate the first date of the current month
+    const getFirstDateOfMonth = () => {
+    const date = new Date();
+    date.setDate(1); // Set the day to 1 (first day of the month)
+    return date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  };
+  
 
       useEffect(() => {
         // Set default values for payPeriod and payDate
         setValue('payPeriod', getCurrentMonth());
-        setValue('payDate', getLastDateOfMonth());
+        setValue('payDate', getFirstDateOfMonth());
       }, [setValue]);
 
   // Watch all the form fields to track changes
