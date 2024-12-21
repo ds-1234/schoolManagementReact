@@ -268,7 +268,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
   return (
     <div className="grid grid-cols-2 gap-8 p-6">
       {/* Left Section */}
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-6 bg-white shadow-lg  pr-6 border-r border-gray-300">
         <h2 className="text-xl font-bold mb-4">Income Details </h2>
 
         <div className="flex items-center mb-2 gap-4">
@@ -327,7 +327,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
         {/* Additional Fields for Left Section */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-4">Additional Fields </h3>
+          {/* <h3 className="text-lg font-semibold mb-4">Additional Fields </h3> */}
           {leftAdditionalFields.map((field) => (
             <div key={field.id} className="flex items-center gap-4 mb-3">
               <input
@@ -369,7 +369,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
             onClick={handleAddLeftField}
             className="text-blue-500 cursor-pointer flex items-center gap-2"
           >
-            <span className="text-xl">+</span> Add Additional Field
+            <span className="text-xl">+</span> Add Earnings 
           </span>
           
         </div>
@@ -385,8 +385,10 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         </div>
       </div>
 
+
+
       {/* Right Section */}
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-6 bg-white shadow-lg pl-6 ">
         <h2 className="mb-4">-</h2>
 
         <div className="flex items-center mb-2 gap-4">
@@ -457,7 +459,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
         {/* Additional Fields for Right Section */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-4">Additional Fields </h3>
+          {/* <h3 className="text-lg font-semibold mb-4">Additional Fields </h3> */}
           {rightAdditionalFields.map((field) => (
             <div key={field.id} className="flex items-center gap-4 mb-3">
               <input
@@ -499,7 +501,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
             onClick={handleAddRightField}
             className="text-blue-500 cursor-pointer flex items-center gap-2"
           >
-            <span className="text-xl">+</span> Add Additional Field
+            <span className="text-xl">+</span> Add Deductions
           </span>
         </div>
                 {/* Gross Deduction */}
@@ -513,6 +515,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
           />
         </div>
       </div>
+      
 
       <div className="p-6 font-sans">
       {/* Net Payable Amount Heading and Amount */}
