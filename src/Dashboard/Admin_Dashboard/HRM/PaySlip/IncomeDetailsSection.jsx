@@ -374,7 +374,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
           
         </div>
                 {/* Gross Earning */}
-                <div className="flex items-center gap-4 mt-4">
+                <div className="flex items-center gap-4 mt-4 mb-2">
           <label className="w-1/3 font-medium">Gross Earning</label>
           <input
             type="number"
@@ -505,7 +505,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
           </span>
         </div>
                 {/* Gross Deduction */}
-                <div className="flex items-center gap-4 mt-4">
+                <div className="flex items-center gap-4 mt-4 mb-2">
           <label className="w-1/3 font-medium">Gross Deduction</label>
           <input
             type="number"
