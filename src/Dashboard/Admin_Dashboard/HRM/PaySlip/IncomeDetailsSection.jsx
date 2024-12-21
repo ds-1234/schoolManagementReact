@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PaySlip from './PaySlip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const IncomeDetailsSection = ({ onPayloadUpdate }) => {
   const [leftAdditionalFields, setLeftAdditionalFields] = useState([]);
@@ -330,7 +332,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
             <div key={field.id} className="flex items-center gap-4 mb-3">
               <input
                 type="text"
-                placeholder="Name *"
+                placeholder="Field Name *"
                 value={field.name}
                 onChange={(e) =>
                   handleLeftFieldChange(field.id, 'name', e.target.value)
@@ -340,7 +342,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
               />
               <input
                 type="number"
-                placeholder="Value *"
+                placeholder="Field Value *"
                 value={field.value}
                 onChange={(e) =>
                   handleLeftFieldChange(field.id, 'value', e.target.value)
@@ -348,12 +350,19 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
                 required
                 className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
               />
-              <button
+              {/* <button
                 onClick={() => handleDeleteLeftField(field.id)}
                 className="py-1 px-3 bg-red-500 text-white rounded-lg"
               >
                 Delete
-              </button>
+              </button> */}
+                <button
+                    type="button"
+                    onClick={() => handleDeleteLeftField(field.id)}
+                    className="text-red-500 hover:text-red-700"
+                >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                </button> 
             </div>
           ))}
           <span
@@ -453,7 +462,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
             <div key={field.id} className="flex items-center gap-4 mb-3">
               <input
                 type="text"
-                placeholder="Name *"
+                placeholder="Field Name *"
                 value={field.name}
                 onChange={(e) =>
                   handleRightFieldChange(field.id, 'name', e.target.value)
@@ -463,7 +472,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
               />
               <input
                 type="number"
-                placeholder="Value *"
+                placeholder="Field Value *"
                 value={field.value}
                 onChange={(e) =>
                   handleRightFieldChange(field.id, 'value', e.target.value)
@@ -471,12 +480,19 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
                 required
                 className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
               />
-              <button
+              {/* <button
                 onClick={() => handleDeleteRightField(field.id)}
                 className="py-1 px-3 bg-red-500 text-white rounded-lg"
               >
                 Delete
-              </button>
+              </button> */}
+              <button
+                type="button"
+                onClick={() => handleDeleteRightField(field.id)}
+                className="text-red-500 hover:text-red-700"
+                >
+                <FontAwesomeIcon icon={faTrashCan} />
+                </button> 
             </div>
           ))}
           <span

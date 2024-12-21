@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import BASE_URL from "../../../../conf/conf";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 const PaySummarySection = ({ onPayloadUpdate }) => {
   const [additionalFields, setAdditionalFields] = useState([]);
@@ -287,7 +289,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
           <div key={field.id} className="flex items-center gap-4 mb-3">
             <input
               type="text"
-              placeholder="Name *"
+              placeholder="Field Name *"
               value={field.name}
               onChange={(e) => handleFieldChange(field.id, 'name', e.target.value)}
               required
@@ -295,18 +297,25 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
             />
             <input
               type="text"
-              placeholder="Value *"
+              placeholder="Field Value *"
               value={field.value}
               onChange={(e) => handleFieldChange(field.id, 'value', e.target.value)}
               required
               className="py-2 px-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none w-1/2"
             />
-            <button
+            {/* <button
               type="button"
               onClick={() => handleDeleteField(field.id)}
               className="text-red-500"
             >
               Delete
+            </button> */}
+            <button
+                type="button"
+                onClick={() => handleDeleteField(field.id)}
+                className="text-red-500 hover:text-red-700"
+            >
+                <FontAwesomeIcon icon={faTrashCan} />
             </button>
           </div>
         ))}

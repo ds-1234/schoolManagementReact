@@ -5,6 +5,7 @@ import PaySummarySection from './PaySummarySection';
 import IncomeDetailsSection from './IncomeDetailsSection';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
+import { toast } from 'react-toastify';
 
 const PaySlip = () => {
   const [incomePayload, setIncomePayload] = useState({});
@@ -49,7 +50,10 @@ const PaySlip = () => {
 
       if (response.data.success) {
         console.log('Pay slip created successfully');
+                toast.success('Successfully added Data');
+        
         // window.location.reload()
+        
       } else {
         console.error('Failed to create pay slip');
       }
