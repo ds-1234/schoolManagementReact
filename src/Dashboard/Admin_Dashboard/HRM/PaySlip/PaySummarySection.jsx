@@ -88,7 +88,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/user/getUserList`);
-        const filteredUsers = response.data.data.filter(user => user.role === 4);
+        const filteredUsers = response.data.data.filter(user => user.role === 4 && user.isActive == true);
         setUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -131,6 +131,13 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
     // Fetch teacher info for the selected employee
     const teacherInfoResponse = await axios.get(`${BASE_URL}/teacherInfo/getTeacherInfoList`);
     const teacherInfo = teacherInfoResponse.data.data.find(teacher => teacher.teacherId == selectedUser.id);
+
+    const date = new Date(formData.payPeriod); 
+const formattedDate = date.toLocaleDateString('en-US', {
+  month: 'short', // Gets abbreviated month name
+  year: 'numeric', // Gets numeric year
+});
+const finalDate = formattedDate.replace(' ', ', '); // Adds a comma after the month
   
     // Construct the payload
     const newPayload = {
@@ -141,9 +148,9 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
       schoolPincode: schoolData?.pinCode || '',
       schoolCountry: schoolData?.country || '',
       empName: `${selectedUser.firstName} ${selectedUser.lastName}`,
-      payPeriod: formData.payPeriod,
+      payPeriod: finalDate,
       lossOfPaydays: formData.lossOfPayDays,
-      employeeId: teacherInfo?.employeeNumber,
+      employeeId: teacherInfo?.employeeNumber||'1',
       paidDays: formData.paidDays,
       payDate: formData.payDate,
       dateOfJoining: teacherInfo?.dateOfJoining || '2024-01-01', // Use the fetched date of joining
