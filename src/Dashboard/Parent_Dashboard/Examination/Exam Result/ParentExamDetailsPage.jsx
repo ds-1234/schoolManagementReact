@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 
 const ParentExamDetailsPage = () => {
@@ -11,6 +11,7 @@ const ParentExamDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [subjectsName, setSubjectsName] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (classId && userId && examType) {
@@ -110,7 +111,13 @@ const ParentExamDetailsPage = () => {
       <p className="pl-0 mt-2">
         <NavLink to="/parentsDashboard"> Dashboard </NavLink>/
         <NavLink to="/parentsDashboard/ParentExamRes"> Child Result </NavLink>/
-        <NavLink to="/parentsDashboard/ParentClassExamResultPage"> Class Result </NavLink>/
+        {/* <NavLink to="/parentsDashboard/ParentClassExamResultPage"> Class Result </NavLink>/ */}
+        <span
+    className="cursor-pointer  hover:underline"
+    onClick={() => navigate(-1)}
+  >
+    Class Result
+  </span>/
         <span className="text-[#ffae01] font-semibold">Exam Result</span>
       </p>
       <Table
