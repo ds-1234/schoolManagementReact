@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PaySlip from './PaySlip';
 
 function TchViewPaySlip() {
   const [payPeriods, setPayPeriods] = useState([]);
@@ -71,11 +72,12 @@ function TchViewPaySlip() {
 
         {/* Display pay slip details */}
         {paySlipDetails && (
-          <div className="mt-4 p-4 border border-gray-200 rounded-md shadow-sm">
-            <pre className="text-sm font-mono">
-              {JSON.stringify(paySlipDetails, null, 2)}
-            </pre>
-          </div>
+        //   <div className="mt-4 p-4 border border-gray-200 rounded-md shadow-sm">
+        //     <pre className="text-sm font-mono">
+        //       {JSON.stringify(paySlipDetails, null, 2)}
+        //     </pre>
+        //   </div>
+        <PaySlip data={paySlipDetails.data[0]}/>
         )}
       </div>
     </div>
