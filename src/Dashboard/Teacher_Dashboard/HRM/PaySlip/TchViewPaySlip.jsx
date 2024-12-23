@@ -3,6 +3,9 @@ import axios from 'axios';
 import PaySlip from './PaySlip';
 import { NavLink } from 'react-router-dom';
 import { generatePDF } from '../../../../Utils/generatePDF';
+import pdf from '../../../../assets/pdf.png';
+import download from '../../../../assets/download-pdf.png';
+
 
 function TchViewPaySlip() {
   const [payPeriods, setPayPeriods] = useState([]);
@@ -67,8 +70,24 @@ function TchViewPaySlip() {
           ))}
         </select>
       </div>
+      <div className="flex justify-end mt-4 mr-8 ">
+        {/* <button
+        className="button"
+        onClick={() => generatePDF("PaySlip", `PaySlip_${selectedPeriod}`)}
+        >
+          </button> */}
 
-      <div className="mt-8">
+                      <img 
+                        src={download} 
+                        onClick={() => generatePDF("PaySlip", `PaySlip_${selectedPeriod}`)}
+                        alt="Download Pdf" 
+                        className="w-8 h-15 cursor-pointer " 
+
+                      />
+    </div>
+
+
+      <div className="mt-2">
         {paySlipDetails && (
 
           <div id="PaySlip">
@@ -76,12 +95,7 @@ function TchViewPaySlip() {
           </div>
         )}
       </div>
-            <button 
-                className="button"
-                onClick={() => generatePDF("PaySlip", `PaySlip_${selectedPeriod}`)} 
-              >
-                Download Pay Slip PDF
-            </button>
+
 
     </div>
   );
