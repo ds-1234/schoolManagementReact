@@ -31,61 +31,65 @@ const PaySlip = ({ data }) => {
       {/* Employee Details Section */}
       <div className="grid grid-cols-2 gap-4 p-4 border-b border-gray-300  divide-gray-300">
         {/* Left Column */}
-        <div className="space-y-2 divide-y divide-gray-300">
+        <div className="space-y-2  divide-gray-300">
         <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Employee Name:</strong></p>
+            <p className="text-gray-700 "><strong>Employee Name:</strong></p>
             <p className="text-gray-700 text-center">{data.empName}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Employee ID:</strong></p>
+            <p className="text-gray-700 "><strong>Employee ID:</strong></p>
             <p className="text-gray-700 text-center">{data.employeeId}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Date of Joining:</strong></p>
+            <p className="text-gray-700 "><strong>Date of Joining:</strong></p>
             <p className="text-gray-700 text-center">{data.dateOfJoining}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Department:</strong></p>
+            <p className="text-gray-700 "><strong>Department:</strong></p>
             <p className="text-gray-700 text-center">{data.department}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Designation:</strong></p>
+            <p className="text-gray-700 "><strong>Designation:</strong></p>
             <p className="text-gray-700 text-center">{data.designation}</p>
           </div>
           {Array.isArray(paySummaryFieldList) && paySummaryFieldList.map((earning, index) => (
             <div key={index} className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700"><strong>{earning.paySummaryFieldName}:</strong></p>
+            <p className="text-gray-700 "><strong>{earning.paySummaryFieldName}:</strong></p>
             <p className="text-gray-700 text-center">{earning.paySummaryValue}</p>
             </div>
             ))}
         </div>
 
         {/* Right Column */}
-        <div className="space-y-2 divide-y divide-gray-300">
+        <div className="space-y-2  divide-gray-300">
 
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Paid Days:</strong></p>
+            <p className="text-gray-700 "><strong>Paid Days:</strong></p>
             <p className="text-gray-700 text-center">{data.paidDays}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Lost of Pay Days:</strong></p>
+            <p className="text-gray-700 "><strong>Lost of Pay Days:</strong></p>
             <p className="text-gray-700 text-center">{data.lossOfPaydays}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Pay Date:</strong></p>
+            <p className="text-gray-700 "><strong>Pay Date:</strong></p>
             <p className="text-gray-700 text-center">{data.payDate}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Bank Name:</strong></p>
+            <p className="text-gray-700 "><strong>Bank Name:</strong></p>
             <p className="text-gray-700 text-center">{data.bankName}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Account Number:</strong></p>
+            <p className="text-gray-700 "><strong>Account Number:</strong></p>
             <p className="text-gray-700 text-center">{data.accountNumber}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700 font-semibold"><strong>Branch Name:</strong></p>
+            <p className="text-gray-700 "><strong>Branch Name:</strong></p>
             <p className="text-gray-700 text-center">{data.branchName}</p>
+          </div>
+          <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
+            <p className="text-gray-700 "><strong>Employer Signature Text:</strong></p>
+            <p className="text-gray-700 text-center">{data.employerSignatureText}</p>
           </div>
         </div>
       </div>
@@ -101,26 +105,46 @@ const PaySlip = ({ data }) => {
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Basic Salary:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.basicPayEarning}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.basicPayEarning}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>HRA:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.houseRentAllowEarning}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.houseRentAllowEarning}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Allowances:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.specialPayAllowance}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.specialPayAllowance}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Over Time Pay:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.overTimePay}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.overTimePay}
+        </span>
+        </p>
           </div>
 
           {console.log(earningFieldsList,'earningFieldsList')}
           {Array.isArray(earningFieldsList) && earningFieldsList.map((earning, index) => (
             <div key={index} className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>{earning.earningFieldName}:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{earning.earningFieldValue}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {earning.earningFieldValue}
+        </span>
+        </p>
             </div>
             ))}
 
@@ -135,29 +159,53 @@ const PaySlip = ({ data }) => {
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Tax:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.incomeTaxDeduction}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.incomeTaxDeduction}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Provident Fund:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.pfDeduction}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.pfDeduction}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Gratuity Deductions:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.gratuityDeduction || 0}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.gratuityDeduction}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Professional Tax:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.professionalTax || 0}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.professionalTax}
+        </span>
+        </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Advance Pay:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.advancePay || 0}</p>
+            <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.advancePay || 0}
+        </span>
+        </p>
           </div>
 
           {Array.isArray(deductionFieldsList) && deductionFieldsList.map((deduction, index) => (
             <div key={index} className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
               <p className="text-gray-700"><strong>{deduction.deductionFieldName}:</strong></p>
-              <p className="text-gray-700 text-right pr-6">₹{deduction.deductionFieldValue}</p>
+              <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {deduction.deductionFieldValue}
+        </span>
+        </p>
             </div>
           ))}
 
@@ -165,16 +213,24 @@ const PaySlip = ({ data }) => {
       </div>
       <div className="grid grid-cols-2 border-t gap-4   ">
       <div className="  divide-gray-300">
-      <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700"><strong>Gross Income:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.grossSalary}</p>
-          </div>
+      <div className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
+        <p className="text-gray-700"><strong>Gross Income:</strong></p>
+        <p className="text-gray-700 text-right pr-6">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.grossSalary}
+        </span>
+        </p>
+        </div>
       </div>
       <div className="  divide-gray-300">
       <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
 
             <p className="text-gray-700"><strong>Total Deduction:</strong></p>
-            <p className="text-gray-700 text-right pr-6">₹{data.totalDeduction || 0}</p>
+            <p className="text-gray-700 text-right pr-9">
+        ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
+        {data.totalDeduction}
+        </span>
+        </p>
           </div>
         </div>
       </div>
