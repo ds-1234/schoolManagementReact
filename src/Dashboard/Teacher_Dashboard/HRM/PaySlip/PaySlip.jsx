@@ -17,6 +17,15 @@ const PaySlip = ({ data }) => {
     return <p className="text-center text-gray-500">No Pay Slip Data Available</p>;
   }
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() returns month from 0-11, so add 1
+    const year = date.getFullYear();
+  
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <div className="max-w-full mx-auto mt-10 p-6 border rounded-lg shadow-lg bg-white">
       {/* Header Section */}
@@ -44,7 +53,7 @@ const PaySlip = ({ data }) => {
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700 "><strong>Date of Joining:</strong></p>
-            <p className="text-gray-700 text-center">{data.dateOfJoining}</p>
+            <p className="text-gray-700 text-center">{formatDate(data.dateOfJoining)}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700 "><strong>Department:</strong></p>
@@ -75,7 +84,7 @@ const PaySlip = ({ data }) => {
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700 "><strong>Pay Date:</strong></p>
-            <p className="text-gray-700 text-center">{data.payDate}</p>
+            <p className="text-gray-700 text-center">{formatDate(data.payDate)}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700 "><strong>Bank Name:</strong></p>
