@@ -97,30 +97,30 @@ const PaySlip = ({ data }) => {
           <h3 className="text-lg font-semibold mb-2 text-center text-white bg-blue-900 py-2 border-b border-gray-300">Income</h3>
           <div className="grid grid-cols-2 bg-blue-200 p-2 rounded border-b border-gray-300">
             <p className="font-semibold">Particulars</p>
-            <p className="font-semibold text-center">Amount</p>
+            <p className="font-semibold text-right pr-6">Amount</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Basic Salary:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.basicPayEarning}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.basicPayEarning}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>HRA:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.houseRentAllowEarning}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.houseRentAllowEarning}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Allowances:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.specialPayAllowance}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.specialPayAllowance}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Over Time Pay:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.overTimePay}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.overTimePay}</p>
           </div>
 
           {console.log(earningFieldsList,'earningFieldsList')}
           {Array.isArray(earningFieldsList) && earningFieldsList.map((earning, index) => (
             <div key={index} className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>{earning.earningFieldName}:</strong></p>
-            <p className="text-gray-700 text-center">₹{earning.earningFieldValue}</p>
+            <p className="text-gray-700 text-right pr-6">₹{earning.earningFieldValue}</p>
             </div>
             ))}
 
@@ -131,33 +131,33 @@ const PaySlip = ({ data }) => {
           <h3 className="text-lg font-semibold mb-2 text-center text-white bg-blue-900 py-2 border-b border-gray-300">Deductions</h3>
           <div className="grid grid-cols-2 bg-blue-200 p-2 rounded border-b border-gray-300">
             <p className="font-semibold">Particulars</p>
-            <p className="font-semibold text-center">Amount</p>
+            <p className="font-semibold text-right pr-6">Amount</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Tax:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.incomeTaxDeduction}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.incomeTaxDeduction}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Provident Fund:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.pfDeduction}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.pfDeduction}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Gratuity Deductions:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.gratuityDeduction || 0}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.gratuityDeduction || 0}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Professional Tax:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.professionalTax || 0}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.professionalTax || 0}</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Advance Pay:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.advancePay || 0}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.advancePay || 0}</p>
           </div>
 
           {Array.isArray(deductionFieldsList) && deductionFieldsList.map((deduction, index) => (
             <div key={index} className="grid grid-cols-2 p-2 rounded border-b border-gray-300">
               <p className="text-gray-700"><strong>{deduction.deductionFieldName}:</strong></p>
-              <p className="text-gray-700 text-center">₹{deduction.deductionFieldValue}</p>
+              <p className="text-gray-700 text-right pr-6">₹{deduction.deductionFieldValue}</p>
             </div>
           ))}
 
@@ -167,14 +167,14 @@ const PaySlip = ({ data }) => {
       <div className="  divide-gray-300">
       <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
             <p className="text-gray-700"><strong>Gross Income:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.grossSalary}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.grossSalary}</p>
           </div>
       </div>
       <div className="  divide-gray-300">
       <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
 
             <p className="text-gray-700"><strong>Total Deduction:</strong></p>
-            <p className="text-gray-700 text-center">₹{data.totalDeduction || 0}</p>
+            <p className="text-gray-700 text-right pr-6">₹{data.totalDeduction || 0}</p>
           </div>
         </div>
       </div>
