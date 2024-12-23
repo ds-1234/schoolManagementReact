@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PaySlip from './PaySlip';
 import { NavLink } from 'react-router-dom';
+import { generatePDF } from '../../../../Utils/generatePDF';
 
 function TchViewPaySlip() {
   const [payPeriods, setPayPeriods] = useState([]);
@@ -67,22 +68,21 @@ function TchViewPaySlip() {
         </select>
       </div>
 
-      {/* Display selected period */}
       <div className="mt-8">
-        {/* {selectedPeriod && (
-          <h3 className="text-lg font-semibold">Selected Period: {selectedPeriod}</h3>
-        )} */}
-
-        {/* Display pay slip details */}
         {paySlipDetails && (
-        //   <div className="mt-4 p-4 border border-gray-200 rounded-md shadow-sm">
-        //     <pre className="text-sm font-mono">
-        //       {JSON.stringify(paySlipDetails, null, 2)}
-        //     </pre>
-        //   </div>
-        <PaySlip data={paySlipDetails.data[0]}/>
+
+          <div id="PaySlip">
+            <PaySlip data={paySlipDetails.data[0]} />
+          </div>
         )}
       </div>
+            <button 
+                className="button"
+                onClick={() => generatePDF("PaySlip", `PaySlip_${selectedPeriod}`)} 
+              >
+                Download Pay Slip PDF
+            </button>
+
     </div>
   );
 }

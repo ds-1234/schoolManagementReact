@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 const PaySlip = ({ data }) => {
     // const earningFieldsList = Array.isArray(data.earningFieldsList) ? data.earningFieldsList : [];
     const earningFieldsList = Array.isArray(data.earningFieldsList)
