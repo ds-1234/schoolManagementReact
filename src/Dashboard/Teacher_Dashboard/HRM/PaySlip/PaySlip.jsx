@@ -58,9 +58,6 @@ const PaySlip = ({ data }) => {
             <p className="text-gray-700 text-center">{earning.paySummaryValue}</p>
             </div>
             ))}
-          
-
-
         </div>
 
         {/* Right Column */}
