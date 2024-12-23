@@ -4,6 +4,8 @@ import CricketSt from '../../../assets/cricket.jpg';
 import FootballSt from '../../../assets/Football.jpg';
 import SportSt from '../../../assets/Sports.jpg';
 import { NavLink, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../../conf/conf';
+
 
 // Sports to image mapping
 const sportsImageMap = {
@@ -23,7 +25,7 @@ const TeaSports = () => {
     const fetchCoach = async () => {
       try {
         // Fetch sport list data from API
-        const response = await axios.get(`http://localhost:8080/sports/getSportsList`);
+        const response = await axios.get(`${BASE_URL}/sports/getSportsList`);
         
         // Filter the response data based on user ID
         const filteredData = response.data.data.filter(item => 

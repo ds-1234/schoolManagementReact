@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 
+
 const PaySlip = ({ data }) => {
     // const earningFieldsList = Array.isArray(data.earningFieldsList) ? data.earningFieldsList : [];
     const earningFieldsList = Array.isArray(data.earningFieldsList)
@@ -25,7 +26,7 @@ const PaySlip = ({ data }) => {
       <div className="flex justify-between items-center py-2 px-4 bg-blue-200 border-b border-gray-300">
         <h2 className="text-lg font-semibold">Salary Slip</h2>
         <div className="text-right">
-          <p className="text-gray-700 font-semibold">Month: {data.payPeriod}</p>
+          <p className="text-gray-700 font-semibold">{data.payPeriod}</p>
         </div>
       </div>
 

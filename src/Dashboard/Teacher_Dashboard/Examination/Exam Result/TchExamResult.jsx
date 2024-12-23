@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import BASE_URL from '../../../../conf/conf';
+
 
 const TchExamResult = () => {
   const [exams, setExams] = useState([]);
@@ -22,7 +24,7 @@ const TchExamResult = () => {
       .map((entry) => entry.classId);
 
     axios
-      .get("http://localhost:8080/exam/getExam")
+      .get(`${BASE_URL}/exam/getExam`)
       .then((response) => {
         const { data } = response;
         if (data.success) {
@@ -39,7 +41,7 @@ const TchExamResult = () => {
 
   const fetchExamTypes = () => {
     axios
-      .get("http://localhost:8080/examType/getExamTypeList")
+      .get(`${BASE_URL}/examType/getExamTypeList`)
       .then((response) => {
         if (response.data.success) {
           setExamTypes(response.data.data);
@@ -53,7 +55,7 @@ const TchExamResult = () => {
   const fetchClassName = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/class/getClassList"
+        `${BASE_URL}/class/getClassList`
       );
 
       if (response.data.success) {

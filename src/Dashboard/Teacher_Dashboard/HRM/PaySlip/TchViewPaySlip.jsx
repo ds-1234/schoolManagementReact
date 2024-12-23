@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom';
 import { generatePDF } from '../../../../Utils/generatePDF';
 import pdf from '../../../../assets/pdf.png';
 import download from '../../../../assets/download-pdf.png';
+import BASE_URL from '../../../../conf/conf';
+
 
 
 function TchViewPaySlip() {
@@ -17,7 +19,7 @@ function TchViewPaySlip() {
   // Fetch pay slip data
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/hrm/getPaySlipListById/${user.id}`)
+      .get(`${BASE_URL}/hrm/getPaySlipListById/${user.id}`)
       .then((response) => {
         if (response.data.success) {
           setPayPeriods(response.data.data);
@@ -31,7 +33,7 @@ function TchViewPaySlip() {
     if (selectedPeriod) {
         console.log(selectedPeriod,'dgfushie')
       axios
-        .post(`http://localhost:8080/hrm/getPaySlipById`,{}, {
+        .post(`${BASE_URL}/hrm/getPaySlipById`,{}, {
           params: {
             staffId: user.id,
             payPeriod: selectedPeriod,
