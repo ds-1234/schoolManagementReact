@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PaySlip from './PaySlip';
+import { NavLink } from 'react-router-dom';
 
 function TchViewPaySlip() {
   const [payPeriods, setPayPeriods] = useState([]);
@@ -45,9 +46,11 @@ function TchViewPaySlip() {
   };
 
   return (
-    <div className="relative p-5">
+    <div className="relative p-5 bg-white">
+              <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>View Pay Slip</h1>
+              <p className='mt-2'><NavLink to='/teacherDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>View Pay Slip</span></p>
       {/* Dropdown in the top-right corner */}
-      <div className="absolute top-2 left-2">
+      <div className=" top-2 left-2 mt-4">
         <select
           value={selectedPeriod}
           onChange={handleChange}
@@ -65,10 +68,10 @@ function TchViewPaySlip() {
       </div>
 
       {/* Display selected period */}
-      <div className="mt-16">
-        {selectedPeriod && (
+      <div className="mt-8">
+        {/* {selectedPeriod && (
           <h3 className="text-lg font-semibold">Selected Period: {selectedPeriod}</h3>
-        )}
+        )} */}
 
         {/* Display pay slip details */}
         {paySlipDetails && (
