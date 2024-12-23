@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import BASE_URL from '../../../../conf/conf';
+
 
 const ExamClasses = () => {
   const location = useLocation();
@@ -32,7 +34,7 @@ const ExamClasses = () => {
   // Fetch Exam Type from the server
   const fetchExamType = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+      const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
 
       if (response.data.success) {
         const examTypeData = response.data.data;
@@ -56,7 +58,7 @@ const ExamClasses = () => {
   // Fetch Class List from the server
   const fetchClassName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/class/getClassList");
+      const response = await axios.get(`${BASE_URL}/class/getClassList`);
 
       if (response.data.success) {
         const clasdata = response.data.data;

@@ -142,6 +142,7 @@ import UserHome from './Reusable_components/Home';
 import Payroll from './Dashboard/Admin_Dashboard/HRM/Payroll';
 import HrmForm from './Dashboard/Admin_Dashboard/HRM/hrmForm';
 import PaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/PaySlip';
+import TchViewPaySlip from './Dashboard/Teacher_Dashboard/HRM/PaySlip/TchViewPaySlip';
 
 function App() {
   return (
@@ -315,6 +316,7 @@ function App() {
             <Route path = 'tchExamSchedule' element= {<TchExamSchedule/>}/>
             <Route path = 'ClassExamSchedulePage' element= {<ClassExamSchedulePage/>}/>
             <Route path = 'TchClassExamSchedule' element= {<TchClassExamSchedule/>}/>
+            <Route path = 'TchViewPaySlip' element= {<TchViewPaySlip/>}/>
           </Route>
 
           {/* Parents Dashboard Routes */}

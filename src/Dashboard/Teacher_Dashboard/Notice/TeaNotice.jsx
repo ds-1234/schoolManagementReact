@@ -3,6 +3,8 @@ import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Button from '../../../Reusable_components/Button';
 import Tile from './Tile';
+import BASE_URL from '../../../conf/conf';
+
 
 
 
@@ -24,7 +26,7 @@ function TeaNotice() {
 
   const fetchNotices = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/notice/getNoticeList');
+      const response = await axios.get(`${BASE_URL}/notice/getNoticeList`);
       const filteredData = response.data.data.filter(item => 
         item.role === user.role  || item.role === 0      
       );

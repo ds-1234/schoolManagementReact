@@ -5,6 +5,8 @@ import Button from "../../../../Reusable_components/Button";
 import Table from "../../../../Reusable_components/Table";
 import edit from '../../../../assets/edit.png';
 import EditablePopup from "./EditablePopup";
+import BASE_URL from '../../../../conf/conf';
+
 
 const UpdateResult = () => {
   const location = useLocation();
@@ -32,7 +34,7 @@ const UpdateResult = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await fetch("http://localhost:8080/user/getUserList");
+      const response = await fetch(`${BASE_URL}/user/getUserList`);
       const data = await response.json();
 
       if (data.success && data.data) {
@@ -64,7 +66,7 @@ const UpdateResult = () => {
   const fetchExamResults = async (defaultExamResults) => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/exam/getExamResult"
+        `${BASE_URL}/exam/getExamResult`
       );
 
       if (response.data.success) {
@@ -141,7 +143,7 @@ const UpdateResult = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:8080/exam/saveExamResult",
+        `${BASE_URL}/exam/saveExamResult`,
         saveData,
         {
           headers: {
@@ -234,7 +236,7 @@ const UpdateResult = () => {
 
   const fetchExamType = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/examType/getExamTypeList");
+      const response = await axios.get(`${BASE_URL}/examType/getExamTypeList`);
 
       if (response.data.success) {
         const examTypeData = response.data.data;
@@ -257,7 +259,7 @@ const UpdateResult = () => {
 
   const fetchClassName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/class/getClassList");
+      const response = await axios.get(`${BASE_URL}/class/getClassList`);
 
       if (response.data.success) {
         const clasdata = response.data.data;
@@ -270,7 +272,7 @@ const UpdateResult = () => {
 
   const fetchStudentName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/user/getUserList");
+      const response = await axios.get(`${BASE_URL}/user/getUserList`);
 
       if (response.data.success) {
         const std = response.data.data;
@@ -283,7 +285,7 @@ const UpdateResult = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
 
       if (response.data.success) {
         const sub = response.data.data;

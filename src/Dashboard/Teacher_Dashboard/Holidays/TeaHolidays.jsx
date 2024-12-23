@@ -3,6 +3,8 @@ import React, {useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import Table from '../../../Reusable_components/Table';
 import StatusButton from '../../../Reusable_components/StatusButton';
+import BASE_URL from '../../../conf/conf';
+
 
 
 function TeaHolidays() {
@@ -13,7 +15,7 @@ function TeaHolidays() {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/holidays/getHolidaysList`,
+      url: `${BASE_URL}/holidays/getHolidaysList`,
       headers: {
         "Content-Type": "application/json",
       },
