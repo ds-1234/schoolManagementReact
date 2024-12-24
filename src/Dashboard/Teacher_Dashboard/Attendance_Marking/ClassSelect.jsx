@@ -23,15 +23,10 @@ const ClassSelect = () => {
         },
       })
         .then((response) => {
-          console.log('Data from API:', response.data.data);
-        
-          const classSubjectIds = teacherData.classSubjectEntity.map((item) => parseInt(item?.classId));
-
-          console.log(classSubjectIds);
           
         // Filter and map classes from the API based on class IDs
         const filteredClasses = response.data.data.filter((cls) =>
-          classSubjectIds.includes(cls.id)
+          cls.primaryTeacher === user.id 
         );
 
         // Create a map for easy access and set the state
@@ -62,7 +57,7 @@ const ClassSelect = () => {
     <p className='mt-2'><NavLink to = '/teacherDashboard'> Dashboard </NavLink>/  <span className='text-[#ffae01] font-semibold'>Classes</span> </p>
     <div className='mt-10'>
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Classes</h2>
-      <div className="grid grid-cols-3 pb-5">
+      <div className="flex flex-col items-center justify-center">
         {classes.map((classItem, index) => (
           <div
             key={index}

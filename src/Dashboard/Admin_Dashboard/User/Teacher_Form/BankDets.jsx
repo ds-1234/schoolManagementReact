@@ -81,12 +81,17 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
           />
         </div>
         <div className='flex flex-col gap-1'>
-          <label htmlFor="accountNumber" className=" text-sm font-medium">Account Number</label>
+          <label htmlFor="accountNumber" className="text-sm font-medium">Account Number</label>
           <input
             type="text"
             id="accountNumber"
-            {...register('accountNumber')}
-            className="border border-gray-300 p-2 rounded-lg "
+            {...register('accountNumber', {
+              minLength: {
+                value: 10,
+                message: 'Account Number must be at least 10 characters',
+              },
+            })}
+            className="border border-gray-300 p-2 rounded-lg"
           />
         </div>
         <div  className='flex flex-col gap-1'>

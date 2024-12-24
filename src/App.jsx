@@ -141,6 +141,7 @@ import ParentExamDetailsPage from './Dashboard/Parent_Dashboard/Examination/Exam
 import UserHome from './Reusable_components/Home';
 import Payroll from './Dashboard/Admin_Dashboard/HRM/Payroll';
 import HrmForm from './Dashboard/Admin_Dashboard/HRM/hrmForm';
+import ManagerReport from './Dashboard/Admin_Dashboard/ManagerReport/ManagerReport';
 import PaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/PaySlip';
 import TchViewPaySlip from './Dashboard/Teacher_Dashboard/HRM/PaySlip/TchViewPaySlip';
 
@@ -226,7 +227,7 @@ function App() {
             <Route path='hostelrooms' element = {<HostelRooms/>} />
             <Route path='designation' element = {<Designation/>} />
             <Route path='department' element = {<Department/>} />
-
+            <Route path = 'managerReport' element = {<ManagerReport/>} />
             <Route path='feesgrp' element = {<FeesGrp/>} />
             <Route path='feescollect' element = {<FeesCollection/>} />
 

@@ -53,6 +53,7 @@ function UserHome({ moduleSelected }) {
         { label: 'Department', icon: network, path: '/admin/department' },
         { label: 'Event Category', icon: event, path: '/admin/eventcategory' },
         { label: 'Attendance Status', icon: attendance, path: '/admin/StaffAttendanceStatus' },
+        { label: 'Manager Report', icon: attendance, path: '/admin/managerReport' },
     ];
 
     const libraryModule = [
