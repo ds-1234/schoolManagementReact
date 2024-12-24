@@ -143,6 +143,7 @@ import Payroll from './Dashboard/Admin_Dashboard/HRM/Payroll';
 import HrmForm from './Dashboard/Admin_Dashboard/HRM/hrmForm';
 import PaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/PaySlip';
 import TchViewPaySlip from './Dashboard/Teacher_Dashboard/HRM/PaySlip/TchViewPaySlip';
+import ViewPaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/ViewPaySlip';
 
 function App() {
   return (
@@ -255,6 +256,7 @@ function App() {
             <Route path = 'ExamTypeTiles' element= {<ExamTypeTiles/>}/>
             <Route path = 'ExamTypeTiles/ClassNameTiles' element= {<ClassNameTiles/>}/>
             <Route path="ExamTypeTiles/ClassNameTiles/examResults" element={<ExamResults />} />
+            <Route path="ViewPaySlip" element={<ViewPaySlip />} />
           </Route>
 
           {/* Student Dashboard Routes */}

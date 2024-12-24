@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 
-const Table = ({ columns, data, searchOptions, onSearch, handleClear , className,conditionalRowStyles='' , note =''}) => {
+const Table = ({ columns, data, searchOptions, onSearch, handleClear , className,conditionalRowStyles='' , note ='',search=true}) => {
   const searchInputRef = useRef(null);
   const dropdownRef = useRef(null); // Ref to track the dropdown
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -90,8 +90,10 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
     <div>
       <div className="relative bg-white shadow-md rounded-xl p-3 w-auto mx-auto mt-5">
         <div className="rounded-lg text-black">
+          
           <div>
             {/* Search Section */}
+            {search &&
             <div className={`flex flex-wrap gap-4 mb-4 items-center ${className}`}>
 
               {/* Filter Dropdown */}
@@ -135,6 +137,7 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
               <Button onClick={clearFilters} className="mt-0 bg-[#ffae01] hover:bg-[#042954]" label="Clear" />
               <p className="text-red-500 mt-2">{`${note}`}</p>
               </div>
+}
 
 
             <DataTable
