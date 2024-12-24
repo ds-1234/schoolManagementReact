@@ -212,6 +212,19 @@ const Sidebar = ({setIsSidebarOpen}) => {
                Attendance Status
             </NavLink>
           </li>
+
+          {/* Manager Section */}
+          <li className="">
+            <NavLink
+              to="/admin/managerReport"
+              className={({ isActive }) =>
+                `flex items-center gap-1 hover:bg-[#063256] hover:rounded-xl p-2 ${isActive ? 'text-[#ffae01] bg-[#002b52] font-bold rounded-xl' : ''}`
+              }
+            >
+               <FontAwesomeIcon icon={faAngleRight} />
+              Manager Report
+            </NavLink>
+          </li>
               </ul>
             )}
           </li>

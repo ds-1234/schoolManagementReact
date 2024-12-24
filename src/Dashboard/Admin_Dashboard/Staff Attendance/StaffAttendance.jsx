@@ -12,6 +12,26 @@ function StaffAttendance() {
   const [dates, setDates] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // Default: Current Month
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());   // Default: Current Year
+  const [selectedRole, setSelectedRole] = useState('All'); // Default: Show all roles
+  const [roles , setRoles] = useState({}) ;
+
+
+  // Role mapping for dropdown
+    const fetchRoles = () => {
+    axios
+      .get(`${BASE_URL}/role/getRoleList`)
+      .then((response) => {
+        const rolesMap = {} ;
+        const rolesRes = response.data.data.filter((role) => role.id != 1 && role.id != 3 && role.id != 5) ;
+
+        rolesRes.forEach((role) => {
+          rolesMap[role.name] = role.id ;
+        })
+
+        setRoles(rolesMap) ;
+      })
+      .catch((error) => console.error('Error fetching attendance data:', error));
+  };
 
   // Update `dates` based on the selected month and year
   useEffect(() => {
@@ -45,6 +65,7 @@ function StaffAttendance() {
   useEffect(() => {
     fetchAttendanceData();
     fetchStaffData();
+    fetchRoles()
   }, []);
 
   // Map staff ID to staff name
@@ -53,12 +74,18 @@ function StaffAttendance() {
     return staffMember ? staffMember.firstName : 'Unknown Staff';
   };
 
+  // Filter staff based on selected role
+  const filteredStaff = selectedRole === 'All'
+    ? staff
+    : staff.filter((staffMember) => staffMember.role === roles[selectedRole]);
+
+
   // Transform attendance data
-  const transformedData = staff.map((staffMember) => {
+  const transformedData = filteredStaff.map((staffMember) => {
     const attendanceForStaff = attendanceData.filter(
-      (record) => 
-        record.userTableId === staffMember.id && 
-        dates.includes(record.attendanceDate) // Filter by selected dates
+      (record) =>
+        record.userTableId === staffMember.id &&
+        dates.includes(record.attendanceDate)
     );
 
     const attendanceMap = {};
@@ -66,13 +93,13 @@ function StaffAttendance() {
       attendanceMap[record.attendanceDate] = (() => {
         switch (record.attendanceStatus) {
           case 'Present':
-            return <span className="text-green-400 font-bold">P</span>;
+            return <span style={{ color: record.colorCode }} className={`font-bold`}>P</span>;
           case 'Absent':
-            return <span className="text-red-400 font-bold">A</span>;
+            return <span style={{ color: record.colorCode }} className={`font-bold`}>A</span>;
           case 'Half Day':
-            return <span className="text-yellow-400 font-bold">HD</span>;
+            return <span style={{ color: record.colorCode }} className={` font-bold`}>HD</span>;
           case 'Medical':
-            return <span className="text-blue-400 font-bold">M</span>;
+            return <span style={{ color: record.colorCode }} className={`font-bold`}>M</span>;
           default:
             return '-';
         }
@@ -121,31 +148,51 @@ function StaffAttendance() {
         </p>
       </div>
 
-      {/* Month and Year Selectors */}
-      <div className="flex items-center gap-4 mb-6 mt-6">
+      {/* Filters Section */}
+      <div className="flex flex-col gap-4 mb-6 mt-6">
+        {/* Role Selector */}
         <select
-          className="border border-gray-300 p-2 rounded-md"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+          className="border border-gray-300 p-2 rounded-md md:w-1/4 lg:w-1/5 xl:1/6 w-1/2"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value)}
         >
-          {months.map((month, index) => (
-            <option key={index} value={index + 1}>
-              {month}
+          <option value="All">All Roles</option>
+          {Object.keys(roles).map((role) => (
+            <option key={role} value={role}>
+              {role}
             </option>
           ))}
         </select>
-        <select
-          className="border border-gray-300 p-2 rounded-md"
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-        >
-          {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+
+        <div className='flex items-center gap-4'>
+            {/* Month Selector */}
+          <select
+            className="border border-gray-300 p-2 rounded-md"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+          >
+            {months.map((month, index) => (
+              <option key={index} value={index + 1}>
+                {month}
+              </option>
+            ))}
+          </select>
+
+          {/* Year Selector */}
+          <select
+            className="border border-gray-300 p-2 rounded-md"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+          >
+            {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
+
 
       <div className="">
         <Labels />
