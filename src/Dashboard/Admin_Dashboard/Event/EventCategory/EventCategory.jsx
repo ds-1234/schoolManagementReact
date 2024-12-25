@@ -46,7 +46,7 @@ function EventCategory() {
 
 //             axios({
 //                 method: "post",
-//                 url: `http://localhost:8080/roomType/deleteRoomType/${id}`,
+//                 url: `${BASE_URL}/roomType/deleteRoomType/${id}`,
 //                 headers: {
 //                   "Content-Type": "application/json",
 //                 },

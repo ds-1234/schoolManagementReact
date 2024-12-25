@@ -77,7 +77,7 @@ function EditIncome({ isOpen, onClose, incomeId, onSuccess }) {
 
 //     axios({
 //       method: 'PUT',
-//       url: `http://localhost:8080/gradePoints/updateGradePoints`,
+//       url: `${BASE_URL}/gradePoints/updateGradePoints`,
 //       headers: {
 //         'Content-Type': 'application/json',
 //       },
