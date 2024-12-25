@@ -8,6 +8,8 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 import PaymentStatus from '../../../Reusable_components/PaymentStatus';
+import BASE_URL from '../../../conf/conf';
+
 
 function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -55,7 +57,7 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
 
   useEffect(() => {
     if (FeeCollectionId) {
-        axios.get(`http://localhost:8080/feesCollection/getFeesCollectionById/${FeeCollectionId}`)
+        axios.get(`${BASE_URL}/feesCollection/getFeesCollectionById/${FeeCollectionId}`)
             .then((response) => {
                 const FeeCollectionData = response.data.data;
                 setFeeData(FeeCollectionData);
@@ -78,7 +80,7 @@ function EditStdFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) 
 useEffect(() => {
     // Fetch all fee groups
     if (feeGrpId) {
-        axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
+        axios.get(`${BASE_URL}/feesGroup/getFeesGroupList`)
             .then((response) => {
                 const feeGroups = response.data.data;
                 console.log(feeGroups,"feeGroups")
@@ -100,7 +102,7 @@ useEffect(() => {
 
 useEffect(() => {
     // Fetch Classes
-    axios.get('http://localhost:8080/class/getClassList')
+    axios.get(`${BASE_URL}/class/getClassList`)
         .then((response) => {
             setClasses(response.data.data);
             

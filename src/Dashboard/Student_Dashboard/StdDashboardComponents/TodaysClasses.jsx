@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import BASE_URL from '../../../conf/conf';
+
 
 // Function to fetch subject name based on subject ID
 const getSubjectNameById = (subjectId, subjectList) => {
@@ -17,7 +19,7 @@ function TodaysClasses() {
 
   // Fetch subjects list
   useEffect(() => {
-    fetch('http://localhost:8080/subject/getSubjectList')
+    fetch(`${BASE_URL}/subject/getSubjectList`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -28,7 +30,7 @@ function TodaysClasses() {
 
   // Fetch timetable data
   useEffect(() => {
-    fetch('http://localhost:8080/timeTable/getTimeTable')
+    fetch(`${BASE_URL}/timeTable/getTimeTable`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {

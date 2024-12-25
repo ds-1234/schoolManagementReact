@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import BASE_URL from '../../../../conf/conf';
+
 
 const ClassNameTiles = () => {
   const location = useLocation();
@@ -54,7 +56,7 @@ const ClassNameTiles = () => {
 
   const fetchClassName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/class/getClassList");
+      const response = await axios.get(`${BASE_URL}/class/getClassList`);
 
       if (response.data.success) {
         const clasdata = response.data.data;

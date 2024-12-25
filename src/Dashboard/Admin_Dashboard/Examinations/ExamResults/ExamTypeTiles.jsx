@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
+import { NavLink, useNavigate } from "react-router-dom"; 
+import BASE_URL from '../../../../conf/conf';
+
 
 const ExamTypeTiles = () => {
   const [examResults, setExamResults] = useState([]);
@@ -10,7 +12,7 @@ const ExamTypeTiles = () => {
   useEffect(() => {
     // Fetch the exam data from the API
     axios
-      .get("http://localhost:8080/exam/getExamResult")
+      .get(`${BASE_URL}/exam/getExamResult`)
       .then((response) => {
         if (response.data.success) {
           setExamResults(response.data.data);
@@ -41,7 +43,7 @@ const ExamTypeTiles = () => {
 
   const fetchExamTypes = () => {
     axios
-      .get("http://localhost:8080/examType/getExamTypeList")
+      .get(`${BASE_URL}/examType/getExamTypeList`)
       .then((response) => {
         if (response.data.success) {
           setExamTypes(response.data.data);

@@ -8,6 +8,8 @@ import { EyeIcon } from "./assets/Icons/EyeIcon";
 import bg from "./assets/LoginBack.png";
 import axios from "axios";
 import { ToastContainer , toast } from "react-toastify";
+import BASE_URL from './conf/conf';
+
 
 function Login() {
  
@@ -34,7 +36,7 @@ function Login() {
     
   axios({
     method:"post",
-    url : `http://localhost:8080/user/login`,
+    url : `${BASE_URL}/user/login`,
     data: {
       userName : data.userId,
       password : data.password

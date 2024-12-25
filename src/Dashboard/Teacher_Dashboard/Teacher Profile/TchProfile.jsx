@@ -73,7 +73,7 @@ console.log(filteredClasses,'classes')
   // Fetch Class List
   const fetchClassList = async () => {
     try {
-      const response = await fetch('http://localhost:8080/class/getClassList');
+      const response = await fetch(`${BASE_URL}/class/getClassList`);
       const data = await response.json();
       setClassList(data.data);  // Assuming data.data holds the list of classes
     } catch (error) {

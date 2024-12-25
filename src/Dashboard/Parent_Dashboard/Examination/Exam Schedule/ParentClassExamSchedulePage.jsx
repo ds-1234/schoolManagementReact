@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import BASE_URL from '../../../../conf/conf';
+
 
 const ParentClassExamSchedulePage = () => {
   const location = useLocation();
@@ -20,7 +22,7 @@ const ParentClassExamSchedulePage = () => {
   const fetchExamData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8080/exam/getExam');
+      const response = await axios.get(`${BASE_URL}/exam/getExam`);
       const { data } = response.data;
 
       // Filter exams by classId
@@ -52,7 +54,7 @@ const ParentClassExamSchedulePage = () => {
 
   const fetchExamTypes = () => {
     axios
-      .get("http://localhost:8080/examType/getExamTypeList")
+      .get(`${BASE_URL}/examType/getExamTypeList`)
       .then((response) => {
         if (response.data.success) {
           setExamTypes(response.data.data);

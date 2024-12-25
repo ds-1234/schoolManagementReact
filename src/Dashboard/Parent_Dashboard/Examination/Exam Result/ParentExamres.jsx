@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../../../conf/conf';
+
 
 const ParentExamres = () => {
   const [users, setUsers] = useState([]);
@@ -13,7 +15,7 @@ const ParentExamres = () => {
     const users = JSON.parse(sessionStorage.getItem('user')) || {}; // Default to empty object
     const isParents = users.isParent || [];
 
-    fetch('http://localhost:8080/user/getUserList')
+    fetch(`${BASE_URL}/user/getUserList`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -37,7 +39,7 @@ const ParentExamres = () => {
 
   const fetchClasses = () => {
     axios
-      .get("http://localhost:8080/class/getClassList")
+      .get(`${BASE_URL}/class/getClassList`)
       .then((response) => {
         if (response.data.success) {
           setClassName(response.data.data);

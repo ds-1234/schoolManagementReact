@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
+import BASE_URL from '../../../../conf/conf';
+
 
 const ParentExamDetailsPage = () => {
   const location = useLocation();
@@ -16,7 +18,7 @@ const ParentExamDetailsPage = () => {
   useEffect(() => {
     if (classId && userId && examType) {
       axios
-        .get('http://localhost:8080/exam/getExamResult')
+        .get(`${BASE_URL}/exam/getExamResult`)
         .then((response) => {
           if (response.data.success) {
             // Filter data based on classId, userId, and examType
@@ -42,7 +44,7 @@ const ParentExamDetailsPage = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
 
       if (response.data.success) {
         const subdata = response.data.data;

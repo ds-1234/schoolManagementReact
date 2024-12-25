@@ -8,6 +8,8 @@ import CategoryTiles from './CategoryTiles';
 import AddBtn from '../../../../Reusable_components/AddBtn';
 // import AddEvent from './AddEvent';
 import Button from '../../../../Reusable_components/Button';
+import BASE_URL from '../../../../conf/conf';
+
 
 function StdEvent() {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -66,7 +68,7 @@ function StdEvent() {
     try {
       const response = await axios({
         method: 'GET',
-        url: 'http://localhost:8080/attendance/getAttendanceList',
+        url: `${BASE_URL}/attendance/getAttendanceList`,
         headers: {
           "Content-Type": "application/json"
         }

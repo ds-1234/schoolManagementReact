@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons'; // Import the attendance icon
 import axios from 'axios';
+import BASE_URL from '../conf/conf';
+
 
 function Attendance() {
   const navigate = useNavigate();
@@ -46,7 +48,7 @@ function Attendance() {
 
           try {
             const response = await fetch(
-              'http://localhost:8080/attendance/saveStaffAttendance',
+              `${BASE_URL}/attendance/saveStaffAttendance`,
               {
                 method: 'POST',
                 headers: {
@@ -87,7 +89,7 @@ function Attendance() {
   useEffect(() => {
     const checkAttendanceForToday = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/attendance/getStaffAttendance");
+        const response = await axios.get(`${BASE_URL}/attendance/getStaffAttendance`);
         if (response.data.success) {
           const attendanceData = response.data.data;
 

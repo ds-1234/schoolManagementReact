@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../../conf/conf';
+
 
 function ClassFaculties({ className }) {
   const tileWidth = 400; // Width for each tile
@@ -14,7 +16,7 @@ function ClassFaculties({ className }) {
   useEffect(() => {
     if (className) {
       axios
-        .get(`http://localhost:8080/teacherInfo/getClassSubjectInfo/${className}`)
+        .get(`${BASE_URL}/teacherInfo/getClassSubjectInfo/${className}`)
         .then((response) => {
           const activeData = response.data.data.filter((item) => item.isActive == 'true');
           setTimeTableData(activeData);
@@ -27,7 +29,7 @@ function ClassFaculties({ className }) {
   // Fetch subject data
   useEffect(() => {
     axios
-      .get('http://localhost:8080/subject/getSubjectList')
+      .get(`${BASE_URL}/subject/getSubjectList`)
       .then((response) => {
         const subjects = response.data.data.reduce((acc, subject) => {
           acc[subject.id] = subject.subject;
@@ -41,7 +43,7 @@ function ClassFaculties({ className }) {
   // Fetch User List from API
   const fetchUserList = async () => {
     axios
-      .get('http://localhost:8080/user/getUserList')
+      .get(`${BASE_URL}/user/getUserList`)
       .then((response) => {
         setUserList(response.data.data); // Store the user list data
       })

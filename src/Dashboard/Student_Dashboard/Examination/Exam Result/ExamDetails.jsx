@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
+import BASE_URL from '../../../../conf/conf';
+
 
 function ExamDetails() {
   const location = useLocation();
@@ -11,7 +13,7 @@ function ExamDetails() {
 
   const fetchSubjectName = () => {
     axios
-      .get("http://localhost:8080/subject/getSubjectList")
+      .get(`${BASE_URL}/subject/getSubjectList`)
       .then((response) => {
         if (response.data.success) {
             SetSubject(response.data.data);

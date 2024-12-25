@@ -4,6 +4,7 @@ import BASE_URL from '../../../../conf/conf';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../../../../Reusable_components/Table';
 
+
 const ParentClassExamSchedule = () => {
   const location = useLocation();
   const { exam,classId } = location.state || {}; // Access the exam data passed as state
@@ -55,7 +56,7 @@ const ParentClassExamSchedule = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
 
       if (response.data.success) {
         const subdata = response.data.data;

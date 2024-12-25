@@ -7,6 +7,8 @@ import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import BASE_URL from '../../../../conf/conf';
+
 
 const AddFeesGrp = ({ isOpen, onClose }) => {
 
@@ -51,7 +53,7 @@ const AddFeesGrp = ({ isOpen, onClose }) => {
   const onSubmit = (data) => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/feesGroup/saveFeesGroup',
+      url: `${BASE_URL}/feesGroup/saveFeesGroup`,
       data: {
         feesGroupName: data.feesGroupName,
         description: editorData,

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../../../conf/conf';
+
 
 const FetchData = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +17,7 @@ const FetchData = () => {
     const isParents = users.isParent || [];
 
     // Fetching data from the API
-    fetch('http://localhost:8080/user/getUserList') // Replace with your actual API endpoint
+    fetch(`${BASE_URL}/user/getUserList`) // Replace with your actual API endpoint
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -40,7 +42,7 @@ const FetchData = () => {
 
   const fetchclasses = () => {
     axios
-      .get("http://localhost:8080/class/getClassList")
+      .get(`${BASE_URL}/class/getClassList`)
       .then((response) => {
         if (response.data.success) {
           setClassName(response.data.data);
