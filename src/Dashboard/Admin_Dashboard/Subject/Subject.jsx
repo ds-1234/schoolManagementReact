@@ -8,7 +8,6 @@ import deleteIcon from '../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../conf/conf';
-import ReactHtmlParser from 'react-html-parser';
 
 
 function Subject() {
@@ -175,12 +174,7 @@ const searchOptions = [
         subjectId={editSubjectId}
         onSuccess={fetchData} // Refresh data after editing
       />
-              {/* <div 
-          dangerouslySetInnerHTML={{ __html: data[2].description }} 
-          className="subject-description p-4 bg-gray-50 border-l-4 border-yellow-400 list-disc pl-6"
-          /> */}
-          {/* {ReactHtmlParser(data[2].description)} */}
-{/* <ul className='list-disc list-inside'><li><strong>This is english subject</strong></li><li><strong>learn it well</strong></li></ul> */}
+
     </div>
   );
 };
