@@ -4,7 +4,7 @@ import Table from '../../../Reusable_components/Table';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import Button from '../../../Reusable_components/Button';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
 
@@ -64,21 +64,21 @@ const Attendance = () => {
   // Handle form submission (sending the attendance data)
   const handleSubmit = async () => {
     if (Object.keys(attendanceMap).length < students.length) {
-      Swal.fire('Error!', 'Please fill attendance for all students.', 'error');
+      // Swal.fire('Error!', 'Please fill attendance for all students.', 'error');
       return;
     }
 
-    Swal.fire({
-      title: 'Submit Attendance?',
-      text: 'Are you sure you want to submit the attendance?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!',
-      cancelButtonText: 'Cancel',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
+    // Swal.fire({
+    //   title: 'Submit Attendance?',
+    //   text: 'Are you sure you want to submit the attendance?',
+    //   icon: 'question',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, submit it!',
+    //   cancelButtonText: 'Cancel',
+    // }).then(async (result) => {
+      // if (result.isConfirmed) {
 
         const attendanceStatusList = Object.keys(attendanceMap).map((studentId) => {
           const attendanceStatus = attendanceStatuses.find(
@@ -106,10 +106,11 @@ const Attendance = () => {
           console.error('Error submitting attendance:', error);
           Swal.fire('Error!', 'There was an error submitting the attendance.', 'error');
         }
-      } else {
-        setAttendanceMap({});
-      }
-    });
+      // }
+      //  else {
+      //   setAttendanceMap({});
+      // }
+    // });
   };
 
   // Columns for react-table

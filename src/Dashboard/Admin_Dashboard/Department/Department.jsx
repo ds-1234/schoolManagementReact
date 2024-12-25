@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../Reusable_components/AddBtn'
 import StatusButton from '../../../Reusable_components/StatusButton';
 
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import AddDepartment from './AddDepartment';
 import EditDepartment from './EditDepartment';
 import BASE_URL from '../../../conf/conf';
@@ -49,16 +49,16 @@ function Department() {
   
     const handleDelete = (id)=>{
 
-        Swal.fire({
-            title: "Are you sure?",
-            // text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
+        // Swal.fire({
+        //     title: "Are you sure?",
+        //     // text: "You won't be able to revert this!",
+        //     icon: "warning",
+        //     showCancelButton: true,
+        //     confirmButtonColor: "#3085d6",
+        //     cancelButtonColor: "#d33",
+        //     confirmButtonText: "Yes, delete it!"
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
     
                 axios({
                     method: "post",
@@ -77,13 +77,13 @@ function Department() {
                       fetchData()
                     });
     
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your Data has been deleted.",
-                icon: "success"
-              });
-            }
-          });
+          //     Swal.fire({
+          //       title: "Deleted!",
+          //       text: "Your Data has been deleted.",
+          //       icon: "success"
+          //     });
+          //   }
+          // });
     
     }
 

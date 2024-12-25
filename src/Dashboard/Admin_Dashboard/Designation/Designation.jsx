@@ -8,7 +8,7 @@ import AddBtn from '../../../Reusable_components/AddBtn'
 import StatusButton from '../../../Reusable_components/StatusButton';
 import AddDesignation from './AddDesignation';
 import EditDesignation from './EditDesignation';
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import BASE_URL from '../../../conf/conf';
 
 
@@ -48,16 +48,16 @@ function Designation() {
   
     const handleDelete = (id)=>{
 
-        Swal.fire({
-            title: "Are you sure?",
-            // text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
+        // Swal.fire({
+        //     title: "Are you sure?",
+        //     // text: "You won't be able to revert this!",
+        //     icon: "warning",
+        //     showCancelButton: true,
+        //     confirmButtonColor: "#3085d6",
+        //     cancelButtonColor: "#d33",
+        //     confirmButtonText: "Yes, delete it!"
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
     
                 axios({
                     method: "post",
@@ -76,13 +76,13 @@ function Designation() {
                       fetchData()
                     });
     
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your Data has been deleted.",
-                icon: "success"
-              });
-            }
-          });
+          //     Swal.fire({
+          //       title: "Deleted!",
+          //       text: "Your Data has been deleted.",
+          //       icon: "success"
+          //     });
+          //   }
+          // });
     
     }
 

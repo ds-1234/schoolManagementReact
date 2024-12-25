@@ -7,7 +7,7 @@ import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import BASE_URL from '../../../../conf/conf';
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import AddFeesGrp from './AddFeesGrp';
 import EditFeesGrp from './EditFeesGrp';
 
