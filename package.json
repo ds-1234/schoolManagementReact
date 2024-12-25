@@ -24,6 +24,7 @@
     "chart.js": "^4.4.6",
     "ckeditor5": "^43.3.1",
     "ckeditor5-premium-features": "^43.3.1",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.3.30",
     "html2canvas": "^1.4.1",
