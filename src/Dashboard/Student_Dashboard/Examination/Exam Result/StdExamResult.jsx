@@ -35,7 +35,7 @@ function StdExamResult() {
 
   const fetchExamTypes = () => {
     axios
-      .get("http://localhost:8080/examType/getExamTypeList")
+      .get(`${BASE_URL}/examType/getExamTypeList`)
       .then((response) => {
         if (response.data.success) {
           setExamTypes(response.data.data);

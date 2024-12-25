@@ -11,6 +11,8 @@ import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import BASE_URL from '../../../../conf/conf';
+
 
 function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -74,7 +76,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
 
   useEffect(() => {
     if (FeeCollectionId) {
-        axios.get(`http://localhost:8080/feesCollection/getFeesCollectionById/${FeeCollectionId}`)
+        axios.get(`${BASE_URL}/feesCollection/getFeesCollectionById/${FeeCollectionId}`)
             .then((response) => {
                 const FeeCollectionData = response.data.data;
                 setFeeData(FeeCollectionData);
@@ -102,7 +104,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
 // Ensure students and fees groups are set correctly in their respective useEffect hooks
 useEffect(() => {
     // Fetch Students
-    axios.get('http://localhost:8080/user/getUserList')
+    axios.get(`${BASE_URL}/user/getUserList`)
         .then((response) => {
             const studentList = response.data.data.filter(user => user.role === 3);
             setStudents(studentList);
@@ -123,7 +125,7 @@ useEffect(() => {
 useEffect(() => {
     // Fetch Fees Groups
     if(feeGrpId){
-    axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
+    axios.get(`${BASE_URL}/feesGroup/getFeesGroupList`)
         .then((response) => {
             const feeGroups = response.data.data;
             const reqGroup = feeGroups.filter(feeGrp => feeGrp.isActive === true);
@@ -143,7 +145,7 @@ useEffect(() => {
 
 useEffect(() => {
     // Fetch Classes
-    axios.get('http://localhost:8080/class/getClassList')
+    axios.get(`${BASE_URL}/class/getClassList`)
         .then((response) => {
             setClasses(response.data.data);
             
@@ -218,7 +220,7 @@ useEffect(() => {
 console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
     axios({
       method: 'post',
-      url: `http://localhost:8080/feesCollection/savefeesCollection`,
+      url: `${BASE_URL}/feesCollection/savefeesCollection`,
       headers: {
         'Content-Type': 'application/json',
       },

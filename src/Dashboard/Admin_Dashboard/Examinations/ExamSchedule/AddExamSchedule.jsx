@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import BASE_URL from '../../../../conf/conf';
 
+
 const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const { register, control, handleSubmit, setValue, getValues, reset } = useForm({
     defaultValues: {
@@ -99,7 +100,7 @@ fetchClassList    // setFilteredSubjects([])
     // Fetch Subjects from API
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/subject/getSubjectList');
+        const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
         setSubjects(response.data.data); // Populate all subjects
       } catch (error) {
         console.error('Error fetching subjects:', error);

@@ -23,7 +23,7 @@ const ClassExamSchedulePage = () => {
   const fetchExamData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8080/exam/getExam');
+      const response = await axios.get(`${BASE_URL}/exam/getExam`);
       const { data } = response.data;
 
       // Filter exams by classId

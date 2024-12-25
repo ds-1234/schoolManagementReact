@@ -95,7 +95,7 @@ const PaySlip = () => {
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
               <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Pay Slip</h1>
-              <p className=' mt-2'><NavLink to = '/admin'> Dashboard  </NavLink>/<NavLink to = '/admin/hrm'> HRM  </NavLink>/ <span className='text-[#ffae01] font-semibold'>Pay Slip</span> </p>
+              <p className=' mt-2'><NavLink to = '/admin'> Dashboard  </NavLink>/<NavLink to = '/admin/hrm'> HRM  </NavLink>/<NavLink to = '/admin/ViewPaySlip'> Pay_Slip  </NavLink>/ <span className='text-[#ffae01] font-semibold'>Generate Pay_Slip</span> </p>
       {/* Employee Pay Summary Section */}
       <PaySummarySection onPayloadUpdate={updatePayloadsumm} />
 

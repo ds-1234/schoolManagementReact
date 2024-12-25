@@ -6,7 +6,7 @@ import deleteIcon from '../../../../assets/delete.png'
 import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import AddBtn from '../../../../Reusable_components/AddBtn'
-
+import BASE_URL from '../../../../conf/conf';
 import Swal from 'sweetalert2'
 import AddFeesGrp from './AddFeesGrp';
 import EditFeesGrp from './EditFeesGrp';
@@ -60,7 +60,7 @@ function FeesGrp() {
 
 //             axios({
 //                 method: "post",
-//                 url: `http://localhost:8080/leaves/deleteLeaveById/${id}`,
+//                 url: `${BASE_URL}/leaves/deleteLeaveById/${id}`,
 //                 headers: {
 //                   "Content-Type": "application/json",
 //                 },
@@ -89,7 +89,7 @@ function FeesGrp() {
   const fetchData = () => {
     axios({
       method: "GET",
-      url: `http://localhost:8080/feesGroup/getFeesGroupList`,
+      url: `${BASE_URL}/feesGroup/getFeesGroupList`,
       headers: {
         "Content-Type": "application/json",
       },

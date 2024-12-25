@@ -169,7 +169,7 @@ const PaySlip = ({ data }) => {
             <p className="font-semibold text-right pr-6">Amount</p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700"><strong>Tax:</strong></p>
+            <p className="text-gray-700"><strong>Income Tax:</strong></p>
             <p className="text-gray-700 text-right pr-6">
         ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
         {data.incomeTaxDeduction}
@@ -185,7 +185,7 @@ const PaySlip = ({ data }) => {
         </p>
           </div>
           <div className="grid grid-cols-2  p-2 rounded border-b border-gray-300">
-            <p className="text-gray-700"><strong>Gratuity Deductions:</strong></p>
+            <p className="text-gray-700"><strong>Gratuity:</strong></p>
             <p className="text-gray-700 text-right pr-6">
         ₹<span className="inline-block text-right" style={{ minWidth: '6ch' }}>
         {data.gratuityDeduction}

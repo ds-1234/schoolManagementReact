@@ -151,8 +151,9 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         deductionFieldValue: field.value
       })),
       totalDeduction: grossDeduction.toString(),
-      totalNetPay: netPay.toString(),
-      netPayAmountInWords: convertNumberToWords(netPay)
+      totalNetPay: netPayable.toString(),
+      // totalNetPay: netPay.toString(),
+      netPayAmountInWords: convertNumberToWords(netPayable)
     };
   };
 
@@ -171,6 +172,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
 
   useEffect(() => {
     const updatedPayload = generatePayload();
+    setTotalNetPay(grossEarning-grossDeduction)
     onPayloadUpdate(updatedPayload);
   }, [grossEarning, grossDeduction]);
 
@@ -290,7 +292,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium">House Rent Allowance *</label>
+          <label className="w-1/3 font-medium">House Rent Allowance*</label>
           <input
             type="number"
             {...register('houseRentAllowance', { required: 'House Rent Allowance is required' })}
@@ -302,7 +304,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium">Special Pay Allowance *</label>
+          <label className="w-1/3 font-medium">Special Pay Allowance*</label>
           <input
             type="number"
             {...register('specialPayAllowance', { required: 'Special Pay Allowance is required' })}
@@ -398,7 +400,7 @@ const IncomeDetailsSection = ({ onPayloadUpdate }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <label className="w-1/3 font-medium">Income Tax Deduction *</label>
+          <label className="w-1/3 font-medium">Income Tax Deduction*</label>
           <input
             type="number"
             {...register('incomeTaxDeduction', { required: 'Income Tax Deduction is required' })}

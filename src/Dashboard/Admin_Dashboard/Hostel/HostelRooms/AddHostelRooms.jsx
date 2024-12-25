@@ -78,7 +78,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
       isActive: value,
     };
 
-    axios.post('http://localhost:8080/hostelRooms/saveHostelRooms', postData, {
+    axios.post(`${BASE_URL}/hostelRooms/saveHostelRooms`, postData, {
       headers: { 'Content-Type': 'application/json' }
     })
       .then(response => {

@@ -11,6 +11,8 @@ import AddBtn from '../../../../Reusable_components/AddBtn';
 import AddFeesCollection from './AddFeesCollection';
 import EditFeesCollection from './EditFeesCollection';
 import PaymentStatus from '../../../../Reusable_components/PaymentStatus';
+import BASE_URL from '../../../../conf/conf';
+
 
 function FeesCollection() {
   const [data, setData] = useState([]);
@@ -57,7 +59,7 @@ function FeesCollection() {
 //       if (result.isConfirmed) {
 //         axios({
 //           method: 'post',
-//           url: `http://localhost:8080/players/deletePlayers/${id}`,
+//           url: `${BASE_URL}/players/deletePlayers/${id}`,
 //           headers: {
 //             'Content-Type': 'application/json',
 //           },
@@ -83,7 +85,7 @@ function FeesCollection() {
 const fetchData = () => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/feesCollection/getFeesCollectionList`,
+      url: `${BASE_URL}/feesCollection/getFeesCollectionList`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -103,7 +105,7 @@ const fetchData = () => {
   const fetchFeeGrp = (feesCollectionData) => {
     axios({
       method: 'GET',
-      url: `http://localhost:8080/feesGroup/getFeesGroupList`,
+      url: `${BASE_URL}/feesGroup/getFeesGroupList`,
       headers: {
         'Content-Type': 'application/json',
       },

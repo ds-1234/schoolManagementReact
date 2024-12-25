@@ -3,6 +3,8 @@ import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 import EventDetailPopup from '../Dashboard/Admin_Dashboard/Event/Event/EventDetailPopup';
+import BASE_URL from '../conf/conf';
+
 
 const EventCalendar = ({ events, initialView = "month" }) => {
   const [eventCategories, setEventCategories] = useState({});
@@ -15,7 +17,7 @@ console.log(events,'events in calendar')
   useEffect(() => {
     const fetchEventCategories = async () => {
       try {
-        const categoryRes = await axios.get('http://localhost:8080/eventCategory/getEventCatList');
+        const categoryRes = await axios.get(`${BASE_URL}/eventCategory/getEventCatList`);
         if (categoryRes.data.success) {
           const categoryColorMap = categoryRes.data.data.reduce((map, category) => {
             map[category.id] = category.eventCatColorCode;

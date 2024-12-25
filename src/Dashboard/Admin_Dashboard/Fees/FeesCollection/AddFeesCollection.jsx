@@ -9,6 +9,8 @@ import { useForm } from 'react-hook-form';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import BASE_URL from '../../../../conf/conf';
+
 
 function AddFeesCollection({ isOpen, onClose }) {
   const [value, setValue] = useState(true); // Toggle button state
@@ -71,7 +73,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
   // Fetch students
   useEffect(() => {
-    axios.get('http://localhost:8080/user/getUserList')
+    axios.get(`${BASE_URL}/user/getUserList`)
       .then((response) => {
         const studentList = response.data.data.filter(user => user.role === 3);
         setStudents(studentList);
@@ -83,7 +85,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
   // Fetch Fees Groups
   useEffect(() => {
-    axios.get('http://localhost:8080/feesGroup/getFeesGroupList')
+    axios.get(`${BASE_URL}/feesGroup/getFeesGroupList`)
       .then((response) => {
         const feeGroups = response.data.data;
 
@@ -97,7 +99,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
   // Fetch Classes
   useEffect(() => {
-    axios.get('http://localhost:8080/class/getClassList')
+    axios.get(`${BASE_URL}/class/getClassList`)
       .then((response) => {
         setClasses(response.data.data);
       })
@@ -156,7 +158,7 @@ function AddFeesCollection({ isOpen, onClose }) {
     // }
 
     // Submit the form data to the server
-    axios.post('http://localhost:8080/feesCollection/savefeesCollection', {
+    axios.post(`${BASE_URL}/feesCollection/savefeesCollection`, {
       userId: selectedStudent.id,
       feesGroupNameId: selectedFeesGrp.id,
       feeAmount: data.amount,

@@ -36,7 +36,7 @@ const handleSelectPaymentMethod = (method) => {
 
 //   const fetchExpenseCat = async () => {
 //     try {
-//       const response = await axios.get('http://localhost:8080/expenseCat/getExpenseCatList');
+//       const response = await axios.get('${BASE_URL}/expenseCat/getExpenseCatList');
 //       setExpenseCat(response.data.data);
 //     } catch (error) {
 //       toast.error("Error fetching Expense Category");

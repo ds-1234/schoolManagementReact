@@ -4,6 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import Table from "../../../../Reusable_components/Table";
 import BASE_URL from "../../../../conf/conf";
 
+
 const ExamResults = () => {
   const location = useLocation();
   const { className, filteredData, examTypeId } = location.state || {};
@@ -61,7 +62,7 @@ const ExamResults = () => {
 
     // const fetchUsers = async () => {
     //   try {
-    //     const userResponse = await fetch("http://localhost:8080/user/getUserList");
+    //     const userResponse = await fetch("${BASE_URL}/user/getUserList");
     //     const data = await userResponse.json();
     //     if (data.success && data.data) {
     //       const filteredUsers = data.data.filter(
@@ -120,7 +121,7 @@ const ExamResults = () => {
 
   const fetchSubjectName = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/subject/getSubjectList");
+      const response = await axios.get(`${BASE_URL}/subject/getSubjectList`);
 
       if (response.data.success) {
         const subdata = response.data.data;
