@@ -14,6 +14,7 @@ import FeesCollection from "./Dashboard_components/FeesCollection";
 import Notice from "./Dashboard_components/Notice";
 import StatCard from "./Dashboard_components/StatCard";
 import ChartCard from "./Dashboard_components/ChartCard";
+import defaultImg from '../../assets/staff-management.png'
 
 function Admin() {
   const [tileData, setTileData] = useState(null);
@@ -87,7 +88,7 @@ function Admin() {
         <div className="flex items-center gap-2">
           {/* Image */}
         <img
-          src={userTypeImages[key]}
+          src={userTypeImages[key] || defaultImg}
           alt={key}
           className="w-16 h-14 mb-4"
         />
