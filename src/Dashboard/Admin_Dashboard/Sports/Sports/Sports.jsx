@@ -5,7 +5,7 @@ import edit from '../../../../assets/edit.png';
 import deleteIcon from '../../../../assets/delete.png';
 import Table from '../../../../Reusable_components/Table';
 import StatusButton from '../../../../Reusable_components/StatusButton';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import AddSports from './AddSports';
 import EditSports from './EditSports';
 import AddBtn from '../../../../Reusable_components/AddBtn';
@@ -45,15 +45,15 @@ function Sports() {
   };
 
   const handleDelete = (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, delete it!'
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
         axios({
           method: 'post',
           url: `${BASE_URL}/sports/deleteSport/${id}`,
@@ -70,13 +70,13 @@ function Sports() {
             fetchData();
           });
 
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'Your Data has been deleted.',
-          icon: 'success',
-        });
-      }
-    });
+    //     Swal.fire({
+    //       title: 'Deleted!',
+    //       text: 'Your Data has been deleted.',
+    //       icon: 'success',
+    //     });
+    //   }
+    // });
   };
 
   const fetchData = () => {

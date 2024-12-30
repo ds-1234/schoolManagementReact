@@ -6,7 +6,7 @@ import deleteIcon from '../../../../assets/delete.png'
 import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import AddEventCategory from './AddEventCategory';
 import EditEventCategory from './EditEventCategory';
 import BASE_URL from '../../../../conf/conf';

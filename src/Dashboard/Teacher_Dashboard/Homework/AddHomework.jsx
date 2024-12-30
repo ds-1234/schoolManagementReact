@@ -73,7 +73,7 @@ const AddHomework = ({ isOpen, onClose }) => {
   }
 
   useEffect(() => {
-    setClasses(teacherData.classSubjectEntity.map((item) => parseInt(item?.classId)))
+    setClasses(teacherData.classSubjectEntity?.map((item) => parseInt(item?.classId)))
     fetchCls() ;
     fetchSub()
   } , [])
@@ -171,7 +171,7 @@ const AddHomework = ({ isOpen, onClose }) => {
                 onChange={handleClassChange}
               >
                 <option value="">Select Class</option>
-                {classes.map((cls) => (
+                {classes?.map((cls) => (
                   <option key={cls} value={cls}>
                     {classMap[cls]?.name} - {classMap[cls]?.section}
                   </option>
@@ -194,7 +194,7 @@ const AddHomework = ({ isOpen, onClose }) => {
                 className="w-full py-2 border rounded-xl bg-gray-100 px-2"
               >
                 <option value="">Select Subject</option>
-                {subjects.map((sub) => (
+                {subjects?.map((sub) => (
                   <option key={sub} value={sub}>
                     {subjectMap[sub]}
                   </option>

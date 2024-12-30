@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import AddBtn from '../../../../Reusable_components/AddBtn'
 import StatusButton from '../../../../Reusable_components/StatusButton';
 import AddRoomType from './AddRoomType';
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 import EditRoomType from './EditRoomType';
 import BASE_URL from '../../../../conf/conf';
 
@@ -33,15 +33,15 @@ function RoomType() {
 
 const handleDelete = (id)=>{
 
-    Swal.fire({
-        title: "Are you sure?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
+    // Swal.fire({
+    //     title: "Are you sure?",
+    //     icon: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Yes, delete it!"
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
 
             axios({
                 method: "post",
@@ -60,13 +60,13 @@ const handleDelete = (id)=>{
                   fetchData()
                 });
 
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your Data has been deleted.",
-            icon: "success"
-          });
-        }
-      });
+      //     Swal.fire({
+      //       title: "Deleted!",
+      //       text: "Your Data has been deleted.",
+      //       icon: "success"
+      //     });
+      //   }
+      // });
 
 }
   
