@@ -145,6 +145,9 @@ import ManagerReport from './Dashboard/Admin_Dashboard/ManagerReport/ManagerRepo
 import PaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/PaySlip';
 import TchViewPaySlip from './Dashboard/Teacher_Dashboard/HRM/PaySlip/TchViewPaySlip';
 import ViewPaySlip from './Dashboard/Admin_Dashboard/HRM/PaySlip/ViewPaySlip';
+import NonTeachingDashboard from './Dashboard/NonTeaching_DashBoard/NonTeachingDashboard';
+import NonTeaching from './Dashboard/NonTeaching_DashBoard/NonTeaching';
+import NonTchViewPaySlip from './Dashboard/NonTeaching_DashBoard/HRM/PaySlip/NonTchViewPaySlip';
 
 function App() {
   return (
@@ -350,6 +353,20 @@ function App() {
             }
           >
             <Route index element={<Guest/>} />
+          </Route>
+
+                    {/* Teacher Dashboard Routes */}
+          <Route
+            path="/NonTeachingDashboard"
+            element={
+              <ProtectedRoute>
+                <NonTeachingDashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<NonTeaching />} />
+            <Route path = 'NonTchViewPaySlip' element= {<NonTchViewPaySlip/>}/>
+
           </Route>
         </Routes>
       </div>

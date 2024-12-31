@@ -88,7 +88,7 @@ const PaySummarySection = ({ onPayloadUpdate }) => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/user/getUserList`);
-        const filteredUsers = response.data.data.filter(user => user.role === 4 && user.isActive == true);
+        const filteredUsers = response.data.data.filter(user => (user.role === 4 && user.isActive == true) || (user.role === 6 && user.isActive == true));
         setUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
