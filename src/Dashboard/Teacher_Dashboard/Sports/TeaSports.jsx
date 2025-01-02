@@ -61,8 +61,8 @@ const TeaSports = () => {
         {coach.map((item, index) => (
           <div 
             key={index} 
-            className="bg-white shadow-lg rounded-lg overflow-hidden w-60 h-200 hover:bg-gray-400 hover:text-white cursor-pointer transition-transform transform hover:scale-105"
-            onClick={() => navigate(`/sports/${item.sportsName}`)}
+            className="bg-white shadow-lg rounded-lg overflow-hidden w-60 h-200 hover:bg-gray-400 hover:text-white  transition-transform transform hover:scale-105"
+            // onClick={() => navigate(`/sports/${item.sportsName}`)}
           >
             <img 
               src={sportsImageMap[item.sportsName] || SportSt} 
