@@ -125,7 +125,7 @@ function TeaEventDetailPopup({ event, onClose, catColor }) {
               ></path>
             </svg>
 
-            <span className="mr-4">{event.startDate}-{event.endDate}</span>
+            <span className="mr-4">{event.startDate} to {event.endDate}</span>
             <svg
               className="w-4 h-4 mr-1 text-gray-500"
               fill="none"

@@ -117,7 +117,7 @@ function EventDetailPopup({ event, onClose, catColor }) {
                 ></path>
               </svg>
 
-              <span className="mr-4">{event.startDate}-{event.endDate}</span>
+              <span className="mr-4">{event.startDate} to {event.endDate}</span>
             </div>
            <div className='flex items-center'>
             <svg

@@ -4,7 +4,7 @@ import BASE_URL from '../../../conf/conf';
 import StatusButton from '../../../Reusable_components/StatusButton';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faEnvelope, faFilePdf, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faDownload, faEnvelope, faFilePdf, faPhoneAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import maleImg from '../../../assets/man.png'
 import femaleImg from '../../../assets/woman.png'
 
@@ -18,10 +18,33 @@ const TchProfile = () => {
   const [hostelRoom , setHostelRoom] = useState({}) 
   const [classList, setClassList] = useState([]);
   const [filteredClasses, setFilteredClasses] = useState([]);
+  const [classSections, setClassSections] = useState([]);
+  const [designation, setDesignation] = useState([]);
+  const [department, setDepartment] = useState([]);
+    const [documents, setDocuments] = useState([]);
+  
+
 
 
 console.log(filteredClasses,'classes')
+useEffect(() => {
+  // Fetch Teacher Info
+  axios.get(`http://localhost:8080/teacherInfo/getTeacherInfo/${user.id}`).then(response => {
+      const classIds = response.data.data.classSubjectEntity.map(item => item.classId);
 
+      // Fetch Class List
+      axios.get('http://localhost:8080/class/getClassList').then(res => {
+          // Filter classes based on class IDs
+          const filteredClasses = res.data.data.filter(cls => 
+              classIds.includes(cls.id.toString())
+          );
+
+          // Format: "3rd A", "4th B"
+          const formattedClasses = filteredClasses.map(cls => `${cls.name} ${cls.section}`);
+          setClassSections(formattedClasses);
+      });
+  });
+}, []);
 
     useEffect(() => {
       const fetchBasicInfo = () => {
@@ -76,24 +99,58 @@ console.log(filteredClasses,'classes')
       const response = await fetch(`${BASE_URL}/class/getClassList`);
       const data = await response.json();
       setClassList(data.data);  // Assuming data.data holds the list of classes
+      console.log(classList,'classList')
     } catch (error) {
       console.error('Error fetching class list:', error);
     }
+  };
+  const fetchDocuments = () => {
+    axios
+      .get(`${BASE_URL}/document/getDocument/${user.id}`)
+      .then((response) => setDocuments(response.data.data))
+      .catch((error) => console.error("Error fetching documents:", error));
   };
 
   // Filter classes based on the teacher's className array
   useEffect(() => {
     if (teacherDetails && Array.isArray(teacherDetails.className) && classList?.length > 0) {
       const teacherClassIds = teacherDetails.className;  // Array of class IDs from teacher details
+      // const teacherClassIds = teacherBasicDetails.classSubjectEntity.map(item => item.classId);
+
       const filtered = classList.filter(classItem =>
         teacherClassIds.includes(classItem.id)
       );
       setFilteredClasses(filtered);
+      console.log(filtered,'filteredclasses')
     }
   }, [teacherDetails, classList]);
 
+    // Fetch Designation List
+    const fetchDesignation = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/designation/getDesignationList`);
+        const data = await response.json();
+        setDesignation(data.data);  // Assuming data.data holds the list of classes
+      } catch (error) {
+        console.error('Error fetching Designation:', error);
+      }
+    };
+    // Fetch Department List
+    const fetchDepartment = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/department/getDepartmentList`);
+        const data = await response.json();
+        setDepartment(data.data);  // Assuming data.data holds the list of classes
+      } catch (error) {
+        console.error('Error fetching Department:', error);
+      }
+    };
+
   useEffect(() => {
     fetchClassList();
+    fetchDesignation()
+    fetchDepartment()
+    fetchDocuments()
   }, []);
 
   useEffect(() => {
@@ -155,6 +212,17 @@ console.log(filteredClasses,'classes')
     }
   } , [teacherDetails])
 
+    // Get Designation by ID
+    const getDesignationById = (id) => {
+      const des = designation.find((des) => des.id == id);
+      return des ? `${des.designationName}` : 'Designation not found';
+    };
+    // Get Department by ID
+    const getDepartmentById = (id) => {
+      const dep = department.find((dep) => dep.id == id);
+      return dep ? `${dep.departmentName}` : 'Department not found';
+    };
+
   if (!teacherDetails  || !teacherBasicDetails) return <div>Loading...</div>;
 
   const formattedDate = new Date(teacherDetails.dateOfBirth).toISOString().split('T')[0];
@@ -182,6 +250,17 @@ console.log(filteredClasses,'classes')
                 {teacherDetails.firstName} {teacherDetails.lastName}
               </h2>
               <p className="text-sm text-gray-500">{teacherDetails.admissionNumber}</p>
+              {/* <p><strong>Designation</strong></p> 
+              <p className="text-sm text-gray-500"><strong>{getDesignationById(teacherBasicDetails.designation)}</strong></p> */}
+              <p className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faUser} />
+                <span><strong>Designation:</strong> {getDesignationById(teacherBasicDetails.designation)}</span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={faBriefcase} />
+                <span><strong>Deaprtment:</strong> {getDepartmentById(teacherBasicDetails.department)}</span>
+              </p>
+              {/* <p className="text-sm text-gray-500"><strong>{teacherBasicDetails.department}</strong></p> */}
             </div>
           </div>
 
@@ -209,12 +288,14 @@ console.log(filteredClasses,'classes')
 
             <p><strong>Classes:</strong></p> 
             <p>
-        {teacherDetails.className && teacherDetails.className.length > 0 ? (
-            teacherDetails.className.map(classId => {
-                const classDetails = filteredClasses.find(classItem => classItem.id === classId);
-                return classDetails ? `${classDetails.name} - ${classDetails.section}` : null;
-            }).join(", ")
-        ) : "No classes assigned"}
+            <div>
+            {/* <h3>Class Section:</h3> */}
+            <ul>
+                {classSections.map((cls, index) => (
+                    <li key={index}>{cls}</li>
+                ))}
+            </ul>
+        </div>
     </p>
             </div>
         </div>
@@ -388,55 +469,34 @@ console.log(filteredClasses,'classes')
 
         {/* Documents Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Documents</h3>
+        {/* <h3 className="text-lg font-semibold text-gray-700 mb-4">Documents</h3> */}
         <div className="space-y-4">
-            {/* {teacherDetails.documents.map((doc, index) => ( */}
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}Transfer Certificate</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
-                <FontAwesomeIcon icon={faDownload} />
-                </a>
+        <div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Documents</h3>
+              <div className="space-y-4">
+                {documents.length > 0 ? (
+                  documents.map((doc) => (
+                    <div key={doc.id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
+                      <div className="flex items-center space-x-3">
+                        <FontAwesomeIcon icon={faFilePdf} className="text-red-500" />
+                        <span className="text-gray-700 font-semibold">{doc.documentName}</span>
+                      </div>
+                      {doc.attachmentPath ? (
+                        <a href={`${BASE_URL}${doc.attachmentPath}`} download className="text-blue-500 font-semibold flex items-center space-x-2">
+                          <FontAwesomeIcon icon={faDownload} />
+                          <span className="hidden sm:block">Download</span>
+                        </a>
+                      ) : (
+                        <span className="text-gray-500">No Document</span>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No documents available.</p>
+                )}
+              </div>
             </div>
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}Adhaar Card</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
-                <FontAwesomeIcon icon={faDownload} />
-                </a>
-            </div>
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}PAN</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
-                <FontAwesomeIcon icon={faDownload} />
-                </a>
-            </div>
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}Resume</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
-                <FontAwesomeIcon icon={faDownload} />
-                </a>
-            </div>
-            <div key ="" className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow">
-                <div className="flex items-center space-x-3">
-                <FontAwesomeIcon icon={faFilePdf} />
-                <span className="text-gray-700 font-semibold">{/*doc.name*/}Experience Letter</span>
-                </div>
-                <a href="" className="text-blue-500 font-semibold flex items-center space-x-2">
-                <FontAwesomeIcon icon={faDownload} />
-                </a>
-            </div>
-            {/* ))} */}
+
         </div>
         </div>
 

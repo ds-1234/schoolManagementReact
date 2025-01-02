@@ -107,57 +107,61 @@ function TchBookIssue() {
   const [book, setBook] = useState([]);
   const [filterBook, setFilterBook] = useState([]);
 
-  // const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-  // const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  // const [editBookId, setEditBookId] = useState(null);
 
-  // const openAddPopup = () => setIsAddPopupOpen(true);
-  // const closeAddPopup = () => setIsAddPopupOpen(false);
 
-//   const openEditPopup = (id) => {
-//     setEditBookId(id);
-//     setIsEditPopupOpen(true);
-//   };
-
-//   const closeEditPopup = () => {
-//     setEditBookId(null);
-//     setIsEditPopupOpen(false);
-//   };
-
-//   useEffect(() => {
-//     if (isAddPopupOpen || isEditPopupOpen) {
-//       document.body.style.overflow = 'hidden';  // Disable scroll when any popup is open
-//     } else {
-//       document.body.style.overflow = 'auto';  // Enable scroll when no popup is open
+// useEffect(() => {
+//   const fetchBooks = async () => {
+//     try {
+//       const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
+//       if (response.data && response.data.success) {
+//         // Log response data to check structure
+//         console.log('Response data:', response.data);
+  
+//         // Extract the array of books from the `data` object
+//         const booksArray = Object.values(response.data.data).flat();
+//         console.log(booksArray, 'booksarray');
+//         console.log('User:', user);
+  
+//         // Ensure user.id exists and is comparable with item.userId
+//         const filteredData = booksArray.filter(item => {
+//           console.log('Item userId:', item.books[0].userId, 'User id:', user.id);
+//            item.books.userId == user.id;
+//         });
+//         console.log(filteredData, 'filtereddata');
+  
+//         setBook(filteredData);
+//         setFilterBook(filteredData); // Set filterBook if you intend to use filtered data
+//       } else {
+//         console.error("Unexpected response structure:", response.data);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching books:", error);
 //     }
-
-//     return () => {
-//       document.body.style.overflow = 'auto';  // Cleanup on unmount
-//     };
-//   }, [isAddPopupOpen, isEditPopupOpen]);
+//   };
+  
+  
+//     fetchBooks();
+//   }, []);
 
 useEffect(() => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/library/getBookIssued`);
       if (response.data && response.data.success) {
-        // Log response data to check structure
         console.log('Response data:', response.data);
-  
-        // Extract the array of books from the `data` object
-        const booksArray = Object.values(response.data.data).flat();
-        console.log(booksArray, 'booksarray');
-        console.log('User:', user);
-  
-        // Ensure user.id exists and is comparable with item.userId
-        const filteredData = booksArray.filter(item => {
-          console.log('Item userId:', item.userId, 'User id:', user.id);
-          return item.userId == user.id;
-        });
-        console.log(filteredData, 'filtereddata');
-  
+
+        // Get the user ID from session storage
+        const user = JSON.parse(sessionStorage.getItem('user')); // Current logged-in user
+        const userId = user?.id; // Get user ID safely
+
+        // Extract the books data for the specific user ID
+        const filteredData = response.data.data[userId]?.books || [];
+
+        console.log('Filtered books:', filteredData);
+
+        // Update the state
         setBook(filteredData);
-        setFilterBook(filteredData); // Set filterBook if you intend to use filtered data
+        setFilterBook(filteredData); // For filtering purposes
       } else {
         console.error("Unexpected response structure:", response.data);
       }
@@ -165,10 +169,10 @@ useEffect(() => {
       console.error("Error fetching books:", error);
     }
   };
-  
-  
-    fetchBooks();
-  }, []);
+
+  fetchBooks();
+}, []);
+
   
 
   useEffect(() => {

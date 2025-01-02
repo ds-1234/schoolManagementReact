@@ -61,6 +61,9 @@ function LandingPage() {
         case 'Admin':
           navigate('/admin');
           break;
+          case 'Non-Teaching Staff':
+            navigate('/NonTeachingDashboard');
+            break;
         case 'Guest':
           navigate('/guestDashboard');
           break;
