@@ -6,12 +6,10 @@ import SportSt from '../../../assets/Sports.jpg';
 import { NavLink, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
 
-
 // Sports to image mapping
 const sportsImageMap = {
     'Cricket': CricketSt,
     'Football': FootballSt,
-    // Add other sports and their images here
 };
 
 const TeaSports = () => {
@@ -34,7 +32,7 @@ const TeaSports = () => {
 
         // Set the filtered sports data
         setCoach(filteredData); 
-        console.log(filteredData,'filtered');
+        console.log(filteredData, 'filtered');
       } catch (error) {
         setError(error.message || 'Something went wrong'); 
       } finally {
@@ -50,31 +48,41 @@ const TeaSports = () => {
   }
 
   if (error) {
-    return <div>Error:</div>; 
+    return <div>Error: {error}</div>; 
   }
 
   return (
     <div className='flex flex-col justify-start pl-0'>
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Sports</h1>
-      <p className='mt-2'><NavLink to='/teacherDashboard'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Sports</span></p>
-      <div className='grid grid-cols-2 gap-4 mt-10 mb-5'>
-        {coach.map((item, index) => (
-          <div 
-            key={index} 
-            className="bg-white shadow-lg rounded-lg overflow-hidden w-60 h-200 hover:bg-gray-400 hover:text-white  transition-transform transform hover:scale-105"
-            // onClick={() => navigate(`/sports/${item.sportsName}`)}
-          >
-            <img 
-              src={sportsImageMap[item.sportsName] || SportSt} 
-              alt="Sport" 
-              className="w-full h-80 object-cover px-4 py-2" 
-            />
-            <div className="p-2 text-center">
-              <h3 className="text-md font-semibold">{item.sportsName}</h3>
-            </div> 
-          </div>
-        ))}
+      <p className='mt-2'>
+        <NavLink to='/teacherDashboard'> Dashboard </NavLink> / 
+        <span className='text-[#ffae01] font-semibold'> Sports</span>
+      </p>
+
+      {coach.length === 0 ? (
+        // Display this tile if no records are found
+        <div className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md text-center">
+        <p className=" text-md text-black">There are no records to display</p>
       </div>
+      ) : (
+        <div className='grid grid-cols-2 gap-4 mt-10 mb-5'>
+          {coach.map((item, index) => (
+            <div 
+              key={index} 
+              className="bg-white shadow-lg rounded-lg overflow-hidden w-60 h-200 hover:bg-gray-400 hover:text-white  transition-transform transform hover:scale-105"
+            >
+              <img 
+                src={sportsImageMap[item.sportsName] || SportSt} 
+                alt="Sport" 
+                className="w-full h-80 object-cover px-4 py-2" 
+              />
+              <div className="p-2 text-center">
+                <h3 className="text-md font-semibold">{item.sportsName}</h3>
+              </div> 
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

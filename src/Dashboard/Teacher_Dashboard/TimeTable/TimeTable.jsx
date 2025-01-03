@@ -56,8 +56,10 @@ const Timetable = () => {
         {timetableData && timetableData.length > 0 ? (
           <TeacherTTGrid timetableData={timetableData} />
         ) : (
-          <div>No timetable available for this teacher.</div>
-        )}
+          <div className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md text-center">
+          <p className=" text-md text-black">There are no records to display</p>
+        </div>
+              )}
       </div>
     </div>
   );

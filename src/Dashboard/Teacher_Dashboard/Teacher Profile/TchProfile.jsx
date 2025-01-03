@@ -29,11 +29,11 @@ const TchProfile = () => {
 console.log(filteredClasses,'classes')
 useEffect(() => {
   // Fetch Teacher Info
-  axios.get(`http://localhost:8080/teacherInfo/getTeacherInfo/${user.id}`).then(response => {
+  axios.get(`${BASE_URL}/teacherInfo/getTeacherInfo/${user.id}`).then(response => {
       const classIds = response.data.data.classSubjectEntity.map(item => item.classId);
 
       // Fetch Class List
-      axios.get('http://localhost:8080/class/getClassList').then(res => {
+      axios.get(`${BASE_URL}/class/getClassList`).then(res => {
           // Filter classes based on class IDs
           const filteredClasses = res.data.data.filter(cls => 
               classIds.includes(cls.id.toString())

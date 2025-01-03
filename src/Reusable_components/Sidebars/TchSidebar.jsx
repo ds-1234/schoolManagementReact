@@ -272,7 +272,7 @@ function TchSidebar() {
                 <FontAwesomeIcon icon={faFileLines} className="mr-4 text-[#ffae01]" />
                 HRM
               </div>
-              <FontAwesomeIcon icon={renderAngleIcon('exam')} className="mr-3" onClick={() => toggleDropdown('hrm')} />
+              <FontAwesomeIcon icon={renderAngleIcon('hrm')} className="mr-3" onClick={() => toggleDropdown('hrm')} />
             </NavLink>
             {openDropdown=='hrm' && (
               <ul className=" text-sm font-normal flex flex-col bg-[#021933] mt-2">

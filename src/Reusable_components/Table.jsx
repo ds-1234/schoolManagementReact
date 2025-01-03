@@ -94,49 +94,50 @@ const Table = ({ columns, data, searchOptions, onSearch, handleClear , className
           <div>
             {/* Search Section */}
             {search &&
-            <div className={`flex flex-wrap gap-4 mb-4 items-center ${className}`}>
+              <div className={`flex flex-wrap gap-4 mb-4 items-center ${className}`}>
+  {/* Left Section */}
+  <div className="flex items-center gap-4">
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={toggleDropdown}
+        className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 flex justify-evenly items-center gap-2"
+      >
+        <FontAwesomeIcon icon={faFilter} />
+        Filter
+        <FontAwesomeIcon icon={faAngleDown} />
+      </button>
 
-              {/* Filter Dropdown */}
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={toggleDropdown}
-                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 flex justify-evenly items-center gap-2"
-                >
-                  <FontAwesomeIcon icon={faFilter} />
-                  Filter
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </button>
-
-                {isDropdownOpen && (
-                  <div className="absolute bg-white border rounded-lg shadow-lg p-4 mt-2 w-60 z-50">
-                    {searchOptions.map((option, index) => (
-                      <label key={index} className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={!!selectedFilters[option.value]} // Reflect selected state
-                          onChange={() => handleCheckboxChange(option)}
-                        />
-                        {option.label}
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-
+      {isDropdownOpen && (
+        <div className="absolute bg-white border rounded-lg shadow-lg p-4 mt-2 w-60 z-50">
+          {searchOptions.map((option, index) => (
+            <label key={index} className="flex items-center gap-2">
               <input
-                type="text"
-                placeholder="Search..."
-                ref={searchInputRef}
-                className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 md:w-1/3 w-1/2"
+                type="checkbox"
+                checked={!!selectedFilters[option.value]} // Reflect selected state
+                onChange={() => handleCheckboxChange(option)}
               />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
 
-              {/* Search Button */}
-              <Button onClick={handleSearchClick} className="mt-0" label="Search" />
+    <input
+      type="text"
+      placeholder="Search..."
+      ref={searchInputRef}
+      className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 md:w-1/3 w-1/2"
+    />
 
-              {/* Clear Button */}
-              <Button onClick={clearFilters} className="mt-0 bg-[#ffae01] hover:bg-[#042954]" label="Clear" />
-              <p className="text-red-500 mt-2">{`${note}`}</p>
-              </div>
+    <Button onClick={handleSearchClick} className="mt-0" label="Search" />
+    <Button onClick={clearFilters} className="mt-0 bg-[#ffae01] hover:bg-[#042954]" label="Clear" />
+  </div>
+
+  {/* Right Section */}
+  <p className="text-red-500 mt-2 ml-auto text-lg font-semibold">{`${note}`}</p>
+</div>
+
 }
 
 
