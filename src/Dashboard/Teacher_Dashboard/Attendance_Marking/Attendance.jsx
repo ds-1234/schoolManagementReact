@@ -7,6 +7,8 @@ import Button from '../../../Reusable_components/Button';
 // import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+
 
 const Attendance = () => {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -15,6 +17,8 @@ const Attendance = () => {
   const [attendanceMap, setAttendanceMap] = useState({});
   const today = dayjs().format('YYYY-MM-DD'); // ISO format for date in payload
   const [attendanceStatuses, setAttendanceStatuses] = useState([]);
+      const [loading, setLoading] = useState(false);
+  
 
   // Fetch students based on classItem
   const fetchStudents = async () => {
@@ -63,6 +67,8 @@ const Attendance = () => {
 
   // Handle form submission (sending the attendance data)
   const handleSubmit = async () => {
+    setLoading(true); // Start loader
+
     if (Object.keys(attendanceMap).length < students.length) {
       // Swal.fire('Error!', 'Please fill attendance for all students.', 'error');
       return;
@@ -105,12 +111,9 @@ const Attendance = () => {
         } catch (error) {
           console.error('Error submitting attendance:', error);
           Swal.fire('Error!', 'There was an error submitting the attendance.', 'error');
-        }
-      // }
-      //  else {
-      //   setAttendanceMap({});
-      // }
-    // });
+        }   finally {
+          setLoading(false); 
+        };
   };
 
   // Columns for react-table
@@ -130,60 +133,6 @@ const Attendance = () => {
       selector: (row) => row.firstName + ' ' + row.lastName,
       sortable: true,
     },
-    // {
-    //   name: 'Present',
-    //   cell: (row) => (
-    //     <input
-    //       type="radio"
-    //       name={`attendance_${row.id}`}
-    //       value="present"
-    //       checked={attendanceMap[row.id] === 'present'}
-    //       onChange={() => handleAttendanceChange(row.id, 'present')}
-    //       className="bg-green-500"
-    //     />
-    //   ),
-    // },
-    // {
-    //   name: 'Absent',
-    //   cell: (row) => (
-    //     <input
-    //       type="radio"
-    //       name={`attendance_${row.id}`}
-    //       value="absent"
-    //       checked={attendanceMap[row.id] === 'absent'}
-    //       onChange={() => handleAttendanceChange(row.id, 'absent')}
-    //       className="bg-red-500"
-    //     />
-    //   ),
-    // },
-
-    // {
-    //   name: 'Half Day',
-    //   cell: (row) => (
-    //     <input
-    //       type="radio"
-    //       name={`attendance_${row.id}`}
-    //       value="halfDay"
-    //       checked={attendanceMap[row.id] === 'halfDay'}
-    //       onChange={() => handleAttendanceChange(row.id, 'halfDay')}
-    //       className="bg-yellow-500"
-    //     />
-    //   ),
-    // },
-
-    // {
-    //   name: 'Medical',
-    //   cell: (row) => (
-    //     <input
-    //       type="radio"
-    //       name={`attendance_${row.id}`}
-    //       value="medical"
-    //       checked={attendanceMap[row.id] === 'medical'}
-    //       onChange={() => handleAttendanceChange(row.id, 'medical')}
-    //       className="bg-blue-500"
-    //     />
-    //   ),
-    // },
     ...attendanceStatuses.map((status) => ({
       name: status.attendanceStatus,
       cell: (row) => (
@@ -227,6 +176,17 @@ const Attendance = () => {
         data={students}
         searchOptions={[{ label: 'Student Name', value: 'name' }]}
       />
+                  {loading && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <Circles
+                  height="80"
+                  width="80"
+                  color="#4fa94d"
+                  ariaLabel="circles-loading"
+                  visible={true}
+                />
+              </div>
+            )}
 
       <div className='flex gap-2'>
         <Button onClick={handleSubmit} label='Submit Attendance' className='mt-5'/>

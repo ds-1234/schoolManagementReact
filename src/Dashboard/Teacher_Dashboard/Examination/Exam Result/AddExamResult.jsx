@@ -7,6 +7,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from "../../../../conf/conf";
+import { Circles } from 'react-loader-spinner';
+
 
 const AddExamResult = ({ isOpen, onClose }) => {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -23,6 +25,8 @@ const AddExamResult = ({ isOpen, onClose }) => {
   const [classDropdownOpen, setClassDropdownOpen] = useState(false);
   const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
   const [studentDropdownOpen, setStudentDropdownOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     if (isOpen) {
@@ -132,6 +136,8 @@ console.log(students,'students')
   };
 
   const handleSubmitExamResults = async (data) => {
+    setLoading(true); // Start loader
+
     console.log(selectedClassId,selectedSubjectId,selectedStudentId,'class,sub,std')
     try {
       const payload = {
@@ -157,13 +163,26 @@ console.log(students,'students')
       onClose();
     } catch (error) {
       toast.error("Error submitting exam results");
-    }
+    }    finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Circles
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="circles-loading"
+            visible={true}
+          />
+        </div>
+      )}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <form onSubmit={handleSubmit(handleSubmitExamResults)}>

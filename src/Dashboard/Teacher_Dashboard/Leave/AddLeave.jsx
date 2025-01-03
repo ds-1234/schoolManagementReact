@@ -9,6 +9,8 @@ import FutureDates from '../../../Reusable_components/FutureDates';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../Reusable_components/CkEditor.css';
+import { Circles } from 'react-loader-spinner';
+
 
 const AddLeave = ({ isOpen, onClose }) => {
   const { register, handleSubmit, reset , formState: { errors } } = useForm();
@@ -20,6 +22,8 @@ const AddLeave = ({ isOpen, onClose }) => {
   const [selectedAdmin , setSelectedAdmin] = useState('')
   const user = JSON.parse(sessionStorage.getItem('user'))  
   const [dets , setDets]  = useState(null) 
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -83,6 +87,7 @@ const AddLeave = ({ isOpen, onClose }) => {
   }
 
   const onSubmit = async (data) => {
+    setLoading(true); // Start loader
     try {
       await axios.post(`${BASE_URL}/leaves/applyLeaves`, {
         senderId: user.id,
@@ -113,12 +118,28 @@ const AddLeave = ({ isOpen, onClose }) => {
       setSelectedAdmin('') 
       setEditorData('')
     }
+    finally {
+      setLoading(false); // Stop loader
+    };
+    
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-gray-800">
+      {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <Circles
+      height="80"
+      width="80"
+      color="#4fa94d"
+      ariaLabel="circles-loading"
+      visible={true}
+    />
+  </div>
+)}
+
       <div className="bg-white p-6 py-2 rounded-lg w-full max-w-md relative">
         <button onClick={handleOnClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <form onSubmit={handleSubmit(onSubmit)}>

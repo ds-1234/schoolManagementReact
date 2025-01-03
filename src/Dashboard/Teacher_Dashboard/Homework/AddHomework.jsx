@@ -8,6 +8,8 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 import TodayDate from '../../../Reusable_components/TodayDate';
 import FutureDates from '../../../Reusable_components/FutureDates';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+
 
 const AddHomework = ({ isOpen, onClose }) => {
 
@@ -17,9 +19,10 @@ const AddHomework = ({ isOpen, onClose }) => {
   const [classes, setClasses] = useState([]);
   const [subjects , setSubjects] = useState([]) ;
   const [file , setFile] = useState(null) ;
-
   const [classMap , setClassMap] = useState({}) 
   const [subjectMap , setSubjectMap] = useState({})
+  const [loading, setLoading] = useState(false);
+
 
   const {
     register,
@@ -31,6 +34,8 @@ const AddHomework = ({ isOpen, onClose }) => {
   } = useForm();
 
   const fetchCls = () => {
+    setLoading(true); // Start loader
+
     axios({
       method: 'GET',
       url: `${BASE_URL}/class/getClassList`,
@@ -48,7 +53,7 @@ const AddHomework = ({ isOpen, onClose }) => {
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-      });
+      })
   }
 
   const fetchSub = () => {
@@ -69,6 +74,9 @@ const AddHomework = ({ isOpen, onClose }) => {
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loader
       });
   }
 
@@ -101,6 +109,44 @@ const AddHomework = ({ isOpen, onClose }) => {
     };
   }, [isOpen, onClose]);
 
+  // const submitHomework = (data) => {
+  //   setLoading(true); // Start loader
+  //   const homeworkRequest = {
+  //     user: user.id,
+  //     className: data.className,
+  //     subject: data.subject,
+  //     homeworkDate: data.homeworkDate,
+  //     submissionDate: data.submissionDate,
+  //     isActive: value, 
+  //   };
+  
+  //   const formData = new FormData();
+  //   formData.append('homeworkRequest', new Blob([JSON.stringify(homeworkRequest)], { type: 'application/json' }));
+  //   formData.append('file', file); 
+  
+  //   axios({
+  //     method: 'post',
+  //     url: `${BASE_URL}/homework/saveHomework`,
+  //     data: formData,
+  //     headers: { 'Content-Type': 'multipart/form-data' },
+  //   })
+  //     .then((res) => {
+  //       console.log('Response:', res.data.data);
+  //       toast.success('Homework added successfully!');
+  //       setValue(true);
+  //       reset(); 
+  //       onClose(); 
+  //     })
+  //     .catch((err) => {
+  //       console.log('Error:', err);
+  //       toast.error('Failed to add homework.');
+  //       setValue(true);
+  //       onClose();
+  //     })
+  //     .finally(() => {
+  //       setLoading(false); // Stop loader
+  //     });
+  // };
   const submitHomework = (data) => {
     const homeworkRequest = {
       user: user.id,
@@ -110,31 +156,39 @@ const AddHomework = ({ isOpen, onClose }) => {
       submissionDate: data.submissionDate,
       isActive: value, 
     };
-  
+    
     const formData = new FormData();
     formData.append('homeworkRequest', new Blob([JSON.stringify(homeworkRequest)], { type: 'application/json' }));
     formData.append('file', file); 
-  
-    axios({
-      method: 'post',
-      url: `${BASE_URL}/homework/saveHomework`,
-      data: formData,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-      .then((res) => {
-        console.log('Response:', res.data.data);
-        toast.success('Homework added successfully!');
-        setValue(true);
-        reset(); 
-        onClose(); 
+    
+    // Simulating network delay with setTimeout
+    setLoading(true); // Start loader
+    // setTimeout(() => {
+      
+      axios({
+        method: 'post',
+        url: `${BASE_URL}/homework/saveHomework`,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .catch((err) => {
-        console.log('Error:', err);
-        toast.error('Failed to add homework.');
-        setValue(true);
-        onClose();
-      });
+        .then((res) => {
+          console.log('Response:', res.data.data);
+          toast.success('Homework added successfully!');
+          setLoading(false); // Stop loader
+          setValue(true);
+          reset(); 
+          onClose(); 
+        })
+        .catch((err) => {
+          console.log('Error:', err);
+          toast.error('Failed to add homework.');
+          setLoading(false); // Stop loader on error
+          setValue(true);
+          onClose();
+        });
+    // }, 5000); // Simulate a 2-second delay before the API request is made
   };
+  
 
   if (!isOpen) return null;
 
@@ -148,7 +202,20 @@ const AddHomework = ({ isOpen, onClose }) => {
   };
 
   return (
+    
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      {loading && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <Circles
+      height="80"
+      width="80"
+      color="#4fa94d"
+      ariaLabel="circles-loading"
+      visible={true}
+    />
+  </div>
+)}
+
       <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative">
         <button
           onClick={onClose}
