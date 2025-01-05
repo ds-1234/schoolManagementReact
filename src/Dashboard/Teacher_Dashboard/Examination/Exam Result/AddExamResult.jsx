@@ -7,7 +7,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from "../../../../conf/conf";
-import { Circles } from 'react-loader-spinner';
+import Loader from "../../../../Reusable_components/Loader";
 
 
 const AddExamResult = ({ isOpen, onClose }) => {
@@ -172,17 +172,8 @@ console.log(students,'students')
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Circles
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="circles-loading"
-            visible={true}
-          />
-        </div>
-      )}
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <form onSubmit={handleSubmit(handleSubmitExamResults)}>

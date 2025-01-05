@@ -7,7 +7,7 @@ import Button from '../../../Reusable_components/Button';
 // import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
 import BASE_URL from '../../../conf/conf';
-import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
 
 
 const Attendance = () => {
@@ -176,17 +176,7 @@ const Attendance = () => {
         data={students}
         searchOptions={[{ label: 'Student Name', value: 'name' }]}
       />
-                  {loading && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <Circles
-                  height="80"
-                  width="80"
-                  color="#4fa94d"
-                  ariaLabel="circles-loading"
-                  visible={true}
-                />
-              </div>
-            )}
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
 
       <div className='flex gap-2'>
         <Button onClick={handleSubmit} label='Submit Attendance' className='mt-5'/>

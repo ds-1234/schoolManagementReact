@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button from "../../../Reusable_components/Button";
 import BASE_URL from "../../../conf/conf";
-import { Circles } from 'react-loader-spinner';
+import Loader from "../../../Reusable_components/Loader";
 
 
 function EditLeaveRequest({ isOpen, onClose, leaveId }) {
@@ -100,17 +100,8 @@ function EditLeaveRequest({ isOpen, onClose, leaveId }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-gray-800">
-            {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Circles
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="circles-loading"
-            visible={true}
-          />
-        </div>
-      )}
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+
       <div className="bg-white p-6 py-2 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

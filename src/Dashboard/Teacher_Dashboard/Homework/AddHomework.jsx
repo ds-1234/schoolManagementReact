@@ -8,7 +8,7 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 import TodayDate from '../../../Reusable_components/TodayDate';
 import FutureDates from '../../../Reusable_components/FutureDates';
 import BASE_URL from '../../../conf/conf';
-import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
 
 
 const AddHomework = ({ isOpen, onClose }) => {
@@ -204,17 +204,8 @@ const AddHomework = ({ isOpen, onClose }) => {
   return (
     
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      {loading && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <Circles
-      height="80"
-      width="80"
-      color="#4fa94d"
-      ariaLabel="circles-loading"
-      visible={true}
-    />
-  </div>
-)}
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+
 
       <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative">
         <button
