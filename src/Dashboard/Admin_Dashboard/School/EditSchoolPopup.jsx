@@ -4,6 +4,9 @@ import { Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
+
 
 const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   const [school, setSchool] = useState({
@@ -22,6 +25,8 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity , setSelectedCity] = useState('') ;
+  const [loading, setLoading] = useState(false);
+  
 
   const fetchLocationData = async() => {
     await axios({
@@ -112,6 +117,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true); // Start loader
     e.preventDefault();
     axios({
       method: 'POST', 
@@ -132,6 +138,8 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
     .catch((err) => {
       console.error('Error:', err);
       toast.error('Failed to update school.');
+    })  .finally(()=> {
+      setLoading(false); // Stop loader
     });
   };
 
@@ -139,6 +147,7 @@ const EditSchoolPopup = ({ isOpen, onClose, schoolId, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

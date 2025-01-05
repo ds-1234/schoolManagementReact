@@ -12,6 +12,8 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
   const [examType, setExamType] = useState({ ExamName: '', description: '', });
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [editorData, setEditorData] = useState('');
+  const [loading, setLoading] = useState(false);
+  
 
 
   useEffect(() => {
@@ -37,7 +39,7 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
         })
         .catch((error) => {
           console.error('Error fetching Exam Type:', error);
-        });
+        })
     }
   }, [examtypeId, isOpen, reset]);
 
@@ -57,6 +59,7 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
   }, [onClose]);
 
   const onSubmit = (data, e) => {
+    setLoading(true);
     e.preventDefault();
 
     axios({
@@ -80,6 +83,8 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
       })
       .catch((error) => {
         toast.error('Failed to update Exam Type.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -87,6 +92,8 @@ function EditExamType({ isOpen, onClose, examtypeId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                    <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+      
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

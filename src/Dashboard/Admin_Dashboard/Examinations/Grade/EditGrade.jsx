@@ -8,12 +8,15 @@ import BASE_URL from '../../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import Loader from '../../../../Reusable_components/Loader';
 
 function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
   const [grade, setGrade] = useState({ grade: '', percentageFrom: '', percentageUpto: '', gradePoints: '', description: '',isActive:true });
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [value, setValue] = useState(true);
   const [editorData, setEditorData] = useState('');
+    const [loading, setLoading] = useState(false);
+  
 
 
   useEffect(() => {
@@ -71,6 +74,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
   }, [onClose,isOpen]);
 
   const onSubmit = (data, e) => {
+    setLoading(true);
     e.preventDefault();
 
     axios({
@@ -97,6 +101,8 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
       })
       .catch((error) => {
         toast.error('Failed to update Grade.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -104,6 +110,7 @@ function EditGrade({ isOpen, onClose, gradeId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                          <Loader isLoading={loading} /> {/* Use Reusable Loader */}
  <div className="bg-white p-6 rounded-lg w-full max-w-md relative overflow-y-auto max-h-[80vh]">
  <button
 

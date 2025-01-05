@@ -7,10 +7,14 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
+
 
 function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
     const [value, setValue] = useState(true);
   const [designation, setDesignation] = useState({ designationName: '',isActive:true });
+  const [loading, setLoading] = useState(false);
+  
 
 
   const {
@@ -64,6 +68,7 @@ function EditDesignation({ isOpen, onClose, designationId, onSuccess }) {
 //   };
 
 const handleSubmit = (e) => {
+  setLoading(true); // Start loader
     e.preventDefault();
 
     // Send only the selected coach ID
@@ -87,6 +92,8 @@ const handleSubmit = (e) => {
       .catch((error) => {
         toast.error('Failed to update Designation.');
         console.error('Error updating Designation:', error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -94,6 +101,8 @@ const handleSubmit = (e) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

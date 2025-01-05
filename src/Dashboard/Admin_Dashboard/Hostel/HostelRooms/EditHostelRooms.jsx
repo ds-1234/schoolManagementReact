@@ -5,6 +5,7 @@ import { toast} from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 const EditHostelRooms = ({ isOpen, onClose, hostelroomId, onSuccess }) => {
@@ -16,6 +17,7 @@ const EditHostelRooms = ({ isOpen, onClose, hostelroomId, onSuccess }) => {
   const [selectedRoomnum, setSelectedRoomnum] = useState(null);
   const [selectednumofbed, setSelectednumofbed] = useState(null);
   const [selectedcostofbed, setSelectedcostofbed] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, setValue: setFormValue, formState: { errors }, reset } = useForm();
 
@@ -89,6 +91,7 @@ console.log(hostelroomId,'hostelroomId')
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     const postData = {
       id: hostelroomId,
       hostelRoomNumber: data.hostelRoomNumber ,
@@ -111,6 +114,8 @@ console.log(hostelroomId,'hostelroomId')
       .catch(err => {
         toast.error('Error updating hostel room');
         console.error('Error:', err);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -118,6 +123,7 @@ console.log(hostelroomId,'hostelroomId')
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                        <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

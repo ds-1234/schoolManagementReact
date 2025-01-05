@@ -6,15 +6,21 @@ import {toast } from 'react-toastify';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
+
 
 function AddTransport() {
 
   const { register, handleSubmit,formState: { errors }, reset } = useForm();
   const navigate = useNavigate()
   const [value, setValue] = useState(true);
+      const [loading, setLoading] = useState(false);
+  
 
   // Function to handle form submission
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
         method:"POST",
         url : `${BASE_URL}/transport/createTransport`,
@@ -42,13 +48,16 @@ function AddTransport() {
         console.log(err,'error:')
         toast.error("Error to add new transport!");
         setValue(true)
-    })
+    }).finally(()=> {
+      setLoading(false); // Stop loader
+    });
   }
   
   
 
   return (
     <div>
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
        <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Add Transport </h1>
        <p className=' mt-2'><NavLink to = '/admin'> Dashboard </NavLink>/ <NavLink to = '/admin/transport'> Transport </NavLink> /<span className='text-[#ffae01] font-semibold'>Add Transport</span> </p>
 

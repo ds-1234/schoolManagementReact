@@ -8,12 +8,14 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 const AddFeesGrp = ({ isOpen, onClose }) => {
 
     const [value, setValue] = useState(true);
     const [editorData, setEditorData] = useState('');
+      const [loading, setLoading] = useState(false);
 
 
 
@@ -51,6 +53,7 @@ const AddFeesGrp = ({ isOpen, onClose }) => {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     axios({
       method: 'POST',
       url: `${BASE_URL}/feesGroup/saveFeesGroup`,
@@ -73,6 +76,8 @@ const AddFeesGrp = ({ isOpen, onClose }) => {
         console.log(err, 'error:');
         toast.error('Error adding new Fees Group');
         onClose();
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -80,6 +85,7 @@ const AddFeesGrp = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                          <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -10,6 +10,7 @@ import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../../../../Reusable_components/Loader';
 
 function AcademicDets() {
     const {userId} = useUserContext() 
@@ -27,6 +28,7 @@ function AcademicDets() {
     const [selectedSchl , setSelectedSchl] = useState('') ;
     const [selectedCls , setSelectedCls] = useState('') ;
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false);
 
     const fetchClassOptions = () => {
         axios({
@@ -93,6 +95,7 @@ function AcademicDets() {
 
 
       const onSubmit = async (data) => {
+        setLoading(true);
         console.log(data);
         console.log(data.className,'data.className')
         console.log(initialData.className,'initialData.className[0]')
@@ -121,11 +124,14 @@ function AcademicDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })
+          }).finally(() => {
+            setLoading(false); // Stop loader
+          });
     }
       
   return (
     <div>
+                        <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard  </NavLink>/

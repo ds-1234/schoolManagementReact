@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useForm , useFieldArray} from 'react-hook-form';
 import {differenceInMonths , differenceInYears} from 'date-fns'
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../../../Reusable_components/Loader';
 
 function Qualifications({handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -27,6 +28,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
 
   const navigate = useNavigate() ;
   const [documents , setDocuments] = useState([]) ;
+  const [loading, setLoading] = useState(false);
 
   const {
     fields: qualificationFields,
@@ -107,6 +109,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
     };
     
     const onSubmit = async (data) => {
+      setLoading(true); // Start loader
       const qualificationList = teacherData?.qualificationList || [];
       const workExperienceList = teacherData?.workExperience || [];
     
@@ -180,7 +183,9 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
       } catch (error) {
         toast.error("Error updating user details");
         console.error("Error updating user:", error);
-      }
+      }finally{
+        setLoading(false); // Stop loader
+      };
     };
     
     
@@ -263,6 +268,7 @@ function Qualifications({handlePrevious , handleNext , userId , currentStep , se
 
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
     {/* Qualifications Section */}
   <div className="space-y-2 mb-7 ">
   <h3 className=" font-semibold text-gray-900 text-xl">Qualifications</h3>

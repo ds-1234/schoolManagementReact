@@ -6,9 +6,11 @@ import Button from '../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
 
 const AddTimeTable = ({ isOpen, onClose, classItem }) => {  
-  const [subjectMap , setSubjectMap] = useState({}) 
+  const [subjectMap , setSubjectMap] = useState({})
+    const [loading, setLoading] = useState(false); 
   const { register, control, handleSubmit, reset } = useForm({
     defaultValues: {
       days: {
@@ -96,6 +98,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
 
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     const payload = data.days[activeDay].map((row) => ({
       className: classItem.id,
       weekDay: activeDay,
@@ -124,6 +127,8 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
       console.error(err);
       toast.error('Error adding new Time Table!');
       onClose();
+    }).finally(()=> {
+      setLoading(false); // Stop loader
     });
   };
 
@@ -139,6 +144,7 @@ const AddTimeTable = ({ isOpen, onClose, classItem }) => {
 
   return (
 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out p-4">
+              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
   <div className="bg-white p-4 rounded-xl w-full max-w-4xl relative shadow-lg animate-fadeIn">
     <button onClick={onClose} className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-gray-900 focus:outline-none">
       &times;

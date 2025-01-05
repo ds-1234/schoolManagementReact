@@ -7,13 +7,13 @@ import BASE_URL from '../../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import Loader from '../../../../Reusable_components/Loader';
 
 function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
   const [roomTy, setRoomTy] = useState({ roomTypeName: '', description: '' });
   const [value, setValue] = useState(true);
   const [editorData, setEditorData] = useState('');
-
-
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if(roomtyId!=null){
@@ -60,6 +60,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     axios({
       method: 'POST',
@@ -78,6 +79,8 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
       .catch((error) => {
         console.error('Error updating Room Type:', error);
         toast.error('Failed to update Room Type.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -85,6 +88,7 @@ function EditRoomType({ isOpen, onClose, roomtyId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

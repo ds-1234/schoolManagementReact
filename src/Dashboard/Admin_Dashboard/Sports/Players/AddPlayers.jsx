@@ -7,6 +7,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 function AddPlayers({ isOpen, onClose }) {
   const [value, setValue] = useState(true); // Toggle button state
@@ -17,6 +18,8 @@ function AddPlayers({ isOpen, onClose }) {
   const [dropdownOpen, setDropdownOpen] = useState(false); // Player dropdown
   const [dropdownOpen2, setDropdownOpen2] = useState(false); // Sport dropdown
   const [dateOfJoin, setDateOfJoin] = useState(''); // Date of joining
+  const [loading, setLoading] = useState(false);
+  
 
   const {
     register,
@@ -53,6 +56,7 @@ function AddPlayers({ isOpen, onClose }) {
 
   // Handle form submission
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     // Ensure that both a player and a sport are selected
@@ -84,6 +88,8 @@ function AddPlayers({ isOpen, onClose }) {
     .catch((error) => {
       toast.error('Failed to Create Player.');
       console.error('Error Creating Player:', error);
+    }).finally(() => {
+      setLoading(false); // Stop loader
     });
   };
 
@@ -91,6 +97,7 @@ function AddPlayers({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -6,11 +6,15 @@ import Button from '../../../../Reusable_components/Button';
 import { useState } from 'react';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
+
 
 
 const AddEventCategory = ({ isOpen, onClose }) => {
 
     const [value, setValue] = useState(true);
+    const [loading, setLoading] = useState(false);
+    
 
 
   const {
@@ -60,6 +64,7 @@ const AddEventCategory = ({ isOpen, onClose }) => {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     const color = generateRandomColor(); // Generate random color for event tile border
 
     axios({
@@ -84,6 +89,8 @@ const AddEventCategory = ({ isOpen, onClose }) => {
         console.log(err, 'error:');
         toast.error('Error adding new Event Category');
         onClose();
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -91,6 +98,7 @@ const AddEventCategory = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

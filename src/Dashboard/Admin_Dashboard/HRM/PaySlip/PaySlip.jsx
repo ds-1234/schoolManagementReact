@@ -6,6 +6,7 @@ import IncomeDetailsSection from './IncomeDetailsSection';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../Reusable_components/Button';
 import { toast } from 'react-toastify';
+import Loader from '../../../../Reusable_components/Loader';
 
 const PaySlip = () => {
   const [incomePayload, setIncomePayload] = useState({});
@@ -13,6 +14,7 @@ const PaySlip = () => {
   const [user, setUser] = useState({});
   const [teacherInfo, setTeacherInfo] = useState({});
   const [employerSignatureText, setEmployerSignatureText] = useState('');
+  const [loading, setLoading] = useState(false);
 
 
   // Fetch teacher info based on user ID
@@ -34,6 +36,7 @@ const PaySlip = () => {
 
   // Combine summary, income, and teacher data before sending
   const combinePayloadAndSend = async () => {
+    setLoading(true);
     try {
       // Combine all data into one payload
       const combinedPayload = {
@@ -59,7 +62,9 @@ const PaySlip = () => {
       }
     } catch (error) {
       console.error('Error sending pay slip data:', error.message);
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   useEffect(() => {
@@ -94,6 +99,7 @@ const PaySlip = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
+                      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
               <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Pay Slip</h1>
               <p className=' mt-2'><NavLink to = '/admin'> Dashboard  </NavLink>/<NavLink to = '/admin/hrm'> HRM  </NavLink>/<NavLink to = '/admin/ViewPaySlip'> Pay_Slip  </NavLink>/ <span className='text-[#ffae01] font-semibold'>Generate Pay_Slip</span> </p>
       {/* Employee Pay Summary Section */}

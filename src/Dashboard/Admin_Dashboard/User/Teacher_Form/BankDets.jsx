@@ -7,6 +7,7 @@ import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loader from '../../../../Reusable_components/Loader';
 
 function BankDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
   const {
@@ -18,8 +19,10 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
   } = useForm();
 
   const [teacherData , setTeacherData] = useState(null) ;
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: "post",
       url: `${BASE_URL}/teacherInfo/createTeacherInfo`,
@@ -42,6 +45,8 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
     })
     .catch((error) => {
         console.error("Error updating user:", error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   }
 
@@ -68,6 +73,7 @@ function BankDets({ handlePrevious , handleNext , userId , currentStep , selecte
 
   return (
     <div className="space-y-2 mb-5">
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h3 className="font-semibold text-gray-900 text-xl">Bank Information</h3>
       
       <div className="grid grid-cols-3 gap-5 ">

@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../../../Reusable_components/Loader';
 
 function HostelInfo({ handlePrevious , handleNext , userId , userName , currentStep , selectedRole}) {
 
@@ -18,6 +19,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
     
       const [hostels , setHostels] = useState([])
       const [hostelRoom , setHostelRoom] = useState([])
+  const [loading, setLoading] = useState(false);
 
     const fetchHostelOptions = () => {
         axios({
@@ -83,7 +85,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
 
 
       const onSubmit = async (data) => {
-        
+        setLoading(true); // Start loader
         const userData = {
             buildingName : parseInt(data.buildingName) ,
             roomNumber :  parseInt(data.roomNumber)  , 
@@ -107,8 +109,12 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
           })
           .catch(err=>{
               console.log(err,'error:')
-          })}else{
+          }).finally(()=> {
+            setLoading(false); // Stop loader
+          });
+        }else{
             handleNext();
+            setLoading(false); // Stop loader
           }
 
     }
@@ -117,6 +123,7 @@ function HostelInfo({ handlePrevious , handleNext , userId , userName , currentS
 
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
         <h2 className="col-span-4 mt-8 font-semibold text-gray-900 text-xl">Hostel Information</h2>
         <form  className="grid grid-cols-4 mt-5 gap-6">
           <div className="flex flex-col px-1">

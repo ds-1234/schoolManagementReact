@@ -11,6 +11,7 @@ import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft , faAngleDown} from '@fortawesome/free-solid-svg-icons';
+import Loader from '../../../../Reusable_components/Loader';
 
 function OfficeDets() {
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
@@ -19,6 +20,8 @@ function OfficeDets() {
   const [stds , setStds] = useState([]);
   const [dropdown , setDropdown] = useState(false)
   const [userData , setUserData] = useState({}) 
+  const [loading, setLoading] = useState(false);
+  
 
     const {
         register,
@@ -75,7 +78,7 @@ function OfficeDets() {
     } , []);
 
       const onSubmit = async(data) => {
-        
+        setLoading(true);
           await axios({
               method:"POST",
               url : `${BASE_URL}/user/updateOfficeDetails`,
@@ -101,7 +104,9 @@ function OfficeDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })
+          }).finally(() => {
+            setLoading(false); // Stop loader
+          });
     }
 
     const handleCheckboxChange = (stdId) => {
@@ -116,6 +121,7 @@ function OfficeDets() {
 
   return (
     <div>
+              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard </NavLink>/

@@ -12,6 +12,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
@@ -41,6 +42,7 @@ function EditFeesCollection({ isOpen, onClose, FeeCollectionId, onSuccess }) {
   const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
   const paymentmtdDropdownRef = useRef(null); // Ref for the fees group dropdown
   const [editorData, setEditorData] = useState('');
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -216,6 +218,7 @@ useEffect(() => {
 
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
 console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
     axios({
@@ -248,12 +251,16 @@ console.log(selectedFeesGrp.id,'selectedFeesGrp.id')
       .catch((error) => {
         toast.error('Failed to update Fee Collection.');
         console.error('Error updating Fee Collection:', error);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
   if (!isOpen) return null;
   else if (isOpen && paid) return(
     <>
+                        <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+
        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button

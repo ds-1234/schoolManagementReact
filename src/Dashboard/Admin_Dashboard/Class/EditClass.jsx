@@ -5,6 +5,8 @@ import Button from '../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
+
 
 function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   const [grade, setGrade] = useState({ name: '', section: '', subject: [] });
@@ -13,6 +15,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [teachers , setTeachers] = useState([])
   const [selectedTeacher , setSelectedTeacher] = useState('')
+  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -81,7 +85,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true); // Start loader
     // Construct the subject array in the required format
     const selectedSubjectObjects = selectedSubjects.map(id => {
       const subjectData = subjects.find(sub => sub.id === id);
@@ -109,6 +113,8 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
       .catch((error) => {
         toast.error('Failed to update class.');
         console.error('Error updating class:', error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -116,6 +122,7 @@ function EditClass({ isOpen, onClose, GradeId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative py-5 px-5 ">
         <button
           onClick={onClose}

@@ -11,6 +11,8 @@ import BASE_URL from '../../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import Loader from '../../../../Reusable_components/Loader';
+
 
 
 function AddIncome() {
@@ -18,6 +20,8 @@ function AddIncome() {
   const navigate = useNavigate();
   const [value, setValue] = useState(true);
   const [editorData, setEditorData] = useState('');
+      const [loading, setLoading] = useState(false);
+  
 
 
     // State for payment method dropdown
@@ -53,6 +57,7 @@ const handleSelectPaymentMethod = (method) => {
 //   };
 
   const onSubmit = (data) => {
+    setLoading(true);
     // const selectedExpenseCategory = expenseCat.find(cat => cat.expenseCategoryName === selectedCategory);
 
     // if (selectedExpenseCategory) {
@@ -81,6 +86,8 @@ const handleSelectPaymentMethod = (method) => {
       .catch(err => {
         toast.error("Error adding new Income!");
         setValue(true);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
     // } else {
     //   toast.error("Please select a valid expense category.");
@@ -89,6 +96,8 @@ const handleSelectPaymentMethod = (method) => {
 
   return (
     <div className='pl-0 h-full'>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+      
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Add Income</h1>
       <p className=' mt-2'><NavLink to='/admin'> Dashboard </NavLink>/<NavLink to='/admin/expenses'> Expenses </NavLink>/ <NavLink to='/admin/income'> Income </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Income</span></p>
 

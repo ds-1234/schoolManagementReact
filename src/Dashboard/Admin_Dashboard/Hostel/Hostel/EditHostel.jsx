@@ -6,10 +6,12 @@ import BASE_URL from '../../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import Loader from '../../../../Reusable_components/Loader';
 
 function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
   const [hostel, setHostel] = useState({ hostelName: '',hostelType: '',intakeBedCount: '',hostelAddress: '', description: '' });
   const [editorData, setEditorData] = useState('');
+      const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -51,6 +53,7 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     axios({
       method: 'POST',
@@ -69,6 +72,8 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
       .catch((error) => {
         console.error('Error updating Hostel:', error);
         toast.error('Failed to update Hostel.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -76,6 +81,8 @@ function EditHostel({ isOpen, onClose, hostelId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+      
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import {toast} from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 import ToggleButton from '../../../../Reusable_components/ToggleButton'
+import Loader from '../../../../Reusable_components/Loader';
 
 function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole , userId}) {
 
@@ -32,6 +33,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
   const [stds , setStds] = useState([]) ;
   const [value , setValue] = useState(true) ;
   const [users , setUsers] = useState([]) ;
+  const [loading, setLoading] = useState(false);
 
 
   const fetchLocationData = async() => {
@@ -130,6 +132,7 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
 
 
   const onSubmit = async (data) => {
+    setLoading(true); // Start loader
     await axios({
       method: "post",
       url: `${BASE_URL}/user/updateUser`,
@@ -171,6 +174,8 @@ function BasicDetails({handleNext , handlePrevious , currentStep , selectedRole 
       })
     .catch((error) => {
         console.error("Error updating user:", error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -192,6 +197,7 @@ console.log("Matching Students:", selectedStds.map(id => stds.find(std => std.id
 
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       {/* Map Parent to Children */}
       {selectedRole == 5 && (
         <div className="mb-6 mt-4 relative">

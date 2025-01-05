@@ -12,12 +12,14 @@ import { useUserContext } from '../../../../hooks/UserContext';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../../../../Reusable_components/Loader';
 
 function DocsDets() {
   const { id } = useUserContext();
   const { currentStep, handlePrevStep } = useStepContext();
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
   const [files, setFiles] = useState({});
 
@@ -100,16 +102,20 @@ function DocsDets() {
   };
 
   const onSubmit = async () => {
+    setLoading(true);
     try {
       await uploadDocuments();
       await fetchUserDetailsAndUpdate();
     } catch (error) {
       toast.error("An error occurred while processing your request.");
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   return (
     <div>
+                              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className='mt-2'>
         <NavLink to='/admin'> Dashboard </NavLink>/

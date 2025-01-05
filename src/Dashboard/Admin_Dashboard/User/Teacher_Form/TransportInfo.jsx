@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../../../Reusable_components/Loader';
 
 function TransportInfo({ handlePrevious , handleNext , userId , userName , currentStep , selectedRole}) {
 
@@ -18,6 +19,7 @@ function TransportInfo({ handlePrevious , handleNext , userId , userName , curre
     const [transports , setTransports] = useState([])
     const [vehicleNumber, setVehicleNumber] = useState('')
     const [selectedRoute, setSelectedRoute] = useState('')
+    const [loading, setLoading] = useState(false);
 
 
     const fetchTransportOptions = async() => {
@@ -76,7 +78,7 @@ function TransportInfo({ handlePrevious , handleNext , userId , userName , curre
 
 
   const onSubmit = async (data) => {
-    
+    setLoading(true); // Start loader
     const userData = {
         ...data ,
         routeName : parseInt(data.routeName) , 
@@ -99,7 +101,10 @@ function TransportInfo({ handlePrevious , handleNext , userId , userName , curre
       })
       .catch(err=>{
           console.log(err,'error:')
-      })}else{
+      }).finally(()=> {
+        setLoading(false); // Stop loader
+      });
+    }else{
         handleNext()
       }
 }
@@ -126,6 +131,7 @@ useEffect(() => {
 const navigate = useNavigate()
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
         <h2 className="col-span-4 mt-8 text-xl font-semibold text-gray-900">Transport Information</h2>
         <form  className="grid grid-cols-4 mt-5 gap-6">
           <div className="flex flex-col px-1">

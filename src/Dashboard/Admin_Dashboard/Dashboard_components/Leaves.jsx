@@ -7,12 +7,15 @@ import NotificationIcon from "../../../assets/Icons/NotificationIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import Loader from "../../../Reusable_components/Loader";
 
 const Leaves = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [userMap , setUserMap] = useState({}) 
   const [leaveTypeMap, setLeaveTypeMap] = useState({});
   const navigate = useNavigate()
+        const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const fetchLeaveRequests = async () => {
@@ -67,6 +70,7 @@ const Leaves = () => {
 } , [])
 
 const handleSubmit = async(id , value) => {
+  setLoading(true);
   await axios({
     method: 'POST' , 
     url: `${BASE_URL}/leaves/updateLeavesStatus` ,
@@ -79,12 +83,16 @@ const handleSubmit = async(id , value) => {
     toast.success("Leave Request Updated Successfully !")
   }).catch((err) => {
     toast.error("Error in Leave Request") 
-  })
+  }).finally(() => {
+    setLoading(false); // Stop loader
+  });
 }
 
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md ">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+      
       <NotificationIcon
         notificationCount={leaveRequests.length}
       />

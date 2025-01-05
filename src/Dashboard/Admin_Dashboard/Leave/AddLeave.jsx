@@ -8,11 +8,13 @@ import BASE_URL from '../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../Reusable_components/CkEditor.css';
+import Loader from '../../../Reusable_components/Loader';
 
 const AddLeave = ({ isOpen, onClose }) => {
 
     const [value, setValue] = useState(true);
     const [editorData, setEditorData] = useState('');
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -49,6 +51,7 @@ const AddLeave = ({ isOpen, onClose }) => {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     axios({
       method: 'POST',
       url: `${BASE_URL}/leaves/saveLeaves`,
@@ -71,6 +74,8 @@ const AddLeave = ({ isOpen, onClose }) => {
         console.log(err, 'error:');
         toast.error('Error adding new Leave');
         onClose();
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -78,6 +83,7 @@ const AddLeave = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

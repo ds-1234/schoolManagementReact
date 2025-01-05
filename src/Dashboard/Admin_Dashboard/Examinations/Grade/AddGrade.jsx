@@ -8,10 +8,13 @@ import BASE_URL from '../../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
+import Loader from '../../../../Reusable_components/Loader';
 // import { useNavigate } from 'react-router-dom';
 
 const AddExamType = ({ isOpen, onClose }) => {
   const [editorData, setEditorData] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const {
     register,
@@ -24,6 +27,7 @@ const AddExamType = ({ isOpen, onClose }) => {
   // const navigate = useNavigate()
 
   const onSubmit = (data) => {
+    setLoading(true);
     axios({
         method:"POST",
         url : `${BASE_URL}/gradePoints/createGradePoints`,
@@ -53,7 +57,9 @@ const AddExamType = ({ isOpen, onClose }) => {
         toast.error("Error to add new Grade");
         setValue(true)
         onClose();
-    })
+    }).finally(() => {
+      setLoading(false); // Stop loader
+    });
   }
 
 useEffect(() => {
@@ -87,6 +93,7 @@ useEffect(() => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+                    <Loader isLoading={loading} /> {/* Use Reusable Loader */}
  <div className="bg-white p-6 rounded-lg w-full max-w-md relative overflow-y-auto max-h-[80vh]">
          <button
 

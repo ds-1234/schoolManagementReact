@@ -6,6 +6,8 @@ import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
+
 
 const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
   const formatDateToDDMMYYYY = (dateString) => {
@@ -14,6 +16,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
     return `${day}/${month}/${year}`;
   };
   const [active, setActive] = useState(true);
+    const [loading, setLoading] = useState(false);
+  
 
   const [book, setBook] = useState({
     name: '',
@@ -61,7 +65,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
           console.error('Error fetching Book:', error);
           setActive(true)
 
-        });
+        })
     }
   }, [bookId, isOpen, setValue]);
 
@@ -97,6 +101,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
 
 
   const submitBook = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: 'POST',
       url: `${BASE_URL}/book/createBook`,
@@ -120,6 +125,8 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
         console.error('Error:', err);
         toast.error('Failed to update Book.');
         // setValue(true)
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -127,6 +134,7 @@ const EditBookPopup = ({ isOpen, onClose, bookId, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

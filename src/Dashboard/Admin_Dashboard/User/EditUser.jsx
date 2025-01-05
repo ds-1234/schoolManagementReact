@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown , faTrashCan} from '@fortawesome/free-solid-svg-icons';
 import SelectDropdown from '../../../Reusable_components/SelectDropdown';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
 
 function EditUser() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function EditUser() {
   const [joiningDate, setJoiningDate] = useState(null);
   const [relievingDate, setRelievingDate] = useState(null);
   const [totalExp, setTotalExp] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const calculateExperience = (joinDate, relieveDate) => {
     if (joinDate && relieveDate) {
@@ -224,6 +226,7 @@ const handleRouteChange = (e) => {
     }
   };
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: "post",
       url: `${BASE_URL}/user/updateUser`,
@@ -242,6 +245,8 @@ const handleRouteChange = (e) => {
     .catch((error) => {
         console.error("Error updating user:", error);
         toast.error('Failed to update user.');
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -276,6 +281,7 @@ const handleRouteChange = (e) => {
   
   return (
     <div className=" mx-auto ml-19.5 rounded-xl space-y-2 my-10">
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h2 className="text-2xl font-bold text-[#042954]">Edit User</h2>
       <p>Dashboard / <NavLink to='/admin'>Admin</NavLink> / <span className='text-[#ffae01] font-semibold'>Edit User</span></p>
       

@@ -5,6 +5,7 @@ import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
 import { toast } from 'react-toastify';
 import Table from '../../../Reusable_components/Table';
+import Loader from '../../../Reusable_components/Loader';
 
 const ManagerReport = () => {
   const [teachers, setTeachers] = useState([]);
@@ -17,6 +18,7 @@ const ManagerReport = () => {
   const [reporteeData, setReporteeData] = useState([]);
   const [users , setUsers] = useState([]) ;
   const [loadData , setLoadData] = useState(false) ;
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const ManagerReport = () => {
   }, []);
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const payload = {
         seniorStaffId: selectedManager,
@@ -65,7 +68,9 @@ const ManagerReport = () => {
       selectedRole('') ;
     } catch (error) {
       console.error('Error submitting data:', error);
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
   
   useEffect(() => {
@@ -121,6 +126,7 @@ const ManagerReport = () => {
 
   return (
     <div className='flex flex-col justify-start pl-0'>
+                <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl font-semibold text-black mt-5'>Manager Report</h1>
       <p className='mt-2'>
         <NavLink to='/admin'>Dashboard</NavLink> /

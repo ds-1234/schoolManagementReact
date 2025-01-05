@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
 
@@ -22,6 +23,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const [documents , setDocuments] = useState([]) ;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -80,6 +82,7 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true); // Start loader
     try {
       // First, upload the Resume and Photo files, if provided
       const resumeUploaded = resumePath || (data.resume?.[0] && (await uploadDocument(data.resume[0], 'Resume')));
@@ -102,11 +105,14 @@ function Documents({ handlePrevious , currentStep , selectedRole , userId}) {
     } catch (error) {
       console.error("Error updating user:", error);
       toast.error("Error updating user details.");
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   return (
     <div className='space-y-2 mb-5'>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h3 className="font-semibold text-gray-900 text-xl">Upload Documents</h3>
       <div className='grid grid-cols-2 gap-5'>
         <div className="flex flex-col mb-5">

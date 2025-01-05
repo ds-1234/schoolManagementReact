@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 const AddHostelRooms = ({ isOpen, onClose }) => {
@@ -13,6 +14,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [selectedHostel, setSelectedHostel] = useState(null);
   const [selectedRoomType, setSelectedRoomType] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
@@ -69,6 +71,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     const postData = {
       hostelRoomNumber: data.hostelRoomNumber,
       hostelName: { id: selectedHostel?.id },
@@ -89,6 +92,8 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
       .catch(err => {
         console.error('Error:', err);
         toast.error('Error adding new hostel room');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -96,6 +101,7 @@ const AddHostelRooms = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <h2 className="text-2xl font-bold mb-4">Add Hostel Room</h2>

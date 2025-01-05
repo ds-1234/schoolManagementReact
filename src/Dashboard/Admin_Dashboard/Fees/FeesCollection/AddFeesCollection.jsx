@@ -10,6 +10,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 function AddFeesCollection({ isOpen, onClose }) {
@@ -27,7 +28,7 @@ function AddFeesCollection({ isOpen, onClose }) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [payDropdownOpen, setPayDropdownOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // Radio button state
-
+  const [loading, setLoading] = useState(false);
   const classDropdownRef = useRef(null); // Ref for the class dropdown
   const studentDropdownRef = useRef(null); // Ref for the student dropdown
   const feesGroupDropdownRef = useRef(null); // Ref for the fees group dropdown
@@ -148,6 +149,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     if (!selectedStudent || !selectedFeesGrp) {
       toast.error('Please select both a student and a fees group');
       return;
@@ -180,6 +182,8 @@ function AddFeesCollection({ isOpen, onClose }) {
       .catch((error) => {
         toast.error('Failed to Create Fee Collection.');
         console.error('Error Creating Fee Collection:', error);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -206,6 +210,7 @@ function AddFeesCollection({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                          <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button onClick={handleCut} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
 

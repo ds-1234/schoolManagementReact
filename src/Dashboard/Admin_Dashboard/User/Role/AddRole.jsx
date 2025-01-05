@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import BASE_URL from '../../../../conf/conf';
-// import { useNavigate } from 'react-router-dom';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../../Reusable_components/Loader';
 
 const AddRole = ({ isOpen, onClose }) => {
+    const [loading, setLoading] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -40,6 +43,8 @@ const AddRole = ({ isOpen, onClose }) => {
   // const navigate = useNavigate()
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
+
     axios({
         method:"POST",
         url : `${BASE_URL}/role/createRole`,
@@ -61,13 +66,16 @@ const AddRole = ({ isOpen, onClose }) => {
         console.log(err,'error:')
         toast.error("Error to add new role");
         onClose();
-    })
+    })  .finally(()=> {
+      setLoading(false); // Stop loader
+    });
   }
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5 ">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
        <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -5,13 +5,15 @@ import Button from '../../../../Reusable_components/Button';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../../conf/conf';
 import LibraryStatusButton from '../../../../Reusable_components/LibraryStatusButton';
+import Loader from '../../../../Reusable_components/Loader';
+
 
 function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   const [bookIssueData, setBookIssueData] = useState(null); // Store the fetched data
   const [userData, setUserData] = useState(null); // Store the fetched user data
   const [bookData, setBookData] = useState(null); // Store the fetched Book data
   const [status, setStatus] = useState(true); // Active/Inactive status
-
+    const [loading, setLoading] = useState(false);
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   useEffect(() => {
@@ -101,6 +103,7 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
   };
 
   const onSubmit = async (formData) => {
+    setLoading(true); // Start loader
     const payload = {
       id: BookIssueId,
       userId: userData.id,
@@ -124,12 +127,15 @@ function EditBookIssue({ isOpen, onClose, BookIssueId, onSuccess }) {
     } catch (error) {
       console.error("Error saving book issue:", error);
       toast.error("Error occurred while saving.");
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   return (
     isOpen && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
         <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
           <button
             onClick={onClose}

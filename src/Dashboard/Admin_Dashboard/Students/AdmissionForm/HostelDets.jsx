@@ -10,6 +10,7 @@ import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
+import Loader from '../../../../Reusable_components/Loader';
 
 function HostelDets() {
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
@@ -24,6 +25,8 @@ function HostelDets() {
     
       const [hostels , setHostels] = useState([])
       const [hostelRoom , setHostelRoom] = useState([])
+      const [loading, setLoading] = useState(false);
+      
 
     const fetchHostelOptions = () => {
         axios({
@@ -84,6 +87,7 @@ function HostelDets() {
     }, [reset , userId]);
 
       const onSubmit = async (data) => {
+        setLoading(true);
         console.log(data);
         
         const userData = {
@@ -108,12 +112,16 @@ function HostelDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })}else{
+          }).finally(() => {
+            setLoading(false); // Stop loader
+          });
+        }else{
             handleNextStep()
           }
     }
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard </NavLink>/

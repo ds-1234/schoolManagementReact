@@ -8,6 +8,7 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 function AddExpenses() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -19,6 +20,8 @@ function AddExpenses() {
   // State for payment method dropdown
 const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 const [payDropdownOpen, setPayDropdownOpen] = useState(false);
+const [loading, setLoading] = useState(false);
+
 
 // Function to handle selection of payment method
 const handleSelectPaymentMethod = (method) => {
@@ -46,6 +49,7 @@ const handleSelectPaymentMethod = (method) => {
   };
 
   const onSubmit = (data) => {
+    setLoading(true);
     const selectedExpenseCategory = expenseCat.find(cat => cat.expenseCategoryName === selectedCategory);
 
     if (selectedExpenseCategory) {
@@ -79,6 +83,8 @@ const handleSelectPaymentMethod = (method) => {
       .catch(err => {
         toast.error("Error adding new expense!");
         setValue(true);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
     } else {
       toast.error("Please select a valid expense category.");
@@ -87,6 +93,7 @@ const handleSelectPaymentMethod = (method) => {
 
   return (
     <div className=' h-full'>
+                <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Add Expenses</h1>
       <p className=' mt-2'><NavLink to='/admin'> Dashboard </NavLink>/ <NavLink to='/admin/Expenses'> Expenses </NavLink> / <span className='text-[#ffae01] font-semibold'>Add Expense</span></p>
 

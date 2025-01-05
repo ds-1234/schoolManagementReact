@@ -7,11 +7,13 @@ import axios from 'axios';
 import BASE_URL from '../../../../conf/conf';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loader from '../../../../Reusable_components/Loader';
 
 function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole }) {
   const { register, control, handleSubmit, formState: { errors }, reset } = useForm();
   const [teacherData , setTeacherData] = useState(null) ;
   const [documents , setDocuments] = useState([]) ;
+  const [loading, setLoading] = useState(false);
 
   const aadharPath = documents.find(doc => doc.documentName === "Aadhar Card")?.attachmentPath || "";
   const panPath = documents.find(doc => doc.documentName === "Pan Card")?.attachmentPath || "";
@@ -41,6 +43,7 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
   };
 
   const onSubmit = async (data) => {
+    setLoading(true); // Start loader
     try {
       // Save the teacher info
       const response = await axios.post(`${BASE_URL}/teacherInfo/createTeacherInfo`, {
@@ -63,7 +66,9 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
     } catch (error) {
       console.error("Error updating user:", error);
       toast.error("Failed to update user");
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   useEffect(() => {
@@ -99,6 +104,7 @@ function HRDets({ handlePrevious, handleNext, userId, currentStep, selectedRole 
 
   return (
     <div className='space-y-2 mb-5'>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h3 className="font-semibold text-gray-900 text-xl">HR Information</h3>
       <div className='grid grid-cols-2 gap-5'>
         <div className="flex flex-col mb-5 gap-2">

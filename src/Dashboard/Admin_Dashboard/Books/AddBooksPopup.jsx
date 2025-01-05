@@ -9,8 +9,7 @@ import BASE_URL from '../../../conf/conf';
 // import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import dayjs from 'dayjs';
-
-
+import Loader from '../../../Reusable_components/Loader';
 
 const AddBooksPopup = ({ isOpen, onClose }) => {
 
@@ -22,6 +21,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
 
   const [value, setValue] = useState(true);
   const [publishingYear, setPublishingYear] = useState(null); // State for DatePicker
+  const [loading, setLoading] = useState(false);
+  
 
   const {
     register,
@@ -57,6 +58,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
   
   const SubmitBook = (data) => {
+    setLoading(true); // Start loader
     // const formattedPublishingYear = dayjs(data.publishingYear).format('DD-MM-YYYY');
 
     const formData = getValues();
@@ -91,6 +93,8 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
         onClose();
         setValue(true)
 
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -98,6 +102,7 @@ const AddBooksPopup = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

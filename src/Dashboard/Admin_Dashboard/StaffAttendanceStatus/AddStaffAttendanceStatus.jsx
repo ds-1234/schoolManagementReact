@@ -7,8 +7,13 @@ import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
 import 'react-toastify/dist/ReactToastify.css';
 import ColorPicker from '../../../Reusable_components/ColorPicker';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
+
 
 const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
+      const [loading, setLoading] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -46,6 +51,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: 'POST',
       url: `${BASE_URL}/attendance/saveStaffAttendanceStatus`,
@@ -71,6 +77,8 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
         toast.error('Error adding new Data');
         onClose();
         reset()
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -78,6 +86,7 @@ const AddStaffAttendanceStatus = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={() => {

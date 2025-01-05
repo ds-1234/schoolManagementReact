@@ -6,6 +6,7 @@ import BASE_URL from '../../../conf/conf';
 import axios from 'axios';
 import Table from '../../../Reusable_components/Table';
 import { toast } from 'react-toastify';
+import Loader from '../../../Reusable_components/Loader';
 
 function StudentPromotion() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -18,6 +19,8 @@ function StudentPromotion() {
   const [selectAll, setSelectAll] = useState(true);
   const [filterUsers , setFilterUsers] = useState([]) ;
   const checkboxRefs = useRef({});
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     const year = new Date().getFullYear();
@@ -75,6 +78,7 @@ function StudentPromotion() {
   };
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     data.promoteSession = promoteSession ;
     data.selectedStudents = selectedUsers ;
     
@@ -92,8 +96,10 @@ function StudentPromotion() {
       toast.success("Students promoted Successfully!")
       reset()
     })
-    .catch((err) => console.log(err)) ;
-
+    .catch((err) => console.log(err)) 
+    .finally(()=> {
+      setLoading(false); // Stop loader
+    });
   };
 
   const columns = [
@@ -178,6 +184,7 @@ function StudentPromotion() {
 
   return (
     <div className='h-full mb-10'>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Student Promotion</h1>
       <p className=' mt-2'>
         <NavLink to='/admin'> Dashboard </NavLink>/

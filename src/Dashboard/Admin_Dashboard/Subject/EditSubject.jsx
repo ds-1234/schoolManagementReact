@@ -7,12 +7,15 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../Reusable_components/CkEditor.css';
 
-
+import { Circles } from 'react-loader-spinner';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../../../Reusable_components/Loader';
 
 function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   const [subject, setSubject] = useState({ subject: '', description: '' });
   const [editorData, setEditorData] = useState('');
+  const [loading, setLoading] = useState(false);
+  
 
 
   useEffect(() => {
@@ -53,6 +56,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true); // Start loader
     console.log(editorData,'editorData')
     e.preventDefault();
     axios({
@@ -72,6 +76,8 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
       .catch((error) => {
         console.error('Error updating subject:', error);
         toast.error('Failed to update subject.');
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -79,6 +85,7 @@ function EditSubject({ isOpen, onClose, subjectId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -7,10 +7,14 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader'; // Import reusable loader
+
 
 function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
     const [value, setValue] = useState(true);
   const [department, setDepartment] = useState({ departmentName: '',isActive:true });
+      const [loading, setLoading] = useState(false);
+  
 
 
   const {
@@ -65,6 +69,8 @@ function EditDepartment({ isOpen, onClose, departmentId, onSuccess }) {
 //   };
 
 const handleSubmit = (e) => {
+  // setTimeout(()=>{
+  setLoading(true); // Start loader
     e.preventDefault();
 
     // Send only the selected coach ID
@@ -88,13 +94,17 @@ const handleSubmit = (e) => {
       .catch((error) => {
         toast.error('Failed to update Department.');
         console.error('Error updating Department:', error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
+    // },3000)
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

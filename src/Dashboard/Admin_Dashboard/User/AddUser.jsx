@@ -9,6 +9,7 @@ import DatePicker from '../../../Reusable_components/DatePicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
 
 
 const AddUser = () => {
@@ -26,6 +27,7 @@ const AddUser = () => {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity , setSelectedCity] = useState('') ;
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -55,6 +57,7 @@ const AddUser = () => {
   
 
   const onSubmit = async(data) => {
+    setLoading(true); // Start loader
     const userData = {
       ...data , 
       role: selectedRole,
@@ -94,7 +97,9 @@ const AddUser = () => {
         toast.error("Error to add new User");
         setValue(true)
         reset()
-    })
+    }).finally(()=> {
+      setLoading(false); // Stop loader
+    });
   }
 
     // Fetch countries
@@ -162,7 +167,7 @@ const AddUser = () => {
 
   return (
     <div className="p-10 mx-auto bg-white rounded-xl shadow-md space-y-2 my-10 ">
-
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
         <h2 className="text-2xl font-bold text-[#042954]  ">Add New User</h2>
         <p><NavLink to = '/admin'> Dashboard </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add User</span> </p>
       

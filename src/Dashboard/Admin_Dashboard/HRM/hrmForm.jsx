@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Button from '../../../Reusable_components/Button'
 import DatePicker from '../../../Reusable_components/DatePicker'
+import Loader from "../../../Reusable_components/Loader";
 
 const HrmForm = () => {
   const [leaveTypes, setLeaveTypes] = useState([]); // Dynamic leave types
@@ -13,6 +14,7 @@ const HrmForm = () => {
   const {state} = useLocation()
   const teacherId = state?.teacherId ;
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
 
   // Fetch leave types dynamically
   useEffect(() => {
@@ -29,6 +31,7 @@ const HrmForm = () => {
 
   // Submit Handler
   const onSubmit = async (data) => {
+    setLoading(true);
     const formattedData = {
         ...data,
       teacherId: teacherId, 
@@ -46,11 +49,14 @@ const HrmForm = () => {
       toast.error("Error saving HRM details.");
       console.log(error);
       
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   return (
     <div className=' h-full mb-10'>
+                <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl  pt-8 font-semibold text-black'>HRM Application</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard </NavLink>/ 

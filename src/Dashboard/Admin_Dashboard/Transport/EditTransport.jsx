@@ -5,10 +5,15 @@ import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import { useForm } from 'react-hook-form';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
+
 
 function EditTransport({ isOpen, onClose, transportId , onSuccess }) {
   const [value, setValue] = useState(true);
   const { register,formState: { errors }, reset } = useForm();
+        const [loading, setLoading] = useState(false);
+  
 
   const [transport, setTransport] = useState({ 
     routeName: '', 
@@ -68,6 +73,7 @@ useEffect(() => {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true); // Start loader
     e.preventDefault();
     axios({
       method: "post",
@@ -87,6 +93,8 @@ useEffect(() => {
       .catch((error) => {
         console.error("Error updating transport:", error);
         toast.error('Failed to update transport.')
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -94,6 +102,7 @@ useEffect(() => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-10">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
        <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

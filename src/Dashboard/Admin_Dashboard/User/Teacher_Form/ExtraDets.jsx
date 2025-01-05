@@ -9,6 +9,7 @@ import BASE_URL from '../../../../conf/conf';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loader from '../../../../Reusable_components/Loader';
 
 function ExtraDets({ handlePrevious , handleNext , userId , currentStep , selectedRole}) {
 
@@ -33,6 +34,7 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   const [departments , setDepartments] = useState([]) ;
   const [selectedDept , setSelectedDept] = useState('') ;
   const [basicTchData , setBasicTchData] = useState(null) ;
+  const [loading, setLoading] = useState(false);
 
   const fetchOptions = async () => {
     try {
@@ -92,7 +94,7 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
   };
 
   const onSubmit = (data) => {
-    
+    setLoading(true); // Start loader
     const classSubjectEntity = classSubjectRows.map((row) => {
       const existingClassSubject = teacherData?.classSubjectEntity?.find(
         (item) => item.classId === row.classId && item.subjectId === row.subjectId
@@ -133,6 +135,8 @@ function ExtraDets({ handlePrevious , handleNext , userId , currentStep , select
     })
     .catch((error) => {
         console.error("Error updating user:", error);
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   }
 
@@ -195,6 +199,7 @@ const fetchBasicDets = async() => {
 
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
          <div className="flex flex-col px-1 mt-2 mb-5">
             <label htmlFor="maritalStatus" className='text-gray-900 font-semibold text-xl'>Marital Status <span className='text-red-700 font-bold'>*</span></label>
             <div className="flex space-x-4">

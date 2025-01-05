@@ -8,12 +8,14 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 function EditFeesGrp({ isOpen, onClose, feesGrpId, onSuccess }) {
   const [feesGrp, setFeesGrp] = useState({ feesGroupName: '', description: '' });
   const [value,setValue] =useState(true)
   const [editorData, setEditorData] = useState('');
+  const [loading, setLoading] = useState(false);
 
 
   const {
@@ -67,6 +69,7 @@ function EditFeesGrp({ isOpen, onClose, feesGrpId, onSuccess }) {
   };
 
   const onSubmit = (e) => {
+    setLoading(true);
     // e.preventDefault();
     axios({
       method: 'POST',
@@ -90,6 +93,8 @@ function EditFeesGrp({ isOpen, onClose, feesGrpId, onSuccess }) {
       .catch((error) => {
         console.error('Error updating Fees Group:', error);
         toast.error('Failed to update Fees Group.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -97,6 +102,7 @@ function EditFeesGrp({ isOpen, onClose, feesGrpId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

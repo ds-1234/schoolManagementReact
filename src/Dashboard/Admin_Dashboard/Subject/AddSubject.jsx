@@ -8,13 +8,16 @@ import  '../../../Reusable_components/CkEditor.css';
 import BASE_URL from '../../../conf/conf';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import { Circles } from 'react-loader-spinner';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../../../Reusable_components/Loader';
 
 
 const AddSubject = ({ isOpen, onClose }) => {
   const [value, setValue] = useState(true);
   const [editorData, setEditorData] = useState('');
+    const [loading, setLoading] = useState(false);
+  
 
   const {
     register,
@@ -46,6 +49,7 @@ const AddSubject = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: 'POST',
       url: `${BASE_URL}/subject/createSubject`,
@@ -68,6 +72,8 @@ const AddSubject = ({ isOpen, onClose }) => {
         console.error(err);
         toast.error('Error adding new subject');
         onClose();
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -75,6 +81,7 @@ const AddSubject = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

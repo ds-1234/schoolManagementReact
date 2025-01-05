@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
+import Loader from '../../../Reusable_components/Loader'; // Import reusable loader
 import BASE_URL from '../../../conf/conf';
 
 const AddDepartment = ({ isOpen, onClose }) => {
@@ -15,17 +16,15 @@ const AddDepartment = ({ isOpen, onClose }) => {
   } = useForm();
 
   const [value, setValue] = useState(true);
-
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Disable scrolling on background when the popup is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
 
-    // Add event listener for ESC key press
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -36,40 +35,44 @@ const AddDepartment = ({ isOpen, onClose }) => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'auto'; // Clean up scrolling style
+      document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
 
-  // Handle form submission
   const onSubmit = (data) => {
-    axios({
-      method: 'POST',
-      url: `${BASE_URL}/department/saveDepartment`,
-      data: {
-        departmentName: data.departmentName,
-        isActive: value,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        console.log('response', response.data);
-        toast.success('Successfully added Data');
-        reset();
-        onClose();
+    setLoading(true);
+    // setTimeout(() => {
+      axios({
+        method: 'POST',
+        url: `${BASE_URL}/department/saveDepartment`,
+        data: {
+          departmentName: data.departmentName,
+          isActive: value,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch((err) => {
-        console.log(err, 'error:');
-        toast.error('Error adding new Data');
-        onClose();
-      });
+        .then((response) => {
+          toast.success('Successfully added Data');
+          reset();
+          onClose();
+        })
+        .catch((err) => {
+          toast.error('Error adding new Data');
+          onClose();
+        })
+        .finally(() => {
+          setLoading(false); // Stop loader
+        });
+    // }, 3000);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}
@@ -78,11 +81,14 @@ const AddDepartment = ({ isOpen, onClose }) => {
           &times;
         </button>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">Add New Department</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#042954]">
+            Add New Department
+          </h2>
 
-          {/* Department Input */}
           <div className="mb-4">
-            <label htmlFor="departmentName" className="block text-gray-700 font-semibold mb-2">Department</label>
+            <label htmlFor="departmentName" className="block text-gray-700 font-semibold mb-2">
+              Department
+            </label>
             <input
               type="text"
               id="departmentName"
@@ -93,27 +99,20 @@ const AddDepartment = ({ isOpen, onClose }) => {
           </div>
 
           <div className="mb-2">
-              <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
-                Status 
-              </label>
-              <ToggleButton
-                isOn={value}
-                handleToggle={() => setValue(!value)}
-                id="active"
-                // label="Active"
-                register={register}
-              />
-            </div>
+            <label className="block text-sm font-medium mb-2 text-black" htmlFor="active">
+              Status
+            </label>
+            <ToggleButton
+              isOn={value}
+              handleToggle={() => setValue(!value)}
+              id="active"
+              register={register}
+            />
+          </div>
 
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full text-center"
-          />
+          <Button type="submit" className="w-full text-center" />
         </form>
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 };

@@ -5,6 +5,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Button from '../../../Reusable_components/Button';
 import BASE_URL from '../../../conf/conf';
+import { Circles } from 'react-loader-spinner';
+import Loader from '../../../Reusable_components/Loader';
+
 
 const AddSchoolPopup = ({ isOpen, onClose }) => {
 
@@ -14,6 +17,8 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedCity , setSelectedCity] = useState('') ;
+  const [loading, setLoading] = useState(false);
+  
 
   const {
     register,
@@ -47,6 +52,8 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   const Submitschool = (data) => {
+    setLoading(true); // Start loader
+
     const formData = getValues();
     
     setSelectedCountry(data.country || '');
@@ -81,6 +88,8 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
         toast.error('Failed to add school.');
         onClose();
         reset()
+      })  .finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -121,6 +130,7 @@ const AddSchoolPopup = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

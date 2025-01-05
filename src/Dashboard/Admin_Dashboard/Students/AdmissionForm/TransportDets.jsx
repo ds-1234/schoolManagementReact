@@ -10,6 +10,7 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 function TransportDets() {
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
@@ -24,6 +25,7 @@ function TransportDets() {
     const [vehicleNumber, setVehicleNumber] = useState('')
     const [selectedRoute, setSelectedRoute] = useState('')
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false);
 
 
     const fetchTransportOptions = async() => {
@@ -100,6 +102,7 @@ function TransportDets() {
 }, [reset , userId]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     console.log(data);
     
     const userData = {
@@ -124,12 +127,16 @@ function TransportDets() {
       .catch(err=>{
           console.log(err,'error:')
           reset()
-      })}else{
+      })
+      .finally(() => {
+        setLoading(false); // Stop loader
+      });}else{
         handleNextStep()
       }
 }
   return (
     <div>
+                                    <Loader isLoading={loading} /> {/* Use Reusable Loader */}    
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard </NavLink>/

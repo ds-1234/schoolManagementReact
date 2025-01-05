@@ -6,6 +6,7 @@ import Button from '../../../../Reusable_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 
 const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
@@ -25,6 +26,8 @@ const AddExamSchedule = ({ isOpen, onClose, classItem }) => {
   const [examTypes, setExamTypes] = useState([]);
   const [subjects, setSubjects] = useState([]); // State for all subjects
   const [filteredSubjects, setFilteredSubjects] = useState([]); // State for filtered subjects based on selected class
+  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     if (!isOpen) {
@@ -82,7 +85,9 @@ fetchClassList    // setFilteredSubjects([])
         setClassList(response.data.data);
       } catch (error) {
         console.error('Error fetching class list:', error);
-      }
+      }finally {
+        setLoading(false); // Stop loader
+      };
     };
     // fetchClassList();
 
@@ -169,6 +174,7 @@ fetchClassList    // setFilteredSubjects([])
   };
 
   const onSubmit = (data) => {
+    setLoading(true);
     console.log(data, 'data');
     // Transform data into the required payload format before sending to API
     const payload = {
@@ -208,6 +214,8 @@ fetchClassList    // setFilteredSubjects([])
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-300 ease-in-out p-4">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
+      
       <div className="bg-white p-4 rounded-xl w-full max-w-4xl relative shadow-lg animate-fadeIn">
         <button
           onClick={onClose}

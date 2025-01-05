@@ -4,11 +4,16 @@ import { toast, ToastContainer } from 'react-toastify';
 import Button from '../../../../Reusable_components/Button';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+// import { Circles } from 'react-loader-spinner';
+import Loader from '../../../../Reusable_components/Loader';
+
 
 
 function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
   const [eventCat, setEventCat] = useState({ eventCategoryTitle: ''});
   const [value, setValue] = useState(true);
+  const [loading, setLoading] = useState(false);
+  
 
 
   useEffect(() => {
@@ -51,6 +56,7 @@ function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true); // Start loader
     e.preventDefault();
     axios({
       method: 'POST',
@@ -69,6 +75,8 @@ function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
       .catch((error) => {
         console.error('Error updating Event Category:', error);
         toast.error('Failed to update Event Category.');
+      }).finally(()=> {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -76,6 +84,7 @@ function EditEventCategory({ isOpen, onClose, EventCatId, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 md:p-0 p-5">
+      <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import TodayDate from '../../../Reusable_components/TodayDate';
 import ToggleButton from '../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../conf/conf';
+import Loader from '../../../Reusable_components/Loader';
 
 function AddNotice() {
   const user = JSON.parse(sessionStorage.getItem('user')); // Parse the user data
@@ -17,6 +18,7 @@ function AddNotice() {
   const [role, setRole] = useState([]); // List of roles fetched from the API
   const [rolepay, setRolepay] = useState(0); // Selected role ID
   const [selectedRoles, setSelectedRoles] = useState([]); // Track the selected roles
+    const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch roles when the component loads
@@ -54,6 +56,7 @@ function AddNotice() {
 
   // Handle form submission
   const onSubmit = (data) => {
+    setLoading(true);
     console.log('Submitted Data:', data);
 
     const formattedDate = data.date;
@@ -82,11 +85,14 @@ function AddNotice() {
       .catch((err) => {
         console.log('Error:', err);
         toast.error('Failed to add notice.');
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-10 mx-auto bg-white rounded-xl shadow-md  my-10">
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h2 className="text-2xl font-semibold text-black"> Add Notice</h2>
       <p className='mb-5'><NavLink to='/admin'> Dashboard </NavLink>/<NavLink to='/admin/notice'> Notices </NavLink>/ <span className='text-[#ffae01] font-semibold'>Add Notice</span></p>
 

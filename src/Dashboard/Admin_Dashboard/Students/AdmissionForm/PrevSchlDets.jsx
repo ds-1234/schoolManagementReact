@@ -11,8 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useStepContext } from '../../../../hooks/StepContext';
 import BASE_URL from '../../../../conf/conf';
+import { useState } from 'react';
+import Loader from '../../../../Reusable_components/Loader';
 
 function PrevSchlDets() {
+  const [loading, setLoading] = useState(false);
   const { currentStep, handleNextStep , handlePrevStep } = useStepContext();
   const {userId} = useUserContext() 
     const navigate = useNavigate()
@@ -43,6 +46,7 @@ function PrevSchlDets() {
     }, [reset , userId]);
 
       const onSubmit = async (data) => {
+        setLoading(true);
         console.log(data);
         
         const userData = {
@@ -67,13 +71,17 @@ function PrevSchlDets() {
           .catch(err=>{
               console.log(err,'error:')
               reset()
-          })}else{
+          }).finally(() => {
+            setLoading(false); // Stop loader
+          });
+        }else{
             handleNextStep()
           }
     }
     
   return (
     <div>
+              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
       <p className=' mt-2'>
         <NavLink to = '/admin'> Dashboard </NavLink>/

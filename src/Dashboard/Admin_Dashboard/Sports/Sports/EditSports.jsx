@@ -7,6 +7,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import ToggleButton from '../../../../Reusable_components/ToggleButton';
 import BASE_URL from '../../../../conf/conf';
+import Loader from '../../../../Reusable_components/Loader';
 
 function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
     const [value, setValue] = useState(true);
@@ -14,6 +15,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
   const [coach, setCoach] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCoach, setSelectedCoach] = useState(null);
+    const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -80,7 +82,7 @@ function EditSports({ isOpen, onClose, sportsId, onSuccess }) {
 
 const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     // Send only the selected coach ID
     axios({
       method: 'post',
@@ -104,6 +106,8 @@ const handleSubmit = (e) => {
       .catch((error) => {
         toast.error('Failed to update Sport.');
         console.error('Error updating Sport:', error);
+      }).finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -111,6 +115,7 @@ const handleSubmit = (e) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                              <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-4 rounded-lg w-full max-w-md relative">
         <button
           onClick={onClose}

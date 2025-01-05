@@ -10,6 +10,7 @@ import BASE_URL from '../../../../conf/conf';
 import ProgressIndicator from './ProgressIndicator';
 import { useStepContext } from '../../../../hooks/StepContext';
 import { NavLink } from 'react-router-dom';
+import Loader from '../../../../Reusable_components/Loader';
 
 function BasicDets() {
 
@@ -22,6 +23,7 @@ const [selectedCountry, setSelectedCountry] = useState(null);
 const [selectedState, setSelectedState] = useState(null);
 const [selectedCity , setSelectedCity] = useState(null) ;
 const [userData , setUserData] = useState(null) ;
+    const [loading, setLoading] = useState(false);
 
 const {
     register,
@@ -110,7 +112,7 @@ const {
   }, [userId]);
 
   const onSubmit = async (data) => {
-
+    setLoading(true);
     try {
       const response = await axios.post(`${BASE_URL}/user/addStudentBasicDetails`, {
         ...data,
@@ -126,11 +128,14 @@ const {
     } catch (error) {
       toast.error("Error adding new user");
       console.error(error);
-    }
+    }finally {
+      setLoading(false); // Stop loader
+    };
   };
 
   return (
     <div>
+            <Loader isLoading={loading} /> {/* Use Reusable Loader */}
         <h1 className='text-lg md:text-2xl pt-8 font-semibold text-black'>Admission Form</h1>
         <p className=' mt-2'>
           <NavLink to = '/admin'> Dashboard </NavLink>/

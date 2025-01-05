@@ -10,11 +10,15 @@ import Button from './Reusable_components/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import BASE_URL from './conf/conf';
+import { Circles } from 'react-loader-spinner';
+
 
 function LandingPage() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const [loading, setLoading] = useState(false);
+  
 
   const {
     register,
@@ -78,6 +82,7 @@ function LandingPage() {
   
 
   const onSubmit = (data) => {
+    setLoading(true); // Start loader
     axios({
       method: 'post',
       url: `${BASE_URL}/user/login`,
@@ -98,6 +103,8 @@ function LandingPage() {
     })
     .catch((err) => {
       toast.error('Please Enter Valid User Id and Password');
+    })  .finally(()=> {
+      setLoading(false); // Stop loader
     });
   };
 
@@ -110,6 +117,17 @@ function LandingPage() {
           {/* <div className="w-1/2 hidden md:block">
             <img src={loginImg} alt="Login" className="h-full object-cover" />
           </div> */}
+                      {loading && (
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <Circles
+                      height="80"
+                      width="80"
+                      color="#4fa94d"
+                      ariaLabel="circles-loading"
+                      visible={true}
+                    />
+                  </div>
+                )}
 
           {/* Login form */}
           <div className=" bg-white rounded-md absolute right-5 top-5 px-5 py-2  flex flex-col justify-center items-center">
