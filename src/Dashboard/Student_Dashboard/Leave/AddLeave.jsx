@@ -9,6 +9,7 @@ import FutureDates from '../../../Reusable_components/FutureDates';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import  '../../../Reusable_components/CkEditor.css';
+import Loader from "../../../Reusable_components/Loader";
 
 const AddLeave = ({ isOpen, onClose }) => {
   const { register, handleSubmit, reset , formState: { errors } } = useForm();
@@ -18,6 +19,7 @@ const AddLeave = ({ isOpen, onClose }) => {
   const [leaveTypeList , setLeaveTypeList] = useState([])
   const [selectedTeacher , setSelectedTeacher] = useState({})
   const user = JSON.parse(sessionStorage.getItem('user'))   
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -83,6 +85,7 @@ const AddLeave = ({ isOpen, onClose }) => {
   }
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       await axios.post(`${BASE_URL}/leaves/applyLeaves`, {
         senderId: user.id,
@@ -112,13 +115,16 @@ const AddLeave = ({ isOpen, onClose }) => {
       setSelectedLeaveType('')
       setSelectedTeacher('') 
       setEditorData('')
-    }
+    }finally{
+      setLoading(false); // Stop loader
+    };
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-gray-800">
+                  <Loader isLoading={loading} /> {/* Use Reusable Loader */}
       <div className="bg-white p-6 py-2 rounded-lg w-full max-w-md relative">
         <button onClick={handleOnClose} className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-gray-900">&times;</button>
         <form onSubmit={handleSubmit(onSubmit)}>
